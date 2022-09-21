@@ -1,21 +1,14 @@
 import { useState } from 'react';
-// import {GoogleLogin } from '@react-oauth/google';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0);
-
-  // const login = useGoogleLogin({
-  //   onSuccess: tokenResponse => console.log(tokenResponse),
-  // });
+const App = () => {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async ( {code} ) => {
       console.log(code)
-      const tokens = await axios.post('http://localhost:3001/auth/google', 
-        // http://localhost:3001/auth/google
+      const tokens = await axios.post('http://localhost:3001/auth/google',
        {code} ,
     );
     
@@ -27,11 +20,6 @@ function App() {
 
   return (
     <>
-      {/* <GoogleLogin 
-        onSuccess={credentialResponse => {
-          console.log(credentialResponse);
-        }}
-        onError={() => console.log('Login via google failed.')}/> */}
       <button onClick={() => googleLogin()}>Sign in with Google 🤞</button>
     </>
   );
