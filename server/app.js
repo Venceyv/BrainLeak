@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { OAuth2Client, UserRefreshClient } from 'google-auth-library';
+import jwt_decode from 'jwt-decode';
+
 
 dotenv.config();
 const app = express();
@@ -26,9 +28,10 @@ app.get('/', async (req, res) => res.send('hello'));
 app.post('/auth/google', async (req, res) => {
   try {
     const { tokens } = await oAuth2Client.getToken(req.body.code);
-    // console.log('return token', tokens);
     console.log('promise resolved', tokens);
-    // res.json(tokens);
+    const decoded = jwt_decode(tokens.id_token);
+    console.log(decoded)
+
   } catch (error) {
     console.log('errored', error);
   }
