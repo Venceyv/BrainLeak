@@ -1,7 +1,9 @@
 import express from 'express';
-import { postOAuth, postRefreshToken } from '../controllers/auth';
+import { postOAuth, postRefreshToken } from '../controllers/auth.js';
 
 const router = express.Router();
 
-// router.post('/auth/google', postOAuth);
-// router.post('/auth/google/refresh-token', postRefreshToken);
+router.post('/google', postOAuth);
+router.post('/google/refresh-token', postRefreshToken);
+
+export default router;
