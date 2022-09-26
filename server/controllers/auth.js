@@ -22,7 +22,6 @@ export const postOAuth = async (req, res) => {
       }
 };
 
-
 // pending 🤦‍♂️
 export const postRefreshToken = async (req, res) => {
   const user = new UserRefreshClient(

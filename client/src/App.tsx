@@ -20,7 +20,7 @@ const App = () => {
 
   return (
     <>
-      <button onClick={() => googleLogin()}>Sign in with Google 🤞</button>
+      <button className="bg-green-800" onClick={() => googleLogin()}>Sign in with Google 🤞</button>
     </>
   );
 }
