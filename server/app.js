@@ -18,7 +18,19 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 const PORT = process.env.PORT || 3001;
 const DB_URL = process.env.CONNECTION_URL;
 
-app.get('/', async (req, res) => res.send('hello'));
+app.get('/', async (req, res) =>{
+  try {
+    if(true) {
+      res.status(401)
+      throw 'unauth'
+    }
+    res.send('hello');
+     
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 app.use('/auth', authRouter);
 
 mongooseConfig(DB_URL).then(() => {
