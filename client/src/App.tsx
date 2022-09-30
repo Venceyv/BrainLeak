@@ -1,4 +1,3 @@
-import { useGoogleLogin } from "./lib";
 import { Navbar } from "./components";
 import "./App.css";
 

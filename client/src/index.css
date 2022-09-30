@@ -2,12 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @layer base {
+@layer base {
   @font-face {
     font-family: FZFWZhuZiAYuanJWE;
     src: url(./assets/fonts/FZFWZhuZiAYuanJWE.ttf) format('truetype');
-    font-weight: bold;
-
-    font-style: normal;
   }
-} */
+}
