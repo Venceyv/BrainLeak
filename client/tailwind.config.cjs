@@ -4,13 +4,13 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: [
-          'FZFWZhuZiAYuanJWE',
-          'Roboto',
-          'Helvetica',
-          'Arial',
-          'sans-serif',
-        ],
+        sans: ['Josefin-sans', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        gemini: ['Gemini-moon2', 'Gemini-moon'],
+      },
+
+      colors: {
+        'primary-black': '#181818',
+        'secondary-black': '#202020',
       },
     },
   },
