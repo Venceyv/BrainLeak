@@ -1,0 +1,502 @@
+{
+	"info": {
+		"_postman_id": "aa9f306b-721d-4055-9742-c854cc425e94",
+		"name": "User",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23336129"
+	},
+	"item": [
+		{
+			"name": "UserList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"pm.globals.set('token',jsonData.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwZ2N0ZzhKRmMxMmVIbmUtOGhaXzJSTFIxQjI4eUtFZWt4a3JIUD1zOTYtYyIsInVzZXJuYW1lIjoiWWFvZnUgUGFuZyIsImVtYWlsIjoieWFma2luZzIwQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ1MTkzNDgsImV4cCI6MTY2NDYwNTc0OH0.f9CRSr_J-v-flHx0vt1bhXRF6GAehQy4uGRqs_EKmEU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "pageNumber",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "pagesize",
+						"value": "10",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3001/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findBySearch",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwZ2N0ZzhKRmMxMmVIbmUtOGhaXzJSTFIxQjI4eUtFZWt4a3JIUD1zOTYtYyIsInVzZXJuYW1lIjoiWWFvZnUgUGFuZyIsImVtYWlsIjoieWFma2luZzIwQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ1MTcxOTEsImV4cCI6MTY2NDYwMzU5MX0.mj1d_qRAX9Lat8OWIIDNdXQwSrAra3lmoQX3AfqnhvM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "pagenumber",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "pagesize",
+						"value": "10",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"丁真\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/users/search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findOne",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UxanRvb0pUXzZqVG9VWTVvbm9zNVpUNEVfeW9Wb1o1LUI1dlBnaD1zOTYtYyIsInVzZXJuYW1lIjoiTWluZ2t1YW4gUGFuZyIsImVtYWlsIjoieWFma2luZzIwQG1haWwuZnJlc25vc3RhdGUuZWR1In0sImlhdCI6MTY2NDUzOTQyOSwiZXhwIjoxNjY0NjI1ODI5fQ.U9n8WcJHBDK5z8dRkMW4FWV2NdgGM2UNu2Q384fKAfY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "cookie",
+						"value": "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImJhY2tncm91bmRDb3ZlciI6Imh0dHBzOi8vc3RvcmFnZS5nb29nbGVhcGlzLmNvbS9icmFpbmxlYWsvYmFja2dyb3VuZEltZyhkZWZhdWx0KS5wbmciLCJfaWQiOiI2MzJhZDQzMTAxZTU0ODZlOTdkMmQ4ODUiLCJhdmF0YXIiOiJodHRwczovL3N0b3JhZ2UuZ29vZ2xlYXBpcy5jb20vYnJhaW5sZWFrL-WPve-8gS5qcGciLCJ1c2VybmFtZSI6ImZmZiIsImVtYWlsIjoiMzQ5MzMyOTI5eWFvZnVAZ21haWwuY29tIiwibGlrZWQiOltdLCJtYXJrZWQiOltdLCJfX3YiOjB9LCJpYXQiOjE2NjM4NDMzOTQsImV4cCI6MTY2Mzg0Njk5NH0.hRFs4Fuk10WmQIK1OYGTo0zVM-ZEPX7iPI-imh51-no",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3001/users/633669dd6ffdb11d94f649b9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"633669dd6ffdb11d94f649b9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "follow",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UxanRvb0pUXzZqVG9VWTVvbm9zNVpUNEVfeW9Wb1o1LUI1dlBnaD1zOTYtYyIsInVzZXJuYW1lIjoiTWluZ2t1YW4gUGFuZyIsImVtYWlsIjoieWFma2luZzIwQG1haWwuZnJlc25vc3RhdGUuZWR1In0sImlhdCI6MTY2NDUzOTQyOSwiZXhwIjoxNjY0NjI1ODI5fQ.U9n8WcJHBDK5z8dRkMW4FWV2NdgGM2UNu2Q384fKAfY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/users/follow/633689fb51047212801358fc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"follow",
+						"633689fb51047212801358fc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unfollow",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQUNOUEV1X3pnd2t6LVZ2WVctTk5SZGxRRzBNOGdaa2xMZllEcVF5eGxfN2U9czk2LWMiLCJ1c2VybmFtZSI6Illhb2Z1IFBhbmciLCJlbWFpbCI6IjM0OTMzMjkyOXlhb2Z1QGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ1NDI3NjMsImV4cCI6MTY2NDYyOTE2M30.io5_7p5cuvYoyZQd-2wZGUHNexjHV19gTVrGnGZ-XaM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/users/unfollow/633669dd6ffdb11d94f649b9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"unfollow",
+						"633669dd6ffdb11d94f649b9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwZ2N0ZzhKRmMxMmVIbmUtOGhaXzJSTFIxQjI4eUtFZWt4a3JIUD1zOTYtYyIsInVzZXJuYW1lIjoiWWFvZnUgUGFuZyIsImVtYWlsIjoieWFma2luZzIwQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ1MTcxOTEsImV4cCI6MTY2NDYwMzU5MX0.mj1d_qRAX9Lat8OWIIDNdXQwSrAra3lmoQX3AfqnhvM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/users/633669da6ffdb11d94f649b6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"633669da6ffdb11d94f649b6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwZ2N0ZzhKRmMxMmVIbmUtOGhaXzJSTFIxQjI4eUtFZWt4a3JIUD1zOTYtYyIsInVzZXJuYW1lIjoiWWFvZnUgUGFuZyIsImVtYWlsIjoieWFma2luZzIwQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ1MTkzNDgsImV4cCI6MTY2NDYwNTc0OH0.f9CRSr_J-v-flHx0vt1bhXRF6GAehQy4uGRqs_EKmEU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "pageNumber",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "pageSize",
+						"value": "5",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"理塘最速传说\",\r\n    \"introduction\":\"电子烟，我只抽RELX\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/users/633689fb51047212801358fc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"633689fb51047212801358fc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "followerList",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UxanRvb0pUXzZqVG9VWTVvbm9zNVpUNEVfeW9Wb1o1LUI1dlBnaD1zOTYtYyIsInVzZXJuYW1lIjoiTWluZ2t1YW4iLCJlbWFpbCI6InlhZmtpbmcyMEBtYWlsLmZyZXNub3N0YXRlLmVkdSJ9LCJpYXQiOjE2NjQzNDEwOTEsImV4cCI6MTY2NDQyNzQ5MX0.RyX26x_qxY6XcU5aN3ay0bztsq5hIzwN57Rtp-2FrHc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "pagenumber",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "pagesize",
+						"value": "10",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/users/followerList/633689fb51047212801358fc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"followerList",
+						"633689fb51047212801358fc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "followingList",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQUNOUEV1X3pnd2t6LVZ2WVctTk5SZGxRRzBNOGdaa2xMZllEcVF5eGxfN2U9czk2LWMiLCJ1c2VybmFtZSI6Illhb2Z1IFBhbmciLCJlbWFpbCI6IjM0OTMzMjkyOXlhb2Z1QGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ1MzkzNDAsImV4cCI6MTY2NDYyNTc0MH0.0Lc5tGQQUAEJLISBtT7jqLq-s7bLjca_JvdQaE79wK8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "pagenumber",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "pagesize",
+						"value": "10",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/users/followingList/633689fb51047212801358fc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"followingList",
+						"633689fb51047212801358fc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateAvatar",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwZ2N0ZzhKRmMxMmVIbmUtOGhaXzJSTFIxQjI4eUtFZWt4a3JIUD1zOTYtYyIsInVzZXJuYW1lIjoiWWFvZnUgUGFuZyIsImVtYWlsIjoieWFma2luZzIwQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ1MTkzNDgsImV4cCI6MTY2NDYwNTc0OH0.f9CRSr_J-v-flHx0vt1bhXRF6GAehQy4uGRqs_EKmEU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "img",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "avatar",
+							"type": "file",
+							"src": "/C:/Users/34933/OneDrive/桌面/好野/叽！.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/users/avatar/633689fb51047212801358fc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"avatar",
+						"633689fb51047212801358fc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateBackgroundCover",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwZ2N0ZzhKRmMxMmVIbmUtOGhaXzJSTFIxQjI4eUtFZWt4a3JIUD1zOTYtYyIsInVzZXJuYW1lIjoiWWFvZnUgUGFuZyIsImVtYWlsIjoieWFma2luZzIwQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ1MTkzNDgsImV4cCI6MTY2NDYwNTc0OH0.f9CRSr_J-v-flHx0vt1bhXRF6GAehQy4uGRqs_EKmEU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "img",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "backgroundCover",
+							"type": "file",
+							"src": "/C:/Users/34933/OneDrive/桌面/好野/流星雨.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/users/backgroundCover/633689fb51047212801358fc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"backgroundCover",
+						"633689fb51047212801358fc"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
