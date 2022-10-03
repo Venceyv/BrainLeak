@@ -1,6 +1,6 @@
 import { useGoogleLogin } from '../../lib';
 import { googleOAuth } from '../../services/postApi';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 const loginSVG = () => {
   return (
@@ -46,23 +46,45 @@ const notificationSVG = () => {
   );
 };
 
+//TODO: add user name @61
 const userIcon = () => {
   return (
-    <img
-      className="w-9 h-9 rounded-full border-[1px] cursor-pointer border-white"
-      src="/src/assets/img/testUserPic.jpeg"
-      alt="user"
-    />
+    <div className="relative flex flex-col">
+      <img
+        className="peer max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer border-white"
+        src="/src/assets/img/testUserPic.jpeg"
+        alt="user"
+      />
+
+      <div className="flex flex-col items-center gap-y-3 absolute w-60 top-[46px] right-2 border-[1px] peer-hover:block bg-secondary-black border-zinc-700">
+        <div className="flex items-center p-2 border-b-[1px] border-zinc-700 w-full">
+          <img
+            className="peer max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer border-white"
+            src="/src/assets/img/testUserPic.jpeg"
+            alt="user"
+          />
+          <div className="align overflow-hidden text-ellipsis h-fit ml-2.5 text-zinc-50 ">
+            VenceyvVenceyvVenceyvVenceyv
+          </div>
+        </div>
+
+        <ul>
+          <li className="text-zinc-50">Profile</li>
+          <li className="text-zinc-50">Sign out</li>
+        </ul>
+      </div>
+    </div>
   );
 };
 
-export const Navbar = () => {
+const useLogin = () => {
   const [isLoggedIn, setLogIn] = useState<boolean>(false);
 
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
       const tokens = await googleOAuth(code);
       console.log(tokens);
+      setLogIn(!isLoggedIn);
     },
     onError: async (err) => {
       console.log(err);
@@ -72,10 +94,18 @@ export const Navbar = () => {
 
   const userLogin = () => {
     return () => {
-      setLogIn(!isLoggedIn);
       googleLogin();
     };
   };
+
+  // TODO
+  const userLogout = () => {};
+
+  return { isLoggedIn, userLogin };
+};
+
+export const Navbar: FC = () => {
+  const { isLoggedIn, userLogin } = useLogin();
 
   return (
     <div className="sticky flex items-center justify-start top-0 flex-1 h-[56px] w-full gap-8 px-4 mx-auto drop-shadow-md bg-secondary-black">
