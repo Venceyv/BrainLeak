@@ -1,6 +1,6 @@
 import { useGoogleLogin } from '../../lib';
 import { googleOAuth } from '../../services/postApi';
-import { FC, useState } from 'react';
+import React, { FC, useState, useRef } from 'react';
 
 const loginSVG = () => {
   return (
@@ -46,39 +46,41 @@ const notificationSVG = () => {
   );
 };
 
-//TODO: add user name @61
-const userIcon = () => {
+//TODO: add user name
+const userIcon = (userRef) => {
   return (
     <div className="relative flex flex-col">
       <img
-        className="peer max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer border-white"
+        className="peer max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer text-zinc-50"
         src="/src/assets/img/testUserPic.jpeg"
         alt="user"
       />
 
-      <div className="flex flex-col items-center gap-y-3 absolute w-60 top-[46px] right-2 border-[1px] peer-hover:block bg-secondary-black border-zinc-700">
-        <div className="flex items-center p-2 border-b-[1px] border-zinc-700 w-full">
+      <div className="hidden flex-col items-center gap-y-3 absolute w-60 top-[46px] right-[-16px] border-[1px] bg-secondary-black border-zinc-700">
+        <div className="flex flex-col items-center p-2 border-b-[1px] border-zinc-700 w-full">
           <img
-            className="peer max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer border-white"
+            className="max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer text-zinc-50"
             src="/src/assets/img/testUserPic.jpeg"
             alt="user"
-          />
-          <div className="align overflow-hidden text-ellipsis h-fit ml-2.5 text-zinc-50 ">
-            VenceyvVenceyvVenceyvVenceyv
-          </div>
-        </div>
+            />
 
-        <ul>
-          <li className="text-zinc-50">Profile</li>
-          <li className="text-zinc-50">Sign out</li>
+          <div className="align overflow-hidden text-ellipsis h-fit text-zinc-50">
+            Venceyv
+          </div>
+            </div>
+        <ul className="mb-2 text-center w-full">
+          <li className="w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 cursor-pointer transition text-zinc-50 ">Profile</li>
+          <li className="mt-2 w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 cursor-pointer transition text-zinc-50">Sign out</li>
         </ul>
       </div>
     </div>
   );
 };
 
+// HOOK
 const useLogin = () => {
-  const [isLoggedIn, setLogIn] = useState<boolean>(false);
+  const [isLoggedIn, setLogIn] = useState<boolean>(true);
+  const userRef = useRef(null);
 
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
@@ -101,11 +103,11 @@ const useLogin = () => {
   // TODO
   const userLogout = () => {};
 
-  return { isLoggedIn, userLogin };
+  return { isLoggedIn, userLogin, userRef };
 };
 
 export const Navbar: FC = () => {
-  const { isLoggedIn, userLogin } = useLogin();
+  const { isLoggedIn, userLogin, userRef } = useLogin();
 
   return (
     <div className="sticky flex items-center justify-start top-0 flex-1 h-[56px] w-full gap-8 px-4 mx-auto drop-shadow-md bg-secondary-black">
@@ -151,7 +153,7 @@ export const Navbar: FC = () => {
         </div>
       )}
 
-      {isLoggedIn && userIcon()}
+      {isLoggedIn && userIcon({userRef})}
     </div>
   );
 };
