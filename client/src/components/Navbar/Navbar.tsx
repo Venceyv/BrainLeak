@@ -1,6 +1,12 @@
-import { useGoogleLogin } from '../../lib';
-import { googleOAuth } from '../../services/postApi';
-import React, { FC, useState, useRef } from 'react';
+import React, { FC, useEffect } from "react";
+import { useLogin } from "./Navbar.hook";
+
+interface NavbarProps {
+  userRef: React.MutableRefObject<HTMLDivElement>;
+  dropdown: boolean;
+  setUserDropDown: (dropdownState:boolean) => void;
+  toggleUserDropDown: () => void;
+}
 
 const loginSVG = () => {
   return (
@@ -46,69 +52,49 @@ const notificationSVG = () => {
   );
 };
 
-//TODO: add user name
-const userIcon = (userRef) => {
+//TODO: user api
+const userIconDropDown = (userRef: React.MutableRefObject<HTMLDivElement>, dropdown:boolean, toggleUserDropDown:()=>void) => {
   return (
     <div className="relative flex flex-col">
       <img
-        className="peer max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer text-zinc-50"
+        className="max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer text-zinc-50"
         src="/src/assets/img/testUserPic.jpeg"
         alt="user"
+        id="user-img"
+        onClick={toggleUserDropDown}
       />
 
-      <div className="hidden flex-col items-center gap-y-3 absolute w-60 top-[46px] right-[-16px] border-[1px] bg-secondary-black border-zinc-700">
+      { dropdown &&
+        <div ref={userRef} className="flex-col items-center gap-y-3 absolute w-60 top-[46px] right-[-16px] border-[1px] transition bg-secondary-black border-zinc-700">
         <div className="flex flex-col items-center p-2 border-b-[1px] border-zinc-700 w-full">
           <img
             className="max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer text-zinc-50"
             src="/src/assets/img/testUserPic.jpeg"
             alt="user"
-            />
+          />
 
           <div className="align overflow-hidden text-ellipsis h-fit text-zinc-50">
             Venceyv
           </div>
-            </div>
+        </div>
         <ul className="mb-2 text-center w-full">
-          <li className="w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 cursor-pointer transition text-zinc-50 ">Profile</li>
-          <li className="mt-2 w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 cursor-pointer transition text-zinc-50">Sign out</li>
+          <li className="w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 mt-2 cursor-pointer transition text-zinc-50 ">
+            Profile
+          </li>
+          <li className="mt-2 w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 cursor-pointer transition text-zinc-50">
+            Sign out
+          </li>
         </ul>
       </div>
+      }
     </div>
   );
 };
 
-// HOOK
-const useLogin = () => {
-  const [isLoggedIn, setLogIn] = useState<boolean>(true);
-  const userRef = useRef(null);
 
-  const googleLogin = useGoogleLogin({
-    onSuccess: async ({ code }) => {
-      const tokens = await googleOAuth(code);
-      console.log(tokens);
-      setLogIn(!isLoggedIn);
-    },
-    onError: async (err) => {
-      console.log(err);
-    },
-    flow: 'auth-code',
-  });
-
-  const userLogin = () => {
-    return () => {
-      googleLogin();
-    };
-  };
-
-  // TODO
-  const userLogout = () => {};
-
-  return { isLoggedIn, userLogin, userRef };
-};
-
-export const Navbar: FC = () => {
-  const { isLoggedIn, userLogin, userRef } = useLogin();
-
+export const Navbar: FC<NavbarProps> = ({userRef, dropdown, setUserDropDown, toggleUserDropDown}) => {
+  const { isLoggedIn, userLogin} = useLogin();
+  
   return (
     <div className="sticky flex items-center justify-start top-0 flex-1 h-[56px] w-full gap-8 px-4 mx-auto drop-shadow-md bg-secondary-black">
       <div className="flex items-center text-white ">
@@ -153,7 +139,7 @@ export const Navbar: FC = () => {
         </div>
       )}
 
-      {isLoggedIn && userIcon({userRef})}
+      {isLoggedIn && userIconDropDown(userRef, dropdown, toggleUserDropDown)}
     </div>
   );
 };

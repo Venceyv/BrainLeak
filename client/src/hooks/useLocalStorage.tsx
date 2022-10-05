@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useLocalStorage = (strName: string): [()=>any, (a: string)=>void, ()=>void] => {
+const useLocalStorage = (strName: string): [()=>any, (a: string)=>void, ()=>void] => {
   const [dataName, setDataName] = useState<string>('');
   setDataName(strName);
 
@@ -21,3 +21,4 @@ export const useLocalStorage = (strName: string): [()=>any, (a: string)=>void, (
   return [getStorage, setStorage, removeStorage];
 };
 
+export default useLocalStorage;
