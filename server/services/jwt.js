@@ -5,13 +5,9 @@ import jwt_decode from 'jwt-decode';
 import schedule from 'node-schedule';
 import { redisRefresh, redisBlockList } from '../configs/redis.js';
 import { promisify } from 'util';
-import fastJson from 'fast-json-stringify';
 const tojwt = promisify(jwt.sign);
 const verify = promisify(jwt.verify);
-const stringify = fastJson(
-    {type:'object'
-,properties:{email:{type:'string'}}}
-);
+
 const createToken = async userInfo => {
     return await tojwt(
         {
@@ -34,14 +30,9 @@ const createRefreshToken = async userInfo => {
         }
     )
 }
-async function readyToRefresh(decodedToken, refreshToken) {
+async function readyToRefresh(refreshToken) {
     const isInBlockList = await redisBlockList.get(refreshToken);
-    if (!isInBlockList) {
-        const decodedRefreshToken = jwt_decode(refreshToken);
-        return (stringify(decodedToken.userInfo)
-         === stringify(decodedRefreshToken.userInfo));
-    }
-    return false;
+    return (isInBlockList===null);
 }
 function tokenExpired(token) {
     try {
@@ -69,7 +60,7 @@ function verifyToken(required = true) {
                     const decodedToken = jwt_decode(token);
                     const refreshToken = await redisRefresh.get(decodedToken.userInfo.email);
                     if (refreshToken) {
-                        const ready = await readyToRefresh(decodedToken, refreshToken);
+                        const ready = await readyToRefresh(refreshToken);
                         if (ready) {
                             req.user = decodedToken.userInfo;
                             token = await createToken(decodedToken.userInfo);
