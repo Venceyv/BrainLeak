@@ -17,11 +17,13 @@ async function replyToComment(req, res) {
             }
             const dbBack = await new Reply({
                 content: req.body.content, relatedComment: comment._id,
-                mentionedUser: comment.author, author: logginedUser._id
+                relatedPost: post._id,mentionedUser: comment.author, 
+                author: logginedUser._id
             }).save();
             const accessToken = req.accessToken;
             comment.repliesCount++;
             post.infoUpdate = true;
+            post.save();
             comment.save();
             return res.status(200).json({ dbBack, accessToken });
         }
@@ -50,7 +52,9 @@ async function deleteReply(req, res) {
                     res.status(404);
                     throw 'Post does not exist';
                 }
+                comment.repliesCount--;
                 post.infoUpdate = true;
+                comment.save();
                 post.save();
                 await Reply.findByIdAndDelete(req.params.replyId);
                 res.status(200).json({ msg: 'delete successfully' });

@@ -82,6 +82,7 @@ async function deleteComment(req, res) {
                 const msg = 'Delete successfully.';
                 logginedUser.commentCount--;
                 logginedUser.infoUpdate = true;
+                post.commentCount--;
                 post.infoUpdate = true;
                 logginedUser.save();
                 post.save();

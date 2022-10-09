@@ -41,14 +41,21 @@ const stringifyPostInfo = fastJson(
 //get the post info related to the loggined user
 async function getOnePostInfo(postInfo) {
 
-    const commentUnderPost = await Comment.find({ relatedPost: postInfo._id })
-    .populate('author',{username:1})
-    .sort({ likes: -1 });
-    commentUnderPost.map(async (comment) => {
-        const replies = await Reply.find({relatedComment:comment._id},{_id:0})
-        .populate('mentionedUser', { username: 1 })
-        .populate('author', { username: 1 });
-        return {comment,replies};
+
+    const [commentUnderPost, replies] = await Promise.all([
+        Comment.find({ relatedPost: postInfo._id })
+            .populate('author', { username: 1 })
+            .sort({ likes: -1 }),
+        Reply.find({ relatedPost: postInfo._id }, { _id: 0 })
+            .populate('mentionedUser', { username: 1 })
+            .populate('author', { username: 1 })
+
+    ])
+    commentUnderPost.forEach((comment, index) => {
+        let repliesUnderComment = [];
+        repliesUnderComment = replies
+            .filter(reply => reply.relatedComment.equals(comment._id))
+        commentUnderPost[index] = { comment, repliesUnderComment };
     })
     return { postInfo, commentUnderPost };
 }
@@ -81,7 +88,7 @@ async function getUserPostInfo(logginedUser, post) {
         LikedPost.findOne({ user: logginedUser._id, post: post._id }),
         DislikedPost.findOne({ user: logginedUser._id, post: post._id }),
         SavedPost.findOne({ user: logginedUser._id, post: post._id })
-    ])
+    ]);
     const like = likeInfo != null;
     const dislike = dislikeInfo != null;
     const save = saveInfo != null;
@@ -102,6 +109,6 @@ async function getUserPostInfoByPostList(logginedUser, postList) {
     return postList;
 }
 export {
-    getOnePostInfo, stringifyPostInfo,getPostInfoInCache, 
-    savePostInfoToCache, getUserPostInfo,getUserPostInfoByPostList
+    getOnePostInfo, stringifyPostInfo, getPostInfoInCache,
+    savePostInfoToCache, getUserPostInfo, getUserPostInfoByPostList
 };

@@ -12,7 +12,15 @@ const replySchema = new Schema({
     },
     relatedComment:
     {
-        type:mongoose.ObjectId,ref:'comment',
+        type:mongoose.ObjectId,
+        ref:'comment',
+        index:true,
+        required:true
+    },
+    relatedPost:
+    {
+        type:mongoose.ObjectId,
+        ref:'post',
         index:true,
         required:true
     },
