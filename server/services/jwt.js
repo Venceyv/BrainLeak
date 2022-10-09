@@ -38,7 +38,7 @@ async function readyToRefresh(decodedToken, refreshToken) {
     const isInBlockList = await redisBlockList.get(refreshToken);
     if (!isInBlockList) {
         const decodedRefreshToken = jwt_decode(refreshToken);
-        return (stringify(decodedRefreshToken.userInfo)
+        return (stringify(decodedToken.userInfo)
          === stringify(decodedRefreshToken.userInfo));
     }
     return false;
