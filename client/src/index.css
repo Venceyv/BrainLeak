@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: Josefin-sans;
+    src: url(./assets/fonts/JosefinSans.ttf) format('truetype');
+  }
+  @font-face {
+    font-family: Gemini-moon;
+    src: url(./assets/fonts/Geminimoon.otf) format('opentype');
+  }
+  @font-face {
+    font-family: Gemini-moon2;
+    src: url(./assets/fonts/Geminimoon2.otf) format('opentype');
+  }
+}

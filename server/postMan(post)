@@ -1,0 +1,481 @@
+{
+	"info": {
+		"_postman_id": "c60279f8-9654-4371-a332-8546b32d7735",
+		"name": "Post",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23336129"
+	},
+	"item": [
+		{
+			"name": "createPost",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQUNOUEV1X3pnd2t6LVZ2WVctTk5SZGxRRzBNOGdaa2xMZllEcVF5eGxfN2U9czk2LWMiLCJ1c2VybmFtZSI6Illhb2Z1IFBhbmciLCJlbWFpbCI6IjM0OTMzMjkyOXlhb2Z1QGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ5Mjk4MjcsImV4cCI6MTY2NDkzMDcyN30.4fI80a_wPiOt7PCj47-qsAdBuVQD6ILI3j0ZzoYBScM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "put",
+						"value": "true",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"程序员看剧的时候，如果看到有敲代码页面，会暂停看代码吗？\",\r\n    \"description\":\"今天在看剧的时候，突然有个疑问，因为现在的很多电视剧经常会有敲代码的页面出现，就想问下各位程序员大佬们，会在这个片段暂停看代码么？然后判断是真的还是假的之类的？代码对不对之类的？或者不深究对错，就看下这段代码啥意思？要做什么？【不要凶～大家就友善交流自己的看法哦⊙▽⊙】\",\r\n    \"tags\":[\"美食\",\"饺子\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/posts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addComment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwZ2N0ZzhKRmMxMmVIbmUtOGhaXzJSTFIxQjI4eUtFZWt4a3JIUD1zOTYtYyIsInVzZXJuYW1lIjoiWWFvZnUgUGFuZyIsImVtYWlsIjoieWFma2luZzIwQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ5MzEyNDAsImV4cCI6MTY2NDkzMjE0MH0.mWOqNqWfBB6F3qRapMCCZ2b9JdVx-CnVm2XPoSgcM3g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"当上了但是准备要坐牢了，等我出来了再详细答一下吧\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/posts/633cd121adb1d31deaaddd82/comment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"posts",
+						"633cd121adb1d31deaaddd82",
+						"comment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addReply",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQUNOUEV1X3pnd2t6LVZ2WVctTk5SZGxRRzBNOGdaa2xMZllEcVF5eGxfN2U9czk2LWMiLCJ1c2VybmFtZSI6Illhb2Z1IFBhbmciLCJlbWFpbCI6IjM0OTMzMjkyOXlhb2Z1QGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ5MzkyNzMsImV4cCI6MTY2NDk0MDE3M30.l0xwbXt-1noRBCbbu3jIllyB1Q4whhhGo9UzXxs85qU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"我估计里面有不少当官的或者黑老大，建议在里面攒攒人脉捏\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/posts/633cd121adb1d31deaaddd82/comment/633cd649c5efee6bdd2cc75e/reply",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"posts",
+						"633cd121adb1d31deaaddd82",
+						"comment",
+						"633cd649c5efee6bdd2cc75e",
+						"reply"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateComment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwZ2N0ZzhKRmMxMmVIbmUtOGhaXzJSTFIxQjI4eUtFZWt4a3JIUD1zOTYtYyIsInVzZXJuYW1lIjoiWWFvZnUgUGFuZyIsImVtYWlsIjoieWFma2luZzIwQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ5MTA4MzEsImV4cCI6MTY2NDkxMTczMX0.wCJbgDyhGTqpjoZnS32dLw1gFjYloUODW6yP5Nbfy_g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"当上了，被抓了，等出来了再给大伙回答\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/posts/63353a9180e7f3ed5a45db19/comment/633c86311dec9753b17fa2f2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"posts",
+						"63353a9180e7f3ed5a45db19",
+						"comment",
+						"633c86311dec9753b17fa2f2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postList",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UyeXJIWThBWWt6bmZOZzM5SV93QVZQeXpVSFd3ZWNJdDBKV1BPRz1zOTYtYyIsInVzZXJuYW1lIjoiWWFvZnUgUGFuZyIsImVtYWlsIjoiMzQ5MzMyOTI5eWFvZnVAZ21haWwuY29tIn0sImlhdCI6MTY2NTA1MTc5NCwiZXhwIjoxNjY1MDUyNjk0fQ.eL0ABuXPfhQyh-Bi-kTp8WxG5AcymQul1ajAhpjhCHQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/posts?pagenumber=1&pagesize=10&type=posts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"posts"
+					],
+					"query": [
+						{
+							"key": "pagenumber",
+							"value": "1"
+						},
+						{
+							"key": "pagesize",
+							"value": "10"
+						},
+						{
+							"key": "type",
+							"value": "posts"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "searchPost",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"饺子\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/posts/search?pagenumber=1&pagesize=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"posts",
+						"search"
+					],
+					"query": [
+						{
+							"key": "pagenumber",
+							"value": "1"
+						},
+						{
+							"key": "pagesize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "searchPostByTags",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tags\":[\"美食\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/posts/tags?pagenumber=1&pagesize=10&type=posts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"posts",
+						"tags"
+					],
+					"query": [
+						{
+							"key": "pagenumber",
+							"value": "1"
+						},
+						{
+							"key": "pagesize",
+							"value": "10"
+						},
+						{
+							"key": "type",
+							"value": "posts"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findOne",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UyeXJIWThBWWt6bmZOZzM5SV93QVZQeXpVSFd3ZWNJdDBKV1BPRz1zOTYtYyIsInVzZXJuYW1lIjoiWWFvZnUgUGFuZyIsImVtYWlsIjoiMzQ5MzMyOTI5eWFvZnVAZ21haWwuY29tIn0sImlhdCI6MTY2NTA1MTQ0MSwiZXhwIjoxNjY1MDUyMzQxfQ.6d0dkX7dy695AN9Si_Dzmigat8XGb6xeCLfIKSQMtqc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/posts/633cd121adb1d31deaaddd82",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"posts",
+						"633cd121adb1d31deaaddd82"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updatePost",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQUNOUEV1X3pnd2t6LVZ2WVctTk5SZGxRRzBNOGdaa2xMZllEcVF5eGxfN2U9czk2LWMiLCJ1c2VybmFtZSI6Illhb2Z1IFBhbmciLCJlbWFpbCI6IjM0OTMzMjkyOXlhb2Z1QGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ0MzI5OTksImV4cCI6MTY2NDUxOTM5OX0.KHJb6u00DgC_ywgwo_LD2qIrvU2aIg-HaTc7vptK9Og",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"程序员看剧的时候，如果看到有敲代码页面，会暂停看代码吗？\",\r\n        \"description\": \"今天在看剧的时候，突然有个疑问，因为现在的很多电视剧经常会有敲代码的页面出现，就想问下各位程序员大佬们，会在这个片段暂停看代码么？然后判断是真的还是假的之类的？代码对不对之类的？或者不深究对错，就看下这段代码啥意思？要做什么？【不要凶～大家就友善交流自己的看法哦⊙▽⊙】\",\r\n    \"tags\":[\"程序员\",\"杂谈\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/posts/633cd1a6adb1d31deaaddd92",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"posts",
+						"633cd1a6adb1d31deaaddd92"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deletePost",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQUNOUEV1X3pnd2t6LVZ2WVctTk5SZGxRRzBNOGdaa2xMZllEcVF5eGxfN2U9czk2LWMiLCJ1c2VybmFtZSI6Illhb2Z1IFBhbmciLCJlbWFpbCI6IjM0OTMzMjkyOXlhb2Z1QGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ5MDgxMjMsImV4cCI6MTY2NDkwOTAyM30.lQAuL412Rub0uUZIYFuYOaW1hlXa9xXkUkLgRW3MJ6A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"first-user\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/posts/633c7e320a2bb269269e38b5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"posts",
+						"633c7e320a2bb269269e38b5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteComment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJhdmF0YXIiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwZ2N0ZzhKRmMxMmVIbmUtOGhaXzJSTFIxQjI4eUtFZWt4a3JIUD1zOTYtYyIsInVzZXJuYW1lIjoiWWFvZnUgUGFuZyIsImVtYWlsIjoieWFma2luZzIwQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NjQ5MzEyNDAsImV4cCI6MTY2NDkzMjE0MH0.mWOqNqWfBB6F3qRapMCCZ2b9JdVx-CnVm2XPoSgcM3g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"first-user\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/posts/633cd121adb1d31deaaddd82/comment/633cd5a8c5efee6bdd2cc74a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"posts",
+						"633cd121adb1d31deaaddd82",
+						"comment",
+						"633cd5a8c5efee6bdd2cc74a"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
