@@ -1,5 +1,6 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { useLogin } from "./Navbar.hook";
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 interface NavbarProps {
   userRef: React.MutableRefObject<HTMLDivElement>;
@@ -94,7 +95,10 @@ const userIconDropDown = (userRef: React.MutableRefObject<HTMLDivElement>, dropd
 
 export const Navbar: FC<NavbarProps> = ({userRef, dropdown, setUserDropDown, toggleUserDropDown}) => {
   const { isLoggedIn, userLogin} = useLogin();
-  
+
+  const [ user, getAuth, setAuth, removeAuth ] = useLocalStorage('user', '');
+
+
   return (
     <div className="sticky flex items-center justify-start top-0 flex-1 h-[56px] w-full gap-8 px-4 mx-auto drop-shadow-md bg-secondary-black">
       <div className="flex items-center text-white ">
@@ -131,7 +135,7 @@ export const Navbar: FC<NavbarProps> = ({userRef, dropdown, setUserDropDown, tog
 
       {!isLoggedIn && (
         <div
-          className="flex px-2 py-1 pt-[5px] text-sm font-medium rounded-md border-[1px] cursor-pointer transition text-black bg-white hover:bg-primary-black hover:text-white hover:border-white"
+          className="flex px-2 py-1 pt-[5px] font-cascadia text-sm font-medium rounded-md border-[1px] cursor-pointer transition text-black bg-white hover:bg-primary-black hover:text-white hover:border-white"
           onClick={userLogin()}
         >
           Login

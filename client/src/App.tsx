@@ -1,7 +1,8 @@
-import { Navbar } from './components';
-import './App.css';
 import { useEffect } from 'react';
 import useDropDown  from './hooks/useDropdown';
+import { Navbar } from './components';
+import {Posts} from './components';
+import './App.css';
 
 const App = () => {
 
@@ -25,8 +26,8 @@ const App = () => {
   return (
     <>
       <Navbar userRef={userRef} dropdown={dropdown} setUserDropDown={setUserDropDown} toggleUserDropDown={toggleUserDropDown}/>
-      <div className="h-[calc(100%-56px)] bg-primary-black text-red-900">
-        Ayo
+      <div className="grid items-center h-[calc(100%-56px)] bg-primary-black text-white">
+        <Posts />
       </div>
     </>
   );
