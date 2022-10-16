@@ -1,4 +1,4 @@
-import {Comment} from '../../models/index.js'
+import {Comment} from '../models/index.js'
 import json from 'body-parser';
 async function checkCommentExist(req,res,next)
 {

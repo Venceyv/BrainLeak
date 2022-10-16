@@ -5,7 +5,7 @@ import { findAll, deleteUser, findOne, updateUser, findBySearch,
      getSavedPosts, userTrending, getUserComments, getUserPosts } from '../controllers/users.js';
 import {verifyToken} from '../services/jwt.js'
 import {userValidator} from "../middleware/validator/userValidator.js"
-import { checkUserExist,checkUserAuth } from '../middleware/validator/userMiddleware.js';
+import { checkUserExist,checkUserAuth } from '../middleware/userMiddleware.js';
 import { upload } from '../configs/googleCloud.js';
 const userRouter = Router();
 

@@ -1,4 +1,4 @@
-import {Post, User} from '../../models/index.js';
+import {Post, User} from '../models/index.js';
 import json from 'body-parser';
 async function checkPostExist(req,res,next)
 {

@@ -1,4 +1,4 @@
-import {Reply, User} from '../../models/index.js'
+import {Reply, User} from '../models/index.js'
 import json from 'body-parser';
 async function checkReplyExist(req,res,next)
 {

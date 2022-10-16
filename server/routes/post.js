@@ -3,9 +3,9 @@ import {createPost,findOne,findByTags,findAll,
     findBySearch,updatePost,deletePost,likePost,
     dislikePost,savePost,postTrending} from '../controllers/posts.js';
 import { addComment,deleteComment,dislikeComment,getComments,likeComment,updateComment } from "../controllers/comments.js";
-import { checkPostAuth,checkPostExist } from "../middleware/validator/postMiddleware.js";
-import { checkCommentAuth,checkCommentExist } from "../middleware/validator/commentMiddleware.js";
-import { checkReplyAuth,checkReplyExist } from "../middleware/validator/replyMiddleware.js";
+import { checkPostAuth,checkPostExist } from "../middleware/postMiddleware.js";
+import { checkCommentAuth,checkCommentExist } from "../middleware/commentMiddleware.js";
+import { checkReplyAuth,checkReplyExist } from "../middleware/replyMiddleware.js";
 import {verifyToken} from '../services/jwt.js';
 import {postValidator} from '../middleware/validator/postValidator.js';
 import {commentValidator} from '../middleware/validator/commentValidator.js'
