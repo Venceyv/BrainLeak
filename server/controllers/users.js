@@ -282,7 +282,6 @@ async function getLikePosts(req, res) {
                 saveRedisLikedPost(req.params.userId, dbBack)
             ]);
             dbBack.forEach((data, index) => {
-                dbBack[index] = data.post;
                 dbBack[index] = addUserPostInfo(data.post, followingList, likeList, PostSaveList);
             });
             dbBack = await Promise.all(dbBack.map(async (post) => {
@@ -340,7 +339,6 @@ async function getDislikePosts(req, res) {
                 saveRedisDisikedPost(req.params.userId, dbBack)
             ]);
             dbBack.forEach((data, index) => {
-                dbBack[index] = data.post;
                 dbBack[index] = addUserPostInfo(data.post, followingList, likeList, PostSaveList);
             });
             dbBack = await Promise.all(dbBack.map(async (post) => {
@@ -398,7 +396,6 @@ async function getSavedPosts(req, res) {
                 saveRedisSavedPost(req.params.userId, dbBack)
             ]);
             dbBack.forEach((data, index) => {
-                dbBack[index] = data.post;
                 dbBack[index] = addUserPostInfo(data.post, followingList, likeList, PostSaveList);
             });
             dbBack = await Promise.all(dbBack.map(async (post) => {
