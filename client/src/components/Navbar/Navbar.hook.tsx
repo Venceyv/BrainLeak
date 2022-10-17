@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 // TODO: USER LOGOUT return type
 const useLogin:Function = (): {isLoggedIn: boolean, userLogin: () => Function} => {
   const [isLoggedIn, setLogIn] = useState<boolean>(false);
-  // const [ user, getAuth, setAuth, removeAuth ] = useLocalStorage('user', '');
 
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
