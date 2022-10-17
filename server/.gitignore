@@ -1,5 +1,5 @@
 # environment file
-*.env
+# .env
 *.log
 /.clinic
 /node_modules
