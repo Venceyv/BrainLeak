@@ -1,15 +1,7 @@
 import React, { FC } from "react";
-import { useLogin } from "./Navbar.hook";
-import useLocalStorage from '../../hooks/useLocalStorage';
+import { useLogin, useDetectOutsideClick, useDropDown } from "./Navbar.hook";
 
-interface NavbarProps {
-  userRef: React.MutableRefObject<HTMLDivElement>;
-  dropdown: boolean;
-  setUserDropDown: (dropdownState:boolean) => void;
-  toggleUserDropDown: () => void;
-}
-
-const loginSVG = () => {
+const loginSVG:Function = (): JSX.Element => {
   return (
     <svg viewBox="0 0 1024 1024" width="20" height="20">
       <path
@@ -28,7 +20,7 @@ const loginSVG = () => {
   );
 };
 
-const notificationSVG = () => {
+const notificationSVG:Function = (): JSX.Element => {
   return (
     <svg viewBox="0 0 1024 1024" width="29" height="29">
       <path
@@ -54,12 +46,12 @@ const notificationSVG = () => {
 };
 
 //TODO: user api
-const userIconDropDown = (userRef: React.MutableRefObject<HTMLDivElement>, dropdown:boolean, toggleUserDropDown:()=>void) => {
+const userIconDropDown: Function = (userRef: React.MutableRefObject<HTMLDivElement>, dropdown:boolean, toggleUserDropDown:()=>void): JSX.Element => {
   return (
     <div className="relative flex flex-col">
       <img
         className="max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer text-zinc-50"
-        src="/src/assets/img/testUserPic.jpeg"
+        src="../../assets/img/testUserPic.jpeg"
         alt="user"
         id="user-img"
         onClick={toggleUserDropDown}
@@ -70,7 +62,7 @@ const userIconDropDown = (userRef: React.MutableRefObject<HTMLDivElement>, dropd
         <div className="flex flex-col items-center p-2 border-b-[1px] border-zinc-700 w-full">
           <img
             className="max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer text-zinc-50"
-            src="/src/assets/img/testUserPic.jpeg"
+            src="../../assets/img/testUserPic.jpeg"
             alt="user"
           />
 
@@ -92,13 +84,11 @@ const userIconDropDown = (userRef: React.MutableRefObject<HTMLDivElement>, dropd
   );
 };
 
-
-export const Navbar: FC<NavbarProps> = ({userRef, dropdown, setUserDropDown, toggleUserDropDown}) => {
+export const Navbar: FC = (): JSX.Element => {
   const { isLoggedIn, userLogin} = useLogin();
-
-  const [ user, getAuth, setAuth, removeAuth ] = useLocalStorage('user', '');
-
-
+  const {userRef, dropdown, setUserDropDown, toggleUserDropDown} = useDropDown();
+  useDetectOutsideClick(userRef, setUserDropDown);
+  
   return (
     <div className="sticky flex items-center justify-start top-0 flex-1 h-[56px] w-full gap-8 px-4 mx-auto drop-shadow-md bg-secondary-black">
       <div className="flex items-center text-white ">
@@ -126,7 +116,7 @@ export const Navbar: FC<NavbarProps> = ({userRef, dropdown, setUserDropDown, tog
 
         <input
           type="search"
-          className="block p-4 pl-10 md:w-[540px] h-5 text-sm leading-normal bg-primary-black rounded-lg placeholder-zinc-400 text-white"
+          className="block p-4 pl-10 min-w-[200px] w-auto h-5 text-sm leading-normal bg-primary-black rounded-lg placeholder-zinc-400 text-white"
           placeholder="Search a post..."
         />
       </div>
