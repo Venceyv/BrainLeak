@@ -1,7 +1,8 @@
-import React, { FC } from "react";
-import { useLogin, useDetectOutsideClick, useDropDown } from "./Navbar.hook";
+import React, { FC, useEffect } from 'react';
+import { getData } from '../../api/oAuthAPI';
+import { useLogin, useDetectOutsideClick, useDropDown } from './Navbar.hook';
 
-const loginSVG:Function = (): JSX.Element => {
+const loginSVG: Function = (): JSX.Element => {
   return (
     <svg viewBox="0 0 1024 1024" width="20" height="20">
       <path
@@ -20,7 +21,7 @@ const loginSVG:Function = (): JSX.Element => {
   );
 };
 
-const notificationSVG:Function = (): JSX.Element => {
+const notificationSVG: Function = (): JSX.Element => {
   return (
     <svg viewBox="0 0 1024 1024" width="29" height="29">
       <path
@@ -46,7 +47,12 @@ const notificationSVG:Function = (): JSX.Element => {
 };
 
 //TODO: user api
-const userIconDropDown: Function = (userRef: React.MutableRefObject<HTMLDivElement>, dropdown:boolean, toggleUserDropDown:()=>void): JSX.Element => {
+const userIconDropDown: Function = (
+  userRef: React.MutableRefObject<HTMLDivElement>,
+  dropdown: boolean,
+  toggleUserDropDown: () => void,
+  userLogout: () => () => void
+): JSX.Element => {
   return (
     <div className="relative flex flex-col">
       <img
@@ -57,38 +63,47 @@ const userIconDropDown: Function = (userRef: React.MutableRefObject<HTMLDivEleme
         onClick={toggleUserDropDown}
       />
 
-      { dropdown &&
-        <div ref={userRef} className="flex-col items-center gap-y-3 absolute w-60 top-[46px] right-[-16px] border-[1px] transition bg-secondary-black border-zinc-700">
-        <div className="flex flex-col items-center p-2 border-b-[1px] border-zinc-700 w-full">
-          <img
-            className="max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer text-zinc-50"
-            src="../../assets/img/testUserPic.jpeg"
-            alt="user"
-          />
+      {dropdown && (
+        <div
+          ref={userRef}
+          className="flex-col items-center gap-y-3 absolute w-60 top-[46px] right-[-16px] border-[1px] transition bg-secondary-black border-zinc-700"
+        >
+          <div className="flex flex-col items-center p-2 border-b-[1px] border-zinc-700 w-full">
+            <img
+              className="max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer text-zinc-50"
+              src="../../assets/img/testUserPic.jpeg"
+              alt="user"
+            />
 
-          <div className="align overflow-hidden text-ellipsis h-fit text-zinc-50">
-            Venceyv
+            <div className="align overflow-hidden text-ellipsis h-fit text-zinc-50">Venceyv</div>
           </div>
+          <ul className="mb-2 text-center w-full">
+            <li className="w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 mt-2 cursor-pointer transition text-zinc-50 ">
+              Profile
+            </li>
+            <li
+              onClick={userLogout()}
+              className="mt-2 w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 cursor-pointer transition text-zinc-50"
+            >
+              Sign out
+            </li>
+          </ul>
         </div>
-        <ul className="mb-2 text-center w-full">
-          <li className="w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 mt-2 cursor-pointer transition text-zinc-50 ">
-            Profile
-          </li>
-          <li className="mt-2 w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 cursor-pointer transition text-zinc-50">
-            Sign out
-          </li>
-        </ul>
-      </div>
-      }
+      )}
     </div>
   );
 };
 
 export const Navbar: FC = (): JSX.Element => {
-  const { isLoggedIn, userLogin} = useLogin();
-  const {userRef, dropdown, setUserDropDown, toggleUserDropDown} = useDropDown();
+  const { isLoggedIn, userLogin, userLogout } = useLogin();
+  const { userRef, dropdown, setUserDropDown, toggleUserDropDown } = useDropDown();
   useDetectOutsideClick(userRef, setUserDropDown);
-  
+
+  useEffect(() => {
+    const data = getData().then((data) => console.log(data));
+    console.log(data);
+  }, []);
+
   return (
     <div className="sticky flex items-center justify-start top-0 flex-1 h-[56px] w-full gap-8 px-4 mx-auto drop-shadow-md bg-secondary-black">
       <div className="flex items-center text-white ">
@@ -98,25 +113,14 @@ export const Navbar: FC = (): JSX.Element => {
 
       <div className="relative mx-auto">
         <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            ></path>
+          <svg aria-hidden="true" className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
           </svg>
         </div>
 
         <input
           type="search"
-          className="block p-4 pl-10 min-w-[200px] w-auto h-5 text-sm leading-normal bg-primary-black rounded-lg placeholder-zinc-400 text-white"
+          className="block p-4 pl-10 w-[300px] h-5 text-sm leading-normal bg-primary-black rounded-lg placeholder-zinc-400 text-white"
           placeholder="Search a post..."
         />
       </div>
@@ -125,7 +129,7 @@ export const Navbar: FC = (): JSX.Element => {
 
       {!isLoggedIn && (
         <div
-          className="flex px-2 py-1 pt-[5px] font-cascadia text-sm font-medium rounded-md border-[1px] cursor-pointer transition text-black bg-white hover:bg-primary-black hover:text-white hover:border-white"
+          className="flex px-2 py-1 pt-[5px] text-sm font-medium rounded-md border-[1px] cursor-pointer transition text-black bg-white hover:bg-primary-black hover:text-white hover:border-white"
           onClick={userLogin()}
         >
           Login
@@ -133,7 +137,7 @@ export const Navbar: FC = (): JSX.Element => {
         </div>
       )}
 
-      {isLoggedIn && userIconDropDown(userRef, dropdown, toggleUserDropDown)}
+      {isLoggedIn && userIconDropDown(userRef, dropdown, toggleUserDropDown, userLogout)}
     </div>
   );
 };

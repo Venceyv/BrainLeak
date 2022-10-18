@@ -7,7 +7,7 @@ module.exports = {
         sans: ['Josefin-sans', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
         gemini: ['Gemini-moon2', 'Gemini-moon'],
         virgil: ['Virgil'],
-        cascadia: ['Cascadia']
+        cascadia: ['Cascadia'],
       },
 
       colors: {
