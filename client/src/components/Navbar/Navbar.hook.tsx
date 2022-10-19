@@ -9,12 +9,15 @@ const useLogin: Function = (): { isLoggedIn: boolean; userLogin: () => Function;
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
       try {
-        const { data } = await googleOAuth(code);
+        const data = await googleOAuth(code);
+
         localStorage.setItem('jwt', JSON.stringify(data.token));
-        console.log(data.token, data.dbBack);
         localStorage.setItem('userInfo', JSON.stringify(data.dbBack));
         setLogIn((prev) => !prev);
+
+        //TODO display: login error
       } catch (error) {
+        console.log(error)
         throw error;
       }
     },

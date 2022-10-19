@@ -1,5 +1,4 @@
 import React, { FC, useEffect } from 'react';
-import { getData } from '../../api/oAuthAPI';
 import { useLogin, useDetectOutsideClick, useDropDown } from './Navbar.hook';
 
 const loginSVG: Function = (): JSX.Element => {
@@ -98,11 +97,6 @@ export const Navbar: FC = (): JSX.Element => {
   const { isLoggedIn, userLogin, userLogout } = useLogin();
   const { userRef, dropdown, setUserDropDown, toggleUserDropDown } = useDropDown();
   useDetectOutsideClick(userRef, setUserDropDown);
-
-  useEffect(() => {
-    const data = getData().then((data) => console.log(data));
-    console.log(data);
-  }, []);
 
   return (
     <div className="sticky flex items-center justify-start top-0 flex-1 h-[56px] w-full gap-8 px-4 mx-auto drop-shadow-md bg-secondary-black">

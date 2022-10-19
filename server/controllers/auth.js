@@ -13,7 +13,7 @@ export const postOAuth = async (req, res) => {
             'postmessage'
           );
         
-        const { tokens } = await oAuth2Client.getToken(req.body.code);
+        const { tokens } = await oAuth2Client.getToken(req?.body?.code);
         const decoded = jwt_decode(tokens.id_token);
         const userInfo = 
         {
