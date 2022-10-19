@@ -3,11 +3,10 @@ import {
     getOnePostInfo, getRedisPostProfile,
     saveRedisPostProfile, postTrendingInc, getPostTrending,
     addPostStatistics, addCommentsStatistics, beautyPostInfo,
-    incPostStatistics, delRedisPostProfile, postFilter, beautyPostsInfo
+    incPostStatistics, postFilter, beautyPostsInfo
 } from '../services/postServices.js';
 import {
-    delRedisDislikedPost, delRedisLikedPost, delRedisSavedPost,
-    delRedisUserPost, incUserStatistics, userTrendingInc
+     incUserStatistics, userTrendingInc
 } from '../services/userServices.js';
 import { beautyCommentsInfo } from '../services/commentServices.js';
 import json from 'body-parser'
@@ -16,9 +15,7 @@ import { redisTrending } from '../configs/redis.js';
 async function createPost(req, res) {
     try {
         const dbBack = new Post(req.body);
-        await Promise.all([
-            delRedisUserPost(req.user._id),
-            incUserStatistics(req.user._id, 'posts', 1)]);
+        await incUserStatistics(req.user._id, 'posts', 1);
         const accessToken = req.accessToken;
         dbBack.author = req.user._id;
         dbBack.put = req.query.put === 'true' ? true : false;
@@ -38,13 +35,17 @@ async function findOne(req, res) {
     try {
         const accessToken = req.accessToken;
         const postId = req.params.postId;
+        const pageNum = Number(req.query.pagenumber);
+        const pageSize = Number(req.query.pagesize);
         const order = req.query.sort;
         let dbBack = await getRedisPostProfile(postId);
         if (!dbBack) {
             dbBack = await getOnePostInfo(postId);
             await saveRedisPostProfile(postId, dbBack);
         }
-        const [postInfo, commentUnderPost] = await Promise.all([
+        dbBack.commentUnderPost = 
+        dbBack.commentUnderPost.slice((pageNum - 1) * pageSize, pageNum * pageSize);
+        const [postInfo, commentUnderPost,] = await Promise.all([
             addPostStatistics(dbBack.postInfo),
             addCommentsStatistics(dbBack.commentUnderPost),
             postTrendingInc(req.params.postId, 1),
@@ -97,6 +98,7 @@ async function findByTags(req, res) {
             }
             return res.status(200).json({ dbBack, accessToken });
         }
+        dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
         dbBack = postFilter(dbBack, timeInterval);
         dbBack = await Promise.all(dbBack.map(async (post) => {
             post = await addPostStatistics(post);
@@ -105,7 +107,6 @@ async function findByTags(req, res) {
         if (req.user) {
             dbBack = await beautyPostsInfo(dbBack, req.user._id);
         }
-        dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
         switch (order) {
             case 'latest':
                 dbBack.sort((a, b) => {
@@ -135,6 +136,7 @@ async function findAll(req, res) {
             .lean()
             .populate('author', 'avatar username introduction', { lean: true });
         if (dbBack.length != 0) {
+            dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
             dbBack = postFilter(dbBack, timeInterval);
             dbBack = await Promise.all(dbBack.map(async (post) => {
                 post = await addPostStatistics(post);
@@ -143,7 +145,6 @@ async function findAll(req, res) {
             if (req.user) {
                 dbBack = await beautyPostsInfo(dbBack, req.user._id);
             }
-            dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
             switch (order) {
                 case 'latest':
                     dbBack.sort((a, b) => {
@@ -205,6 +206,7 @@ async function findBySearch(req, res) {
             .lean()
             .populate('author', 'avatar username', { lean: true });
         if (dbBack.length != 0) {
+            dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
             dbBack = postFilter(dbBack, timeInterval);
             dbBack = await Promise.all(dbBack.map(async (post) => {
                 post = await addPostStatistics(post);
@@ -213,7 +215,6 @@ async function findBySearch(req, res) {
             if (req.user) {
                 dbBack = await beautyPostsInfo(dbBack, req.user._id);
             }
-            dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
             switch (order) {
                 case 'latest':
                     dbBack.sort((a, b) => {
@@ -238,11 +239,8 @@ async function updatePost(req, res) {
         const accessToken = req.accessToken;
         req.body.updateDate = Date.now();
         req.body.edited = true;
-        const [dbBack,] = await Promise.all([
-            Post.findByIdAndUpdate(req.params.postId, req.body, { new: true }),
-            delRedisPostProfile(req.params.postId),
-            delRedisUserPost(req.user._id)
-        ])
+        const dbBack= await Post.
+        findByIdAndUpdate(req.params.postId, req.body, { new: true });
         if (req.body.tags) {
             const tags = req.body.tags;
             tags.map(async function (tag) {
@@ -268,7 +266,6 @@ async function likePost(req, res) {
             await Promise.all(
                 [postTrendingInc(req.params.postId, -2),
                 incPostStatistics(postId, 'likes', -1),
-                delRedisLikedPost(req.user._id),
                 userTrendingInc(req.post.author, -2),
                 incUserStatistics(req.post.author, 'upvotes', -1)
                 ]);
@@ -278,15 +275,11 @@ async function likePost(req, res) {
         }
         await Promise.all([postTrendingInc(postId, 2),
         incPostStatistics(postId, 'likes', 1),
-        delRedisLikedPost(req.user._id),
         userTrendingInc(req.post.author, 2),
         incUserStatistics(req.post.author, 'upvotes', 1)]);
         if (postLike) {
             postLike.like = true;
-            await Promise.all([
-                incPostStatistics(postId, 'dislikes', -1),
-                delRedisDislikedPost(req.user._id)
-            ]);
+            await incPostStatistics(postId, 'dislikes', -1);
             postLike.save();
             return res.status(200).json({ like, accessToken });
         }
@@ -304,22 +297,17 @@ async function dislikePost(req, res) {
         let dislike = true;
         if (postLike && !postLike.like) {
             postLike.remove();
-            await Promise.all([
-                delRedisDislikedPost(req.user._id),
-                incPostStatistics(postId, 'dislikes', -1),
-            ]);
+            await incPostStatistics(postId, 'dislikes', -1);
             dislike = false;
             return res.status(200).json({ dislike, accessToken });
         }
         await Promise.all([
-            delRedisDislikedPost(req.user._id),
             incPostStatistics(postId, 'dislikes', 1),
             incUserStatistics(req.post.author, 'upvotes', -1)
         ]);
         if (postLike) {
             await Promise.all([
                 incPostStatistics(postId, 'likes', -1),
-                delRedisLikedPost(req.user._id),
                 postTrendingInc(postId, -2),
                 userTrendingInc(req.post.author, -2),
                 incUserStatistics(req.post.author, 'upvotes', -1)])
@@ -343,7 +331,6 @@ async function savePost(req, res) {
             await Promise.all([
                 postTrendingInc(req.params.postId, -4),
                 incPostStatistics(postId, 'marks', -1),
-                delRedisSavedPost(req.user._id),
                 userTrendingInc(req.post.author, -3)])
             saved = false;
             dbBack.remove();
@@ -353,7 +340,6 @@ async function savePost(req, res) {
             postTrendingInc(req.params.postId, 4),
             incPostStatistics(postId, 'marks', 1),
             userTrendingInc(req.post.author, 3),
-            delRedisSavedPost(req.user._id),
             new SavedPost({ user: req.user._id, post: req.params.postId }).save()]
         );
         return res.status(200).json({ saved, accessToken });
@@ -369,7 +355,6 @@ async function deletePost(req, res) {
             incUserStatistics(req.user._id, 'posts', -1),
             Post.findByIdAndDelete(req.post._id),
             redisTrending.zrem(' PostTrending', req.params.postId),
-            delRedisUserPost(req.user._id),
             PostLike.deleteMany({ post: req.params.postId }),
             SavedPost.deleteMany({ post: req.params.postId })
         ])

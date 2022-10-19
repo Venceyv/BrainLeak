@@ -1,10 +1,9 @@
-import { User, PostLike, SavedPost } from '../models/index.js'
+import { User } from '../models/index.js'
 import { uploadFile } from './uploadFile.js'
 import { redisUsers } from '../configs/redis.js';
 import { addCommentsStatistics } from './commentServices.js';
 import { redisTrending } from '../configs/redis.js';
 import fastJson from 'fast-json-stringify';
-import schedule from 'node-schedule';
 
 const stringifyUserProfile = fastJson(
     {
@@ -74,7 +73,7 @@ async function saveRedisUserProfile(userId, userInfo) {
         userId = JSON.stringify(userId);
         const key = userId + ' Profile';
         userInfo = stringifyUserProfile(userInfo);
-        await redisUsers.set(key, userInfo);
+        await redisUsers.setex(key, 20,userInfo);
     } catch (error) {
         console.log('saveRedisUserProfile Failed Uservice 72');
     }
@@ -96,27 +95,18 @@ async function getRedisUserInfo(email) {
 async function saveRedisUserInfo(email, userInfo) {
     try {
         userInfo = stringifyUserInfo(userInfo);
-        await redisUsers.set(email, userInfo);
+        await redisUsers.setex(email,20, userInfo);
     } catch (error) {
         console.log('saveRedisUserInfo Failed Uservice 96');
     }
 }
 
-async function deleteRedisUserProfile(userId) {
-    try {
-        userId = JSON.stringify(userId);
-        const key = userId + ' Profile';
-        await redisUsers.del(key);
-    } catch (error) {
-        console.log('deleteRedisUserProfile Failed, --Uservices 105');
-    }
-}
 
 async function saveRedisSavedPost(userId, savedPost) {
     try {
         const key = JSON.stringify(userId) + ' SavedPost';
         savedPost = JSON.stringify(savedPost);
-        await redisUsers.set(key, savedPost);
+        await redisUsers.setex(key,20,savedPost);
     } catch (error) {
         console.log('saveRedisSavedPost Failed, --Uservices 115');
     }
@@ -134,20 +124,12 @@ async function getRedisSavedPost(userId) {
         console.log('getRedisSavedPost Failed, --Uservices 124');
     }
 }
-async function delRedisSavedPost(userId) {
-    try {
-        const key = JSON.stringify(userId) + ' SavedPost';
-        await redisUsers.del(key);
-    } catch (error) {
-        console.log('delRedisSavedPost Failed, --Uservices 137');
-    }
-}
 
 async function saveRedisLikedPost(userId, likedPost) {
     try {
         const key = JSON.stringify(userId) + ' LikedPost';
         likedPost = JSON.stringify(likedPost);
-        await redisUsers.set(key, likedPost);
+        await redisUsers.setex(key,20,likedPost);
     } catch (error) {
         console.log('saveRedisLikedPost Failed, --Uservices 146');
     }
@@ -165,20 +147,12 @@ async function getRedisLikedPost(userId) {
         console.log('getRedisLikedPost Failed, --Uservices 155');
     }
 }
-async function delRedisLikedPost(userId) {
-    try {
-        const key = JSON.stringify(userId) + ' LikedPost';
-        await redisUsers.del(key);
-    } catch (error) {
-        console.log('delRedisLikedPost Failed, --Uservices 168');
-    }
-}
 
 async function saveRedisDisikedPost(userId, dislikedPost) {
     try {
         const key = JSON.stringify(userId) + ' DislikedPost';
         dislikedPost = JSON.stringify(dislikedPost);
-        await redisUsers.set(key, dislikedPost);
+        await redisUsers.setex(key, 20,dislikedPost);
     } catch (error) {
         console.log('saveRedisDisikedPost Failed, --Uservices 177');
     }
@@ -194,14 +168,6 @@ async function getRedisDislikedPost(userId) {
         return post;
     } catch (error) {
         console.log('getRedisDislikedPost Failed, --Uservices 186');
-    }
-}
-async function delRedisDislikedPost(userId) {
-    try {
-        const key = JSON.stringify(userId) + ' DislikedPost';
-        await redisUsers.del(key);
-    } catch (error) {
-        console.log('delRedisDislikedPost Failed, --Uservices 199');
     }
 }
 
@@ -254,7 +220,8 @@ async function addUserStatistics(user) {
         console.log('addUserStatistics Failed -- Uservices 232');
     }
 }
-async function beautyUserPorfile(user) {
+//add the user statistics and statistics to user comment
+async function beautyUserProfile(user) {
     try {
         const [userInfoWithStatistics, commetWithStatistics] = await Promise.all([
             addUserStatistics(user.userInfo),
@@ -264,7 +231,7 @@ async function beautyUserPorfile(user) {
         user.commentList = commetWithStatistics;
         return user;
     } catch (error) {
-        console.log('beautyUserPorfile Failed -- Uservices 257');
+        console.log('beautyUserProfile Failed -- Uservices 257');
     }
 }
 
@@ -331,17 +298,9 @@ async function saveRedisUserComment(userId,comments) {
     try {
         const key = JSON.stringify(userId) + ' Comment';
         comments = JSON.stringify(comments);
-        await redisUsers.set(key,comments);
+        await redisUsers.setex(key,20,comments);
     } catch (error) {
         console.log('saveRedisUserComment Failed -- Uservices 330');
-    }
-}
-async function delRedisUserComment(userId,comments) {
-    try {
-        const key = JSON.stringify(userId) + ' Comment';
-        await redisUsers.del(key);
-    } catch (error) {
-        console.log('delRedisUserComment Failed -- Uservices 339');
     }
 }
 
@@ -362,30 +321,22 @@ async function saveRedisUserPost(userId,posts) {
     try {
         const key = JSON.stringify(userId) + ' Post';
         posts = JSON.stringify(posts);
-        await redisUsers.set(key,posts);
+        await redisUsers.setex(key,20,posts);
     } catch (error) {
         console.log('saveRedisUserPost Failed -- Uservices 361');
     }
 }
-async function delRedisUserPost(userId,comments) {
-    try {
-        const key = JSON.stringify(userId) + ' Post';
-        await redisUsers.del(key);
-    } catch (error) {
-        console.log('delRedisUserPost Failed -- Uservices 370');
-    }
-}
+
 
 
 
 export {
     updatePicture, stringifyUserInfo, getRedisUserProfile,
     addFollowingInfo, addUserStatistics, getRedisUserInfo,
-    saveRedisUserInfo, saveRedisUserProfile, beautyUserPorfile,
-    incUserStatistics, deleteRedisUserProfile, userTrendingInc,
-    getUserTrending, saveRedisSavedPost, getRedisSavedPost, delRedisSavedPost,
-    getRedisLikedPost, saveRedisLikedPost, delRedisLikedPost, getRedisDislikedPost,
-    saveRedisDisikedPost, delRedisDislikedPost,getRedisUserComment,saveRedisUserComment,
-    delRedisUserComment,getRedisUserPost,saveRedisUserPost,delRedisUserPost
+    saveRedisUserInfo, saveRedisUserProfile, beautyUserProfile,
+    incUserStatistics, userTrendingInc,getUserTrending, saveRedisSavedPost,
+    getRedisSavedPost,getRedisLikedPost, saveRedisLikedPost, getRedisDislikedPost,
+    saveRedisDisikedPost,getRedisUserComment,saveRedisUserComment,
+    getRedisUserPost,saveRedisUserPost
 
 };

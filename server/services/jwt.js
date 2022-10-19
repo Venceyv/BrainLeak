@@ -6,7 +6,7 @@ import schedule from 'node-schedule';
 import { redisToken } from '../configs/redis.js';
 import { promisify } from 'util';
 import { User } from '../models/index.js';
-import { getRedisUserInfo,saveRedisUserInfo } from './userServices.js';
+import { getRedisUserInfo, saveRedisUserInfo } from './userServices.js';
 const tojwt = promisify(jwt.sign);
 const verify = promisify(jwt.verify);
 
@@ -59,9 +59,11 @@ function verifyToken(required = true) {
                         return next();
                     }
                     req.user = await User.findOne({ email: tokenInfo.userInfo.email }
-                            , { email: 1, username: 1 }).lean();
-                    await saveRedisUserInfo(req.user.email, req.user);
-                    return next();
+                        , { email: 1, username: 1 }).lean();
+                    if (req.user) {
+                        await saveRedisUserInfo(req.user.email, req.user);
+                        return next();
+                    }
                 }
                 catch (error) {
                     if (error.message === 'jwt expired') {
@@ -106,7 +108,7 @@ async function getblockToken(key) {
         console.log('getblockToken Failed -- Jservice 100')
     }
 }
-async function saveRefreshToken(userEmail,token) {
+async function saveRefreshToken(userEmail, token) {
     try {
         const key = userEmail + ' Refresh';
         await redisToken.set(key, token);
@@ -165,6 +167,8 @@ function removeTokenByTime(time, tokenList) {
     }.bind(null, tokenList));
 }
 
-export { createToken, createRefreshToken, 
-    verifyToken, removeTokenByTime,saveRefreshToken,
-delRefreshToken,blockToken,getRefreshToken};
+export {
+    createToken, createRefreshToken,
+    verifyToken, removeTokenByTime, saveRefreshToken,
+    delRefreshToken, blockToken, getRefreshToken
+};

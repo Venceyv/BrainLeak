@@ -1,7 +1,7 @@
 import { Reply, Comment, ReplyLike } from "../models/index.js";
 import { incCommentStatistics } from "../services/commentServices.js";
-import { addReplyStatistics, addReplyUserInfo, deleteRedisReplyProfile, 
-    getRedisReplyProfile, incReplyStatistics, saveRedisReplyProfile } from "../services/replyServices.js";
+import { addReplyStatistics, addReplyUserInfo, getRedisReplyProfile, 
+    incReplyStatistics, saveRedisReplyProfile } from "../services/replyServices.js";
 import { userTrendingInc,incUserStatistics } from "../services/userServices.js";
 async function replyToComment(req, res) {
     try {
@@ -9,7 +9,6 @@ async function replyToComment(req, res) {
             [
                 Comment.findById(req.params.commentId).lean()
                 , incCommentStatistics(req.params.commentId, 'replies', 1)
-                , deleteRedisReplyProfile(req.params.commentId)
             ]
         );
         const dbBack = await new Reply({
@@ -27,8 +26,7 @@ async function deleteReply(req, res) {
     try {
         await Promise.all([
             incCommentStatistics(req.params.commentId, 'replies', -1)
-            , deleteRedisReplyProfile(req.params.commentId),
-            Reply.findByIdAndDelete(req.params.replyId)
+            , Reply.findByIdAndDelete(req.params.replyId)
         ])
         res.status(200).json({ msg: 'delete successfully' });
 

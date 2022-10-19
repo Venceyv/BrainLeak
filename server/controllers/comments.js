@@ -1,9 +1,9 @@
 import { User, Comment, CommentLike } from '../models/index.js';
 import { transpoter, notifyAuthor } from '../services/nodeMailer.js';
-import { addCommentsStatistics, deleteRedisCommentProfile, 
-    getCommentsUderPost, incCommentStatistics,beautyCommentsInfo } from '../services/commentServices.js';
-import { deleteRedisUserProfile, delRedisUserComment, incUserStatistics, userTrendingInc } from '../services/userServices.js'
-import { delRedisPostProfile, incPostStatistics, postTrendingInc } from '../services/postServices.js'
+import { addCommentsStatistics, getCommentsUderPost, 
+    incCommentStatistics,beautyCommentsInfo } from '../services/commentServices.js';
+import {  incUserStatistics, userTrendingInc } from '../services/userServices.js'
+import {  incPostStatistics, postTrendingInc } from '../services/postServices.js'
 async function addComment(req, res) {
     try {
         const [author,] = await Promise.all([
@@ -11,10 +11,6 @@ async function addComment(req, res) {
             postTrendingInc(req.post._id, 3),
             incPostStatistics(req.post._id, 'comments', 1),
             incUserStatistics(req.user._id, 'comments', 1),
-            delRedisUserComment(req.user._id),
-            delRedisPostProfile(req.post._id),
-            deleteRedisUserProfile(req.user._id),
-            deleteRedisCommentProfile(req.params.postId)
         ]);
         const dbBack = await new Comment({ content: req.body.content, author: req.user._id, relatedPost: req.post._id }).save();
         const accessToken = req.accessToken;
@@ -37,13 +33,8 @@ async function updateComment(req, res) {
         const accessToken = req.accessToken;
         req.body.edited = true;
         req.body.updateTime = Date.now();
-        const [dbBack,] = await Promise.all([
-            Comment.findByIdAndUpdate(req.comment._id, req.body, { new: true }),
-            (req.comment.relatedPost),
-            delRedisUserComment(req.user._id),
-            deleteRedisUserProfile(req.user._id),
-            deleteRedisCommentProfile(req.params.postId)
-        ]);
+        const [dbBack,] = await  Comment.
+        findByIdAndUpdate(req.comment._id, req.body, { new: true });
         return res.status(200).json({ dbBack, accessToken });
     } catch (error) {
         return res.status(401).json({ error });
@@ -56,10 +47,6 @@ async function deleteComment(req, res) {
             postTrendingInc(req.params.postId, -3),
             (req.comment.relatedPost),
             incUserStatistics(req.comment.relatedPost, 'comments', -1),
-            deleteRedisUserProfile(req.user._id),
-            deleteRedisCommentProfile(req.params.postId),
-            delRedisPostProfile(req.params.postId),
-            delRedisUserComment(req.user._id)
         ]);
         const accessToken = req.accessToken;
         const msg = 'Delete successfully.';

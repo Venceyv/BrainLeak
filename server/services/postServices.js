@@ -1,8 +1,8 @@
-import { PostLike, SavedPost, Follow, Post, CommentLike } from "../models/index.js";
+import { PostLike, SavedPost, Follow, Post } from "../models/index.js";
 import { redisPosts, redisTrending } from "../configs/redis.js";
 import schedule from 'node-schedule';
 import fastJson from 'fast-json-stringify';
-import { addCommentsStatistics, getCommentsUderPost, addCommentUserInfo } from "./commentServices.js";
+import { addCommentsStatistics, getCommentsUderPost } from "./commentServices.js";
 const stringifyPostInfo = fastJson(
     {
         type: 'object'
@@ -79,17 +79,9 @@ async function saveRedisPostProfile(postId, postInfo) {
     try {
         const key = JSON.stringify(postId) + ' Profile';
         postInfo = stringifyPostInfo(postInfo);
-        await redisPosts.set(key, postInfo);
+        await redisPosts.setex(key,20, postInfo);
     } catch (error) {
         console.log('saveRedisPostProfile -- Pservices 78');
-    }
-}
-async function delRedisPostProfile(postId) {
-    try {
-        const key = JSON.stringify(postId) + ' Profile';
-        redisPosts.del(key);
-    } catch (error) {
-        console.log('delRedisPostProfile -- Pervices 87');
     }
 }
 function addUserPostInfo(post, followingList, likeList, saveList) {
@@ -283,6 +275,6 @@ export {
     getOnePostInfo, stringifyPostInfo, getRedisPostProfile,
     saveRedisPostProfile, addUserPostInfo, postTrendingInc,
     getPostTrending, clearTrendingByTime, addPostStatistics,
-    addCommentsStatistics, delRedisPostProfile, beautyPostInfo,
-    incPostStatistics, beautyPostsInfo,addPostsStatistics, postFilter
+    addCommentsStatistics, beautyPostInfo,incPostStatistics,
+     beautyPostsInfo,addPostsStatistics, postFilter
 };

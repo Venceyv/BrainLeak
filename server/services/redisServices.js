@@ -5,7 +5,7 @@ async function clearCache(cache) {
         try {
             if (resultKeys.length != 0) {
                 resultKeys.map(async (key) => {
-                    cache.del(key);
+                    await cache.get(key);
                 })
             }
         } catch (error) {

@@ -93,19 +93,12 @@ async function getCommentsUderPost(postId) {
         console.log('getCommentsUderPost Failed -- Cservices 78');
     }
 }
-async function deleteRedisCommentProfile(postId) {
-    try {
-        const key = JSON.stringify(postId) + ' Profile';
-        await redisComments.del(key);
-    } catch (error) {
-        console.log('deleteCommentProfile Faild --Cservices 96');
-    }
-}
+
 async function saveRedisCommentProfile(postId, profile) {
     try {
         const key = JSON.stringify(postId) + ' Profile';
         profile = JSON.stringify(profile)
-        await redisComments.set(key, profile);
+        await redisComments.setex(key,10, profile);
     } catch (error) {
         console.log('saveRedisCommentProfile Faild --Cservices 104');
     }
@@ -153,5 +146,5 @@ export {
     clearCommentByTime, addCommentStatistics,
     addCommentUserInfo, addCommentsStatistics
     , getCommentsUderPost, incCommentStatistics
-    , deleteRedisCommentProfile, beautyCommentsInfo
+    , beautyCommentsInfo
 }

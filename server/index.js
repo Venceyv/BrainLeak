@@ -9,10 +9,11 @@ import { toolsRouter } from './routes/tools.js';
 import mongooseConfig from './configs/mongoose.config.js';
 import { clearTrendingByTime } from './services/postServices.js';
 import authRouter from './routes/auth.js';
-import { removeTokenByTime } from './services/jwt.js';
-import { redisComments, redisPosts, redisReplies, redisToken, redisTrending, redisUsers } from './configs/redis.js';
+import {  removeTokenByTime } from './services/jwt.js';
 import { clearCommentByTime } from './services/commentServices.js';
 import { clearReplyByTime } from './services/replyServices.js';
+import { redisComments, redisPosts, redisReplies, redisUsers } from './configs/redis.js';
+import { clearCacheByTime } from './services/redisServices.js';
 
 
 EventEmitter.defaultMaxListeners=11;
@@ -37,11 +38,13 @@ clearTrendingByTime('0 0 2 * * 0');
 removeTokenByTime('0 5 2 * * 0');
 clearCommentByTime('0 10 2 * * 0');
 clearReplyByTime('0 15 2 * * 0');
-
+clearCacheByTime('0 20 2 * * 0',redisUsers);
+clearCacheByTime('0 25 2 * * 0',redisComments);
+clearCacheByTime('0 30 2 * * 0',redisPosts);
+clearCacheByTime('0 35 2 * * 0',redisReplies);
 mongooseConfig(DATABASE_URL).then(() => {
     app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
   })
 .catch(err=> {
     console.log('mongooseConfigError');
 })
-

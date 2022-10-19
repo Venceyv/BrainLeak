@@ -58,19 +58,12 @@ async function addReplyUserInfo(userId, reply) {
         console.log('addReplyUserInfoE Faild --Rservices 47');
     }
 }
-async function deleteRedisReplyProfile(replyId) {
-    try {
-        const key = JSON.stringify(replyId) + ' Profile';
-        await redisReplies.del(key);
-    } catch (error) {
-        console.log('deleteRedisReplyProfile Faild --Rservices 59');
-    }
-}
+
 async function saveRedisReplyProfile(replyId, profile) {
     try {
         const key = JSON.stringify(replyId) + ' Profile';
         profile = JSON.stringify(profile);
-        await redisReplies.set(key, profile);
+        await redisReplies.setex(key, 20,profile);
     } catch (error) {
         console.log('saveRedisReplyProfile Faild --Rservices 69');
     }
@@ -92,6 +85,5 @@ async function getRedisReplyProfile(replyId) {
 export {
     clearReplyByTime, addReplyStatistics,
     addReplyUserInfo,incReplyStatistics,
-    deleteRedisReplyProfile,saveRedisReplyProfile,
-    getRedisReplyProfile
+    saveRedisReplyProfile,getRedisReplyProfile
 }
