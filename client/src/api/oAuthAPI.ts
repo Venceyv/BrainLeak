@@ -1,33 +1,29 @@
-import { axios } from '../lib';
+import axios from 'axios';
 import { URL } from '../data/Constants';
 import { getRequestHeader } from '../utils/getHttpRequestHeader';
+import { axiosInstance } from './axiosConfig';
 
 //remove axios
 
 //TODO Promise type
 // Google OAuth
 export const googleOAuth: Function = async (code: string): Promise<any> => {
-  const data = await fetch(`${URL}/auth/google`, {
-    method:'post',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({code: code}),
-  });
-
-  const resData = (data.ok) ? await data.json() : null;
-
-  return resData;
+  try {
+    const { data } = await axiosInstance.post('/auth/google', {
+      code,
+    });
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 //log out
 export const logOut: Function = async (): Promise<any> => {
-  const user = localStorage.getItem('userInfo');
-  console.log(user);
-  const userid = JSON.parse(user as string);
-  // return 
-  const data = await fetch(`${URL}/users/logout/${userid._id}`, { 
-    method: 'post', 
-    headers: getRequestHeader()
-});
+  try {
+    const user = JSON.parse(localStorage.getItem('userInfo') as string);
+    await axiosInstance.post(`users/logout/${user._id}`);
+  } catch (error) {
+    throw error;
+  }
 };

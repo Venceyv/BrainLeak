@@ -1,4 +1,4 @@
-import { useGoogleLogin } from '../../lib';
+import { useGoogleLogin } from '@react-oauth/google';
 import { googleOAuth, logOut } from '../../api/oAuthAPI';
 import { useEffect, useRef, useState } from 'react';
 
@@ -17,7 +17,6 @@ const useLogin: Function = (): { isLoggedIn: boolean; userLogin: () => Function;
 
         //TODO display: login error
       } catch (error) {
-        console.log(error)
         throw error;
       }
     },
@@ -35,9 +34,10 @@ const useLogin: Function = (): { isLoggedIn: boolean; userLogin: () => Function;
 
   // TODO: logout
   const userLogout: () => Function = () => {
-    return () => {
-      const data = logOut();
-      console.log(data);
+    return async () => {
+      await logOut();
+      localStorage.removeItem('jwt');
+      localStorage.removeItem('userInfo');
     };
   };
 
