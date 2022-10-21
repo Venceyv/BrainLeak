@@ -15,4 +15,12 @@
     font-family: Gemini-moon2;
     src: url(./assets/fonts/Geminimoon2.otf) format('opentype');
   }
+  @font-face {
+    font-family: 'Virgil';
+    src: url('https://excalidraw.com/Virgil.woff2');
+  }
+  @font-face {
+    font-family: 'Cascadia';
+    src: url(./assets/fonts/Cascadia.ttf) format('truetype');
+  }
 }

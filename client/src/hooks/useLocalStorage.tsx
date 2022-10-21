@@ -1,23 +1,25 @@
 import { useState } from 'react';
 
-export const useLocalStorage = (strName: string): [()=>any, (a: string)=>void, ()=>void] => {
-  const [dataName, setDataName] = useState<string>('');
-  setDataName(strName);
-
-  const setStorage = (inputData:any): void => {
-    if (dataName) {
+const useLocalStorage = (
+  dataName: string,
+  data: string | object
+): [string, (a: string) => string | object, (a: string, b: string | object) => void, (a: string) => void] => {
+  // const [dataName, setDataName] = useState<string | Object>('');
+  const setStorage = (dataName: string, inputData: string | object): void => {
+    if (dataName != null) {
       localStorage.setItem(dataName, JSON.stringify(inputData));
     }
   };
 
-  const getStorage = (): any => {
+  const getStorage = (dataName: string): any => {
     return localStorage.getItem(dataName);
   };
 
-  const removeStorage = (): void => {
+  const removeStorage = (dataName: string): void => {
     localStorage.removeItem(dataName);
-  }
+  };
 
-  return [getStorage, setStorage, removeStorage];
+  return [dataName, getStorage, setStorage, removeStorage];
 };
 
+export default useLocalStorage;
