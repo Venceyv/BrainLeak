@@ -1,0 +1,294 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BrainLeak",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/users/followingList/{userId}": {
+      "get": {
+        "summary": "userFollowing",
+        "x-apidog-folder": "",
+        "x-apidog-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "634f1c83425aca4adb9dc523",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagenumber",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagesize",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "10",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "followinglist",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dbBack": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string"
+                          },
+                          "avatar": {
+                            "type": "string"
+                          },
+                          "username": {
+                            "type": "string"
+                          },
+                          "introduction": {
+                            "type": "string"
+                          },
+                          "statistics": {
+                            "type": "object",
+                            "properties": {
+                              "following": {
+                                "type": "integer"
+                              },
+                              "follower": {
+                                "type": "integer"
+                              },
+                              "posts": {
+                                "type": "integer"
+                              },
+                              "comments": {
+                                "type": "integer"
+                              },
+                              "upvotes": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "following",
+                              "follower",
+                              "posts",
+                              "comments",
+                              "upvotes"
+                            ],
+                            "x-apidog-orders": [
+                              "following",
+                              "follower",
+                              "posts",
+                              "comments",
+                              "upvotes"
+                            ],
+                            "x-apidog-ignore-properties": []
+                          }
+                        },
+                        "required": [
+                          "_id",
+                          "avatar",
+                          "username",
+                          "introduction",
+                          "statistics"
+                        ],
+                        "x-apidog-orders": [
+                          "_id",
+                          "avatar",
+                          "username",
+                          "introduction",
+                          "statistics"
+                        ],
+                        "x-apidog-ignore-properties": []
+                      }
+                    },
+                    "accessToken": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "dbBack",
+                    "accessToken"
+                  ],
+                  "x-apidog-orders": [
+                    "dbBack",
+                    "accessToken"
+                  ],
+                  "x-apidog-ignore-properties": []
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Success without token passed",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "_id": "634f1bcc7b5e14c2c8f70325",
+                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
+                          "username": "理塘最速传说",
+                          "introduction": "我是妈妈生的",
+                          "statistics": {
+                            "following": 2,
+                            "follower": 1,
+                            "posts": 1,
+                            "comments": 2,
+                            "upvotes": 1
+                          }
+                        },
+                        {
+                          "_id": "634f3fdb38ca1630099d7f27",
+                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2ymtieiGFR7tS8OpeZvx36TqYbd7Yxl8QFTWZy1A=s96-c",
+                          "username": "Venceyv K.",
+                          "introduction": "cheese introduction",
+                          "statistics": {
+                            "following": 0,
+                            "follower": 1,
+                            "posts": 0,
+                            "comments": 0,
+                            "upvotes": 0
+                          }
+                        },
+                        {
+                          "_id": "63506af86f12aa3f59d39e42",
+                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                          "username": "Mingkuan Pang",
+                          "introduction": "cheese introduction",
+                          "statistics": {
+                            "following": 1,
+                            "follower": 2,
+                            "posts": 0,
+                            "comments": 0,
+                            "upvotes": 0
+                          }
+                        }
+                      ],
+                      "accessToken": null
+                    }
+                  },
+                  "2": {
+                    "summary": "Success with token passed",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "_id": "634f1bcc7b5e14c2c8f70325",
+                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
+                          "username": "理塘最速传说",
+                          "introduction": "我是妈妈生的",
+                          "statistics": {
+                            "following": 2,
+                            "follower": 1,
+                            "posts": 1,
+                            "comments": 2,
+                            "upvotes": 1
+                          },
+                          "following": false
+                        },
+                        {
+                          "_id": "634f3fdb38ca1630099d7f27",
+                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2ymtieiGFR7tS8OpeZvx36TqYbd7Yxl8QFTWZy1A=s96-c",
+                          "username": "Venceyv K.",
+                          "introduction": "cheese introduction",
+                          "statistics": {
+                            "following": 0,
+                            "follower": 1,
+                            "posts": 0,
+                            "comments": 0,
+                            "upvotes": 0
+                          },
+                          "following": false
+                        },
+                        {
+                          "_id": "63506af86f12aa3f59d39e42",
+                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                          "username": "Mingkuan Pang",
+                          "introduction": "cheese introduction",
+                          "statistics": {
+                            "following": 1,
+                            "follower": 2,
+                            "posts": 0,
+                            "comments": 0,
+                            "upvotes": 0
+                          },
+                          "following": false
+                        }
+                      ],
+                      "accessToken": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Record Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "x-apidog-ignore-properties": [],
+                  "x-apidog-orders": [
+                    "error"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Exception",
+                    "value": {
+                      "error": "User does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552151-run"
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  },
+  "servers": []
+}
