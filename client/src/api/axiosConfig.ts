@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { URL } from '../data/Constants';
 
 const getRequestHeader: Function = (): { Authorization: string; 'Content-Type': string } => {
   const token: string = JSON.parse(localStorage.getItem('jwt') as string);
@@ -9,10 +8,14 @@ const getRequestHeader: Function = (): { Authorization: string; 'Content-Type': 
   };
 };
 
-//TODO interceptor
+axios.interceptors.request.use(
+  (config) => {
+    config.headers = getRequestHeader();
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
-export const axiosInstance = axios.create({
-  baseURL: URL,
-  timeout: 3000,
-  headers: getRequestHeader(),
-});
+export default axios;

@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { URL } from '../data/Constants';
 import { getRequestHeader } from '../utils/getHttpRequestHeader';
-import { axiosInstance } from './axiosConfig';
+import axios from './axiosConfig';
 
 //remove axios
 
@@ -9,7 +8,7 @@ import { axiosInstance } from './axiosConfig';
 // Google OAuth
 export const googleOAuth: Function = async (code: string): Promise<any> => {
   try {
-    const { data } = await axiosInstance.post('/auth/google', {
+    const { data } = await axios.post('/auth/google', {
       code,
     });
     return data;
@@ -22,7 +21,7 @@ export const googleOAuth: Function = async (code: string): Promise<any> => {
 export const logOut: Function = async (): Promise<any> => {
   try {
     const user = JSON.parse(localStorage.getItem('userInfo') as string);
-    await axiosInstance.post(`users/logout/${user._id}`);
+    await axios.post(`users/logout/${user._id}`);
   } catch (error) {
     throw error;
   }
