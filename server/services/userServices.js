@@ -15,7 +15,6 @@ const stringifyUserProfile = fastJson(
                     _id: { type: 'string' }
                     , avatar: { type: 'string' }
                     , username: { type: 'string' }
-                    , email: { type: 'string' }
                     , introduction: { type: 'string' }
                     , backgroundCover: { type: 'string' }
                     , __v: { type: 'integer' }

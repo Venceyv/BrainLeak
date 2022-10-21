@@ -21,6 +21,7 @@ followSchema.index({ user: 1, followedUser: 1 })
 const Follow = mongoose.model('follower', followSchema);
 const Tags = mongoose.model('tags', tagsSchema)
 postLikeSchema.index({ user: 1, post: 1 });
+postLikeSchema.index({ user: 1, like: 1 })
 const PostLike = mongoose.model('postlike', postLikeSchema);
 commentLikeSchema.index({ user: 1, comment: 1 });
 const CommentLike = mongoose.model('commentlike', commentLikeSchema);

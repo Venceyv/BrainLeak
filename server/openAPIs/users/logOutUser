@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/users/logout/{userId}": {
+    "/users/{userId}/logout": {
       "post": {
         "summary": "logout",
         "x-apidog-folder": "users",
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f1bcc7b5e14c2c8f70325",
             "schema": {
               "type": "string"
             }
@@ -52,14 +51,6 @@
                   "x-apidog-orders": [
                     "msg"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Success",
-                    "value": {
-                      "msg": "log out successfully"
-                    }
-                  }
                 }
               }
             }
@@ -82,14 +73,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "unauthorized"
-                    }
-                  }
                 }
               }
             }
@@ -112,14 +95,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "User does not exist"
-                    }
-                  }
                 }
               }
             }
@@ -132,5 +107,10 @@
   "components": {
     "schemas": {}
   },
-  "servers": []
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
 }

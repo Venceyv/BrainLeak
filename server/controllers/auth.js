@@ -22,7 +22,7 @@ export const postOAuth = async (req, res) => {
       'email': decoded.email
     }
     let dbBack = await User.findOne({ email: userInfo.email });
-    if (!dbBack) {
+    if (!dbBack || dbBack.isDelete) {
       dbBack = await new User(userInfo).save();
     }
     let token = await createToken(userInfo);

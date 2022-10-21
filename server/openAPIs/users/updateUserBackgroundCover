@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/users/backgroundCover/{userId}": {
+    "/users/{userId}/backgroundCover": {
       "put": {
         "summary": "backgroundCover",
         "x-apidog-folder": "users",
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f1bcc7b5e14c2c8f70325",
             "schema": {
               "type": "string"
             }
@@ -100,23 +99,6 @@
                     "accessToken"
                   ],
                   "x-apidog-ignore-properties": []
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Success",
-                    "value": {
-                      "dbBack": {
-                        "_id": "634f1bcc7b5e14c2c8f70325",
-                        "avatar": "https://storage.googleapis.com/brainleak/ji.png",
-                        "username": "理塘最速传说",
-                        "email": "349332929yaofu@gmail.com",
-                        "introduction": "我是妈妈生的",
-                        "backgroundCover": "https://storage.googleapis.com/brainleak/流星雨.png",
-                        "__v": 0
-                      },
-                      "accessToken": null
-                    }
-                  }
                 }
               }
             }
@@ -139,14 +121,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "unauthorized"
-                    }
-                  }
                 }
               }
             }
@@ -169,14 +143,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "User does not exist"
-                    }
-                  }
                 }
               }
             }

@@ -26,6 +26,10 @@ const userSchema = new Schema({
     backgroundCover:{
         type:String,
         default:"https://storage.googleapis.com/brainleak/backgroundImg(default).png"
+    },
+    isDelete:{
+        type:Boolean,
+        default:false
     }
     // A collection of all the other users id that the user is currently following
     // user liked history

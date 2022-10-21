@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/users/followerList/{userId}": {
+    "/users/{userId}/followerList": {
       "get": {
         "summary": "userFollowers",
         "x-apidog-folder": "users",
@@ -27,7 +27,7 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f1c83425aca4adb9dc523",
+            "example": "634f1bcc7b5e14c2c8f70325",
             "schema": {
               "type": "string"
             }
@@ -155,78 +155,6 @@
                     "accessToken"
                   ],
                   "x-apidog-ignore-properties": []
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Success without token passed",
-                    "value": {
-                      "dbBack": [
-                        {
-                          "_id": "634f1bcc7b5e14c2c8f70325",
-                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
-                          "username": "理塘最速传说",
-                          "introduction": "我是妈妈生的",
-                          "statistics": {
-                            "following": 2,
-                            "follower": 1,
-                            "posts": 1,
-                            "comments": 2,
-                            "upvotes": 1
-                          }
-                        },
-                        {
-                          "_id": "63506af86f12aa3f59d39e42",
-                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
-                          "username": "Mingkuan Pang",
-                          "introduction": "cheese introduction",
-                          "statistics": {
-                            "following": 1,
-                            "follower": 2,
-                            "posts": 0,
-                            "comments": 0,
-                            "upvotes": 0
-                          }
-                        }
-                      ],
-                      "accessToken": null
-                    }
-                  },
-                  "2": {
-                    "summary": "Success with token passed",
-                    "value": {
-                      "dbBack": [
-                        {
-                          "_id": "634f1bcc7b5e14c2c8f70325",
-                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
-                          "username": "理塘最速传说",
-                          "introduction": "我是妈妈生的",
-                          "statistics": {
-                            "following": 2,
-                            "follower": 1,
-                            "posts": 1,
-                            "comments": 2,
-                            "upvotes": 1
-                          },
-                          "following": false
-                        },
-                        {
-                          "_id": "63506af86f12aa3f59d39e42",
-                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
-                          "username": "Mingkuan Pang",
-                          "introduction": "cheese introduction",
-                          "statistics": {
-                            "following": 1,
-                            "follower": 2,
-                            "posts": 0,
-                            "comments": 0,
-                            "upvotes": 0
-                          },
-                          "following": false
-                        }
-                      ],
-                      "accessToken": null
-                    }
-                  }
                 }
               }
             }
@@ -249,14 +177,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "User does not exist"
-                    }
-                  }
                 }
               }
             }

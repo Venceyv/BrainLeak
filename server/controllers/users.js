@@ -45,7 +45,7 @@ async function deleteUser(req, res) {
   try {
     const [refreshToken,] = await Promise.all([
       getRefreshToken(req.user.email),
-      User.findByIdAndDelete(req.params.userId),
+      User.findByIdAndUpdate(req.params.userId,{isDelete:true}),
       blockToken(req.accessToken),
     ]);
     await blockToken(refreshToken);
@@ -62,7 +62,7 @@ async function findOne(req, res) {
     if (!dbBack) {
       let [userInfo, commentList] = await Promise.all([
         User.findById(req.params.userId, { email: 0 }).lean(),
-        Comment.find({ author: req.params.userId }, { edited: 0, likes: 0 })
+        Comment.find({ author: req.params.userId }, { edited: 0, likes: 0,isDelete:0})
           .lean()
           .sort({ createTime: -1 })
           .populate(
@@ -123,6 +123,7 @@ async function findAll(req, res) {
         backgroundCover: 0,
         following: 0,
         upVoteGet: 0,
+        isDelete:0
       }
     )
       .lean()

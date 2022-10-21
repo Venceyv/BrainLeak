@@ -14,6 +14,7 @@ async function addComment(req, res) {
         ]);
         const dbBack = await new Comment({ content: req.body.content, author: req.user._id, relatedPost: req.post._id }).save();
         const accessToken = req.accessToken;
+        //if author account is still active
         if (req.post.put && author && req.user.email !== author.email) {
             const mailOptions = notifyAuthor(author.email, req.user.username, req.body.content, req.post.title, req.post.description);
             transpoter.sendMail(mailOptions, function (error, data) {
@@ -33,7 +34,7 @@ async function updateComment(req, res) {
         const accessToken = req.accessToken;
         req.body.edited = true;
         req.body.updateTime = Date.now();
-        const [dbBack,] = await  Comment.
+        const dbBack = await  Comment.
         findByIdAndUpdate(req.comment._id, req.body, { new: true });
         return res.status(200).json({ dbBack, accessToken });
     } catch (error) {
@@ -44,6 +45,7 @@ async function deleteComment(req, res) {
     try {
         await Promise.all([
             Comment.findByIdAndDelete(req.params.commentId),
+            CommentLike.findOneAndDelete({comment:req.params.commentId}),
             postTrendingInc(req.params.postId, -3),
             (req.comment.relatedPost),
             incUserStatistics(req.comment.relatedPost, 'comments', -1),

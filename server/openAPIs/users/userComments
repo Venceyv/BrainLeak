@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/users/comments/{userId}": {
+    "/users/{userId}/comments": {
       "get": {
         "summary": "userComments",
         "x-apidog-folder": "users",
@@ -194,98 +194,6 @@
                     "accessToken"
                   ],
                   "x-apidog-ignore-properties": []
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Success with token(self) passed",
-                    "value": {
-                      "dbBack": [
-                        {
-                          "_id": "634f34945fe83173dfe04f76",
-                          "content": "其实也没那么复杂，她就是单纯的无知者无畏，从他注册了十几个小微企业以及个人独资有限公司来看，她身边搞财务的水平比较的拉跨。她自己也不懂，手底下财务水平太烂也不懂，然后在被那些野路子搞税筹的忽悠了。",
-                          "author": {
-                            "_id": "634f1c83425aca4adb9dc523",
-                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0gctg8JFc12eHne-8hZ_2RLR1B28yKEekxkrHP=s96-c",
-                            "username": "丁真纯一郎",
-                            "introduction": "我爱我的动物朋友们"
-                          },
-                          "createTime": "2022-10-18T23:17:04.314Z",
-                          "updateTime": "2022-10-18T23:17:04.314Z",
-                          "relatedPost": {
-                            "_id": "634f1d50425aca4adb9dc52d",
-                            "title": "薇娅赚那么多钱为什么不愿意缴税"
-                          },
-                          "__v": 0,
-                          "like": false,
-                          "dislike": false,
-                          "statistics": {
-                            "likes": 1,
-                            "dislikes": 0,
-                            "replies": 0
-                          }
-                        }
-                      ],
-                      "accessToken": null
-                    }
-                  },
-                  "2": {
-                    "summary": "Success with token(not self) passed",
-                    "value": {
-                      "dbBack": [
-                        {
-                          "_id": "635068c7d646d16d6af1d0bf",
-                          "content": "阿这",
-                          "author": {
-                            "_id": "634f1bcc7b5e14c2c8f70325",
-                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
-                            "username": "理塘最速传说",
-                            "introduction": "我是妈妈生的",
-                            "following": true
-                          },
-                          "createTime": "2022-10-19T21:11:22.122Z",
-                          "updateTime": "2022-10-19T21:11:22.122Z",
-                          "relatedPost": {
-                            "_id": "634f1d50425aca4adb9dc52d",
-                            "title": "薇娅赚那么多钱为什么不愿意缴税"
-                          },
-                          "__v": 0,
-                          "like": false,
-                          "dislike": false,
-                          "statistics": {
-                            "likes": 0,
-                            "dislikes": 0,
-                            "replies": 0
-                          }
-                        },
-                        {
-                          "_id": "634f954a34b5ac202513592d",
-                          "content": "痛，太痛了。",
-                          "author": {
-                            "_id": "634f1bcc7b5e14c2c8f70325",
-                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
-                            "username": "理塘最速传说",
-                            "introduction": "我是妈妈生的",
-                            "following": true
-                          },
-                          "createTime": "2022-10-19T03:09:36.284Z",
-                          "updateTime": "2022-10-19T03:09:36.284Z",
-                          "relatedPost": {
-                            "_id": "634f1d50425aca4adb9dc52d",
-                            "title": "薇娅赚那么多钱为什么不愿意缴税"
-                          },
-                          "__v": 0,
-                          "like": false,
-                          "dislike": false,
-                          "statistics": {
-                            "likes": 0,
-                            "dislikes": 0,
-                            "replies": 0
-                          }
-                        }
-                      ],
-                      "accessToken": null
-                    }
-                  }
                 }
               }
             }
@@ -308,14 +216,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "User does not exist"
-                    }
-                  }
                 }
               }
             }
@@ -328,5 +228,10 @@
   "components": {
     "schemas": {}
   },
-  "servers": []
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
 }
