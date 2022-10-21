@@ -10,8 +10,8 @@ import { upload } from '../configs/googleCloud.js';
 const userRouter = Router();
 
 userRouter.get('/',verifyToken(false),findAll);
-userRouter.get('/comments/:userId',verifyToken(false),getUserComments);
-userRouter.get('/posts/:userId',verifyToken(false),getUserPosts);
+userRouter.get('/comments/:userId',checkUserExist,verifyToken(false),getUserComments);
+userRouter.get('/posts/:userId',checkUserExist,verifyToken(false),getUserPosts);
 userRouter.get('/trending',verifyToken(false),userTrending);
 userRouter.get('/search',verifyToken(false),findBySearch);
 userRouter.get('/followerList/:userId',checkUserExist,verifyToken(false),getFollwer);

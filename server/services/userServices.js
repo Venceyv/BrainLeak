@@ -39,13 +39,20 @@ async function updatePicture(req, res, name) {
         const url = uploadFile(req, res);
         if (url) {
             let dbBack;
-            if (name === 'avatar') {
-                dbBack = await User.findByIdAndUpdate(req.user._id, { avatar: url }, { new: 1 });
+            switch (name) {
+                case "avatar":
+                    {
+                        dbBack = await User.findByIdAndUpdate(req.user._id, { avatar: url }, { new: 1 });
+                        break;
+                    }
+
+                default:
+                    {
+                        dbBack = await User.findByIdAndUpdate(req.user._id, { backgroundCover: url }, { new: 1 });
+                        break;
+                    }
             }
-            else {
-                dbBack = await User.findByIdAndUpdate(req.user._id, { backgroundCover: url }, { new: 1 });
-            }
-            return res.status(200).json({ dbBack, accessToken });
+            return res.status(200).json({dbBack,accessToken});
         }
         res.status(401);
         throw 'unauthorized';
@@ -73,7 +80,7 @@ async function saveRedisUserProfile(userId, userInfo) {
         userId = JSON.stringify(userId);
         const key = userId + ' Profile';
         userInfo = stringifyUserProfile(userInfo);
-        await redisUsers.setex(key, 20,userInfo);
+        await redisUsers.setex(key, 40, userInfo);
     } catch (error) {
         console.log('saveRedisUserProfile Failed Uservice 72');
     }
@@ -95,7 +102,7 @@ async function getRedisUserInfo(email) {
 async function saveRedisUserInfo(email, userInfo) {
     try {
         userInfo = stringifyUserInfo(userInfo);
-        await redisUsers.setex(email,20, userInfo);
+        await redisUsers.setex(email, 30, userInfo);
     } catch (error) {
         console.log('saveRedisUserInfo Failed Uservice 96');
     }
@@ -106,7 +113,7 @@ async function saveRedisSavedPost(userId, savedPost) {
     try {
         const key = JSON.stringify(userId) + ' SavedPost';
         savedPost = JSON.stringify(savedPost);
-        await redisUsers.setex(key,20,savedPost);
+        await redisUsers.setex(key, 20, savedPost);
     } catch (error) {
         console.log('saveRedisSavedPost Failed, --Uservices 115');
     }
@@ -129,7 +136,7 @@ async function saveRedisLikedPost(userId, likedPost) {
     try {
         const key = JSON.stringify(userId) + ' LikedPost';
         likedPost = JSON.stringify(likedPost);
-        await redisUsers.setex(key,20,likedPost);
+        await redisUsers.setex(key, 20, likedPost);
     } catch (error) {
         console.log('saveRedisLikedPost Failed, --Uservices 146');
     }
@@ -152,7 +159,7 @@ async function saveRedisDisikedPost(userId, dislikedPost) {
     try {
         const key = JSON.stringify(userId) + ' DislikedPost';
         dislikedPost = JSON.stringify(dislikedPost);
-        await redisUsers.setex(key, 20,dislikedPost);
+        await redisUsers.setex(key, 20, dislikedPost);
     } catch (error) {
         console.log('saveRedisDisikedPost Failed, --Uservices 177');
     }
@@ -220,20 +227,7 @@ async function addUserStatistics(user) {
         console.log('addUserStatistics Failed -- Uservices 232');
     }
 }
-//add the user statistics and statistics to user comment
-async function beautyUserProfile(user) {
-    try {
-        const [userInfoWithStatistics, commetWithStatistics] = await Promise.all([
-            addUserStatistics(user.userInfo),
-            addCommentsStatistics(user.commentList),
-        ])
-        user.userInfo = userInfoWithStatistics;
-        user.commentList = commetWithStatistics;
-        return user;
-    } catch (error) {
-        console.log('beautyUserProfile Failed -- Uservices 257');
-    }
-}
+
 
 async function userTrendingInc(userId, incNum) {
     try {
@@ -294,11 +288,11 @@ async function getRedisUserComment(userId) {
         console.log('getRedisUserComment Failed -- Uservices 317');
     }
 }
-async function saveRedisUserComment(userId,comments) {
+async function saveRedisUserComment(userId, comments) {
     try {
         const key = JSON.stringify(userId) + ' Comment';
         comments = JSON.stringify(comments);
-        await redisUsers.setex(key,20,comments);
+        await redisUsers.setex(key, 20, comments);
     } catch (error) {
         console.log('saveRedisUserComment Failed -- Uservices 330');
     }
@@ -317,11 +311,11 @@ async function getRedisUserPost(userId) {
         console.log('getRedisUserPost Failed -- Uservices 348');
     }
 }
-async function saveRedisUserPost(userId,posts) {
+async function saveRedisUserPost(userId, posts) {
     try {
         const key = JSON.stringify(userId) + ' Post';
         posts = JSON.stringify(posts);
-        await redisUsers.setex(key,20,posts);
+        await redisUsers.setex(key, 20, posts);
     } catch (error) {
         console.log('saveRedisUserPost Failed -- Uservices 361');
     }
@@ -333,10 +327,10 @@ async function saveRedisUserPost(userId,posts) {
 export {
     updatePicture, stringifyUserInfo, getRedisUserProfile,
     addFollowingInfo, addUserStatistics, getRedisUserInfo,
-    saveRedisUserInfo, saveRedisUserProfile, beautyUserProfile,
-    incUserStatistics, userTrendingInc,getUserTrending, saveRedisSavedPost,
-    getRedisSavedPost,getRedisLikedPost, saveRedisLikedPost, getRedisDislikedPost,
-    saveRedisDisikedPost,getRedisUserComment,saveRedisUserComment,
-    getRedisUserPost,saveRedisUserPost
+    saveRedisUserInfo, saveRedisUserProfile, incUserStatistics,
+    userTrendingInc, getUserTrending, saveRedisSavedPost,
+    getRedisSavedPost, getRedisLikedPost, saveRedisLikedPost, getRedisDislikedPost,
+    saveRedisDisikedPost, getRedisUserComment, saveRedisUserComment,
+    getRedisUserPost, saveRedisUserPost
 
 };

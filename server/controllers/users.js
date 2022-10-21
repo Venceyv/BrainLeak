@@ -13,7 +13,6 @@ import {
   saveRedisUserProfile,
   addFollowingInfo,
   addUserStatistics,
-  beautyUserProfile,
   incUserStatistics,
   getUserTrending,
   getRedisSavedPost,
@@ -44,13 +43,13 @@ import { beautyCommentsInfo } from "../services/commentServices.js";
 
 async function deleteUser(req, res) {
   try {
-    const [refreshToken] = await Promise.all([
+    const [refreshToken,] = await Promise.all([
       getRefreshToken(req.user.email),
       User.findByIdAndDelete(req.params.userId),
       blockToken(req.accessToken),
     ]);
     await blockToken(refreshToken);
-    return res.status(204).json({ msg: "delete succesfully" });
+    return res.status(200).json({ msg: "delete succesfully" });
   } catch (error) {
     res.json(error);
   }
@@ -76,7 +75,12 @@ async function findOne(req, res) {
       dbBack = { userInfo, commentList };
       await saveRedisUserProfile(req.params.userId, dbBack);
     }
-    dbBack = await beautyUserProfile(dbBack);
+    const [userInfoWithStatistics, commetWithStatistics] = await Promise.all([
+      addUserStatistics(dbBack.userInfo),
+      addCommentsStatistics(dbBack.commentList),
+    ])
+    dbBack.userInfo = userInfoWithStatistics;
+    dbBack.commentList = commetWithStatistics;
     if (req.user) {
       const [commentLikeList, follwingList] = await Promise.all([
         CommentLike.find({ user: req.user._id }).lean(),
@@ -151,10 +155,13 @@ async function findBySearch(req, res) {
     const pageSize = Number(req.query.pagesize);
     let dbBack = await User.find({
       username: { $regex: req.query.q, $options: "$i" },
-    })
-      .lean()
-      .skip((pageNum - 1) * pageSize)
-      .limit(pageSize);
+    }).lean();
+    if(dbBack.length===0)
+    {
+      res.status(404);
+      throw'user not found';
+    }
+    dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     dbBack = await Promise.all(
       dbBack.map(async (user) => {
         user = await addUserStatistics(user);
@@ -243,10 +250,9 @@ async function getFollwer(req, res) {
         "user",
         { username: 1, avatar: 1, introduction: 1 },
         { lean: true }
-      )
-      .skip((pageNum - 1) * pageSize)
-      .limit(pageSize);
+      );
     if (dbBack.length != 0) {
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack.forEach((userData, index) => {
         dbBack[index] = userData.user;
       });
@@ -286,10 +292,9 @@ async function getFollwing(req, res) {
         "followedUser",
         { username: 1, avatar: 1, introduction: 1 },
         { lean: true }
-      )
-      .skip((pageNum - 1) * pageSize)
-      .limit(pageSize);
+      );
     if (dbBack.length != 0) {
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack.forEach((userData, index) => {
         dbBack[index] = userData.followedUser;
       });
