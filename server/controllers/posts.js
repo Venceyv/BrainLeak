@@ -35,44 +35,25 @@ async function findOne(req, res) {
     try {
         const accessToken = req.accessToken;
         const postId = req.params.postId;
-        const pageNum = Number(req.query.pagenumber);
-        const pageSize = Number(req.query.pagesize);
-        const order = req.query.sort;
         let dbBack = await getRedisPostProfile(postId);
         if (!dbBack) {
-            dbBack = await getOnePostInfo(postId);
+            dbBack = await Post.findById(postId, { put: 0, edited: 0, likes: 0 })
+            .lean()
+            .populate('author', {
+                _id: 1, avatar: 1, username: 1
+            }, { lean: true });
             await saveRedisPostProfile(postId, dbBack);
         }
-        dbBack.commentUnderPost = 
-        dbBack.commentUnderPost.slice((pageNum - 1) * pageSize, pageNum * pageSize);
-        const [postInfo, commentUnderPost,] = await Promise.all([
-            addPostStatistics(dbBack.postInfo),
-            addCommentsStatistics(dbBack.commentUnderPost),
+        const [postStatistics,] = await Promise.all([
+            addPostStatistics(dbBack),
             postTrendingInc(req.params.postId, 1),
             incPostStatistics(postId, 'views', 1),
             userTrendingInc(req.post.author, 1)
         ])
-        dbBack.postInfo = postInfo;
-        dbBack.commentUnderPost = commentUnderPost;
+        dbBack = postStatistics;
         if (req.user) {
-            const [beautifulPost, beautifulComment] = await Promise.all([
-                beautyPostInfo(dbBack.postInfo, req.user._id),
-                beautyCommentsInfo(dbBack.commentUnderPost, req.user._id)
-            ])
-            dbBack.postInfo = beautifulPost;
-            dbBack.commentUnderPost = beautifulComment;
-        }
-        switch (order) {
-            case 'latest':
-                dbBack.commentUnderPost.sort((a, b) => {
-                    return new Date(b.createTime) - new Date(a.createTime);
-                })
-                break;
-            default:
-                dbBack.commentUnderPost.sort((a, b) => {
-                    return b.statistics.likes - a.statistics.likes;
-                })
-                break;
+            const beautifulPost = await beautyPostInfo(dbBack, req.user._id);
+            dbBack = beautifulPost;
         }
         return res.status(200).json({ dbBack, accessToken });
     }

@@ -5,28 +5,22 @@ import fastJson from 'fast-json-stringify';
 import { addCommentsStatistics, getCommentsUderPost } from "./commentServices.js";
 const stringifyPostInfo = fastJson(
     {
-        type: 'object'
-        , properties: {
-            postInfo: {
-                type: 'object'
-                , properties: {
+        type:'object',
+        properties: {
+            _id: { type: 'string' }
+            , title: { type: 'string' }
+            , description: { type: 'string' }
+            , publishDate: { type: 'string' }
+            , updateDate: { type: 'string' }
+            , tags: { type: 'array' }
+            , author: {
+                type: 'object', properties: {
                     _id: { type: 'string' }
-                    , title: { type: 'string' }
-                    , description: { type: 'string' }
-                    , publishDate: { type: 'string' }
-                    , updateDate: { type: 'string' }
-                    , tags: { type: 'array' }
-                    , author: {
-                        type: 'object', properties: {
-                            _id: { type: 'string' }
-                            , avatar: { type: 'string' }
-                            , username: { type: 'string' }
-                        }
-                    }
-                    , __v: { type: 'integer' }
+                    , avatar: { type: 'string' }
+                    , username: { type: 'string' }
                 }
             }
-            , commentUnderPost: { type: 'array' }
+            , __v: { type: 'integer' }
         }
     }
 );
@@ -79,7 +73,7 @@ async function saveRedisPostProfile(postId, postInfo) {
     try {
         const key = JSON.stringify(postId) + ' Profile';
         postInfo = stringifyPostInfo(postInfo);
-        await redisPosts.setex(key,20, postInfo);
+        await redisPosts.setex(key, 20, postInfo);
     } catch (error) {
         console.log('saveRedisPostProfile -- Pservices 78');
     }
@@ -275,6 +269,6 @@ export {
     getOnePostInfo, stringifyPostInfo, getRedisPostProfile,
     saveRedisPostProfile, addUserPostInfo, postTrendingInc,
     getPostTrending, clearTrendingByTime, addPostStatistics,
-    addCommentsStatistics, beautyPostInfo,incPostStatistics,
-     beautyPostsInfo,addPostsStatistics, postFilter
+    addCommentsStatistics, beautyPostInfo, incPostStatistics,
+    beautyPostsInfo, addPostsStatistics, postFilter
 };

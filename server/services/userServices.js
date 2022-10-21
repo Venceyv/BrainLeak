@@ -7,29 +7,27 @@ import fastJson from 'fast-json-stringify';
 
 const stringifyUserProfile = fastJson(
     {
-        type: 'object'
-        , properties: {
-            userInfo: {
-                type: 'object'
-                , properties: {
-                    _id: { type: 'string' }
-                    , avatar: { type: 'string' }
-                    , username: { type: 'string' }
-                    , introduction: { type: 'string' }
-                    , backgroundCover: { type: 'string' }
-                    , __v: { type: 'integer' }
-                }
-            }
-            , commentList: { type: 'array' }
+        type: 'object',
+        properties: {
+            _id: { type: 'string' }
+            , avatar: { type: 'string' }
+            , username: { type: 'string' }
+            , introduction: { type: 'string' }
+            , backgroundCover: { type: 'string' }
+            , __v: { type: 'integer' }
         }
     }
+
 );
 
 
 const stringifyUserInfo = fastJson({
-    _id: { type: 'string' },
-    username: { type: 'string' },
-    email: { type: 'string' }
+    type: 'object',
+    properties: {
+        _id: { type: 'string' },
+        username: { type: 'string' },
+        email: { type: 'string' }
+    }
 });
 
 async function updatePicture(req, res, name) {
@@ -51,7 +49,7 @@ async function updatePicture(req, res, name) {
                         break;
                     }
             }
-            return res.status(200).json({dbBack,accessToken});
+            return res.status(200).json({ dbBack, accessToken });
         }
         res.status(401);
         throw 'unauthorized';
