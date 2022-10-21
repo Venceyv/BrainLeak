@@ -45,31 +45,30 @@ async function createPost(req, res) {
   }
 }
 async function findOne(req, res) {
-  try {
-    const accessToken = req.accessToken;
-    const postId = req.params.postId;
-    const order = req.query.sort;
-    let dbBack = await getRedisPostProfile(postId);
-    if (!dbBack) {
-      dbBack = await getOnePostInfo(postId);
-      await saveRedisPostProfile(postId, dbBack);
-    }
-    const [postInfo, commentUnderPost] = await Promise.all([
-      addPostStatistics(dbBack.postInfo),
-      addCommentsStatistics(dbBack.commentUnderPost),
-      postTrendingInc(req.params.postId, 1),
-      incPostStatistics(postId, 'views', 1),
-      userTrendingInc(req.post.author, 1),
-    ]);
-    dbBack.postInfo = postInfo;
-    dbBack.commentUnderPost = commentUnderPost;
-    if (req.user) {
-      const [beautifulPost, beautifulComment] = await Promise.all([
-        beautyPostInfo(dbBack.postInfo, req.user._id),
-        beautyCommentsInfo(dbBack.commentUnderPost, req.user._id),
-      ]);
-      dbBack.postInfo = beautifulPost;
-      dbBack.commentUnderPost = beautifulComment;
+    try {
+        const accessToken = req.accessToken;
+        const postId = req.params.postId;
+        let dbBack = await getRedisPostProfile(postId);
+        if (!dbBack) {
+            dbBack = await Post.findById(postId, { put: 0, edited: 0, likes: 0 })
+            .lean()
+            .populate('author', {
+                _id: 1, avatar: 1, username: 1
+            }, { lean: true });
+            await saveRedisPostProfile(postId, dbBack);
+        }
+        const [postStatistics,] = await Promise.all([
+            addPostStatistics(dbBack),
+            postTrendingInc(req.params.postId, 1),
+            incPostStatistics(postId, 'views', 1),
+            userTrendingInc(req.post.author, 1)
+        ])
+        dbBack = postStatistics;
+        if (req.user) {
+            const beautifulPost = await beautyPostInfo(dbBack, req.user._id);
+            dbBack = beautifulPost;
+        }
+        return res.status(200).json({ dbBack, accessToken });
     }
     switch (order) {
       case 'latest':

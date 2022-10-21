@@ -6,43 +6,57 @@ import { redisTrending } from '../configs/redis.js';
 import fastJson from 'fast-json-stringify';
 import schedule from 'node-schedule';
 
-const stringifyUserProfile = fastJson({
-  type: 'object',
-  properties: {
-    userInfo: {
-      type: 'object',
-      properties: {
-        _id: { type: 'string' },
-        avatar: { type: 'string' },
-        username: { type: 'string' },
-        email: { type: 'string' },
-        introduction: { type: 'string' },
-        backgroundCover: { type: 'string' },
-        __v: { type: 'integer' },
-      },
-    },
-    commentList: { type: 'array' },
-  },
-});
+const stringifyUserProfile = fastJson(
+    {
+        type: 'object',
+        properties: {
+            _id: { type: 'string' }
+            , avatar: { type: 'string' }
+            , username: { type: 'string' }
+            , introduction: { type: 'string' }
+            , backgroundCover: { type: 'string' }
+            , __v: { type: 'integer' }
+        }
+    }
+
+);
+
 
 const stringifyUserInfo = fastJson({
-  _id: { type: 'string' },
-  username: { type: 'string' },
-  email: { type: 'string' },
+    type: 'object',
+    properties: {
+        _id: { type: 'string' },
+        username: { type: 'string' },
+        email: { type: 'string' }
+    }
 });
 
 async function updatePicture(req, res, name) {
-  const accessToken = req.accessToken;
-  try {
-    const url = uploadFile(req, res);
-    if (url) {
-      let dbBack;
-      if (name === 'avatar') {
-        dbBack = await User.findByIdAndUpdate(req.user._id, { avatar: url }, { new: 1 });
-      } else {
-        dbBack = await User.findByIdAndUpdate(req.user._id, { backgroundCover: url }, { new: 1 });
-      }
-      return res.status(200).json({ dbBack, accessToken });
+    const accessToken = req.accessToken;
+    try {
+        const url = uploadFile(req, res);
+        if (url) {
+            let dbBack;
+            switch (name) {
+                case "avatar":
+                    {
+                        dbBack = await User.findByIdAndUpdate(req.user._id, { avatar: url }, { new: 1 });
+                        break;
+                    }
+
+                default:
+                    {
+                        dbBack = await User.findByIdAndUpdate(req.user._id, { backgroundCover: url }, { new: 1 });
+                        break;
+                    }
+            }
+            return res.status(200).json({ dbBack, accessToken });
+        }
+        res.status(401);
+        throw 'unauthorized';
+
+    } catch (error) {
+        res.json(error);
     }
     res.status(401);
     throw 'unauthorized';

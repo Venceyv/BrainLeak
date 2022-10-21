@@ -46,36 +46,19 @@ async function findOne(req, res) {
   try {
     let dbBack = await getRedisUserProfile(req.params.userId);
     if (!dbBack) {
-      let [userInfo, commentList] = await Promise.all([
-        User.findById(req.params.userId, { email: 0 }).lean(),
-        Comment.find({ author: req.params.userId }, { edited: 0, likes: 0 })
-          .lean()
-          .sort({ createTime: -1 })
-          .populate('author', { avatar: 1, username: 1, introduction: 1 }, { lean: true })
-          .populate('relatedPost', { title: 1 }, { lean: true }),
-      ]);
-      dbBack = { userInfo, commentList };
+      dbBack = await User.findById(req.params.userId, { email: 0 }).lean();
       await saveRedisUserProfile(req.params.userId, dbBack);
     }
-    dbBack = await beautyUserPorfile(dbBack);
+    dbBack = await addUserStatistics(dbBack);
     if (req.user) {
-      const [commentLikeList, follwingList] = await Promise.all([
-        CommentLike.find({ user: req.user._id }).lean(),
-        Follow.find({ user: req.user._id }, { followedUser: 1 }).lean(),
-      ]);
       if (req.user._id != req.params.userId) {
-        dbBack.userInfo = addFollowingInfo(dbBack.userInfo, follwingList);
-        dbBack.commentList.forEach((comment, index) => {
-          dbBack.commentList[index] = addCommentUserInfo(comment, follwingList, commentLikeList);
-        });
+        const  follwingList = await Follow.find({ user: req.user._id }, { followedUser: 1 }).lean();
+        dbBack = addFollowingInfo(dbBack, follwingList);
+        }
         return res.status(200).json({ dbBack, accessToken });
       }
-      dbBack.commentList.forEach((comment, index) => {
-        dbBack.commentList[index] = addCommentUserInfo(comment, null, commentLikeList);
-      });
+      
       return res.status(200).json({ dbBack, accessToken });
-    }
-    return res.status(200).json({ dbBack, accessToken });
   } catch (error) {
     return res.status(404).json({ error: error });
   }

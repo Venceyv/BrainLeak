@@ -2,33 +2,28 @@ import { PostLike, SavedPost, Follow, Post, CommentLike } from '../models/index.
 import { redisPosts, redisTrending } from '../configs/redis.js';
 import schedule from 'node-schedule';
 import fastJson from 'fast-json-stringify';
-import { addCommentsStatistics, getCommentsUderPost, addCommentUserInfo } from './commentServices.js';
-const stringifyPostInfo = fastJson({
-  type: 'object',
-  properties: {
-    postInfo: {
-      type: 'object',
-      properties: {
-        _id: { type: 'string' },
-        title: { type: 'string' },
-        description: { type: 'string' },
-        publishDate: { type: 'string' },
-        updateDate: { type: 'string' },
-        tags: { type: 'array' },
-        author: {
-          type: 'object',
-          properties: {
-            _id: { type: 'string' },
-            avatar: { type: 'string' },
-            username: { type: 'string' },
-          },
-        },
-        __v: { type: 'integer' },
-      },
-    },
-    commentUnderPost: { type: 'array' },
-  },
-});
+import { addCommentsStatistics, getCommentsUderPost } from "./commentServices.js";
+const stringifyPostInfo = fastJson(
+    {
+        type:'object',
+        properties: {
+            _id: { type: 'string' }
+            , title: { type: 'string' }
+            , description: { type: 'string' }
+            , publishDate: { type: 'string' }
+            , updateDate: { type: 'string' }
+            , tags: { type: 'array' }
+            , author: {
+                type: 'object', properties: {
+                    _id: { type: 'string' }
+                    , avatar: { type: 'string' }
+                    , username: { type: 'string' }
+                }
+            }
+            , __v: { type: 'integer' }
+        }
+    }
+);
 
 //get the post info related to the loggined user
 async function getOnePostInfo(postId) {
@@ -78,21 +73,13 @@ async function getRedisPostProfile(postId) {
   }
 }
 async function saveRedisPostProfile(postId, postInfo) {
-  try {
-    const key = JSON.stringify(postId) + ' Profile';
-    postInfo = stringifyPostInfo(postInfo);
-    await redisPosts.set(key, postInfo);
-  } catch (error) {
-    console.log('saveRedisPostProfile -- Pservices 78');
-  }
-}
-async function delRedisPostProfile(postId) {
-  try {
-    const key = JSON.stringify(postId) + ' Profile';
-    redisPosts.del(key);
-  } catch (error) {
-    console.log('delRedisPostProfile -- Pervices 87');
-  }
+    try {
+        const key = JSON.stringify(postId) + ' Profile';
+        postInfo = stringifyPostInfo(postInfo);
+        await redisPosts.setex(key, 20, postInfo);
+    } catch (error) {
+        console.log('saveRedisPostProfile -- Pservices 78');
+    }
 }
 function addUserPostInfo(post, followingList, likeList, saveList) {
   try {
@@ -279,20 +266,9 @@ function postFilter(posts, timeInterval = 'default') {
   }
 }
 export {
-  getOnePostInfo,
-  stringifyPostInfo,
-  getRedisPostProfile,
-  saveRedisPostProfile,
-  addUserPostInfo,
-  postTrendingInc,
-  getPostTrending,
-  clearTrendingByTime,
-  addPostStatistics,
-  addCommentsStatistics,
-  delRedisPostProfile,
-  beautyPostInfo,
-  incPostStatistics,
-  beautyPostsInfo,
-  addPostsStatistics,
-  postFilter,
+    getOnePostInfo, stringifyPostInfo, getRedisPostProfile,
+    saveRedisPostProfile, addUserPostInfo, postTrendingInc,
+    getPostTrending, clearTrendingByTime, addPostStatistics,
+    addCommentsStatistics, beautyPostInfo, incPostStatistics,
+    beautyPostsInfo, addPostsStatistics, postFilter
 };
