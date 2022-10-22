@@ -19,7 +19,6 @@ async function createPost(req, res) {
   try {
     const dbBack = new Post(req.body);
     await incUserStatistics(req.user._id, "posts", 1);
-    const accessToken = req.accessToken;
     dbBack.author = req.user._id;
     dbBack.put = req.query.put === "true" ? true : false;
     dbBack.tags.map(async function (tag) {
@@ -29,14 +28,13 @@ async function createPost(req, res) {
       }
     });
     dbBack.save();
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
 }
 async function findOne(req, res) {
   try {
-    const accessToken = req.accessToken;
     const postId = req.params.postId;
     let dbBack = await getRedisPostProfile(postId);
     if (!dbBack) {
@@ -62,7 +60,7 @@ async function findOne(req, res) {
       const beautifulPost = await beautyPostInfo(dbBack, req.user._id);
       dbBack = beautifulPost;
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
@@ -73,7 +71,6 @@ async function findByTags(req, res) {
     const tags = req.query.tags.split(" ");
     const pageNum = req.query.pagenumber;
     const pageSize = req.query.pagesize;
-    const accessToken = req.accessToken;
     const timeInterval = req.query.timeInterval;
     const order = req.query.sort;
     let dbBack = await Post.find({ tags: { $in: tags } })
@@ -83,7 +80,7 @@ async function findByTags(req, res) {
       if (tags.length === 1) {
         await Tags.findOneAndDelete({ tagName: tags });
       }
-      return res.status(200).json({ dbBack, accessToken });
+      return res.status(200).json({ dbBack });
     }
     dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     dbBack = postFilter(dbBack, timeInterval);
@@ -105,7 +102,7 @@ async function findByTags(req, res) {
         dbBack = sortWith(dbBack,"likes");
         break;
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
@@ -114,7 +111,6 @@ async function findAll(req, res) {
   try {
     const pageNum = req.query.pagenumber;
     const pageSize = req.query.pagesize;
-    const accessToken = req.accessToken;
     const timeInterval = req.query.timeInterval;
     const order = req.query.sort;
     let dbBack = await Post.find().lean().populate("author", "avatar username introduction", { lean: true });
@@ -145,14 +141,13 @@ async function findAll(req, res) {
           break;
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     return res.json({ error: error });
   }
 }
 async function findBySearch(req, res) {
   try {
-    const accessToken = req.accessToken;
     const pageNum = req.query.pagenumber;
     const pageSize = req.query.pagesize;
     const timeInterval = req.query.timeInterval;
@@ -187,14 +182,13 @@ async function findBySearch(req, res) {
           break;
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
 }
 async function updatePost(req, res) {
   try {
-    const accessToken = req.accessToken;
     req.body.updateDate = Date.now();
     req.body.edited = true;
     const dbBack = await Post.findByIdAndUpdate(req.params.postId, req.body, { new: true });
@@ -207,14 +201,13 @@ async function updatePost(req, res) {
         }
       });
     }
-    return res.json({ dbBack, accessToken });
+    return res.json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
 }
 async function likePost(req, res) {
   try {
-    const accessToken = req.accessToken;
     const postId = req.params.postId;
     const postLike = await PostLike.findOne({ user: req.user._id, post: postId }, { like: 1 });
     let like = true;
@@ -227,7 +220,7 @@ async function likePost(req, res) {
       ]);
       like = false;
       postLike.remove();
-      return res.status(200).json({ like, accessToken });
+      return res.status(200).json({ like });
     }
     await Promise.all([
       postTrendingInc(postId, 2),
@@ -239,17 +232,16 @@ async function likePost(req, res) {
       postLike.like = true;
       await incPostStatistics(postId, "dislikes", -1);
       postLike.save();
-      return res.status(200).json({ like, accessToken });
+      return res.status(200).json({ like });
     }
     await new PostLike({ user: req.user._id, post: postId }).save();
-    return res.status(200).json({ like, accessToken });
+    return res.status(200).json({ like });
   } catch (error) {
     res.status(401).json({ error: error });
   }
 }
 async function dislikePost(req, res) {
   try {
-    const accessToken = req.accessToken;
     const postId = req.params.postId;
     const postLike = await PostLike.findOne({ user: req.user._id, post: postId });
     let dislike = true;
@@ -257,7 +249,7 @@ async function dislikePost(req, res) {
       postLike.remove();
       await incPostStatistics(postId, "dislikes", -1);
       dislike = false;
-      return res.status(200).json({ dislike, accessToken });
+      return res.status(200).json({ dislike });
     }
     await Promise.all([incPostStatistics(postId, "dislikes", 1), incUserStatistics(req.post.author, "upvotes", -1)]);
     if (postLike) {
@@ -269,17 +261,16 @@ async function dislikePost(req, res) {
       ]);
       postLike.like = false;
       postLike.save();
-      return res.status(200).json({ dislike, accessToken });
+      return res.status(200).json({ dislike });
     }
     await new PostLike({ user: req.user._id, post: postId, like: false }).save();
-    return res.status(200).json({ dislike, accessToken });
+    return res.status(200).json({ dislike });
   } catch (error) {
     return res.status(401).json({ error: error });
   }
 }
 async function savePost(req, res) {
   try {
-    const accessToken = req.accessToken;
     const postId = req.params.postId;
     const dbBack = await SavedPost.findOne({ user: req.user._id, post: postId });
     let saved = true;
@@ -291,7 +282,7 @@ async function savePost(req, res) {
       ]);
       saved = false;
       dbBack.remove();
-      return res.status(200).json({ saved, accessToken });
+      return res.status(200).json({ saved });
     }
     await Promise.all([
       postTrendingInc(req.params.postId, 4),
@@ -299,7 +290,7 @@ async function savePost(req, res) {
       userTrendingInc(req.post.author, 3),
       new SavedPost({ user: req.user._id, post: req.params.postId }).save(),
     ]);
-    return res.status(200).json({ saved, accessToken });
+    return res.status(200).json({ saved });
   } catch (error) {
     res.status(401).json({ error: error });
   }
@@ -313,9 +304,8 @@ async function deletePost(req, res) {
       PostLike.deleteMany({ post: req.params.postId }),
       SavedPost.deleteMany({ post: req.params.postId }),
     ]);
-    const accessToken = res.accessToken;
     const msg = "Delete Successfully";
-    return res.status(402).json({ msg, accessToken });
+    return res.status(402).json({ msg });
   } catch (error) {
     res.json({ error: error });
   }
@@ -323,10 +313,9 @@ async function deletePost(req, res) {
 
 async function postTrending(req, res) {
   try {
-    const accessToken = req.accessToken;
     const topNumber = req.query.q;
     const dbBack = await getPostTrending(topNumber);
-    res.status(200).json({ dbBack, accessToken });
+    res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }

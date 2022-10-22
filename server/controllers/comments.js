@@ -21,7 +21,6 @@ async function addComment(req, res) {
       author: req.user._id,
       relatedPost: req.post._id,
     }).save();
-    const accessToken = req.accessToken;
     //if author account is still active
     if (req.post.put && postAuthor && req.user._id !== postAuthor._id) {
       const mailOptions = notifyAuthor(
@@ -37,7 +36,7 @@ async function addComment(req, res) {
         }
       });
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
@@ -45,11 +44,10 @@ async function addComment(req, res) {
 
 async function updateComment(req, res) {
   try {
-    const accessToken = req.accessToken;
     req.body.edited = true;
     req.body.updateTime = Date.now();
     const dbBack = await Comment.findByIdAndUpdate(req.comment._id, req.body, { new: true });
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error });
   }
@@ -63,9 +61,8 @@ async function deleteComment(req, res) {
       req.comment.relatedPost,
       incUserStatistics(req.comment.relatedPost, "comments", -1),
     ]);
-    const accessToken = req.accessToken;
     const msg = "Delete successfully.";
-    return res.status(200).json({ msg, accessToken });
+    return res.status(200).json({ msg });
   } catch (error) {
     return res.status(401).json({ error });
   }
@@ -73,7 +70,6 @@ async function deleteComment(req, res) {
 async function likeComment(req, res) {
   try {
     let like = true;
-    const accessToken = req.accessToken;
     const commentId = req.params.commentId;
     const userId = req.user._id;
     const dbBack = await CommentLike.findOne({ user: userId, comment: commentId }, { like: 1 });
@@ -85,7 +81,7 @@ async function likeComment(req, res) {
         incCommentStatistics(commentId, "likes", -1),
         incUserStatistics(req.post.author, "upvotes", -1),
       ]);
-      return res.status(200).json({ like, accessToken });
+      return res.status(200).json({ like });
     }
     await Promise.all([
       incCommentStatistics(commentId, "likes", 1),
@@ -96,10 +92,10 @@ async function likeComment(req, res) {
       dbBack.like = true;
       dbBack.save();
       await incCommentStatistics(commentId, "dislikes", -1);
-      return res.status(200).json({ like, accessToken });
+      return res.status(200).json({ like });
     }
     await new CommentLike({ user: userId, comment: commentId }).save();
-    return res.status(200).json({ like, accessToken });
+    return res.status(200).json({ like });
   } catch (error) {
     return res.status(401).json({ error });
   }
@@ -108,14 +104,13 @@ async function dislikeComment(req, res) {
   try {
     let dislike = true;
     const commentId = req.params.commentId;
-    const accessToken = req.accessToken;
     const userId = req.user._id;
     const dbBack = await CommentLike.findOne({ user: userId, comment: commentId }, { like: 1 });
     if (dbBack && !dbBack.like) {
       dislike = false;
       dbBack.remove();
       await incCommentStatistics(commentId, "dislikes", -1);
-      return res.status(200).json({ dislike, accessToken });
+      return res.status(200).json({ dislike });
     }
     await incCommentStatistics(commentId, "dislikes", 1);
     if (dbBack) {
@@ -126,17 +121,16 @@ async function dislikeComment(req, res) {
         userTrendingInc(req.comment.author, -6),
         incUserStatistics(req.post.author, "upvotes", -1),
       ]);
-      return res.status(200).json({ dislike, accessToken });
+      return res.status(200).json({ dislike });
     }
     await new CommentLike({ user: userId, comment: commentId, like: false }).save();
-    return res.status(200).json({ dislike, accessToken });
+    return res.status(200).json({ dislike });
   } catch (error) {
     return res.status(401).json({ error });
   }
 }
 async function getComments(req, res) {
   try {
-    const accessToken = req.accessToken;
     const order = req.query.sort;
     let dbBack = await getCommentsUderPost(req.params.postId);
     if (dbBack.length != 0) {
@@ -163,7 +157,7 @@ async function getComments(req, res) {
           break;
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error });
   }

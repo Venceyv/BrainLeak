@@ -21,8 +21,7 @@ async function replyToComment(req, res) {
       mentionedUser: comment.author,
       author: req.user._id,
     }).save();
-    const accessToken = req.accessToken;
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
@@ -40,7 +39,6 @@ async function deleteReply(req, res) {
 }
 async function likeReply(req, res) {
   try {
-    const accessToken = req.accessToken;
     const replyId = req.params.replyId;
     const userId = req.user._id;
     const dbBack = await ReplyLike.findOne({ user: userId, reply: replyId }, { like: 1 });
@@ -53,7 +51,7 @@ async function likeReply(req, res) {
         userTrendingInc(req.reply.author, -4),
         incUserStatistics(req.post.author, "upvotes", -1),
       ]);
-      return res.status(200).json({ like, accessToken });
+      return res.status(200).json({ like });
     }
     await Promise.all([
       incReplyStatistics(replyId, "likes", 1),
@@ -64,17 +62,16 @@ async function likeReply(req, res) {
       dbBack.like = true;
       dbBack.save();
       await incReplyStatistics(replyId, "dislikes", -1);
-      return res.status(200).json({ like, accessToken });
+      return res.status(200).json({ like });
     }
     await new ReplyLike({ user: userId, reply: replyId }).save();
-    return res.status(200).json({ like, accessToken });
+    return res.status(200).json({ like });
   } catch (error) {
     res.status(401).json({ error: error });
   }
 }
 async function dislikeReply(req, res) {
   try {
-    const accessToken = req.accessToken;
     const replyId = req.params.replyId;
     const userId = req.user._id;
     const dbBack = await ReplyLike.findOne({ user: userId, reply: replyId }, { like: 1 });
@@ -83,7 +80,7 @@ async function dislikeReply(req, res) {
       dislike = false;
       dbBack.remove();
       await incReplyStatistics(replyId, "dislikes", -1);
-      return res.status(200).json({ dislike, accessToken });
+      return res.status(200).json({ dislike });
     }
     await incReplyStatistics(replyId, "dislikes", 1);
     if (dbBack) {
@@ -94,10 +91,10 @@ async function dislikeReply(req, res) {
         userTrendingInc(req.reply.author, -4),
         incUserStatistics(req.post.author, "upvotes", -1),
       ]);
-      return res.status(200).json({ dislike, accessToken });
+      return res.status(200).json({ dislike });
     }
     await new ReplyLike({ user: userId, reply: replyId, like: false }).save();
-    return res.status(200).json({ dislike, accessToken });
+    return res.status(200).json({ dislike });
   } catch (error) {
     res.status(401).json({ error: error });
   }
@@ -105,7 +102,6 @@ async function dislikeReply(req, res) {
 async function getReplies(req, res) {
   try {
     const commentId = req.params.commentId;
-    const accessToken = req.accessToken;
     const order = req.query.sort;
     let dbBack = await getRedisReplyProfile(commentId);
     if (!dbBack) {
@@ -143,7 +139,7 @@ async function getReplies(req, res) {
           break;
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }

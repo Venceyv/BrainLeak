@@ -25,7 +25,6 @@ const stringifyUserInfo = fastJson({
 });
 
 async function updatePicture(req, res, name) {
-  const accessToken = req.accessToken;
   try {
     const url = uploadFile(req, res);
     if (url) {
@@ -41,7 +40,7 @@ async function updatePicture(req, res, name) {
           break;
         }
       }
-      return res.status(200).json({ dbBack, accessToken });
+      return res.status(200).json({ dbBack });
     }
     res.status(401);
     throw "unauthorized";
