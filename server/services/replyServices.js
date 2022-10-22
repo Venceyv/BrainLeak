@@ -1,6 +1,6 @@
-import schedule from 'node-schedule';
-import { redisReplies } from '../configs/redis.js';
-import { Reply, Comment, ReplyLike } from '../models/index.js';
+import schedule from "node-schedule";
+import { redisReplies } from "../configs/redis.js";
+import { Reply, Comment, ReplyLike } from "../models/index.js";
 
 function clearReplyByTime(time) {
   schedule.scheduleJob(
@@ -17,35 +17,35 @@ function clearReplyByTime(time) {
           })
         );
       } catch (error) {
-        console.log('addReplyStatisticsError -- Rservices 5');
+        console.log("addReplyStatisticsError -- Rservices 5");
       }
     }.bind(null, Reply)
   );
 }
 async function addReplyStatistics(reply) {
   try {
-    const replyId = JSON.stringify(reply._id) + ' Statistics';
+    const replyId = JSON.stringify(reply._id) + " Statistics";
     const pipeline = redisReplies.pipeline();
-    pipeline.hget(replyId, 'likes');
-    pipeline.hget(replyId, 'dislikes');
+    pipeline.hget(replyId, "likes");
+    pipeline.hget(replyId, "dislikes");
     const results = await pipeline.exec();
     const likes = results[0][1] === null ? 0 : Number(results[0][1]);
     const dislikes = results[1][1] === null ? 0 : Number(results[1][1]);
     const statistics = { likes, dislikes };
     return { ...reply, statistics };
   } catch (error) {
-    console.log('addReplyStatisticsError -- Rservices 20');
+    console.log("addReplyStatisticsError -- Rservices 20");
   }
 }
 async function incReplyStatistics(replyId, field, incNum) {
   try {
-    const key = JSON.stringify(replyId) + ' Statistics';
+    const key = JSON.stringify(replyId) + " Statistics";
     const result = await redisReplies.hincrby(key, field, incNum);
     if (result < 0) {
       await redisReplies.hset(key, field, 0);
     }
   } catch (error) {
-    console.log('incReplyStatistics Failed -- Rservices 35');
+    console.log("incReplyStatistics Failed -- Rservices 35");
   }
 }
 async function addReplyUserInfo(userId, reply) {
@@ -57,29 +57,22 @@ async function addReplyUserInfo(userId, reply) {
 
     return reply;
   } catch (error) {
-    console.log('addReplyUserInfoE Faild --Rservices 47');
+    console.log("addReplyUserInfoE Faild --Rservices 47");
   }
 }
-async function deleteRedisReplyProfile(replyId) {
-  try {
-    const key = JSON.stringify(replyId) + ' Profile';
-    await redisReplies.del(key);
-  } catch (error) {
-    console.log('deleteRedisReplyProfile Faild --Rservices 59');
-  }
-}
+
 async function saveRedisReplyProfile(replyId, profile) {
   try {
-    const key = JSON.stringify(replyId) + ' Profile';
+    const key = JSON.stringify(replyId) + " Profile";
     profile = JSON.stringify(profile);
-    await redisReplies.set(key, profile);
+    await redisReplies.setex(key, 20, profile);
   } catch (error) {
-    console.log('saveRedisReplyProfile Faild --Rservices 69');
+    console.log("saveRedisReplyProfile Faild --Rservices 69");
   }
 }
 async function getRedisReplyProfile(replyId) {
   try {
-    const key = JSON.stringify(replyId) + ' Profile';
+    const key = JSON.stringify(replyId) + " Profile";
     let profile = await redisReplies.get(key);
     if (!profile) {
       return null;
@@ -87,7 +80,7 @@ async function getRedisReplyProfile(replyId) {
     profile = JSON.parse(profile);
     return profile;
   } catch (error) {
-    console.log('getRedisReplyProfile Faild --Rservices 78');
+    console.log("getRedisReplyProfile Faild --Rservices 78");
   }
 }
 export {
@@ -95,7 +88,6 @@ export {
   addReplyStatistics,
   addReplyUserInfo,
   incReplyStatistics,
-  deleteRedisReplyProfile,
   saveRedisReplyProfile,
   getRedisReplyProfile,
 };
