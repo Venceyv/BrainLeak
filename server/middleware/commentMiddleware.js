@@ -1,4 +1,5 @@
 import { Comment } from "../models/index.js";
+import jwt_decode from "jwt-decode";
 import json from "body-parser";
 async function checkCommentExist(req, res, next) {
   try {
@@ -15,7 +16,10 @@ async function checkCommentExist(req, res, next) {
 }
 async function checkCommentAuth(req, res, next) {
   try {
-    if (!req.comment.author.equals(req.user._id)) {
+    let token = req.headers.authorization;
+    token = token ? token.replace("Bearer ", "") : null;
+    const decodedToken = jwt_decode(token);
+    if (!req.comment.author.equals(decodedToken.userInfo.userId)) {
       res.status(401);
       throw "unauthorized";
     }

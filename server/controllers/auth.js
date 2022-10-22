@@ -11,7 +11,7 @@ export const postOAuth = async (req, res) => {
 
     const { tokens } = await oAuth2Client.getToken(req.body.code);
     const decoded = jwt_decode(tokens.id_token);
-    const userInfo = {
+    let userInfo = {
       avatar: decoded.picture,
       username: decoded.name,
       email: decoded.email,
@@ -20,11 +20,15 @@ export const postOAuth = async (req, res) => {
     if (!dbBack || dbBack.isDelete) {
       dbBack = await new User(userInfo).save();
     }
+    userInfo = {
+      userId:dbBack._id,
+      username:dbBack.username
+    }
     let token = await createToken(userInfo);
     console.log(token);
     token = "Bearer " + token;
-    const refreshToken = await createRefreshToken(userInfo);
-    saveRefreshToken(decoded.email, refreshToken);
+    const refreshToken = await createRefreshToken(userInfo.userId);
+    await saveRefreshToken(userInfo.userId, refreshToken);
     res.json({ token, dbBack });
   } catch (error) {
     console.log("errored", error);

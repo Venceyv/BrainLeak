@@ -10,11 +10,11 @@ import { incUserStatistics, userTrendingInc } from "../services/userServices.js"
 import { incPostStatistics, postTrendingInc } from "../services/postServices.js";
 async function addComment(req, res) {
   try {
-    const [author] = await Promise.all([
-      User.findById(req.post.author, { email: 1 }).lean(),
+    const [postAuthor] = await Promise.all([
+      User.findById(req.post.author, { email:1 }).lean(),
       postTrendingInc(req.post._id, 3),
       incPostStatistics(req.post._id, "comments", 1),
-      incUserStatistics(req.user._id, "comments", 1),
+      incUserStatistics(req.params.userId, "comments", 1),
     ]);
     const dbBack = await new Comment({
       content: req.body.content,
@@ -23,9 +23,9 @@ async function addComment(req, res) {
     }).save();
     const accessToken = req.accessToken;
     //if author account is still active
-    if (req.post.put && author && req.user.email !== author.email) {
+    if (req.post.put && postAuthor && req.userId !== postAuthor._id) {
       const mailOptions = notifyAuthor(
-        author.email,
+        postAuthor.email,
         req.user.username,
         req.body.content,
         req.post.title,

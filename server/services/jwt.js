@@ -28,7 +28,7 @@ const createRefreshToken = async (userInfo) => {
     },
     process.env.REFRESHSECRETORKEY,
     {
-      expiresIn: "1d",
+      expiresIn: 30 * 60,
     }
   );
 };
@@ -53,25 +53,32 @@ function verifyToken(required = true) {
       if (!inBlockList) {
         try {
           const tokenInfo = await verify(token, process.env.SECRETORKEY);
-          const user = await getRedisUserInfo(tokenInfo.userInfo.email);
+          const user = await getRedisUserInfo(tokenInfo.userInfo.userId);
           if (user) {
             req.user = user;
             return next();
           }
-          req.user = await User.findOne({ email: tokenInfo.userInfo.email }, { email: 1, username: 1 }).lean();
+          req.user = await User.findById(tokenInfo.userInfo.userId, { username: 1 }).lean();
           if (req.user) {
-            await saveRedisUserInfo(req.user.email, req.user);
+            await saveRedisUserInfo(req.user._id, req.user);
             return next();
           }
         } catch (error) {
           if (error.message === "jwt expired") {
             const decodedToken = jwt_decode(token);
-            const refreshToken = await getRefreshToken(decodedToken.userInfo.email);
+            const refreshToken = await getRefreshToken(decodedToken.userInfo.userId);
             if (refreshToken) {
               inBlockList = await getblockToken(refreshToken);
               if (!inBlockList) {
-                req.user = await User.findOne({ email: decodedToken.userInfo.email }, { email: 1, username: 1 }).lean();
-                token = await createToken(decodedToken.userInfo);
+                const [user, newToken, newAccessToken] = await Promise.all([
+                  User.findById(decodedToken.userInfo.userId, { username: 1 }).lean(),
+                  createToken(decodedToken.userInfo),
+                  createRefreshToken(decodedToken.userInfo)
+                ]);
+                req.user = user;
+                token = newToken;
+                // refresh refreshToken
+                await saveRefreshToken(decodedToken.userInfo.userId, newAccessToken);
                 req.accessToken = "Bearer " + token;
                 return next();
               }
@@ -149,7 +156,7 @@ async function removeExpiredToken(tokenList) {
       console.log("removeExpiredToken Failed -- Jservice 137");
     }
   });
-  stream.on("end", () => {});
+  stream.on("end", () => { });
 }
 // removed expired token in a token
 function removeTokenByTime(time, tokenList) {

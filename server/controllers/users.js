@@ -29,7 +29,7 @@ import { sortWith } from "../services/arraySorter.js";
 async function deleteUser(req, res) {
   try {
     const [refreshToken] = await Promise.all([
-      getRefreshToken(req.user.email),
+      getRefreshToken(req.userId),
       User.findByIdAndUpdate(req.params.userId, { isDelete: true }),
       blockToken(req.accessToken),
     ]);
@@ -49,9 +49,9 @@ async function findOne(req, res) {
       await saveRedisUserProfile(req.params.userId, dbBack);
     }
     dbBack = await addUserStatistics(dbBack);
-    if (req.user) {
-      if (req.user._id != req.params.userId) {
-        const follwingList = await Follow.find({ user: req.user._id }, { followedUser: 1 }).lean();
+    if (req.userId) {
+      if (req.userId != req.params.userId) {
+        const follwingList = await Follow.find({ user: req.userId }, { followedUser: 1 }).lean();
         dbBack = addFollowingInfo(dbBack, follwingList);
       }
       return res.status(200).json({ dbBack, accessToken });
@@ -85,8 +85,8 @@ async function findAll(req, res) {
         return user;
       })
     );
-    if (dbBack.length != 0 && req.user) {
-      const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
+    if (dbBack.length != 0 && req.userId) {
+      const followingList = await Follow.find({ user: req.userId}, { followedUser: 1, _id: 0 }).lean();
       dbBack.forEach((user, index) => {
         dbBack[index] = addFollowingInfo(user, followingList);
       });
@@ -115,8 +115,8 @@ async function findBySearch(req, res) {
         return user;
       })
     );
-    if (dbBack.length != 0 && req.user) {
-      const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
+    if (dbBack.length != 0 && req.user._id) {
+      const followingList = await Follow.find({ user: req.user._id}, { followedUser: 1, _id: 0 }).lean();
       dbBack.forEach((user, index) => {
         dbBack[index] = addFollowingInfo(user, followingList);
       });
@@ -146,7 +146,7 @@ async function updateBackgroundCover(req, res) {
 async function followUser(req, res) {
   const accessToken = req.accessToken;
   try {
-    if (req.user.email === req.targetUser.email) {
+    if (req.user._Id === req.targetUser._id) {
       res.status(403);
       throw "cant follow yourself!";
     }
@@ -199,7 +199,7 @@ async function getFollwer(req, res) {
           return follower;
         })
       );
-      if (req.user) {
+      if (req.user._id) {
         const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
         dbBack.forEach((user, index) => {
           dbBack[index] = addFollowingInfo(user, followingList);
@@ -232,7 +232,7 @@ async function getFollwing(req, res) {
         })
       );
       if (req.user) {
-        const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
+        const followingList = await Follow.find({ user: req.user._id}, { followedUser: 1, _id: 0 }).lean();
         dbBack.forEach((user, index) => {
           dbBack[index] = addFollowingInfo(user, followingList);
         });
@@ -266,8 +266,8 @@ async function getLikePosts(req, res) {
     }
     if (dbBack.length != 0) {
       const [followingList, likeList, PostSaveList] = await Promise.all([
-        Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean(),
-        PostLike.find({ user: req.user._id }, { post: 1, like: 1, _id: 0 }).lean(),
+        Follow.find({ user: req.user._id}, { followedUser: 1, _id: 0 }).lean(),
+        PostLike.find({ user: req.user._id}, { post: 1, like: 1, _id: 0 }).lean(),
         SavedPost.find({ user: req.user._id }, { post: 1, _id: 0 }).lean(),
         saveRedisLikedPost(req.params.userId, dbBack),
       ]);
@@ -319,7 +319,7 @@ async function getDislikePosts(req, res) {
     }
     if (dbBack.length != 0) {
       const [followingList, likeList, PostSaveList] = await Promise.all([
-        Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean(),
+        Follow.find({ user: req.user._id}, { followedUser: 1, _id: 0 }).lean(),
         PostLike.find({ user: req.user._id }, { post: 1, like: 1, _id: 0 }).lean(),
         SavedPost.find({ user: req.user._id }, { post: 1, _id: 0 }).lean(),
         saveRedisDisikedPost(req.params.userId, dbBack),
@@ -358,7 +358,7 @@ async function getSavedPosts(req, res) {
     const order = req.query.sort;
     let dbBack = await getRedisSavedPost(req.params.userId);
     if (!dbBack) {
-      dbBack = await SavedPost.find({ user: req.user._id }, { _id: 0, post: 1 })
+      dbBack = await SavedPost.find({ user: req.user._id}, { _id: 0, post: 1 })
         .lean()
         .populate({
           path: "post",
@@ -437,7 +437,7 @@ async function getUserComments(req, res) {
       await saveRedisUserComment(userId, dbBack);
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       if (req.user) {
-        const self = req.user._id === userId;
+        const self = req.user._id=== userId;
         dbBack = await beautyCommentsInfo(dbBack, req.user._id, self);
       }
       dbBack = await addCommentsStatistics(dbBack);
@@ -475,7 +475,7 @@ async function getUserPosts(req, res) {
       await saveRedisUserPost(req.params.userId, dbBack);
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       if (req.user) {
-        const self = req.user._id === req.params.userId;
+        const self = req.user._id=== req.params.userId;
         dbBack = await beautyPostsInfo(dbBack, req.user._id, self);
       }
       dbBack = await addPostsStatistics(dbBack);
@@ -497,7 +497,7 @@ async function getUserPosts(req, res) {
 async function logOut(req, res) {
   let token = req.headers.authorization;
   token = token ? token.replace("Bearer ", "") : null;
-  const refreshToken = await getRefreshToken(req.user.email);
+  const refreshToken = await getRefreshToken(req.user._id);
   await Promise.all([blockToken(refreshToken), blockToken(token)]);
   res.status(200).json({ msg: "log out successfully" });
 }

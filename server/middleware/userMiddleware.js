@@ -1,8 +1,9 @@
 import { User } from "../models/index.js";
+import jwt_decode from "jwt-decode";
 import json from "body-parser";
 async function checkUserExist(req, res, next) {
   try {
-    const user = await User.findById(req.params.userId, { email: 1, username: 1, isDelete: 1 }).lean();
+    const user = await User.findById(req.params.userId, { isDelete: 1 }).lean();
     if (!user || user.isDelete) {
       res.status(404);
       throw "User does not exist";
@@ -15,7 +16,10 @@ async function checkUserExist(req, res, next) {
 }
 function checkUserAuth(req, res, next) {
   try {
-    if (req.targetUser.email != req.user.email) {
+    let token = req.headers.authorization;
+    token = token ? token.replace("Bearer ", "") : null;
+    const decodedToken = jwt_decode(token);
+    if (!req.targetUser._id.equals(decodedToken.userInfo.userId)) {
       res.status(401);
       throw "unauthorized";
     }

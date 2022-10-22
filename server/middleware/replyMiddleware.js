@@ -1,4 +1,5 @@
 import { Reply } from "../models/index.js";
+import jwt_decode from "jwt-decode";
 import json from "body-parser";
 async function checkReplyExist(req, res, next) {
   try {
@@ -15,7 +16,10 @@ async function checkReplyExist(req, res, next) {
 }
 async function checkReplyAuth(req, res, next) {
   try {
-    if (!req.reply.author.equals(req.user._id)) {
+    let token = req.headers.authorization;
+    token = token ? token.replace("Bearer ", "") : null;
+    const decodedToken = jwt_decode(token);
+    if (!req.reply.author.equals(decodedToken.userInfo.userId)) {
       res.status(401);
       throw "unauthorized";
     }

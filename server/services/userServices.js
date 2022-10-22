@@ -1,7 +1,6 @@
 import { User } from "../models/index.js";
 import { uploadFile } from "./uploadFile.js";
 import { redisUsers } from "../configs/redis.js";
-import { addCommentsStatistics } from "./commentServices.js";
 import { redisTrending } from "../configs/redis.js";
 import fastJson from "fast-json-stringify";
 
@@ -21,8 +20,7 @@ const stringifyUserInfo = fastJson({
   type: "object",
   properties: {
     _id: { type: "string" },
-    username: { type: "string" },
-    email: { type: "string" },
+    username:{type:"string"}
   },
 });
 
@@ -76,9 +74,9 @@ async function saveRedisUserProfile(userId, userInfo) {
   }
 }
 
-async function getRedisUserInfo(email) {
+async function getRedisUserInfo(userId) {
   try {
-    let userInfo = await redisUsers.get(email);
+    let userInfo = await redisUsers.get(userId);
     if (userInfo) {
       userInfo = JSON.parse(userInfo);
       return userInfo;
@@ -88,10 +86,10 @@ async function getRedisUserInfo(email) {
     console.log("getUserInfoRedis Failed Uservice 83");
   }
 }
-async function saveRedisUserInfo(email, userInfo) {
+async function saveRedisUserInfo(userId, userInfo) {
   try {
     userInfo = stringifyUserInfo(userInfo);
-    await redisUsers.setex(email, 30, userInfo);
+    await redisUsers.setex(userId, 30, userInfo);
   } catch (error) {
     console.log("saveRedisUserInfo Failed Uservice 96");
   }
