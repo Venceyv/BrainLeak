@@ -1,11 +1,4 @@
-import {
-  Follow,
-  User,
-  Comment,
-  PostLike,
-  SavedPost,
-  Post,
-} from "../models/index.js";
+import { Follow, User, Comment, PostLike, SavedPost, Post } from "../models/index.js";
 import {
   updatePicture,
   getRedisUserProfile,
@@ -28,22 +21,15 @@ import {
 } from "../services/userServices.js";
 import { blockToken, getRefreshToken } from "../services/jwt.js";
 import json from "body-parser";
-import {
-  addCommentsStatistics,
-} from "../services/commentServices.js";
-import {
-  addPostsStatistics,
-  addPostStatistics,
-  addUserPostInfo,
-  beautyPostsInfo,
-} from "../services/postServices.js";
+import { addCommentsStatistics } from "../services/commentServices.js";
+import { addPostsStatistics, addPostStatistics, addUserPostInfo, beautyPostsInfo } from "../services/postServices.js";
 import { beautyCommentsInfo } from "../services/commentServices.js";
 
 async function deleteUser(req, res) {
   try {
-    const [refreshToken,] = await Promise.all([
+    const [refreshToken] = await Promise.all([
       getRefreshToken(req.user.email),
-      User.findByIdAndUpdate(req.params.userId,{isDelete:true}),
+      User.findByIdAndUpdate(req.params.userId, { isDelete: true }),
       blockToken(req.accessToken),
     ]);
     await blockToken(refreshToken);
@@ -64,12 +50,12 @@ async function findOne(req, res) {
     dbBack = await addUserStatistics(dbBack);
     if (req.user) {
       if (req.user._id != req.params.userId) {
-        const  follwingList = await Follow.find({ user: req.user._id }, { followedUser: 1 }).lean();
+        const follwingList = await Follow.find({ user: req.user._id }, { followedUser: 1 }).lean();
         dbBack = addFollowingInfo(dbBack, follwingList);
-        }
-        return res.status(200).json({ dbBack, accessToken });
       }
       return res.status(200).json({ dbBack, accessToken });
+    }
+    return res.status(200).json({ dbBack, accessToken });
   } catch (error) {
     return res.status(404).json({ error: error });
   }
@@ -86,7 +72,7 @@ async function findAll(req, res) {
         backgroundCover: 0,
         following: 0,
         upVoteGet: 0,
-        isDelete:0
+        isDelete: 0,
       }
     )
       .lean()
@@ -99,10 +85,7 @@ async function findAll(req, res) {
       })
     );
     if (dbBack.length != 0 && req.user) {
-      const followingList = await Follow.find(
-        { user: req.user._id },
-        { followedUser: 1, _id: 0 }
-      ).lean();
+      const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
       dbBack.forEach((user, index) => {
         dbBack[index] = addFollowingInfo(user, followingList);
       });
@@ -120,10 +103,9 @@ async function findBySearch(req, res) {
     let dbBack = await User.find({
       username: { $regex: req.query.q, $options: "$i" },
     }).lean();
-    if(dbBack.length===0)
-    {
+    if (dbBack.length === 0) {
       res.status(404);
-      throw'user not found';
+      throw "user not found";
     }
     dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     dbBack = await Promise.all(
@@ -133,10 +115,7 @@ async function findBySearch(req, res) {
       })
     );
     if (dbBack.length != 0 && req.user) {
-      const followingList = await Follow.find(
-        { user: req.user._id },
-        { followedUser: 1, _id: 0 }
-      ).lean();
+      const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
       dbBack.forEach((user, index) => {
         dbBack[index] = addFollowingInfo(user, followingList);
       });
@@ -205,16 +184,9 @@ async function getFollwer(req, res) {
   try {
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
-    let dbBack = await Follow.find(
-      { followedUser: req.params.userId },
-      { followedUser: 0, _id: 0 }
-    )
+    let dbBack = await Follow.find({ followedUser: req.params.userId }, { followedUser: 0, _id: 0 })
       .lean()
-      .populate(
-        "user",
-        { username: 1, avatar: 1, introduction: 1 },
-        { lean: true }
-      );
+      .populate("user", { username: 1, avatar: 1, introduction: 1 }, { lean: true });
     if (dbBack.length != 0) {
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack.forEach((userData, index) => {
@@ -227,10 +199,7 @@ async function getFollwer(req, res) {
         })
       );
       if (req.user) {
-        const followingList = await Follow.find(
-          { user: req.user._id },
-          { followedUser: 1, _id: 0 }
-        ).lean();
+        const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
         dbBack.forEach((user, index) => {
           dbBack[index] = addFollowingInfo(user, followingList);
         });
@@ -247,16 +216,9 @@ async function getFollwing(req, res) {
   try {
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
-    let dbBack = await Follow.find(
-      { user: req.params.userId },
-      { user: 0, _id: 0 }
-    )
+    let dbBack = await Follow.find({ user: req.params.userId }, { user: 0, _id: 0 })
       .lean()
-      .populate(
-        "followedUser",
-        { username: 1, avatar: 1, introduction: 1 },
-        { lean: true }
-      );
+      .populate("followedUser", { username: 1, avatar: 1, introduction: 1 }, { lean: true });
     if (dbBack.length != 0) {
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack.forEach((userData, index) => {
@@ -269,10 +231,7 @@ async function getFollwing(req, res) {
         })
       );
       if (req.user) {
-        const followingList = await Follow.find(
-          { user: req.user._id },
-          { followedUser: 1, _id: 0 }
-        ).lean();
+        const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
         dbBack.forEach((user, index) => {
           dbBack[index] = addFollowingInfo(user, followingList);
         });
@@ -291,10 +250,7 @@ async function getLikePosts(req, res) {
     const order = req.query.sort;
     let dbBack = await getRedisLikedPost(req.params.userId);
     if (!dbBack) {
-      dbBack = await PostLike.find(
-        { user: req.user._id, like: true },
-        { _id: 0, post: 1 }
-      )
+      dbBack = await PostLike.find({ user: req.user._id, like: true }, { _id: 0, post: 1 })
         .lean()
         .populate({
           path: "post",
@@ -310,21 +266,13 @@ async function getLikePosts(req, res) {
     if (dbBack.length != 0) {
       const [followingList, likeList, PostSaveList] = await Promise.all([
         Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean(),
-        PostLike.find(
-          { user: req.user._id },
-          { post: 1, like: 1, _id: 0 }
-        ).lean(),
+        PostLike.find({ user: req.user._id }, { post: 1, like: 1, _id: 0 }).lean(),
         SavedPost.find({ user: req.user._id }, { post: 1, _id: 0 }).lean(),
         saveRedisLikedPost(req.params.userId, dbBack),
       ]);
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack.forEach((data, index) => {
-        dbBack[index] = addUserPostInfo(
-          data.post,
-          followingList,
-          likeList,
-          PostSaveList
-        );
+        dbBack[index] = addUserPostInfo(data.post, followingList, likeList, PostSaveList);
       });
       dbBack = await Promise.all(
         dbBack.map(async (post) => {
@@ -359,10 +307,7 @@ async function getDislikePosts(req, res) {
     const order = req.query.sort;
     let dbBack = await getRedisDislikedPost(req.params.userId);
     if (!dbBack) {
-      dbBack = await PostLike.find(
-        { user: req.user._id, like: false },
-        { _id: 0, post: 1 }
-      )
+      dbBack = await PostLike.find({ user: req.user._id, like: false }, { _id: 0, post: 1 })
         .lean()
         .populate({
           path: "post",
@@ -378,21 +323,13 @@ async function getDislikePosts(req, res) {
     if (dbBack.length != 0) {
       const [followingList, likeList, PostSaveList] = await Promise.all([
         Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean(),
-        PostLike.find(
-          { user: req.user._id },
-          { post: 1, like: 1, _id: 0 }
-        ).lean(),
+        PostLike.find({ user: req.user._id }, { post: 1, like: 1, _id: 0 }).lean(),
         SavedPost.find({ user: req.user._id }, { post: 1, _id: 0 }).lean(),
         saveRedisDisikedPost(req.params.userId, dbBack),
       ]);
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack.forEach((data, index) => {
-        dbBack[index] = addUserPostInfo(
-          data.post,
-          followingList,
-          likeList,
-          PostSaveList
-        );
+        dbBack[index] = addUserPostInfo(data.post, followingList, likeList, PostSaveList);
       });
       dbBack = await Promise.all(
         dbBack.map(async (post) => {
@@ -444,21 +381,13 @@ async function getSavedPosts(req, res) {
     if (dbBack.length != 0) {
       const [followingList, likeList, PostSaveList] = await Promise.all([
         Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean(),
-        PostLike.find(
-          { user: req.user._id },
-          { post: 1, like: 1, _id: 0 }
-        ).lean(),
+        PostLike.find({ user: req.user._id }, { post: 1, like: 1, _id: 0 }).lean(),
         SavedPost.find({ user: req.user._id }, { post: 1, _id: 0 }).lean(),
         saveRedisSavedPost(req.params.userId, dbBack),
       ]);
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack.forEach((data, index) => {
-        dbBack[index] = addUserPostInfo(
-          data.post,
-          followingList,
-          likeList,
-          PostSaveList
-        );
+        dbBack[index] = addUserPostInfo(data.post, followingList, likeList, PostSaveList);
       });
       dbBack = await Promise.all(
         dbBack.map(async (post) => {
@@ -549,16 +478,9 @@ async function getUserPosts(req, res) {
     let dbBack = await getRedisUserPost(req.params.userId);
     const order = req.query.sort;
     if (!dbBack) {
-      dbBack = await Post.find(
-        { author: req.params.userId },
-        { title: 1, description: 1 }
-      )
+      dbBack = await Post.find({ author: req.params.userId }, { title: 1, description: 1 })
         .lean()
-        .populate(
-          "author",
-          { avatar: 1, username: 1, introduction: 1 },
-          { lean: true }
-        );
+        .populate("author", { avatar: 1, username: 1, introduction: 1 }, { lean: true });
     }
     if (dbBack.length != 0) {
       await saveRedisUserPost(req.params.userId, dbBack);
