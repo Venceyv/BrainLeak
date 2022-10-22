@@ -28,7 +28,7 @@ const createRefreshToken = async (userInfo) => {
     },
     process.env.REFRESHSECRETORKEY,
     {
-      expiresIn: 30 * 60,
+      expiresIn: 60 * 60,
     }
   );
 };
@@ -47,7 +47,6 @@ function verifyToken(required = true) {
     let token = req.headers.authorization;
     token = token ? token.replace("Bearer ", "") : null;
     req.user = null;
-    req.accessToken = null;
     if (token) {
       let inBlockList = await getblockToken(token);
       if (!inBlockList) {
@@ -64,26 +63,6 @@ function verifyToken(required = true) {
             return next();
           }
         } catch (error) {
-          if (error.message === "jwt expired") {
-            const decodedToken = jwt_decode(token);
-            const refreshToken = await getRefreshToken(decodedToken.userInfo.userId);
-            if (refreshToken) {
-              inBlockList = await getblockToken(refreshToken);
-              if (!inBlockList) {
-                const [user, newToken, newAccessToken] = await Promise.all([
-                  User.findById(decodedToken.userInfo.userId, { username: 1 }).lean(),
-                  createToken(decodedToken.userInfo),
-                  createRefreshToken(decodedToken.userInfo)
-                ]);
-                req.user = user;
-                token = newToken;
-                // refresh refreshToken
-                await saveRefreshToken(decodedToken.userInfo.userId, newAccessToken);
-                req.accessToken = "Bearer " + token;
-                return next();
-              }
-            }
-          }
           return res.status(401).json({ error: error });
         }
       }
@@ -112,17 +91,17 @@ async function getblockToken(key) {
     console.log("getblockToken Failed -- Jservice 100");
   }
 }
-async function saveRefreshToken(userEmail, token) {
+async function saveRefreshToken(userId, token) {
   try {
-    const key = userEmail + " Refresh";
+    const key = userId + " Refresh";
     await redisToken.set(key, token);
   } catch (error) {
     console.log("saveRefreshToken Failed -- Jservice 109");
   }
 }
-async function getRefreshToken(userEmail) {
+async function getRefreshToken(userId) {
   try {
-    const key = userEmail + " Refresh";
+    const key = userId + " Refresh";
     const token = await redisToken.get(key);
     return token;
   } catch (error) {
@@ -156,7 +135,7 @@ async function removeExpiredToken(tokenList) {
       console.log("removeExpiredToken Failed -- Jservice 137");
     }
   });
-  stream.on("end", () => { });
+  stream.on("end", () => {});
 }
 // removed expired token in a token
 function removeTokenByTime(time, tokenList) {
@@ -181,4 +160,5 @@ export {
   delRefreshToken,
   blockToken,
   getRefreshToken,
+  getblockToken,
 };

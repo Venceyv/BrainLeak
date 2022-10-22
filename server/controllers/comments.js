@@ -23,7 +23,7 @@ async function addComment(req, res) {
     }).save();
     const accessToken = req.accessToken;
     //if author account is still active
-    if (req.post.put && postAuthor && req.userId !== postAuthor._id) {
+    if (req.post.put && postAuthor && req.user._id !== postAuthor._id) {
       const mailOptions = notifyAuthor(
         postAuthor.email,
         req.user.username,

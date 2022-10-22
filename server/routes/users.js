@@ -17,6 +17,7 @@ import {
   userTrending,
   getUserComments,
   getUserPosts,
+  refreshToken
 } from "../controllers/users.js";
 import { verifyToken } from "../services/jwt.js";
 import { userValidator } from "../middleware/validator/userValidator.js";
@@ -33,6 +34,7 @@ userRouter.get("/:userId/followingList", checkUserExist, verifyToken(false), get
 userRouter.get("/:userId/likePosts", checkUserExist, verifyToken(), checkUserAuth, getLikePosts);
 userRouter.get("/:userId/dislikePosts", checkUserExist, verifyToken(), checkUserAuth, getDislikePosts);
 userRouter.get("/:userId/savedPosts", checkUserExist, verifyToken(), checkUserAuth, getSavedPosts);
+userRouter.get("/:userId/refreshToken",checkUserExist,refreshToken);
 userRouter.get("/trending", verifyToken(false), userTrending);
 userRouter.get("/search", verifyToken(false), findBySearch);
 

@@ -19,19 +19,34 @@ import {
   saveRedisUserPost,
   userTrendingInc,
 } from "../services/userServices.js";
-import { blockToken, getRefreshToken } from "../services/jwt.js";
+import jwt from "jsonwebtoken";
+import {
+  blockToken,
+  createRefreshToken,
+  createToken,
+  getblockToken,
+  getRefreshToken,
+  saveRefreshToken,
+} from "../services/jwt.js";
 import json from "body-parser";
 import { addCommentsStatistics } from "../services/commentServices.js";
 import { addPostsStatistics, addPostStatistics, addUserPostInfo, beautyPostsInfo } from "../services/postServices.js";
 import { beautyCommentsInfo } from "../services/commentServices.js";
 import { sortWith } from "../services/arraySorter.js";
+import { promisify } from "util";
+import jwt_decode from "jwt-decode";
+import dotenv from "dotenv";
+dotenv.config();
+const verify = promisify(jwt.verify);
 
 async function deleteUser(req, res) {
   try {
+    let accessToken = req.headers.authorization;
+    accessToken = accessToken ? accessToken.replace("Bearer ", "") : null;
     const [refreshToken] = await Promise.all([
-      getRefreshToken(req.userId),
+      getRefreshToken(req.user._id),
       User.findByIdAndUpdate(req.params.userId, { isDelete: true }),
-      blockToken(req.accessToken),
+      blockToken(accessToken),
     ]);
     await blockToken(refreshToken);
     return res.status(200).json({ msg: "delete succesfully" });
@@ -41,7 +56,6 @@ async function deleteUser(req, res) {
 }
 
 async function findOne(req, res) {
-  const accessToken = req.accessToken;
   try {
     let dbBack = await getRedisUserProfile(req.params.userId);
     if (!dbBack) {
@@ -49,20 +63,19 @@ async function findOne(req, res) {
       await saveRedisUserProfile(req.params.userId, dbBack);
     }
     dbBack = await addUserStatistics(dbBack);
-    if (req.userId) {
-      if (req.userId != req.params.userId) {
-        const follwingList = await Follow.find({ user: req.userId }, { followedUser: 1 }).lean();
+    if (req.user) {
+      if (req.user._id != req.params.userId) {
+        const follwingList = await Follow.find({ user: req.user._id }, { followedUser: 1 }).lean();
         dbBack = addFollowingInfo(dbBack, follwingList);
       }
-      return res.status(200).json({ dbBack, accessToken });
+      return res.status(200).json({ dbBack });
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(404).json({ error: error });
   }
 }
 async function findAll(req, res) {
-  const accessToken = req.accessToken;
   try {
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
@@ -85,19 +98,18 @@ async function findAll(req, res) {
         return user;
       })
     );
-    if (dbBack.length != 0 && req.userId) {
-      const followingList = await Follow.find({ user: req.userId}, { followedUser: 1, _id: 0 }).lean();
+    if (dbBack.length != 0 && req.user._id) {
+      const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
       dbBack.forEach((user, index) => {
         dbBack[index] = addFollowingInfo(user, followingList);
       });
     }
-    res.status(200).json({ dbBack, accessToken });
+    res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
 }
 async function findBySearch(req, res) {
-  const accessToken = req.accessToken;
   try {
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
@@ -116,23 +128,22 @@ async function findBySearch(req, res) {
       })
     );
     if (dbBack.length != 0 && req.user._id) {
-      const followingList = await Follow.find({ user: req.user._id}, { followedUser: 1, _id: 0 }).lean();
+      const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
       dbBack.forEach((user, index) => {
         dbBack[index] = addFollowingInfo(user, followingList);
       });
     }
-    res.status(200).json({ dbBack, accessToken });
+    res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(404).json({ error: error });
   }
 }
 async function updateUser(req, res) {
-  const accessToken = req.accessToken;
   try {
     const dbBack = await User.findByIdAndUpdate(req.params.userId, req.body, {
       new: true,
     });
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
@@ -144,7 +155,6 @@ async function updateBackgroundCover(req, res) {
   await updatePicture(req, res, "backgroundCover");
 }
 async function followUser(req, res) {
-  const accessToken = req.accessToken;
   try {
     if (req.user._Id === req.targetUser._id) {
       res.status(403);
@@ -162,7 +172,7 @@ async function followUser(req, res) {
         userTrendingInc(req.targetUser._id, -10),
       ]);
       const msg = "unfollow successfully.";
-      return res.status(200).json({ msg, accessToken });
+      return res.status(200).json({ msg });
     }
     await Promise.all([
       incUserStatistics(req.user._id, "following", 1),
@@ -174,14 +184,13 @@ async function followUser(req, res) {
       }).save(),
     ]);
     const msg = "follow successfully.";
-    res.status(200).json({ msg, accessToken });
+    res.status(200).json({ msg });
   } catch (error) {
-    res.json({ error: error, accessToken });
+    res.json({ error: error });
   }
 }
 
 async function getFollwer(req, res) {
-  const accessToken = req.accessToken;
   try {
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
@@ -207,13 +216,12 @@ async function getFollwer(req, res) {
       }
     }
 
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
 }
 async function getFollwing(req, res) {
-  const accessToken = req.accessToken;
   try {
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
@@ -232,20 +240,19 @@ async function getFollwing(req, res) {
         })
       );
       if (req.user) {
-        const followingList = await Follow.find({ user: req.user._id}, { followedUser: 1, _id: 0 }).lean();
+        const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
         dbBack.forEach((user, index) => {
           dbBack[index] = addFollowingInfo(user, followingList);
         });
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
 }
 async function getLikePosts(req, res) {
   try {
-    const accessToken = req.accessToken;
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
     const order = req.query.sort;
@@ -266,8 +273,8 @@ async function getLikePosts(req, res) {
     }
     if (dbBack.length != 0) {
       const [followingList, likeList, PostSaveList] = await Promise.all([
-        Follow.find({ user: req.user._id}, { followedUser: 1, _id: 0 }).lean(),
-        PostLike.find({ user: req.user._id}, { post: 1, like: 1, _id: 0 }).lean(),
+        Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean(),
+        PostLike.find({ user: req.user._id }, { post: 1, like: 1, _id: 0 }).lean(),
         SavedPost.find({ user: req.user._id }, { post: 1, _id: 0 }).lean(),
         saveRedisLikedPost(req.params.userId, dbBack),
       ]);
@@ -283,22 +290,21 @@ async function getLikePosts(req, res) {
       );
       switch (order) {
         case "latest":
-          dbBack = sortWith(dbBack,"latest");
+          dbBack = sortWith(dbBack, "latest");
           break;
 
         default:
-          dbBack = sortWith(dbBack,"likes");
+          dbBack = sortWith(dbBack, "likes");
           break;
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
 }
 async function getDislikePosts(req, res) {
   try {
-    const accessToken = req.accessToken;
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
     const order = req.query.sort;
@@ -319,7 +325,7 @@ async function getDislikePosts(req, res) {
     }
     if (dbBack.length != 0) {
       const [followingList, likeList, PostSaveList] = await Promise.all([
-        Follow.find({ user: req.user._id}, { followedUser: 1, _id: 0 }).lean(),
+        Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean(),
         PostLike.find({ user: req.user._id }, { post: 1, like: 1, _id: 0 }).lean(),
         SavedPost.find({ user: req.user._id }, { post: 1, _id: 0 }).lean(),
         saveRedisDisikedPost(req.params.userId, dbBack),
@@ -336,29 +342,28 @@ async function getDislikePosts(req, res) {
       );
       switch (order) {
         case "latest":
-          dbBack = sortWith(dbBack,"latest");
+          dbBack = sortWith(dbBack, "latest");
           break;
 
         default:
-          dbBack = sortWith(dbBack,"likes");
+          dbBack = sortWith(dbBack, "likes");
           break;
       }
     }
 
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
 }
 async function getSavedPosts(req, res) {
   try {
-    const accessToken = req.accessToken;
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
     const order = req.query.sort;
     let dbBack = await getRedisSavedPost(req.params.userId);
     if (!dbBack) {
-      dbBack = await SavedPost.find({ user: req.user._id}, { _id: 0, post: 1 })
+      dbBack = await SavedPost.find({ user: req.user._id }, { _id: 0, post: 1 })
         .lean()
         .populate({
           path: "post",
@@ -390,25 +395,24 @@ async function getSavedPosts(req, res) {
       );
       switch (order) {
         case "latest":
-          dbBack = sortWith(dbBack,"latest");
+          dbBack = sortWith(dbBack, "latest");
           break;
 
         default:
-          dbBack = sortWith(dbBack,"likes");
+          dbBack = sortWith(dbBack, "likes");
           break;
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
 }
 async function userTrending(req, res) {
   try {
-    const accessToken = req.accessToken;
     const topNumber = req.query.top;
     const dbBack = await getUserTrending(topNumber);
-    res.status(200).json({ dbBack, accessToken });
+    res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
@@ -417,7 +421,6 @@ async function userTrending(req, res) {
 async function getUserComments(req, res) {
   try {
     const userId = req.params.userId;
-    const accessToken = req.accessToken;
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
     const order = req.query.sort;
@@ -437,7 +440,7 @@ async function getUserComments(req, res) {
       await saveRedisUserComment(userId, dbBack);
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       if (req.user) {
-        const self = req.user._id=== userId;
+        const self = req.user._id === userId;
         dbBack = await beautyCommentsInfo(dbBack, req.user._id, self);
       }
       dbBack = await addCommentsStatistics(dbBack);
@@ -454,14 +457,13 @@ async function getUserComments(req, res) {
           break;
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
 }
 async function getUserPosts(req, res) {
   try {
-    const accessToken = req.accessToken;
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
     let dbBack = await getRedisUserPost(req.params.userId);
@@ -475,21 +477,21 @@ async function getUserPosts(req, res) {
       await saveRedisUserPost(req.params.userId, dbBack);
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       if (req.user) {
-        const self = req.user._id=== req.params.userId;
+        const self = req.user._id === req.params.userId;
         dbBack = await beautyPostsInfo(dbBack, req.user._id, self);
       }
       dbBack = await addPostsStatistics(dbBack);
       switch (order) {
         case "latest":
-          dbBack = sortWith(dbBack,"latest");
+          dbBack = sortWith(dbBack, "latest");
           break;
 
         default:
-          dbBack = sortWith(dbBack,"likes");
+          dbBack = sortWith(dbBack, "likes");
           break;
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
@@ -502,6 +504,37 @@ async function logOut(req, res) {
   res.status(200).json({ msg: "log out successfully" });
 }
 
+async function refreshToken(req, res) {
+  try {
+    let refreshToken = req.headers.authorization;
+    refreshToken = refreshToken ? refreshToken.replace("Bearer ", "") : null;
+    if (refreshToken) {
+      let [inBlockList, decodedToken] = await Promise.all([
+        getblockToken(refreshToken),
+        verify(refreshToken, process.env.REFRESHSECRETORKEY),
+      ]);
+      if (!inBlockList) {
+        const userRrefreshToken = await getRefreshToken(decodedToken.userInfo.userId);
+        if (userRrefreshToken === refreshToken) {
+          const [newAccessToken, newRefreshToken] = await Promise.all([
+            createToken(decodedToken.userInfo),
+            createRefreshToken(decodedToken.userInfo),
+            blockToken(refreshToken),
+          ]);
+          const accessToken = "Bearer " + newAccessToken;
+          refreshToken = newRefreshToken;
+          // refresh refreshToken
+          await saveRefreshToken(decodedToken.userInfo.userId, newRefreshToken);
+          return res.status(200).json({ accessToken, refreshToken });
+        }
+      }
+      res.status(401);
+      throw "Invalid refreshToken";
+    }
+  } catch (error) {
+    return res.json({ error: error });
+  }
+}
 export {
   deleteUser,
   findOne,
@@ -520,4 +553,5 @@ export {
   userTrending,
   getUserComments,
   getUserPosts,
+  refreshToken,
 };
