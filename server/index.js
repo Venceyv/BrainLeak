@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import EventEmitter from "events";
 import cors from "cors";
 import { userRouter } from "./routes/users.js";
 import { postRouter } from "./routes/post.js";
@@ -15,7 +14,6 @@ import { clearReplyByTime } from "./services/replyServices.js";
 import { redisComments, redisPosts, redisReplies, redisUsers } from "./configs/redis.js";
 import { clearCacheByTime } from "./services/redisServices.js";
 
-EventEmitter.defaultMaxListeners = 11;
 dotenv.config();
 const app = express();
 app.use(cors());
