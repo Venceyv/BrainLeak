@@ -114,7 +114,7 @@ export const Navbar: FC = (): JSX.Element => {
 
         <input
           type="search"
-          className="block p-4 pl-10 w-[300px] h-5 text-sm leading-normal bg-primary-black rounded-lg placeholder-zinc-400 text-white"
+          className="block p-4 pl-10 w-[200px] h-5 text-sm leading-normal bg-primary-black rounded-lg placeholder-zinc-400 text-white"
           placeholder="Search a post..."
         />
       </div>

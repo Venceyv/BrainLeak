@@ -13,8 +13,8 @@ const useLogin: Function = (): { isLoggedIn: boolean; userLogin: () => Function;
 
         localStorage.setItem('jwt', JSON.stringify(data.token));
         localStorage.setItem('userInfo', JSON.stringify(data.dbBack));
-        setLogIn((prev) => !prev);
 
+        setLogIn((prev) => !prev);
         //TODO display: login error
       } catch (error) {
         throw error;
@@ -38,6 +38,7 @@ const useLogin: Function = (): { isLoggedIn: boolean; userLogin: () => Function;
       await logOut();
       localStorage.removeItem('jwt');
       localStorage.removeItem('userInfo');
+      setLogIn((prev) => !prev);
     };
   };
 
