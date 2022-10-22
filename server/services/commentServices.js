@@ -82,7 +82,7 @@ async function getCommentsUderPost(postId) {
   try {
     let commentUnderPost = await getRedisCommentProfile(postId);
     if (!commentUnderPost) {
-      commentUnderPost = await Comment.find({ relatedPost: postId }, { relatedPost: 0, edited: 0 })
+      commentUnderPost = await Comment.find({ relatedPost: postId })
         .lean()
         .populate("author", { username: 1, avatar: 1 }, { lean: true });
       if (commentUnderPost.length != 0) {

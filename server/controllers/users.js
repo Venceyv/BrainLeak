@@ -24,6 +24,7 @@ import json from "body-parser";
 import { addCommentsStatistics } from "../services/commentServices.js";
 import { addPostsStatistics, addPostStatistics, addUserPostInfo, beautyPostsInfo } from "../services/postServices.js";
 import { beautyCommentsInfo } from "../services/commentServices.js";
+import { sortWith } from "../services/arraySorter.js";
 
 async function deleteUser(req, res) {
   try {
@@ -282,15 +283,11 @@ async function getLikePosts(req, res) {
       );
       switch (order) {
         case "latest":
-          dbBack.sort((a, b) => {
-            return new Date(b.publishDate) - new Date(a.publishDate);
-          });
+          dbBack = sortWith(dbBack,"latest");
           break;
 
         default:
-          dbBack.sort((a, b) => {
-            return b.statistics.likes - a.statistics.likes;
-          });
+          dbBack = sortWith(dbBack,"likes");
           break;
       }
     }
@@ -339,15 +336,11 @@ async function getDislikePosts(req, res) {
       );
       switch (order) {
         case "latest":
-          dbBack.sort((a, b) => {
-            return new Date(b.publishDate) - new Date(a.publishDate);
-          });
+          dbBack = sortWith(dbBack,"latest");
           break;
 
         default:
-          dbBack.sort((a, b) => {
-            return b.statistics.likes - a.statistics.likes;
-          });
+          dbBack = sortWith(dbBack,"likes");
           break;
       }
     }
@@ -397,15 +390,11 @@ async function getSavedPosts(req, res) {
       );
       switch (order) {
         case "latest":
-          dbBack.sort((a, b) => {
-            return new Date(b.publishDate) - new Date(a.publishDate);
-          });
+          dbBack = sortWith(dbBack,"latest");
           break;
 
         default:
-          dbBack.sort((a, b) => {
-            return b.statistics.likes - a.statistics.likes;
-          });
+          dbBack = sortWith(dbBack,"likes");
           break;
       }
     }
@@ -492,14 +481,11 @@ async function getUserPosts(req, res) {
       dbBack = await addPostsStatistics(dbBack);
       switch (order) {
         case "latest":
-          dbBack.sort((a, b) => {
-            return new Date(b.publishDate) - new Date(a.publishDate);
-          });
+          dbBack = sortWith(dbBack,"latest");
           break;
+
         default:
-          dbBack.sort((a, b) => {
-            return b.statistics.likes - a.statistics.likes;
-          });
+          dbBack = sortWith(dbBack,"likes");
           break;
       }
     }

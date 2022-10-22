@@ -13,6 +13,7 @@ import {
 import { incUserStatistics, userTrendingInc } from "../services/userServices.js";
 import json from "body-parser";
 import { redisTrending } from "../configs/redis.js";
+import { sortWith } from "../services/arraySorter.js";
 
 async function createPost(req, res) {
   try {
@@ -97,14 +98,11 @@ async function findByTags(req, res) {
     }
     switch (order) {
       case "latest":
-        dbBack.sort((a, b) => {
-          return new Date(b.publishDate) - new Date(a.publishDate);
-        });
+        dbBack = sortWith(dbBack,"latest");
         break;
+
       default:
-        dbBack.sort((a, b) => {
-          return b.statistics.likes - a.statistics.likes;
-        });
+        dbBack = sortWith(dbBack,"likes");
         break;
     }
     return res.status(200).json({ dbBack, accessToken });
@@ -134,36 +132,16 @@ async function findAll(req, res) {
       }
       switch (order) {
         case "latest":
-          dbBack.sort((a, b) => {
-            return new Date(b.publishDate) - new Date(a.publishDate);
-          });
+          dbBack = sortWith(dbBack,"latest");
           break;
         case "best":
-          dbBack.sort((a, b) => {
-            if (b.statistics.likes - b.statistics.dislikes > a.statistics.likes - a.statistics.dislikes) {
-              return 1;
-            }
-            return -1;
-          });
+          dbBack = sortWith(dbBack,"best");
           break;
         case "hot":
-          dbBack.sort((a, b) => {
-            //pubulished til now --minutes
-            const aCreateTime = (Date.now() - new Date(a.publishDate)) / 1000 / 60;
-            //pubulished til now --minutes
-            const bCreateTime = (Date.now() - new Date(b.publishDate)) / 1000 / 60;
-            const aHot = Math.round(a.statistics.likes / aCreateTime);
-            const bHot = Math.round(b.statistics.likes / bCreateTime);
-            if (aHot > bHot) {
-              return -1;
-            }
-            return 1;
-          });
+          dbBack = sortWith(dbBack,"hot");
           break;
         default:
-          dbBack.sort((a, b) => {
-            return b.statistics.likes - a.statistics.likes;
-          });
+          dbBack = sortWith(dbBack,"likes");
           break;
       }
     }
@@ -201,14 +179,11 @@ async function findBySearch(req, res) {
       }
       switch (order) {
         case "latest":
-          dbBack.sort((a, b) => {
-            return new Date(b.publishDate) - new Date(a.publishDate);
-          });
+          dbBack = sortWith(dbBack,"latest");
           break;
+
         default:
-          dbBack.sort((a, b) => {
-            return b.statistics.likes - a.statistics.likes;
-          });
+          dbBack = sortWith(dbBack,"likes");
           break;
       }
     }

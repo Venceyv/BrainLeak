@@ -44,210 +44,77 @@
                     "dbBack": {
                       "type": "object",
                       "properties": {
-                        "userInfo": {
+                        "_id": {
+                          "type": "string"
+                        },
+                        "avatar": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "introduction": {
+                          "type": "string"
+                        },
+                        "backgroundCover": {
+                          "type": "string"
+                        },
+                        "__v": {
+                          "type": "integer"
+                        },
+                        "statistics": {
                           "type": "object",
                           "properties": {
-                            "_id": {
-                              "type": "string"
-                            },
-                            "avatar": {
-                              "type": "string"
-                            },
-                            "username": {
-                              "type": "string"
-                            },
-                            "introduction": {
-                              "type": "string"
-                            },
-                            "backgroundCover": {
-                              "type": "string"
-                            },
-                            "__v": {
+                            "following": {
                               "type": "integer"
                             },
-                            "statistics": {
-                              "type": "object",
-                              "properties": {
-                                "following": {
-                                  "type": "integer"
-                                },
-                                "follower": {
-                                  "type": "integer"
-                                },
-                                "posts": {
-                                  "type": "integer"
-                                },
-                                "comments": {
-                                  "type": "integer"
-                                },
-                                "upvotes": {
-                                  "type": "integer"
-                                }
-                              },
-                              "required": [
-                                "following",
-                                "follower",
-                                "posts",
-                                "comments",
-                                "upvotes"
-                              ],
-                              "x-apidog-orders": [
-                                "following",
-                                "follower",
-                                "posts",
-                                "comments",
-                                "upvotes"
-                              ],
-                              "x-apidog-ignore-properties": []
+                            "follower": {
+                              "type": "integer"
+                            },
+                            "posts": {
+                              "type": "integer"
+                            },
+                            "comments": {
+                              "type": "integer"
+                            },
+                            "upvotes": {
+                              "type": "integer"
                             }
                           },
                           "required": [
-                            "_id",
-                            "avatar",
-                            "username",
-                            "introduction",
-                            "backgroundCover",
-                            "__v",
-                            "statistics"
+                            "following",
+                            "follower",
+                            "posts",
+                            "comments",
+                            "upvotes"
                           ],
                           "x-apidog-orders": [
-                            "_id",
-                            "avatar",
-                            "username",
-                            "introduction",
-                            "backgroundCover",
-                            "__v",
-                            "statistics"
+                            "following",
+                            "follower",
+                            "posts",
+                            "comments",
+                            "upvotes"
                           ],
                           "x-apidog-ignore-properties": []
-                        },
-                        "commentList": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "_id": {
-                                "type": "string"
-                              },
-                              "content": {
-                                "type": "string"
-                              },
-                              "author": {
-                                "type": "object",
-                                "properties": {
-                                  "_id": {
-                                    "type": "string"
-                                  },
-                                  "avatar": {
-                                    "type": "string"
-                                  },
-                                  "username": {
-                                    "type": "string"
-                                  },
-                                  "introduction": {
-                                    "type": "string"
-                                  }
-                                },
-                                "required": [
-                                  "_id",
-                                  "avatar",
-                                  "username",
-                                  "introduction"
-                                ],
-                                "x-apidog-orders": [
-                                  "_id",
-                                  "avatar",
-                                  "username",
-                                  "introduction"
-                                ],
-                                "x-apidog-ignore-properties": []
-                              },
-                              "createTime": {
-                                "type": "string"
-                              },
-                              "updateTime": {
-                                "type": "string"
-                              },
-                              "relatedPost": {
-                                "type": "object",
-                                "properties": {
-                                  "_id": {
-                                    "type": "string"
-                                  },
-                                  "title": {
-                                    "type": "string"
-                                  }
-                                },
-                                "required": [
-                                  "_id",
-                                  "title"
-                                ],
-                                "x-apidog-orders": [
-                                  "_id",
-                                  "title"
-                                ],
-                                "x-apidog-ignore-properties": []
-                              },
-                              "__v": {
-                                "type": "integer"
-                              },
-                              "statistics": {
-                                "type": "object",
-                                "properties": {
-                                  "likes": {
-                                    "type": "integer"
-                                  },
-                                  "dislikes": {
-                                    "type": "integer"
-                                  },
-                                  "replies": {
-                                    "type": "integer"
-                                  }
-                                },
-                                "required": [
-                                  "likes",
-                                  "dislikes",
-                                  "replies"
-                                ],
-                                "x-apidog-orders": [
-                                  "likes",
-                                  "dislikes",
-                                  "replies"
-                                ],
-                                "x-apidog-ignore-properties": []
-                              }
-                            },
-                            "required": [
-                              "_id",
-                              "content",
-                              "author",
-                              "createTime",
-                              "updateTime",
-                              "relatedPost",
-                              "__v",
-                              "statistics"
-                            ],
-                            "x-apidog-orders": [
-                              "_id",
-                              "content",
-                              "author",
-                              "createTime",
-                              "updateTime",
-                              "relatedPost",
-                              "__v",
-                              "statistics"
-                            ],
-                            "x-apidog-ignore-properties": []
-                          }
                         }
                       },
                       "required": [
-                        "userInfo",
-                        "commentList"
+                        "_id",
+                        "avatar",
+                        "username",
+                        "introduction",
+                        "backgroundCover",
+                        "__v",
+                        "statistics"
                       ],
                       "x-apidog-orders": [
-                        "userInfo",
-                        "commentList"
+                        "_id",
+                        "avatar",
+                        "username",
+                        "introduction",
+                        "backgroundCover",
+                        "__v",
+                        "statistics"
                       ],
                       "x-apidog-ignore-properties": []
                     },
@@ -271,71 +138,19 @@
                     "summary": "Success with token(self) passed",
                     "value": {
                       "dbBack": {
-                        "userInfo": {
-                          "_id": "634f1bcc7b5e14c2c8f70325",
-                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
-                          "username": "理塘最速传说",
-                          "introduction": "我是妈妈生的",
-                          "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png",
-                          "__v": 0,
-                          "statistics": {
-                            "following": 2,
-                            "follower": 1,
-                            "posts": 1,
-                            "comments": 2,
-                            "upvotes": 1
-                          }
-                        },
-                        "commentList": [
-                          {
-                            "_id": "635068c7d646d16d6af1d0bf",
-                            "content": "阿这",
-                            "author": {
-                              "_id": "634f1bcc7b5e14c2c8f70325",
-                              "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
-                              "username": "理塘最速传说",
-                              "introduction": "我是妈妈生的"
-                            },
-                            "createTime": "2022-10-19T21:11:22.122Z",
-                            "updateTime": "2022-10-19T21:11:22.122Z",
-                            "relatedPost": {
-                              "_id": "634f1d50425aca4adb9dc52d",
-                              "title": "薇娅赚那么多钱为什么不愿意缴税"
-                            },
-                            "__v": 0,
-                            "statistics": {
-                              "likes": 0,
-                              "dislikes": 0,
-                              "replies": 0
-                            },
-                            "like": false,
-                            "dislike": false
-                          },
-                          {
-                            "_id": "634f954a34b5ac202513592d",
-                            "content": "痛，太痛了。",
-                            "author": {
-                              "_id": "634f1bcc7b5e14c2c8f70325",
-                              "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
-                              "username": "理塘最速传说",
-                              "introduction": "我是妈妈生的"
-                            },
-                            "createTime": "2022-10-19T03:09:36.284Z",
-                            "updateTime": "2022-10-19T03:09:36.284Z",
-                            "relatedPost": {
-                              "_id": "634f1d50425aca4adb9dc52d",
-                              "title": "薇娅赚那么多钱为什么不愿意缴税"
-                            },
-                            "__v": 0,
-                            "statistics": {
-                              "likes": 0,
-                              "dislikes": 0,
-                              "replies": 0
-                            },
-                            "like": false,
-                            "dislike": false
-                          }
-                        ]
+                        "_id": "634f1bcc7b5e14c2c8f70325",
+                        "avatar": "https://storage.googleapis.com/brainleak/ji.png",
+                        "username": "理塘最速传说",
+                        "introduction": "我是妈妈生的",
+                        "backgroundCover": "https://storage.googleapis.com/brainleak/流星雨.png",
+                        "__v": 0,
+                        "statistics": {
+                          "following": 2,
+                          "follower": 2,
+                          "posts": 1,
+                          "comments": 2,
+                          "upvotes": 1
+                        }
                       },
                       "accessToken": null
                     }
@@ -344,74 +159,20 @@
                     "summary": "Success with token(not self) passed",
                     "value": {
                       "dbBack": {
-                        "userInfo": {
-                          "_id": "634f1bcc7b5e14c2c8f70325",
-                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
-                          "username": "理塘最速传说",
-                          "introduction": "我是妈妈生的",
-                          "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png",
-                          "__v": 0,
-                          "statistics": {
-                            "following": 2,
-                            "follower": 1,
-                            "posts": 1,
-                            "comments": 2,
-                            "upvotes": 1
-                          },
-                          "following": true
+                        "_id": "634f1bcc7b5e14c2c8f70325",
+                        "avatar": "https://storage.googleapis.com/brainleak/ji.png",
+                        "username": "理塘最速传说",
+                        "introduction": "我是妈妈生的",
+                        "backgroundCover": "https://storage.googleapis.com/brainleak/流星雨.png",
+                        "__v": 0,
+                        "statistics": {
+                          "following": 2,
+                          "follower": 2,
+                          "posts": 1,
+                          "comments": 2,
+                          "upvotes": 1
                         },
-                        "commentList": [
-                          {
-                            "_id": "635068c7d646d16d6af1d0bf",
-                            "content": "阿这",
-                            "author": {
-                              "_id": "634f1bcc7b5e14c2c8f70325",
-                              "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
-                              "username": "理塘最速传说",
-                              "introduction": "我是妈妈生的",
-                              "following": true
-                            },
-                            "createTime": "2022-10-19T21:11:22.122Z",
-                            "updateTime": "2022-10-19T21:11:22.122Z",
-                            "relatedPost": {
-                              "_id": "634f1d50425aca4adb9dc52d",
-                              "title": "薇娅赚那么多钱为什么不愿意缴税"
-                            },
-                            "__v": 0,
-                            "statistics": {
-                              "likes": 0,
-                              "dislikes": 0,
-                              "replies": 0
-                            },
-                            "like": false,
-                            "dislike": false
-                          },
-                          {
-                            "_id": "634f954a34b5ac202513592d",
-                            "content": "痛，太痛了。",
-                            "author": {
-                              "_id": "634f1bcc7b5e14c2c8f70325",
-                              "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
-                              "username": "理塘最速传说",
-                              "introduction": "我是妈妈生的",
-                              "following": true
-                            },
-                            "createTime": "2022-10-19T03:09:36.284Z",
-                            "updateTime": "2022-10-19T03:09:36.284Z",
-                            "relatedPost": {
-                              "_id": "634f1d50425aca4adb9dc52d",
-                              "title": "薇娅赚那么多钱为什么不愿意缴税"
-                            },
-                            "__v": 0,
-                            "statistics": {
-                              "likes": 0,
-                              "dislikes": 0,
-                              "replies": 0
-                            },
-                            "like": false,
-                            "dislike": false
-                          }
-                        ]
+                        "following": true
                       },
                       "accessToken": null
                     }
@@ -458,5 +219,10 @@
   "components": {
     "schemas": {}
   },
-  "servers": []
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
 }
