@@ -24,13 +24,13 @@ export const postOAuth = async (req, res) => {
       userId:dbBack._id,
       username:dbBack.username
     }
-    let token = await createToken(userInfo);
-    console.log(token);
-    token = "Bearer " + token;
+    let accessToken = await createToken(userInfo);
+    console.log(accessToken);
+    accessToken = "Bearer " + accessToken;
     const refreshToken = await createRefreshToken(userInfo);
     await saveRefreshToken(userInfo.userId, refreshToken);
     console.log(refreshToken);
-    res.status(200).json({ token,refreshToken, dbBack });
+    res.status(200).json({ accessToken,refreshToken, dbBack });
   } catch (error) {
     console.log("errored", error);
     throw new Error(error);
