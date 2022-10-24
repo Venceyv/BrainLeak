@@ -1,9 +1,9 @@
-import { FC, Suspense, lazy } from 'react';
+import { FC, Suspense, lazy, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { Navbar, Posts, Login } from './components';
 import Home from './pages/Home';
 import { Layout } from './layouts/Layout';
+import { Login } from './feature/Login';
 import './App.css';
 
 const App: FC = (): JSX.Element => {
@@ -12,7 +12,7 @@ const App: FC = (): JSX.Element => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
+          {/* <Route path="login" element={<Login />} /> */}
         </Route>
 
         {/* <Route path="*" element={<PageNotFound/>} /> */}

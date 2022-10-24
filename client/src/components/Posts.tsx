@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { PostAbstractData } from '../../data/Post';
-import PostAbstract from '../PostAbstract/PostAbstract';
+import { PostAbstractData } from '../data/Post';
+import PostAbstract from './PostAbstract';
 
 export const Posts: FC = (): JSX.Element => {
   const postAbstractArr = PostAbstractData;
