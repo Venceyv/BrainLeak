@@ -4,7 +4,7 @@ const getRequestHeader: Function = (): { Authorization: string; 'Content-Type': 
   const token: string = JSON.parse(localStorage.getItem('jwt') as string);
   return {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${token ? token : ''}`,
+    Authorization: `${token ? token : ''}`,
   };
 };
 

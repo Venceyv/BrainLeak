@@ -1,6 +1,12 @@
-import { FC } from "react";
-import { Navbar } from "../components";
+import { FC } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Navbar } from '../components';
 
-const Layout: FC = (): JSX.Element => {
-  return <Navbar />;
+export const Layout: FC = (): JSX.Element => {
+  return (
+    <div className="w-full h-full bg-primary-black">
+      <Navbar />
+      <Outlet />
+    </div>
+  );
 };

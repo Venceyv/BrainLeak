@@ -1,5 +1,5 @@
 import { useGoogleLogin } from '@react-oauth/google';
-import { googleOAuth, logOut } from '../../api/oAuthAPI';
+import { postGoogleOAuth, postLogOut } from '../../api/oAuthAPI';
 import { useEffect, useRef, useState } from 'react';
 
 // TODO: USER LOGOUT return type
@@ -9,12 +9,11 @@ const useLogin: Function = (): { isLoggedIn: boolean; userLogin: () => Function;
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
       try {
-        const data = await googleOAuth(code);
-
+        const data = await postGoogleOAuth(code);
         localStorage.setItem('jwt', JSON.stringify(data.token));
         localStorage.setItem('userInfo', JSON.stringify(data.dbBack));
-        setLogIn((prev) => !prev);
 
+        setLogIn((prev) => !prev);
         //TODO display: login error
       } catch (error) {
         throw error;
@@ -35,9 +34,10 @@ const useLogin: Function = (): { isLoggedIn: boolean; userLogin: () => Function;
   // TODO: logout
   const userLogout: () => Function = () => {
     return async () => {
-      await logOut();
+      await postLogOut();
       localStorage.removeItem('jwt');
       localStorage.removeItem('userInfo');
+      setLogIn((prev) => !prev);
     };
   };
 

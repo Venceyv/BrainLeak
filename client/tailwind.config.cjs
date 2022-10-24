@@ -14,6 +14,10 @@ module.exports = {
         'primary-black': '#181818',
         'secondary-black': '#202020',
       },
+
+      screens: {
+        xs: '300px',
+      },
     },
   },
   plugins: [],

@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { postOAuth, postRefreshToken } from "../controllers/auth.js";
+import { Router } from 'express';
+import { postOAuth, postRefreshToken } from '../controllers/auth.js';
 
 const router = Router();
 
