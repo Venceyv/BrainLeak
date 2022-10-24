@@ -1,11 +1,8 @@
 import { URL } from '../data/Constants';
 import axios from './axiosConfig';
 
-//remove axios
-
-//TODO Promise type
-// Google OAuth
-export const googleOAuth: Function = async (code: string): Promise<any> => {
+// google OAuth
+export const postGoogleOAuth: Function = async (code: string): Promise<any> => {
   try {
     const { data } = await axios.post(`${URL}/auth/google`, {
       code,
@@ -16,11 +13,10 @@ export const googleOAuth: Function = async (code: string): Promise<any> => {
   }
 };
 
-//log out
-export const logOut: Function = async (): Promise<any> => {
+export const postLogOut: Function = async (): Promise<any> => {
   try {
     const user = JSON.parse(localStorage.getItem('userInfo') as string);
-    await axios.post(`${URL}/users/${user._id}/logout`);
+    await axios.post(`${URL}/users/${user?._id}/logout`);
   } catch (error) {
     throw error;
   }
