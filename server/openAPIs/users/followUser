@@ -1,0 +1,129 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BrainLeak",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "users"
+    }
+  ],
+  "paths": {
+    "/users/{userId}/follow": {
+      "put": {
+        "summary": "follow/unfollow user",
+        "x-apidog-folder": "users",
+        "x-apidog-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "634f1bcc7b5e14c2c8f70325",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string"
+                    },
+                    "accessToken": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "msg",
+                    "accessToken"
+                  ],
+                  "x-apidog-orders": [
+                    "msg",
+                    "accessToken"
+                  ],
+                  "x-apidog-ignore-properties": []
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "accessToken": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "accessToken"
+                  ],
+                  "x-apidog-orders": [
+                    "error",
+                    "accessToken"
+                  ],
+                  "x-apidog-ignore-properties": []
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Record Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "x-apidog-ignore-properties": [],
+                  "x-apidog-orders": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552168-run"
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
+}

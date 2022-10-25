@@ -40,7 +40,6 @@ async function deleteUser(req, res) {
 }
 
 async function findOne(req, res) {
-  const accessToken = req.accessToken;
   try {
     let dbBack = await getRedisUserProfile(req.params.userId);
     if (!dbBack) {
@@ -61,7 +60,6 @@ async function findOne(req, res) {
   }
 }
 async function findAll(req, res) {
-  const accessToken = req.accessToken;
   try {
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
@@ -90,13 +88,12 @@ async function findAll(req, res) {
         dbBack[index] = addFollowingInfo(user, followingList);
       });
     }
-    res.status(200).json({ dbBack, accessToken });
+    res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
 }
 async function findBySearch(req, res) {
-  const accessToken = req.accessToken;
   try {
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
@@ -120,18 +117,17 @@ async function findBySearch(req, res) {
         dbBack[index] = addFollowingInfo(user, followingList);
       });
     }
-    res.status(200).json({ dbBack, accessToken });
+    res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(404).json({ error: error });
   }
 }
 async function updateUser(req, res) {
-  const accessToken = req.accessToken;
   try {
     const dbBack = await User.findByIdAndUpdate(req.params.userId, req.body, {
       new: true,
     });
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
@@ -143,9 +139,8 @@ async function updateBackgroundCover(req, res) {
   await updatePicture(req, res, 'backgroundCover');
 }
 async function followUser(req, res) {
-  const accessToken = req.accessToken;
   try {
-    if (req.user.email === req.targetUser.email) {
+    if (req.user._Id === req.targetUser._id) {
       res.status(403);
       throw 'cant follow yourself!';
     }
@@ -175,18 +170,21 @@ async function followUser(req, res) {
     const msg = 'follow successfully.';
     res.status(200).json({ msg, accessToken });
   } catch (error) {
-    res.json({ error: error, accessToken });
+    res.json({ error: error });
   }
 }
 
 async function getFollwer(req, res) {
-  const accessToken = req.accessToken;
   try {
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
     let dbBack = await Follow.find({ followedUser: req.params.userId }, { followedUser: 0, _id: 0 })
       .lean()
-      .populate('user', { username: 1, avatar: 1, introduction: 1 }, { lean: true });
+      .populate(
+        "user",
+        { username: 1, avatar: 1, introduction: 1 },
+        { lean: true }
+      );
     if (dbBack.length != 0) {
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack.forEach((userData, index) => {
@@ -206,13 +204,12 @@ async function getFollwer(req, res) {
       }
     }
 
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
 }
 async function getFollwing(req, res) {
-  const accessToken = req.accessToken;
   try {
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
@@ -237,14 +234,13 @@ async function getFollwing(req, res) {
         });
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
   }
 }
 async function getLikePosts(req, res) {
   try {
-    const accessToken = req.accessToken;
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
     const order = req.query.sort;
@@ -288,20 +284,17 @@ async function getLikePosts(req, res) {
           break;
 
         default:
-          dbBack.sort((a, b) => {
-            return b.statistics.likes - a.statistics.likes;
-          });
+          dbBack = sortWith(dbBack, "likes");
           break;
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
 }
 async function getDislikePosts(req, res) {
   try {
-    const accessToken = req.accessToken;
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
     const order = req.query.sort;
@@ -345,21 +338,18 @@ async function getDislikePosts(req, res) {
           break;
 
         default:
-          dbBack.sort((a, b) => {
-            return b.statistics.likes - a.statistics.likes;
-          });
+          dbBack = sortWith(dbBack, "likes");
           break;
       }
     }
 
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
 }
 async function getSavedPosts(req, res) {
   try {
-    const accessToken = req.accessToken;
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
     const order = req.query.sort;
@@ -403,23 +393,20 @@ async function getSavedPosts(req, res) {
           break;
 
         default:
-          dbBack.sort((a, b) => {
-            return b.statistics.likes - a.statistics.likes;
-          });
+          dbBack = sortWith(dbBack, "likes");
           break;
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
 }
 async function userTrending(req, res) {
   try {
-    const accessToken = req.accessToken;
     const topNumber = req.query.top;
     const dbBack = await getUserTrending(topNumber);
-    res.status(200).json({ dbBack, accessToken });
+    res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
@@ -428,7 +415,6 @@ async function userTrending(req, res) {
 async function getUserComments(req, res) {
   try {
     const userId = req.params.userId;
-    const accessToken = req.accessToken;
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
     const order = req.query.sort;
@@ -465,14 +451,13 @@ async function getUserComments(req, res) {
           break;
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
 }
 async function getUserPosts(req, res) {
   try {
-    const accessToken = req.accessToken;
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
     let dbBack = await getRedisUserPost(req.params.userId);
@@ -496,14 +481,13 @@ async function getUserPosts(req, res) {
             return new Date(b.publishDate) - new Date(a.publishDate);
           });
           break;
+
         default:
-          dbBack.sort((a, b) => {
-            return b.statistics.likes - a.statistics.likes;
-          });
+          dbBack = sortWith(dbBack, "likes");
           break;
       }
     }
-    return res.status(200).json({ dbBack, accessToken });
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
@@ -516,6 +500,37 @@ async function logOut(req, res) {
   res.status(200).json({ msg: 'log out successfully' });
 }
 
+async function refreshToken(req, res) {
+  try {
+    let refreshToken = req.headers.authorization;
+    refreshToken = refreshToken ? refreshToken.replace("Bearer ", "") : null;
+    if (refreshToken) {
+      let [inBlockList, decodedToken] = await Promise.all([
+        getblockToken(refreshToken),
+        verify(refreshToken, process.env.REFRESHSECRETORKEY),
+      ]);
+      if (!inBlockList) {
+        const userRrefreshToken = await getRefreshToken(decodedToken.userInfo.userId);
+        if (userRrefreshToken === refreshToken) {
+          const [newAccessToken, newRefreshToken] = await Promise.all([
+            createToken(decodedToken.userInfo),
+            createRefreshToken(decodedToken.userInfo),
+            blockToken(refreshToken),
+          ]);
+          const accessToken = "Bearer " + newAccessToken;
+          refreshToken = newRefreshToken;
+          // refresh refreshToken
+          await saveRefreshToken(decodedToken.userInfo.userId, newRefreshToken);
+          return res.status(200).json({ accessToken, refreshToken });
+        }
+      }
+      res.status(401);
+      throw "Invalid refreshToken";
+    }
+  } catch (error) {
+    return res.json({ error: error });
+  }
+}
 export {
   deleteUser,
   findOne,
@@ -534,4 +549,5 @@ export {
   userTrending,
   getUserComments,
   getUserPosts,
+  refreshToken,
 };

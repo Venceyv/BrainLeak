@@ -1,6 +1,7 @@
-import { FC, useState } from 'react';
-import { useLogin, useDetectOutsideClick, useDropDown } from './Navbar.hook';
-import { LoginSVG, NotificationSVG, UserIconDropDown } from '../index';
+import { FC } from 'react';
+import { useLogin, useDetectOutsideClick, useDropDown } from './index.hook';
+import { LoginSVG, NotificationSVG } from '../../components';
+import { UserIconDropDown } from './components/UserIconDropDown';
 
 interface User {
   username: string;
@@ -12,14 +13,17 @@ interface User {
   backgroundCover: string;
 }
 
+interface NavbarProp {
+  setPresentLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 //TODO: user api && persistent login
-export const Navbar: FC = (): JSX.Element => {
-  const [isPresentLogin, setPresentLogin] = useState<boolean>(false);
+export const Navbar: FC<NavbarProp> = ({ setPresentLogin }): JSX.Element => {
   const { isLoggedIn, userLogin, userLogout } = useLogin();
   const { userRef, dropdown, setUserDropDown, toggleUserDropDown, userData } = useDropDown();
   useDetectOutsideClick(userRef, setUserDropDown);
 
-  const presentLogin = () => {
+  const presentLogin: Function = (): Function => {
     return () => {
       setPresentLogin(true);
     };
@@ -74,8 +78,6 @@ export const Navbar: FC = (): JSX.Element => {
           userLogout={userLogout}
         />
       )}
-
-      {isPresentLogin && <div className=""></div>}
     </div>
   );
 };
