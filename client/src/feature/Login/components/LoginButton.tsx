@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { FC } from 'react';
+
 export const LoginButton: FC = (): JSX.Element => {
   return (
     <button
@@ -18,9 +19,7 @@ export const LoginButton: FC = (): JSX.Element => {
         ></path>
       </svg>
 
-      <h1 className="text-lg transition ease-in-out group-hover:text-secondary-black text-white">
-        Continue With Google
-      </h1>
+      <h1 className="text-lg transition ease-in-out group-hover:text-secondary-black text-white">Continue With Google</h1>
     </button>
   );
 };

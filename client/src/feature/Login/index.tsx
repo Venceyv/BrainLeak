@@ -1,11 +1,11 @@
-import { FC } from "react";
-import { LoginButton } from "./LoginButton";
+import { FC, useState } from 'react';
+import { LoginButton } from './components/LoginButton';
 
 interface LoginProps {
   setPresentLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Login: FC<LoginProps> = ({setPresentLogin}): JSX.Element => {
+export const Login: FC<LoginProps> = ({ setPresentLogin }): JSX.Element => {
   return (
     <>
       <div className="fixed flex justify-center items-center top-0 left-0 h-screen w-screen blur bg-opacity-80  bg-primary-black "></div>
@@ -16,14 +16,9 @@ export const Login: FC<LoginProps> = ({setPresentLogin}): JSX.Element => {
             <LoginButton />
           </div>
           <p className="text-xs text-center italic text-white">
-            By continuing, you are agreeing to set up a BrainLeak account and
-            agreeing to our User Agreement and Privacy Policy.
+            By continuing, you are agreeing to set up a BrainLeak account and agreeing to our User Agreement and Privacy Policy.
           </p>
-          <img
-            src="/assets/img/loginPictureLeft.png"
-            alt="cat-left"
-            className="absolute hidden right-[268px] top-[10px] w-32 xs:block"
-          />
+          <img src="/assets/img/loginPictureLeft.png" alt="cat-left" className="absolute hidden right-[268px] top-[10px] w-32 xs:block" />
           <img
             src="/assets/img/loginPictureRight.png"
             alt="cat-right"
