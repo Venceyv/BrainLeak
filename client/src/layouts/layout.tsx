@@ -9,6 +9,7 @@ const NavigationMenu: FC = (): JSX.Element => {
     <>
       <Navbar setPresentLogin={setPresentLogin} />
       {isPresentLogin && <Login setPresentLogin={setPresentLogin} />}
+      {}
     </>
   );
 };
