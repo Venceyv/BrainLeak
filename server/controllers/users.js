@@ -34,7 +34,6 @@ import { addPostsStatistics, addPostStatistics, addUserPostInfo, beautyPostsInfo
 import { beautyCommentsInfo } from "../services/commentServices.js";
 import { sortWith } from "../services/arraySorter.js";
 import { promisify } from "util";
-import jwt_decode from "jwt-decode";
 import dotenv from "dotenv";
 dotenv.config();
 const verify = promisify(jwt.verify);
@@ -294,7 +293,7 @@ async function getLikePosts(req, res) {
           break;
 
         default:
-          dbBack = sortWith(dbBack, "likes");
+          dbBack = sortWith(dbBack, "dislikes");
           break;
       }
     }
