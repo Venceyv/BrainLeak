@@ -27,6 +27,7 @@ const userRouter = Router();
 
 userRouter.get("/", verifyToken(false), findAll);
 userRouter.get("/:userId", checkUserExist, verifyToken(false), findOne);
+userRouter.get("/:userId/auth-check",checkUserExist,verifyToken(),checkUserAuth,findOne);
 userRouter.get("/:userId/comments", checkUserExist, verifyToken(false), getUserComments);
 userRouter.get("/:userId/posts", checkUserExist, verifyToken(false), getUserPosts);
 userRouter.get("/:userId/followerList", checkUserExist, verifyToken(false), getFollwer);
