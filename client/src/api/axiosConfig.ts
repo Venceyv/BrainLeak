@@ -1,16 +1,18 @@
 import axios from 'axios';
 
 const getRequestHeader: Function = (): { Authorization: string; 'Content-Type': string } => {
-  const token: string = JSON.parse(localStorage.getItem('jwt') as string);
+  const userItem:string = localStorage.getItem('jwt') as string;
+  const token: string = (userItem != "undefined") ? JSON.parse(userItem) as string : '';
   return {
     'Content-Type': 'application/json',
-    Authorization: `${token ? token : ''}`,
+    Authorization: `${token}`,
   };
 };
 
 axios.interceptors.request.use(
   (config) => {
     config.headers = getRequestHeader();
+    console.log(config.headers)
     return config;
   },
   (error) => {

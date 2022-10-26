@@ -1,9 +1,8 @@
 import { FC, Suspense, lazy, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import Home from './pages/Home';
+import { Home } from './pages/Home';
 import { Layout } from './layouts/Layout';
-import { Login } from './feature/Login';
 import './App.css';
 
 const App: FC = (): JSX.Element => {

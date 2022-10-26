@@ -1,5 +1,5 @@
 import { useGoogleLogin } from '@react-oauth/google';
-import { postGoogleOAuth, postLogOut } from '../../api/oAuthAPI';
+import { postGoogleOAuth, postLogOut } from '../../../api/oAuthAPI';
 import { useEffect, useRef, useState } from 'react';
 
 // TODO: USER LOGOUT return type
@@ -40,4 +40,4 @@ const useDropDown: Function = (): {
   return { userRef, dropdown, toggleUserDropDown, setUserDropDown };
 };
 
-export { useLogin, useDropDown, useDetectOutsideClick };
+export { useDropDown, useDetectOutsideClick };

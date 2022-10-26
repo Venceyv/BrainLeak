@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC } from "react";
 
 interface User {
   username: string;
@@ -15,10 +15,22 @@ interface DropDownProp {
   dropdown: boolean;
   userData: User;
   toggleUserDropDown: () => void;
-  userLogout: () => () => void;
+  userLogout: () => Promise<void>;
 }
 
-export const UserIconDropDown: FC<DropDownProp> = ({ userRef, dropdown, userData, toggleUserDropDown, userLogout }): JSX.Element => {
+export const UserIconDropDown: FC<DropDownProp> = ({
+  userRef,
+  dropdown,
+  userData,
+  toggleUserDropDown,
+  userLogout,
+}): JSX.Element => {
+  const onSelectLogout: () => void = (): void => {
+    userLogout().then(() => {
+      toggleUserDropDown();
+    });
+  };
+
   return (
     <div className="relative flex flex-col">
       <img
@@ -44,11 +56,14 @@ export const UserIconDropDown: FC<DropDownProp> = ({ userRef, dropdown, userData
             <div className="align overflow-hidden text-ellipsis h-fit text-zinc-50">Venceyv</div>
           </div>
           <ul className="mb-2 text-center w-full">
-            <li className="w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 mt-2 cursor-pointer transition text-zinc-50 ">
+            <li
+              onClick={toggleUserDropDown}
+              className="w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 mt-2 cursor-pointer transition text-zinc-50 "
+            >
               Profile
             </li>
             <li
-              onClick={userLogout()}
+              onClick={onSelectLogout}
               className="mt-2 w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 cursor-pointer transition text-zinc-50"
             >
               Sign out

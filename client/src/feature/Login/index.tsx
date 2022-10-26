@@ -3,13 +3,18 @@ import { CloseButtonSVG } from '../../components';
 import { LoginButton } from './components/LoginButton';
 
 interface LoginProps {
+  googleLogin: () => void;
   setPresentLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Login: FC<LoginProps> = ({ setPresentLogin }): JSX.Element => {
-  const onClosePopup: React.MouseEventHandler<HTMLButtonElement> = () => {
+export const Login: FC<LoginProps> = ({ googleLogin, setPresentLogin }): JSX.Element => {
+  const onClosePopup: React.MouseEventHandler<HTMLButtonElement> = ():void => {
     setPresentLogin(false);
   };
+
+  const onLogin: React.MouseEventHandler<HTMLButtonElement> = ():void => {
+    googleLogin();
+  }
 
   return (
     <>
@@ -20,9 +25,9 @@ export const Login: FC<LoginProps> = ({ setPresentLogin }): JSX.Element => {
           <button onClick={onClosePopup} type="button" className="absolute top-2 right-2 w-5 h-5 rounded-full">
             <CloseButtonSVG />
           </button>
-          <div>
+          <button type="button" onClick={onLogin}>
             <LoginButton />
-          </div>
+          </button>
           <p className="text-xs text-center italic text-white">
             By continuing, you are agreeing to set up a BrainLeak account and agreeing to our User Agreement and Privacy Policy.
           </p>

@@ -16,7 +16,7 @@ export const postGoogleOAuth: Function = async (code: string): Promise<any> => {
 export const postLogOut: Function = async (): Promise<any> => {
   try {
     const user = JSON.parse(localStorage.getItem('userInfo') as string);
-    await axios.post(`${URL}/users/${user?._id}/logout`);
+    return await axios.post(`${URL}/users/${user?._id}/logout`);
   } catch (error) {
     throw error;
   }

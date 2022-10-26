@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { useLogin, useDetectOutsideClick, useDropDown } from './index.hook';
-import { LoginSVG, NotificationSVG } from '../../components';
-import { UserIconDropDown } from './components/UserIconDropDown';
+import { useDetectOutsideClick, useDropDown } from './NavbarItem.hook';
+import { LoginSVG, NotificationSVG } from '../../../components';
+import { UserIconDropDown } from './UserIconDropDown';
 
 interface User {
   username: string;
@@ -14,12 +14,13 @@ interface User {
 }
 
 interface NavbarProp {
+  isLoggedIn: boolean;
+  userLogout:() => Promise<void>;
   setPresentLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 //TODO: user api && persistent login
-export const Navbar: FC<NavbarProp> = ({ setPresentLogin }): JSX.Element => {
-  const { isLoggedIn, userLogin, userLogout } = useLogin();
+export const NavbarItem: FC<NavbarProp> = ({ isLoggedIn, userLogout, setPresentLogin }): JSX.Element => {
   const { userRef, dropdown, setUserDropDown, toggleUserDropDown, userData } = useDropDown();
   useDetectOutsideClick(userRef, setUserDropDown);
 
@@ -57,7 +58,6 @@ export const Navbar: FC<NavbarProp> = ({ setPresentLogin }): JSX.Element => {
       {!isLoggedIn && (
         <div
           className="flex px-2 py-1 pt-[5px] text-sm font-medium rounded-md border-[1px] cursor-pointer transition text-black bg-white hover:bg-primary-black hover:text-white hover:border-white"
-          // onClick={userLogin()}
           onClick={presentLogin}
         >
           Login

@@ -2,8 +2,7 @@ import { FC } from 'react';
 
 export const LoginButton: FC = (): JSX.Element => {
   return (
-    <button
-      type="button"
+    <div
       className="group flex flex-row justify-center items-center gap-2 border-2 p-1 rounded-xl w-[260px] transition ease-in-out hover:border-primary-black hover:bg-white border-white"
     >
       <svg
@@ -20,6 +19,6 @@ export const LoginButton: FC = (): JSX.Element => {
       </svg>
 
       <h1 className="text-lg transition ease-in-out group-hover:text-secondary-black text-white">Continue With Google</h1>
-    </button>
+    </div>
   );
 };
