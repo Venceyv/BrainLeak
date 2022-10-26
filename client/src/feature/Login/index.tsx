@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { CloseButtonSVG } from '../../components';
 import { LoginButton } from './components/LoginButton';
 
 interface LoginProps {
@@ -6,12 +7,19 @@ interface LoginProps {
 }
 
 export const Login: FC<LoginProps> = ({ setPresentLogin }): JSX.Element => {
+  const onClosePopup: React.MouseEventHandler<HTMLButtonElement> = () => {
+    setPresentLogin(false);
+  };
+
   return (
     <>
       <div className="fixed flex justify-center items-center top-0 left-0 h-screen w-screen blur bg-opacity-80  bg-primary-black "></div>
       <div className="fixed flex justify-center items-center top-0 left-0 h-screen w-screen">
         <div className="relative flex flex-col justify-center items-center gap-4 w-[300px] rounded-xl p-2 border-2 bg-secondary-black">
           <h1 className="w-fit text-5xl font-gemini mb-3 text-white">Login</h1>
+          <button onClick={onClosePopup} type="button" className="absolute top-2 right-2 w-5 h-5 rounded-full">
+            <CloseButtonSVG />
+          </button>
           <div>
             <LoginButton />
           </div>
