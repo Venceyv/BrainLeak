@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { Login } from '../feature/Login';
 import { Navbar } from '../feature/Navbar';
 
-const NavigationMenu: FC = (): JSX.Element => {
+const NavigationBar: FC = (): JSX.Element => {
   const [isPresentLogin, setPresentLogin] = useState<boolean>(false);
   return (
     <>
@@ -16,8 +16,7 @@ const NavigationMenu: FC = (): JSX.Element => {
 export const Layout: FC = (): JSX.Element => {
   return (
     <div className="w-full h-full bg-primary-black">
-      <NavigationMenu />
-
+      <NavigationBar />
       <Outlet />
     </div>
   );
