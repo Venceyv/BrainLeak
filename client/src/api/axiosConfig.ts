@@ -1,11 +1,11 @@
 import axios from 'axios';
+import { getJWT } from '../utils/getLocalStorage';
 
-const getRequestHeader: Function = (): { Authorization: string; 'Content-Type': string } => {
-  const userItem:string = JSON.parse(localStorage.getItem('jwt') as string);
-  // const token: string = (userItem != "undefined") ? JSON.parse(userItem) as string : '';
+export const getRequestHeader: Function = (): { 'Content-Type': string; Authorization: string } => {
+  const token: string = getJWT();
   return {
     'Content-Type': 'application/json',
-    Authorization: `${userItem}`,
+    Authorization: `${token}`,
   };
 };
 

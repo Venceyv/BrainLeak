@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import { Home } from './pages/Home';
 import { Layout } from './layouts/Layout';
+import { Test } from './Test';
 import './App.css';
 
 const App: FC = (): JSX.Element => {
@@ -11,7 +12,7 @@ const App: FC = (): JSX.Element => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          {/* <Route path="login" element={<Login />} /> */}
+          <Route path="test" element={<Test />} />
         </Route>
 
         {/* <Route path="*" element={<PageNotFound/>} /> */}
