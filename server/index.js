@@ -38,7 +38,7 @@ clearReplyByTime("0 15 2 * * 0");
 clearCacheByTime("0 20 2 * * 0", redisUsers);
 clearCacheByTime("0 25 2 * * 0", redisComments);
 clearCacheByTime("0 30 2 * * 0", redisPosts);
-clearCacheByTime("0 36 2 * * 0", redisReplies);
+clearCacheByTime("0 35 2 * * 0", redisReplies);
 mongooseConfig(DATABASE_URL)
   .then(() => {
     app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
