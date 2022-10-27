@@ -26,6 +26,8 @@ import { upload } from "../configs/googleCloud.js";
 const userRouter = Router();
 
 userRouter.get("/", verifyToken(false), findAll);
+userRouter.get("/trending", verifyToken(false), userTrending);
+userRouter.get("/search", verifyToken(false), findBySearch);
 userRouter.get("/:userId", checkUserExist, verifyToken(false), findOne);
 userRouter.get("/:userId/auth-check", checkUserExist, verifyToken(), checkUserAuth, findOne);
 userRouter.get("/:userId/comments", checkUserExist, verifyToken(false), getUserComments);
@@ -36,8 +38,6 @@ userRouter.get("/:userId/likedPosts", checkUserExist, verifyToken(), checkUserAu
 userRouter.get("/:userId/dislikedPosts", checkUserExist, verifyToken(), checkUserAuth, getDislikePosts);
 userRouter.get("/:userId/savedPosts", checkUserExist, verifyToken(), checkUserAuth, getSavedPosts);
 userRouter.get("/:userId/refreshToken", checkUserExist, refreshToken);
-userRouter.get("/trending", verifyToken(false), userTrending);
-userRouter.get("/search", verifyToken(false), findBySearch);
 
 userRouter.put("/:userId/follow", checkUserExist, verifyToken(), followUser);
 userRouter.put("/:userId/avatar", checkUserExist, verifyToken(), checkUserAuth, upload.single("avatar"), updateAvatar);

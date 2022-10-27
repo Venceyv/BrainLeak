@@ -98,7 +98,7 @@ async function findAll(req, res) {
         return user;
       })
     );
-    if (dbBack.length != 0 && req.user._id) {
+    if (dbBack.length != 0 && req.user) {
       const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
       dbBack.forEach((user, index) => {
         dbBack[index] = addFollowingInfo(user, followingList);
@@ -128,7 +128,7 @@ async function findBySearch(req, res) {
         return user;
       })
     );
-    if (dbBack.length != 0 && req.user._id) {
+    if (dbBack.length != 0 && req.user) {
       const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
       dbBack.forEach((user, index) => {
         dbBack[index] = addFollowingInfo(user, followingList);
@@ -158,7 +158,7 @@ async function updateBackgroundCover(req, res) {
 }
 async function followUser(req, res) {
   try {
-    if (req.user._Id === req.targetUser._id) {
+    if (req.user._id === req.targetUser._id) {
       res.status(403);
       throw "cant follow yourself!";
     }
