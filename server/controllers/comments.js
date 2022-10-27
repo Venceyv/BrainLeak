@@ -157,6 +157,7 @@ async function getComments(req, res) {
           break;
       }
     }
+    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error });

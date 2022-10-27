@@ -61,6 +61,7 @@ async function findOne(req, res) {
       dbBack = await User.findById(req.params.userId, { email: 0 }).lean();
       await saveRedisUserProfile(req.params.userId, dbBack);
     }
+    res.setHeader("Content-Type", "application/json");
     dbBack = await addUserStatistics(dbBack);
     if (req.user) {
       if (req.user._id != req.params.userId) {
@@ -103,6 +104,7 @@ async function findAll(req, res) {
         dbBack[index] = addFollowingInfo(user, followingList);
       });
     }
+    res.setHeader("Content-Type", "application/json");
     res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
@@ -132,6 +134,7 @@ async function findBySearch(req, res) {
         dbBack[index] = addFollowingInfo(user, followingList);
       });
     }
+    res.setHeader("Content-Type", "application/json");
     res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(404).json({ error: error });
@@ -207,14 +210,14 @@ async function getFollwer(req, res) {
           return follower;
         })
       );
-      if (req.user._id) {
+      if (req.user) {
         const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
         dbBack.forEach((user, index) => {
           dbBack[index] = addFollowingInfo(user, followingList);
         });
       }
     }
-
+    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
@@ -245,6 +248,7 @@ async function getFollwing(req, res) {
         });
       }
     }
+    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
@@ -297,6 +301,7 @@ async function getLikePosts(req, res) {
           break;
       }
     }
+    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -349,7 +354,7 @@ async function getDislikePosts(req, res) {
           break;
       }
     }
-
+    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -402,6 +407,7 @@ async function getSavedPosts(req, res) {
           break;
       }
     }
+    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -411,6 +417,7 @@ async function userTrending(req, res) {
   try {
     const topNumber = req.query.top;
     const dbBack = await getUserTrending(topNumber);
+    res.setHeader("Content-Type", "application/json");
     res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -456,6 +463,7 @@ async function getUserComments(req, res) {
           break;
       }
     }
+    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -490,6 +498,7 @@ async function getUserPosts(req, res) {
           break;
       }
     }
+    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -524,6 +533,7 @@ async function refreshToken(req, res) {
           refreshToken = newRefreshToken;
           // refresh refreshToken
           await saveRefreshToken(decodedToken.userInfo.userId, newRefreshToken);
+          res.setHeader("Content-Type", "application/json");
           return res.status(200).json({ accessToken, refreshToken });
         }
       }

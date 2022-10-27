@@ -60,6 +60,7 @@ async function findOne(req, res) {
       const beautifulPost = await beautyPostInfo(dbBack, req.user._id);
       dbBack = beautifulPost;
     }
+    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
@@ -76,6 +77,7 @@ async function findByTags(req, res) {
     let dbBack = await Post.find({ tags: { $in: tags } })
       .lean()
       .populate("author", "avatar username follower upVoteGet");
+      res.setHeader("Content-Type", "application/json");
     if (dbBack.length === 0) {
       if (tags.length === 1) {
         await Tags.findOneAndDelete({ tagName: tags });
@@ -141,6 +143,7 @@ async function findAll(req, res) {
           break;
       }
     }
+    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     return res.json({ error: error });
@@ -182,6 +185,7 @@ async function findBySearch(req, res) {
           break;
       }
     }
+    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
@@ -315,6 +319,7 @@ async function postTrending(req, res) {
   try {
     const topNumber = req.query.q;
     const dbBack = await getPostTrending(topNumber);
+    res.setHeader("Content-Type", "application/json");
     res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
