@@ -149,7 +149,7 @@ async function updateBackgroundCover(req, res) {
 }
 async function followUser(req, res) {
   try {
-    if (req.user._Id === req.targetUser._id) {
+    if (req.user._id === req.targetUser._id) {
       res.status(403);
       throw 'cant follow yourself!';
     }
