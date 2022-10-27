@@ -1,8 +1,20 @@
-import axios from './axiosConfig';
+import axios from 'axios';
 import { URL } from '../data/Constants';
+import { getRequestHeader } from './axiosConfig';
 
-export const getCheckAuth: Function = async (userId:string):Promise<void> => {
-    console.log(`${URL}/users/${userId}/auth-check`)
-    return await axios.get(`${URL}/users/${userId}/auth-check`);
-}
+axios.interceptors.request.use(
+  (config) => {
+    console.log('heyhey');
+    config.headers = getRequestHeader();
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
+export const getCheckAuth: Function = async (userId: string): Promise<void> => {
+  console.log(`users/${userId}/auth-check`);
+  const data = await axios.get(`${URL}/posts/tags`);
+  console.log(data);
+};

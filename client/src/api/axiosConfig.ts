@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const getRequestHeader: Function = (): { Authorization: string; 'Content-Type': string } => {
-  const userItem:string = JSON.parse(localStorage.getItem('jwt') as string);
+export const getRequestHeader: Function = (): { 'Content-Type': string; Authorization: string } => {
+  const userItem: string = JSON.parse(localStorage.getItem('jwt') as string);
   // const token: string = (userItem != "undefined") ? JSON.parse(userItem) as string : '';
   return {
     'Content-Type': 'application/json',
@@ -12,6 +12,7 @@ const getRequestHeader: Function = (): { Authorization: string; 'Content-Type': 
 axios.interceptors.request.use(
   (config) => {
     config.headers = getRequestHeader();
+    console.log(config.headers);
     return config;
   },
   (error) => {

@@ -1,3 +1,3 @@
-const URL: string = 'http://localhost:3001';
+const URL: string = 'http://localhost:3000';
 
 export { URL };
