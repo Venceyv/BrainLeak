@@ -1,0 +1,174 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BrainLeak",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "posts"
+    }
+  ],
+  "paths": {
+    "/posts/{postId}/comment": {
+      "post": {
+        "summary": "commentPost",
+        "x-apidog-folder": "posts",
+        "x-apidog-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "posts"
+        ],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "6353552921ffa5a24af3caee",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dbBack": {
+                      "type": "object",
+                      "properties": {
+                        "content": {
+                          "type": "string"
+                        },
+                        "author": {
+                          "type": "string"
+                        },
+                        "createTime": {
+                          "type": "string"
+                        },
+                        "updateTime": {
+                          "type": "string"
+                        },
+                        "relatedPost": {
+                          "type": "string"
+                        },
+                        "edited": {
+                          "type": "boolean"
+                        },
+                        "_id": {
+                          "type": "string"
+                        },
+                        "__v": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "author",
+                        "createTime",
+                        "updateTime",
+                        "relatedPost",
+                        "edited",
+                        "_id",
+                        "__v"
+                      ],
+                      "x-apidog-orders": [
+                        "content",
+                        "author",
+                        "createTime",
+                        "updateTime",
+                        "relatedPost",
+                        "edited",
+                        "_id",
+                        "__v"
+                      ],
+                      "x-apidog-ignore-properties": []
+                    },
+                    "accessToken": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "dbBack",
+                    "accessToken"
+                  ],
+                  "x-apidog-orders": [
+                    "dbBack",
+                    "accessToken"
+                  ],
+                  "x-apidog-ignore-properties": []
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Success",
+                    "value": {
+                      "dbBack": {
+                        "content": "变态日记 3月27日 晴 嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿",
+                        "author": "634f1bcc7b5e14c2c8f70325",
+                        "createTime": "2022-10-22T03:10:02.424Z",
+                        "updateTime": "2022-10-22T03:10:02.424Z",
+                        "relatedPost": "6353552921ffa5a24af3caee",
+                        "edited": false,
+                        "_id": "63537e99d7811d59905892b1",
+                        "__v": 0
+                      },
+                      "accessToken": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Record Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "x-apidog-ignore-properties": [],
+                  "x-apidog-orders": [
+                    "error"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Exception",
+                    "value": {
+                      "error": "Post does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552369-run"
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
+}

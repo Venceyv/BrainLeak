@@ -1,0 +1,332 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BrainLeak",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "posts"
+    }
+  ],
+  "paths": {
+    "/posts/tags": {
+      "get": {
+        "summary": "searchByTags",
+        "x-apidog-folder": "posts",
+        "x-apidog-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "posts"
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "posts",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagenumber",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagesize",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "10",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "杂谈",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "latest",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dbBack": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "publishDate": {
+                            "type": "string"
+                          },
+                          "updateDate": {
+                            "type": "string"
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "edited": {
+                            "type": "boolean"
+                          },
+                          "put": {
+                            "type": "boolean"
+                          },
+                          "author": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string"
+                              },
+                              "avatar": {
+                                "type": "string"
+                              },
+                              "username": {
+                                "type": "string"
+                              },
+                              "following": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "_id",
+                              "avatar",
+                              "username",
+                              "following"
+                            ],
+                            "x-apidog-orders": [
+                              "_id",
+                              "avatar",
+                              "username",
+                              "following"
+                            ],
+                            "x-apidog-ignore-properties": []
+                          },
+                          "__v": {
+                            "type": "integer"
+                          },
+                          "statistics": {
+                            "type": "object",
+                            "properties": {
+                              "likes": {
+                                "type": "integer"
+                              },
+                              "dislikes": {
+                                "type": "integer"
+                              },
+                              "marks": {
+                                "type": "integer"
+                              },
+                              "comments": {
+                                "type": "integer"
+                              },
+                              "views": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "likes",
+                              "dislikes",
+                              "marks",
+                              "comments",
+                              "views"
+                            ],
+                            "x-apidog-orders": [
+                              "likes",
+                              "dislikes",
+                              "marks",
+                              "comments",
+                              "views"
+                            ],
+                            "x-apidog-ignore-properties": []
+                          },
+                          "like": {
+                            "type": "boolean"
+                          },
+                          "dislike": {
+                            "type": "boolean"
+                          },
+                          "save": {
+                            "type": "boolean"
+                          }
+                        },
+                        "x-apidog-orders": [
+                          "_id",
+                          "title",
+                          "description",
+                          "publishDate",
+                          "updateDate",
+                          "tags",
+                          "edited",
+                          "put",
+                          "author",
+                          "__v",
+                          "statistics",
+                          "like",
+                          "dislike",
+                          "save"
+                        ],
+                        "x-apidog-ignore-properties": []
+                      }
+                    },
+                    "accessToken": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "dbBack",
+                    "accessToken"
+                  ],
+                  "x-apidog-orders": [
+                    "dbBack",
+                    "accessToken"
+                  ],
+                  "x-apidog-ignore-properties": []
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Success with token passed",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "_id": "634f1d50425aca4adb9dc52d",
+                          "title": "薇娅赚那么多钱为什么不愿意缴税",
+                          "description": "薇亚好似",
+                          "publishDate": "2022-10-18T21:35:16.542Z",
+                          "updateDate": "2022-10-18T23:06:01.184Z",
+                          "tags": [
+                            "杂谈",
+                            "水贴"
+                          ],
+                          "edited": true,
+                          "put": true,
+                          "author": {
+                            "_id": "634f1c83425aca4adb9dc523",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0gctg8JFc12eHne-8hZ_2RLR1B28yKEekxkrHP=s96-c",
+                            "username": "丁真纯一郎",
+                            "following": false
+                          },
+                          "__v": 0,
+                          "statistics": {
+                            "likes": 1,
+                            "dislikes": 0,
+                            "marks": 0,
+                            "comments": 3,
+                            "views": 28
+                          },
+                          "like": true,
+                          "dislike": false,
+                          "save": false
+                        }
+                      ],
+                      "accessToken": null
+                    }
+                  },
+                  "2": {
+                    "summary": "Success without token",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "_id": "634f1d50425aca4adb9dc52d",
+                          "title": "薇娅赚那么多钱为什么不愿意缴税",
+                          "description": "薇亚好似",
+                          "publishDate": "2022-10-18T21:35:16.542Z",
+                          "updateDate": "2022-10-18T23:06:01.184Z",
+                          "tags": [
+                            "杂谈",
+                            "水贴"
+                          ],
+                          "edited": true,
+                          "put": true,
+                          "author": {
+                            "_id": "634f1c83425aca4adb9dc523",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0gctg8JFc12eHne-8hZ_2RLR1B28yKEekxkrHP=s96-c",
+                            "username": "丁真纯一郎"
+                          },
+                          "__v": 0,
+                          "statistics": {
+                            "likes": 1,
+                            "dislikes": 0,
+                            "marks": 0,
+                            "comments": 3,
+                            "views": 28
+                          }
+                        }
+                      ],
+                      "accessToken": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Record Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apidog-ignore-properties": [],
+                  "x-apidog-orders": []
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552346-run"
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
+}
