@@ -29,20 +29,20 @@ userRouter.get("/", verifyToken(false), findAll);
 userRouter.get("/trending", verifyToken(false), userTrending);
 userRouter.get("/search", verifyToken(false), findBySearch);
 userRouter.get("/:userId", checkUserExist, verifyToken(false), findOne);
-userRouter.get("/:userId/auth-check", checkUserExist, verifyToken(), checkUserAuth, findOne);
-userRouter.get("/:userId/comments", checkUserExist, verifyToken(false), getUserComments);
-userRouter.get("/:userId/posts", checkUserExist, verifyToken(false), getUserPosts);
-userRouter.get("/:userId/followerList", checkUserExist, verifyToken(false), getFollwer);
-userRouter.get("/:userId/followingList", checkUserExist, verifyToken(false), getFollwing);
-userRouter.get("/:userId/likedPosts", checkUserExist, verifyToken(), checkUserAuth, getLikePosts);
-userRouter.get("/:userId/dislikedPosts", checkUserExist, verifyToken(), checkUserAuth, getDislikePosts);
-userRouter.get("/:userId/savedPosts", checkUserExist, verifyToken(), checkUserAuth, getSavedPosts);
-userRouter.get("/:userId/refreshToken", checkUserExist, refreshToken);
+userRouter.get("/auth-check/:userId", checkUserExist, verifyToken(), checkUserAuth, findOne);
+userRouter.get("/comments/:userId", checkUserExist, verifyToken(false), getUserComments);
+userRouter.get("/posts/:userId", checkUserExist, verifyToken(false), getUserPosts);
+userRouter.get("/followerList/:userId", checkUserExist, verifyToken(false), getFollwer);
+userRouter.get("/followingList/:userId", checkUserExist, verifyToken(false), getFollwing);
+userRouter.get("/likedPosts/:userId", checkUserExist, verifyToken(), checkUserAuth, getLikePosts);
+userRouter.get("/dislikedPosts/:userId", checkUserExist, verifyToken(), checkUserAuth, getDislikePosts);
+userRouter.get("/savedPosts/:userId", checkUserExist, verifyToken(), checkUserAuth, getSavedPosts);
+userRouter.get("/refreshToken/:userId", checkUserExist, refreshToken);
 
-userRouter.put("/:userId/follow", checkUserExist, verifyToken(), followUser);
-userRouter.put("/:userId/avatar", checkUserExist, verifyToken(), checkUserAuth, upload.single("avatar"), updateAvatar);
+userRouter.put("/follow/:userId", checkUserExist, verifyToken(), followUser);
+userRouter.put("/avatar/:userId", checkUserExist, verifyToken(), checkUserAuth, upload.single("avatar"), updateAvatar);
 userRouter.put(
-  "/:userId/backgroundCover",
+  "/backgroundCover/:userId",
   checkUserExist,
   verifyToken(),
   checkUserAuth,
@@ -51,7 +51,7 @@ userRouter.put(
 );
 userRouter.put("/:userId", checkUserExist, verifyToken(), checkUserAuth, userValidator, updateUser);
 
-userRouter.post("/:userId/logout", checkUserExist, verifyToken(), checkUserAuth, logOut);
+userRouter.post("/logout/:userId", checkUserExist, verifyToken(), checkUserAuth, logOut);
 
 userRouter.delete("/:userId", checkUserExist, verifyToken(), checkUserAuth, deleteUser);
 export { userRouter };

@@ -38,13 +38,13 @@ postRouter.get("/search", verifyToken(false), findBySearch);
 postRouter.get("/tags", verifyToken(false), findByTags);
 postRouter.get("/allTags",getAllTags);
 postRouter.get("/:postId", checkPostExist, verifyToken(false), findOne);
-postRouter.get("/:postId/comments", verifyToken(false), checkPostExist, getComments);
-postRouter.get("/:postId/:commentId/replies", checkPostExist, checkCommentExist, verifyToken(false), getReplies);
+postRouter.get("/comments/:postId", verifyToken(false), checkPostExist, getComments);
+postRouter.get("/replies/:postId/:commentId", checkPostExist, checkCommentExist, verifyToken(false), getReplies);
 
 postRouter.post("/", verifyToken(), postValidator, createPost);
-postRouter.post("/:postId/comment", checkPostExist, verifyToken(), commentValidator, addComment);
+postRouter.post("/comment/:postId", checkPostExist, verifyToken(), commentValidator, addComment);
 postRouter.post(
-  "/:postId/:commentId/comment/reply",
+  "/comment/reply/:postId/:commentId",
   checkPostExist,
   checkCommentExist,
   verifyToken(),
@@ -56,7 +56,7 @@ postRouter.post(
 
 postRouter.put("/:postId", checkPostExist, verifyToken(), checkPostAuth, postValidator, updatePost);
 postRouter.put(
-  "/:postId/:commentId/comment",
+  "/comment/:postId/:commentId",
   checkPostExist,
   checkCommentExist,
   verifyToken(),
@@ -64,13 +64,13 @@ postRouter.put(
   commentValidator,
   updateComment
 );
-postRouter.put("/:postId/like", checkPostExist, verifyToken(), likePost);
-postRouter.put("/:postId/dislike", checkPostExist, verifyToken(), dislikePost);
-postRouter.put("/:postId/save", checkPostExist, verifyToken(), savePost);
-postRouter.put("/:postId/:commentId/like", checkPostExist, checkCommentExist, verifyToken(), likeComment);
-postRouter.put("/:postId/:commentId/dislike", checkPostExist, checkCommentExist, verifyToken(), dislikeComment);
+postRouter.put("/like/:postId", checkPostExist, verifyToken(), likePost);
+postRouter.put("/dislike/:postId", checkPostExist, verifyToken(), dislikePost);
+postRouter.put("/save/:postId", checkPostExist, verifyToken(), savePost);
+postRouter.put("/like/:postId/:commentId", checkPostExist, checkCommentExist, verifyToken(), likeComment);
+postRouter.put("/dislike/:postId/:commentId", checkPostExist, checkCommentExist, verifyToken(), dislikeComment);
 postRouter.put(
-  "/:postId/:commentId/:replyId/like",
+  "/like/:postId/:commentId/:replyId",
   checkPostExist,
   checkCommentExist,
   checkReplyExist,
@@ -78,7 +78,7 @@ postRouter.put(
   likeReply
 );
 postRouter.put(
-  "/:postId/:commentId/:replyId/dislike",
+  "/dislike/:postId/:commentId/:replyId",
   checkPostExist,
   checkCommentExist,
   checkReplyExist,
@@ -88,7 +88,7 @@ postRouter.put(
 
 postRouter.delete("/:postId", checkPostExist, verifyToken(), checkPostAuth, deletePost);
 postRouter.delete(
-  "/:postId/:commentId/comment",
+  "/comment/:postId/:commentId",
   checkPostExist,
   checkCommentExist,
   verifyToken(),
@@ -96,7 +96,7 @@ postRouter.delete(
   deleteComment
 );
 postRouter.delete(
-  "/:postId/:commentId/:replyId/comment/reply",
+  "/comment/reply/:postId/:commentId/:replyId",
   checkPostExist,
   checkCommentExist,
   checkReplyExist,

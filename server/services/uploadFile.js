@@ -1,5 +1,5 @@
 import { bucket } from "../configs/googleCloud.js";
-
+//upload file to google cloud
 function uploadFile(req, res) {
   try {
     if (req.file) {

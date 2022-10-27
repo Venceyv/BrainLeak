@@ -17,10 +17,11 @@ const createToken = async (userInfo) => {
     },
     process.env.SECRETORKEY,
     {
-      expiresIn: 15 * 60,
+      expiresIn: 24 * 60 * 60,
     }
   );
 };
+// 
 const createRefreshToken = async (userInfo) => {
   return await tojwt(
     {

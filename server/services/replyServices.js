@@ -1,7 +1,7 @@
 import schedule from "node-schedule";
 import { redisReplies } from "../configs/redis.js";
 import { Reply, Comment, ReplyLike } from "../models/index.js";
-
+//clear reply that related post does not exist
 function clearReplyByTime(time) {
   schedule.scheduleJob(
     time,

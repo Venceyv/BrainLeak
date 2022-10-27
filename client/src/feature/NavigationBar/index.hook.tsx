@@ -4,6 +4,7 @@ import { postGoogleOAuth, postLogOut } from '../../api/oAuthAPI';
 
 interface useLoginReturnProp {
   isLoggedIn: boolean;
+  setLogIn: React.Dispatch<React.SetStateAction<boolean>>;
   googleLogin: Function;
   userLogout: () => Promise<void>;
   isPresentLogin: boolean;
@@ -18,8 +19,10 @@ export const useLogin: Function = (): useLoginReturnProp => {
     onSuccess: async ({ code }) => {
       try {
         const data = await postGoogleOAuth(code);
+
         localStorage.setItem('jwt', JSON.stringify(data.accessToken));
         localStorage.setItem('userId', JSON.stringify(data.dbBack._id));
+
         setLogIn(true);
         setPresentLogin(false);
       } catch (error) {
@@ -44,5 +47,5 @@ export const useLogin: Function = (): useLoginReturnProp => {
     }
   };
 
-  return { isLoggedIn, googleLogin, userLogout, isPresentLogin, setPresentLogin };
+  return { isLoggedIn, setLogIn, googleLogin, userLogout, isPresentLogin, setPresentLogin };
 };

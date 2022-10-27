@@ -24,7 +24,7 @@ const stringifyPostInfo = fastJson({
   },
 });
 
-//get the post info related to the loggined user
+//get the post info related to the loggined user.
 async function getOnePostInfo(postId) {
   try {
     let [postInfo, commentUnderPost] = await Promise.all([

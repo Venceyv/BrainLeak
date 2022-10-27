@@ -14,7 +14,7 @@ async function clearCache(cache) {
   });
   stream.on("end", () => {});
 }
-// removed expired token in a token
+// removed expired token in a token.
 function clearCacheByTime(time, cache) {
   schedule.scheduleJob(
     time,

@@ -3,35 +3,28 @@ import { NavbarItem } from './components/NavbarItem';
 import { useLogin } from './index.hook';
 import { Login } from '../Login/index';
 import { getCheckAuth } from '../../api/userAPI';
-// import { useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import { getJWT, getUserId } from '../../utils/getLocalStorage';
 
 export const NavigationBar: FC = (): JSX.Element => {
-  const { isLoggedIn, googleLogin, userLogout, isPresentLogin, setPresentLogin } = useLogin();
-  // const {isLoading, }
+  const { isLoggedIn, setLogIn, googleLogin, userLogout, isPresentLogin, setPresentLogin } = useLogin();
 
-  // useEffect(() => {
+  useEffect(()=>{
+    const checkUserAuth: Function = async (userId:string) => {
+      const user = await getCheckAuth(userId)
 
-  // //   const userId:string = JSON.parse(localStorage.getItem('userId') as string);
-  // //   console.log(userId);
-  // //   const jwt = localStorage.getItem('jwt');
-  // //   console.log(jwt)
-  // // const token: string = ( jwt != "undefined") ? JSON.parse(jwt as string) as string : '';
-  // // console.log(token)
-  //   console.log('rendered')
-  //   const checkAuth = async () => {
-  //     const data = await getCheckAuth("634f3fdb38ca1630099d7f27");
+      if(user) {
+        console.log('persistent')
+      }else{
+        console.log('not logged in')
+      }
+    }
 
-  //     console.log(data);
-  //   }
-
-  //   checkAuth();
-
-  // //   if(userId != 'undefined'){
-  // //     checkAuth();
-  // //   }
-
-  // //   console.log('none');
-  // }, [])
+    const userId:string = getUserId();
+    if(userId !== null) {
+      checkUserAuth();
+    }
+  }, [])
 
   return (
     <div>

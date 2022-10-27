@@ -8,6 +8,7 @@ const transpoter = nodemailer.createTransport({
     pass: process.env.GMAILPASSWORD,
   },
 });
+//notify author of post everytime when there is new comment
 function notifyAuthor(toEamil, userName, commentContent, postTitle, postDescription) {
   try {
     return {

@@ -30,7 +30,7 @@ app.use("/users", userRouter);
 app.use("/posts", postRouter);
 app.use("/tools", toolsRouter);
 
-//every Sunday at 2 a.m
+//every Sunday at 2 a.m.
 clearTrendingByTime("0 0 2 * * 0");
 removeTokenByTime("0 5 2 * * 0");
 clearCommentByTime("0 10 2 * * 0");

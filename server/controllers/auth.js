@@ -7,6 +7,7 @@ dotenv.config();
 // Google Oauth 😎
 export const postOAuth = async (req, res) => {
   try {
+    console.log('hi');
     const oAuth2Client = new OAuth2Client(process.env.CLIENT_ID, process.env.CLIENT_SECRET, "postmessage");
     const { tokens } = await oAuth2Client.getToken(req.body.code);
     const decoded = jwt_decode(tokens.id_token);

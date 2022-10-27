@@ -3,7 +3,7 @@ import { uploadFile } from "./uploadFile.js";
 import { redisUsers } from "../configs/redis.js";
 import { redisTrending } from "../configs/redis.js";
 import fastJson from "fast-json-stringify";
-
+//fast json for user profile
 const stringifyUserProfile = fastJson({
   type: "object",
   properties: {
