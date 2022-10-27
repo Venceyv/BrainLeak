@@ -1,0 +1,180 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BrainLeak",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "users"
+    }
+  ],
+  "paths": {
+    "/users/trending": {
+      "get": {
+        "summary": "userTrending",
+        "x-apidog-folder": "users",
+        "x-apidog-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "name": "top",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "10",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dbBack": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "user": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string"
+                              },
+                              "avatar": {
+                                "type": "string"
+                              },
+                              "username": {
+                                "type": "string"
+                              },
+                              "backgroundCover": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "_id",
+                              "avatar",
+                              "username",
+                              "backgroundCover"
+                            ],
+                            "x-apidog-orders": [
+                              "_id",
+                              "avatar",
+                              "username",
+                              "backgroundCover"
+                            ],
+                            "x-apidog-ignore-properties": []
+                          },
+                          "popularity": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "user",
+                          "popularity"
+                        ],
+                        "x-apidog-orders": [
+                          "user",
+                          "popularity"
+                        ],
+                        "x-apidog-ignore-properties": []
+                      }
+                    },
+                    "accessToken": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "dbBack",
+                    "accessToken"
+                  ],
+                  "x-apidog-orders": [
+                    "dbBack",
+                    "accessToken"
+                  ],
+                  "x-apidog-ignore-properties": []
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Success",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "user": {
+                            "_id": "634f1c83425aca4adb9dc523",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0gctg8JFc12eHne-8hZ_2RLR1B28yKEekxkrHP=s96-c",
+                            "username": "丁真纯一郎",
+                            "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png"
+                          },
+                          "popularity": "66"
+                        },
+                        {
+                          "user": {
+                            "_id": "63506af86f12aa3f59d39e42",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                            "username": "Mingkuan Pang",
+                            "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png"
+                          },
+                          "popularity": "20"
+                        },
+                        {
+                          "user": {
+                            "_id": "634f1bcc7b5e14c2c8f70325",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
+                            "username": "理塘最速传说",
+                            "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png"
+                          },
+                          "popularity": "12"
+                        },
+                        {
+                          "user": {
+                            "_id": "634f3fdb38ca1630099d7f27",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2ymtieiGFR7tS8OpeZvx36TqYbd7Yxl8QFTWZy1A=s96-c",
+                            "username": "Venceyv K.",
+                            "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png"
+                          },
+                          "popularity": "10"
+                        }
+                      ],
+                      "accessToken": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Record Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apidog-ignore-properties": [],
+                  "x-apidog-orders": []
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552128-run"
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  },
+  "servers": []
+}

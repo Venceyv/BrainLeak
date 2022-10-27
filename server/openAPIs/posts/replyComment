@@ -1,0 +1,190 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BrainLeak",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "posts"
+    }
+  ],
+  "paths": {
+    "/posts/{postId}/{commentId}/comment/reply": {
+      "post": {
+        "summary": "replyComment",
+        "x-apidog-folder": "posts",
+        "x-apidog-status": "developing",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "posts"
+        ],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "634f1d50425aca4adb9dc52d",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "634f1d50425aca4adb9dc52d",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dbBack": {
+                      "type": "object",
+                      "properties": {
+                        "content": {
+                          "type": "string"
+                        },
+                        "createTime": {
+                          "type": "string"
+                        },
+                        "relatedComment": {
+                          "type": "string"
+                        },
+                        "relatedPost": {
+                          "type": "string"
+                        },
+                        "mentionedUser": {
+                          "type": "string"
+                        },
+                        "author": {
+                          "type": "string"
+                        },
+                        "_id": {
+                          "type": "string"
+                        },
+                        "__v": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "createTime",
+                        "relatedComment",
+                        "relatedPost",
+                        "mentionedUser",
+                        "author",
+                        "_id",
+                        "__v"
+                      ],
+                      "x-apidog-orders": [
+                        "content",
+                        "createTime",
+                        "relatedComment",
+                        "relatedPost",
+                        "mentionedUser",
+                        "author",
+                        "_id",
+                        "__v"
+                      ],
+                      "x-apidog-ignore-properties": []
+                    },
+                    "accessToken": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "dbBack",
+                    "accessToken"
+                  ],
+                  "x-apidog-orders": [
+                    "dbBack",
+                    "accessToken"
+                  ],
+                  "x-apidog-ignore-properties": []
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Success",
+                    "value": {
+                      "dbBack": {
+                        "content": "不，他的孩子你不配",
+                        "createTime": "2022-10-22T03:10:02.428Z",
+                        "relatedComment": "63537decd7811d59905892ad",
+                        "relatedPost": "6353552921ffa5a24af3caee",
+                        "mentionedUser": "634f1bcc7b5e14c2c8f70325",
+                        "author": "634f1bcc7b5e14c2c8f70325",
+                        "_id": "63537fc7d7811d59905892c7",
+                        "__v": 0
+                      },
+                      "accessToken": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Record Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "x-apidog-ignore-properties": [],
+                  "x-apidog-orders": [
+                    "error"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Exception",
+                    "value": {
+                      "error": "Comment does not exist"
+                    }
+                  },
+                  "2": {
+                    "summary": "Exception",
+                    "value": {
+                      "error": "Post does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552370-run"
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
+}
