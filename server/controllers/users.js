@@ -19,11 +19,17 @@ import {
   saveRedisUserPost,
   userTrendingInc,
 } from '../services/userServices.js';
-import { blockToken, getRefreshToken } from '../services/jwt.js';
+import jwt from 'jsonwebtoken';
+import { blockToken, createRefreshToken, createToken, getblockToken, getRefreshToken, saveRefreshToken } from '../services/jwt.js';
 import json from 'body-parser';
 import { addCommentsStatistics } from '../services/commentServices.js';
 import { addPostsStatistics, addPostStatistics, addUserPostInfo, beautyPostsInfo } from '../services/postServices.js';
 import { beautyCommentsInfo } from '../services/commentServices.js';
+import { sortWith } from '../services/arraySorter.js';
+import { promisify } from 'util';
+import dotenv from 'dotenv';
+dotenv.config();
+const verify = promisify(jwt.verify);
 
 async function deleteUser(req, res) {
   try {
@@ -46,6 +52,7 @@ async function findOne(req, res) {
       dbBack = await User.findById(req.params.userId, { email: 0 }).lean();
       await saveRedisUserProfile(req.params.userId, dbBack);
     }
+    res.setHeader('Content-Type', 'application/json');
     dbBack = await addUserStatistics(dbBack);
     if (req.user) {
       if (req.user._id != req.params.userId) {
@@ -88,6 +95,7 @@ async function findAll(req, res) {
         dbBack[index] = addFollowingInfo(user, followingList);
       });
     }
+    res.setHeader('Content-Type', 'application/json');
     res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
@@ -117,6 +125,7 @@ async function findBySearch(req, res) {
         dbBack[index] = addFollowingInfo(user, followingList);
       });
     }
+    res.setHeader('Content-Type', 'application/json');
     res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(404).json({ error: error });
@@ -180,11 +189,7 @@ async function getFollwer(req, res) {
     const pageSize = Number(req.query.pagesize);
     let dbBack = await Follow.find({ followedUser: req.params.userId }, { followedUser: 0, _id: 0 })
       .lean()
-      .populate(
-        "user",
-        { username: 1, avatar: 1, introduction: 1 },
-        { lean: true }
-      );
+      .populate('user', { username: 1, avatar: 1, introduction: 1 }, { lean: true });
     if (dbBack.length != 0) {
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack.forEach((userData, index) => {
@@ -196,14 +201,14 @@ async function getFollwer(req, res) {
           return follower;
         })
       );
-      if (req.user) {
+      if (req.user._id) {
         const followingList = await Follow.find({ user: req.user._id }, { followedUser: 1, _id: 0 }).lean();
         dbBack.forEach((user, index) => {
           dbBack[index] = addFollowingInfo(user, followingList);
         });
       }
     }
-
+    res.setHeader('Content-Type', 'application/json');
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
@@ -234,6 +239,7 @@ async function getFollwing(req, res) {
         });
       }
     }
+    res.setHeader('Content-Type', 'application/json');
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
@@ -284,10 +290,11 @@ async function getLikePosts(req, res) {
           break;
 
         default:
-          dbBack = sortWith(dbBack, "likes");
+          dbBack = sortWith(dbBack, 'dislikes');
           break;
       }
     }
+    res.setHeader('Content-Type', 'application/json');
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -338,11 +345,11 @@ async function getDislikePosts(req, res) {
           break;
 
         default:
-          dbBack = sortWith(dbBack, "likes");
+          dbBack = sortWith(dbBack, 'likes');
           break;
       }
     }
-
+    res.setHeader('Content-Type', 'application/json');
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -393,10 +400,11 @@ async function getSavedPosts(req, res) {
           break;
 
         default:
-          dbBack = sortWith(dbBack, "likes");
+          dbBack = sortWith(dbBack, 'likes');
           break;
       }
     }
+    res.setHeader('Content-Type', 'application/json');
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -406,6 +414,7 @@ async function userTrending(req, res) {
   try {
     const topNumber = req.query.top;
     const dbBack = await getUserTrending(topNumber);
+    res.setHeader('Content-Type', 'application/json');
     res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -451,6 +460,7 @@ async function getUserComments(req, res) {
           break;
       }
     }
+    res.setHeader('Content-Type', 'application/json');
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -483,10 +493,11 @@ async function getUserPosts(req, res) {
           break;
 
         default:
-          dbBack = sortWith(dbBack, "likes");
+          dbBack = sortWith(dbBack, 'likes');
           break;
       }
     }
+    res.setHeader('Content-Type', 'application/json');
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -503,7 +514,7 @@ async function logOut(req, res) {
 async function refreshToken(req, res) {
   try {
     let refreshToken = req.headers.authorization;
-    refreshToken = refreshToken ? refreshToken.replace("Bearer ", "") : null;
+    refreshToken = refreshToken ? refreshToken.replace('Bearer ', '') : null;
     if (refreshToken) {
       let [inBlockList, decodedToken] = await Promise.all([
         getblockToken(refreshToken),
@@ -517,15 +528,16 @@ async function refreshToken(req, res) {
             createRefreshToken(decodedToken.userInfo),
             blockToken(refreshToken),
           ]);
-          const accessToken = "Bearer " + newAccessToken;
+          const accessToken = 'Bearer ' + newAccessToken;
           refreshToken = newRefreshToken;
           // refresh refreshToken
           await saveRefreshToken(decodedToken.userInfo.userId, newRefreshToken);
+          res.setHeader('Content-Type', 'application/json');
           return res.status(200).json({ accessToken, refreshToken });
         }
       }
       res.status(401);
-      throw "Invalid refreshToken";
+      throw 'Invalid refreshToken';
     }
   } catch (error) {
     return res.json({ error: error });

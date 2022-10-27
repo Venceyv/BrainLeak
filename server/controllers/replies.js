@@ -139,6 +139,7 @@ async function getReplies(req, res) {
           break;
       }
     }
+    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });

@@ -28,6 +28,11 @@ function sortWith(array, condition) {
           return 1;
         });
         break;
+      case "dislikes":
+        array.sort((a, b) => {
+          return b.statistics.dislikes - a.statistics.dislikes;
+        });
+        break;
       default:
         array.sort((a, b) => {
           return b.statistics.likes - a.statistics.likes;
@@ -35,7 +40,7 @@ function sortWith(array, condition) {
     }
     return array;
   } catch (error) {
-    console.log('sortWith Failed -- aSService');
+    console.log("sortWith Failed -- aSService");
   }
 }
-export {sortWith}
+export { sortWith };
