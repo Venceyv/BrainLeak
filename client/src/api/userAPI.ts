@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-import axios from './axiosConfig';
-import { URL } from '../data/Constants';
-
-export const getCheckAuth: Function = async (userId:string):Promise<void> => {
-    console.log(`${URL}/users/${userId}/auth-check`)
-    return await axios.get(`${URL}/users/${userId}/auth-check`);
-}
-
-=======
 import { URL } from '../data/Constants';
 import axios, { getRequestHeader } from './axiosConfig';
 
@@ -26,4 +16,3 @@ export const getUser: Function = async (userId:string): Promise<unknown> => {
   console.log('get user data', data)
   return data
 }
->>>>>>> login-persistent
