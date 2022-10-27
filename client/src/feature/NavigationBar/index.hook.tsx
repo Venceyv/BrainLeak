@@ -19,7 +19,7 @@ export const useLogin: Function = (): useLoginReturnProp => {
       try {
         const data = await postGoogleOAuth(code);
         localStorage.setItem('jwt', JSON.stringify(data.accessToken));
-        localStorage.setItem('userInfo', JSON.stringify(data.dbBack));
+        localStorage.setItem('userId', JSON.stringify(data.dbBack._id));
 
         setLogIn(true);
         setPresentLogin(false);
