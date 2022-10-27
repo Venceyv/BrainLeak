@@ -77,7 +77,7 @@ async function findByTags(req, res) {
     let dbBack = await Post.find({ tags: { $in: tags } })
       .lean()
       .populate("author", "avatar username follower upVoteGet");
-      res.setHeader("Content-Type", "application/json");
+    res.setHeader("Content-Type", "application/json");
     if (dbBack.length === 0) {
       if (tags.length === 1) {
         await Tags.findOneAndDelete({ tagName: tags });
@@ -97,11 +97,11 @@ async function findByTags(req, res) {
     }
     switch (order) {
       case "latest":
-        dbBack = sortWith(dbBack,"latest");
+        dbBack = sortWith(dbBack, "latest");
         break;
 
       default:
-        dbBack = sortWith(dbBack,"likes");
+        dbBack = sortWith(dbBack, "likes");
         break;
     }
     return res.status(200).json({ dbBack });
@@ -130,16 +130,16 @@ async function findAll(req, res) {
       }
       switch (order) {
         case "latest":
-          dbBack = sortWith(dbBack,"latest");
+          dbBack = sortWith(dbBack, "latest");
           break;
         case "best":
-          dbBack = sortWith(dbBack,"best");
+          dbBack = sortWith(dbBack, "best");
           break;
         case "hot":
-          dbBack = sortWith(dbBack,"hot");
+          dbBack = sortWith(dbBack, "hot");
           break;
         default:
-          dbBack = sortWith(dbBack,"likes");
+          dbBack = sortWith(dbBack, "likes");
           break;
       }
     }
@@ -177,11 +177,11 @@ async function findBySearch(req, res) {
       }
       switch (order) {
         case "latest":
-          dbBack = sortWith(dbBack,"latest");
+          dbBack = sortWith(dbBack, "latest");
           break;
 
         default:
-          dbBack = sortWith(dbBack,"likes");
+          dbBack = sortWith(dbBack, "likes");
           break;
       }
     }
@@ -325,6 +325,15 @@ async function postTrending(req, res) {
     res.status(401).json({ error: error });
   }
 }
+async function getAllTags(req, res) {
+  try {
+    const dbBack = await Tags.find({},{ tagName: 1, _id: 0 }).lean();
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).json({ dbBack });
+  } catch (error) {
+    res.status(401).json({ error: error });
+  }
+}
 export {
   createPost,
   findOne,
@@ -337,4 +346,5 @@ export {
   dislikePost,
   savePost,
   postTrending,
+  getAllTags,
 };

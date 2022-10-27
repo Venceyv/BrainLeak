@@ -11,6 +11,7 @@ import {
   dislikePost,
   savePost,
   postTrending,
+  getAllTags,
 } from "../controllers/posts.js";
 import {
   addComment,
@@ -35,6 +36,7 @@ postRouter.get("/", verifyToken(false), findAll);
 postRouter.get("/trending", verifyToken(false), postTrending);
 postRouter.get("/search", verifyToken(false), findBySearch);
 postRouter.get("/tags", verifyToken(false), findByTags);
+postRouter.get("/allTags",getAllTags);
 postRouter.get("/:postId", checkPostExist, verifyToken(false), findOne);
 postRouter.get("/:postId/comments", verifyToken(false), checkPostExist, getComments);
 postRouter.get("/:postId/:commentId/replies", checkPostExist, checkCommentExist, verifyToken(false), getReplies);
