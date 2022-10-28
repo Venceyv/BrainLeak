@@ -1,13 +1,17 @@
 import { Navbar } from './components';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/home";
 import './App.css';
 
 const App = () => {
   return (
     <>
+      <Router>
       <Navbar />
-      <div className="h-[calc(100%-56px)] bg-primary-black text-red-900">
-        Ayo
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
     </>
   );
 };
