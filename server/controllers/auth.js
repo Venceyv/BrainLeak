@@ -15,17 +15,9 @@ export const postOAuth = async (req, res) => {
       username: decoded.name,
       email: decoded.email,
     };
-    let dbBack = await User.findOne({ email: userInfo.email });
-    if (!dbBack || dbBack.isDelete) {
-      if(dbBack.isDelete)
-      {
-        dbBack.isDelete = false;
-        dbBack.save();
-      }
-      else
-      {
-        dbBack = await new User(userInfo).save();
-      }
+    let dbBack = await User.findOne({ email: userInfo.email,isDelete:false });
+    if (!dbBack) {
+      dbBack = await new User(userInfo).save();
     }
     userInfo = {
       userId:dbBack._id,
