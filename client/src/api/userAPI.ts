@@ -1,18 +1,29 @@
+import { AxiosError } from 'axios';
 import { URL } from '../data/Constants';
-import axios, { getRequestHeader } from './axiosConfig';
+import axios from './axiosConfig';
 
 export const getCheckAuth: Function = async (userId: string): Promise<unknown> => {
   try {
     const data = await axios.get(`${URL}/users/auth-check/${userId}`);
-    console.log('check auth data', data)
     return data;
-  }catch (err) {
-    return undefined;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      console.log(err?.response?.status);
+    } else {
+      console.log('unexpected error ' + err);
+    }
   }
 };
 
-export const getUser: Function = async (userId:string): Promise<unknown> => {
-  const data = await axios.get(`${URL}/users/${userId}`)
-  console.log('get user data', data)
-  return data
-}
+export const getUser: Function = async (userId: string): Promise<unknown> => {
+  try {
+    const data = await axios.get(`${URL}/users/${userId}`);
+    return data;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      console.log(err?.response?.status);
+    } else {
+      console.log('unexpected error ' + err);
+    }
+  }
+};

@@ -16,8 +16,8 @@ export const postGoogleOAuth: Function = async (code: string): Promise<any> => {
 //TODO: remove userinfo store only id
 export const postLogOut: Function = async (): Promise<any> => {
   try {
-    const user = JSON.parse(localStorage.getItem('userInfo') as string);
-    return await axios.post(`${URL}/users/${user?._id}/logout`);
+    const user = JSON.parse(localStorage.getItem('userId') as string);
+    return await axios.post(`${URL}/users/logout/${user}`);
   } catch (error) {
     throw error;
   }

@@ -2,13 +2,14 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { postGoogleOAuth, postLogOut } from '../../api/oAuthAPI';
 
-interface useLoginReturn {
-  isLoggedIn: boolean;
-  setLogIn: React.Dispatch<React.SetStateAction<boolean>>;
-  googleLogin: () => void;
-  userLogout: () => Promise<void>;
-  isPresentLogin: boolean;
+interface useLoginParam {
   setPresentLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface useLoginReturn {
+  googleLogin: () => void;
+  closeLogin: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 interface User {
@@ -19,10 +20,7 @@ interface User {
   _id: string;
 }
 
-export const useLogin = (): useLoginReturn => {
-  const [isLoggedIn, setLogIn] = useState<boolean>(false);
-  const [isPresentLogin, setPresentLogin] = useState<boolean>(false);
-
+export const useLogin = ({ setPresentLogin, setLogin }: useLoginParam): useLoginReturn => {
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
       try {
@@ -32,7 +30,7 @@ export const useLogin = (): useLoginReturn => {
         localStorage.setItem('jwt', JSON.stringify(data.accessToken));
         localStorage.setItem('userId', JSON.stringify(data.dbBack._id));
 
-        setLogIn(true);
+        setLogin(true);
         setPresentLogin(false);
       } catch (error) {
         throw error;
@@ -44,17 +42,9 @@ export const useLogin = (): useLoginReturn => {
     flow: 'auth-code',
   });
 
-  const userLogout = async (): Promise<void> => {
-    try {
-      await postLogOut();
-
-      localStorage.removeItem('jwt');
-      localStorage.removeItem('userInfo');
-      setLogIn(false);
-    } catch (error) {
-      throw error;
-    }
+  const closeLogin: React.MouseEventHandler<HTMLButtonElement> = (): void => {
+    setPresentLogin(false);
   };
 
-  return { isLoggedIn, setLogIn, googleLogin, userLogout, isPresentLogin, setPresentLogin };
+  return { googleLogin, closeLogin };
 };

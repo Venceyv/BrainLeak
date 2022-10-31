@@ -9,22 +9,23 @@ import { getJWT, getUserId } from '../../utils/getLocalStorage';
 export const NavigationBar: FC = (): JSX.Element => {
   const { isLoggedIn, setLogIn, googleLogin, userLogout, isPresentLogin, setPresentLogin } = useLogin();
 
-  useEffect(()=>{
-    const checkUserAuth: Function = async (userId:string) => {
-      const user = await getCheckAuth(userId)
+  useEffect(() => {
+    const checkUserAuth = async (userId: string): Promise<void> => {
+      const user = await getCheckAuth(userId);
 
-      if(user) {
-        console.log('persistent')
-      }else{
-        console.log('not logged in')
+      if (user) {
+        console.log('persistent');
+      } else {
+        console.log('not logged in');
       }
-    }
+    };
 
-    const userId:string = getUserId();
-    if(userId !== null) {
-      checkUserAuth();
+    const userId: string = getUserId();
+    if (userId !== null) {
+      console.log('check user auth called');
+      checkUserAuth(userId);
     }
-  }, [])
+  }, []);
 
   return (
     <div>

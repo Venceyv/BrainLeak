@@ -5,6 +5,7 @@ import { Home } from './pages/Home';
 import { Layout } from './layouts/Layout';
 import { Test } from './Test';
 import './App.css';
+import { NavBar } from './feature/NavBar';
 
 const App: FC = (): JSX.Element => {
   return (
@@ -14,6 +15,8 @@ const App: FC = (): JSX.Element => {
           <Route index element={<Home />} />
           <Route path="test" element={<Test />} />
         </Route>
+
+        <Route path="/1" element={<NavBar />} />
 
         {/* <Route path="*" element={<PageNotFound/>} /> */}
       </Routes>
