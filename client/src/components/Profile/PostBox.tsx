@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-function PostBox() {
+function PostBox({myPosts, myFollowedTopics, myFollowedPosts}) {
 
   const [createPost, setCreatePost] = useState(true);
   const [posts, setPosts] = useState(false);
@@ -58,13 +58,16 @@ function PostBox() {
             <p>Post: </p>
           )}
           {posts && (
-            <p>My Posted Posts</p>
+            <p>{myPosts}</p>
+            //<p>My Posts Temp</p>
           )}
           {topics && (
-            <p>My Followed Topics</p>
+            <p>{myFollowedTopics}</p>
+            //<p>Followed Topics Temp</p>
           )}
           {followedPost && (
-            <p>My Followed Posts</p>
+            <p>{myFollowedPosts}</p>
+            //<p>Followed Posts Temp</p>
           )}
         </div>
       </div>
