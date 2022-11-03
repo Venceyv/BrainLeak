@@ -26,36 +26,17 @@ const userSchema = new Schema({
     type: String,
     default: "https://storage.googleapis.com/brainleak/backgroundImg(default).png",
   },
+  gender:{
+    type:String,
+    enum:['male','female','secret'],
+    default:'secret'
+  },
+  birthDate:{
+    type:Date,
+  },
   isDelete: {
     type: Boolean,
     default: false,
-  },
-  // A collection of all the other users id that the user is currently following
-  // user liked history
-  // following:
-  // {
-  //     type:Number,
-  //     default:0
-  // },
-  // follower:
-  // {
-  //     type:Number,
-  //     default:0
-  // },
-  // postCount:
-  // {
-  //     type:Number,
-  //     default:0
-  // },
-  // commentCount:
-  // {
-  //     type:Number,
-  //     default:0
-  // },
-  // upVoteGet:
-  // {
-  //     type:Number,
-  //     default:0,
-  // },
+  }
 });
 export { userSchema };

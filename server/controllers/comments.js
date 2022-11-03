@@ -59,7 +59,8 @@ async function deleteComment(req, res) {
       CommentLike.findOneAndDelete({ comment: req.params.commentId }),
       postTrendingInc(req.params.postId, -3),
       req.comment.relatedPost,
-      incUserStatistics(req.comment.relatedPost, "comments", -1),
+      incPostStatistics(req.comment.relatedPost, "comments", -1),
+      incUserStatistics(req.comment.author,"comments",-1),
     ]);
     const msg = "Delete successfully.";
     return res.status(200).json({ msg });

@@ -544,6 +544,7 @@ async function refreshToken(req, res) {
     return res.json({ error: error });
   }
 }
+
 export {
   deleteUser,
   findOne,
