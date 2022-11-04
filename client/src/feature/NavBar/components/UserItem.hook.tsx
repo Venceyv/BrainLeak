@@ -1,5 +1,3 @@
-import { useGoogleLogin } from '@react-oauth/google';
-import { postGoogleOAuth, postLogOut } from '../../../api/oAuthAPI';
 import { useEffect, useRef, useState } from 'react';
 
 interface useDropdownReturn {
@@ -16,7 +14,7 @@ export const useDetectOutsideClick = (userRef: React.MutableRefObject<HTMLDivEle
     if (userRef.current && !userRef.current.contains(event.target as Node) && !(target.id === 'user-img')) {
       setUserDropDown(false);
     }
-  };
+  }
 
   useEffect(() => {
     document.addEventListener('mousedown', (e: globalThis.MouseEvent) => {
@@ -26,8 +24,8 @@ export const useDetectOutsideClick = (userRef: React.MutableRefObject<HTMLDivEle
 };
 
 export const useDropdown = (): useDropdownReturn => {
-  const userRef = useRef<HTMLDivElement>(null) as React.MutableRefObject<HTMLDivElement>;
   const [isDropdown, setDropdown] = useState<boolean>(false);
+  const userRef = useRef<HTMLDivElement>(null) as React.MutableRefObject<HTMLDivElement>;
 
   const toggleUserDropdown: React.MouseEventHandler<HTMLElement> = (): void => {
     setDropdown((prev) => !prev);

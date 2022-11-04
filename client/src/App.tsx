@@ -13,12 +13,14 @@ const App: FC = (): JSX.Element => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="test" element={<Test />} />
+          <Route path="post" element={<div>IP</div>} />
+          <Route path="profile" element={<div>IP</div>} />
+          <Route path="search" element={<div>IP</div>} />
         </Route>
 
-        <Route path="/1" element={<NavBar />} />
+        {/* <Route path="/1" element={<NavBar />} /> */}
 
-        {/* <Route path="*" element={<PageNotFound/>} /> */}
+        <Route path="*" element={<div>IP</div>}/>
       </Routes>
       {/* <Routes>
         <Route path="/login" element={<Login />} />

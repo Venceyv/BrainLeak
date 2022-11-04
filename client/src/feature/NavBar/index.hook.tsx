@@ -1,25 +1,17 @@
 import { useEffect } from 'react';
 import { getCheckAuth } from '../../api/userAPI';
 import { getUserId } from '../../utils/getLocalStorage';
+import { User } from '../../interfaces/userData';
 
 interface useCheckAuthParam {
   setLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface User {
-  avatar: string;
-  backgroundCover: string;
-  introduction: string;
-  username: string;
-  _id: string;
-}
-
 export const useCheckAuth = ({ setLogin }: useCheckAuthParam): void => {
   useEffect(() => {
     const checkUserAuth = async (userId: string): Promise<void> => {
-      const data = await getCheckAuth(userId);
-
-      if (data) {
+      const userData:User|undefined = await getCheckAuth(userId);
+      if (userData) {
         setLogin(true);
       }
     };
@@ -30,3 +22,5 @@ export const useCheckAuth = ({ setLogin }: useCheckAuthParam): void => {
     }
   }, []);
 };
+
+

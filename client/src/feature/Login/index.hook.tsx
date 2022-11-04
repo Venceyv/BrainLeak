@@ -1,6 +1,5 @@
 import { useGoogleLogin } from '@react-oauth/google';
-import { useState } from 'react';
-import { postGoogleOAuth, postLogOut } from '../../api/oAuthAPI';
+import { postGoogleOAuth } from '../../api/oAuthAPI';
 
 interface useLoginParam {
   setPresentLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,14 +9,6 @@ interface useLoginParam {
 interface useLoginReturn {
   googleLogin: () => void;
   closeLogin: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-interface User {
-  avatar: string;
-  backgroundCover: string;
-  introduction: string;
-  username: string;
-  _id: string;
 }
 
 export const useLogin = ({ setPresentLogin, setLogin }: useLoginParam): useLoginReturn => {
