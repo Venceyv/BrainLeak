@@ -33,9 +33,9 @@ function PostBox({myPosts, myFollowedTopics, myFollowedPosts}) {
   };
   
   return (
-    <div className="inline-flex w-3/4 ml-80 h-3/4">
+    <div className="inline-flex w-7/12 h-3/4 ml-80">
       
-      <div className="pr-3 pt-3 h-4/5 w-48">
+      <div className="pr-3 h-4/5 w-52">
         <div className="rounded-sm border-2 border-black flex p-2 h-3/4 bg-neutral-800 text-white	">
           <div className="relative text-center align-middle pl-2 pt-8 ">
             <button onClick={createPostHandler} className="text-xl font-bold">Create Post</button>
@@ -52,10 +52,19 @@ function PostBox({myPosts, myFollowedTopics, myFollowedPosts}) {
         </div>
       </div>
 
-      <div className="pt-3 h-9/10 w-11/12">
-        <div className="flex h-3/5 w-3/4 rounded-md border-4 border-black p-2 bg-neutral-800 text-white	">
+      <div className="content-center h-5/6 w-full">
+        <div className="flex justify-center h-full rounded-md border-4 border-black p-2 bg-neutral-800 text-white mr-1.5">
           {createPost && (
-            <p>Post: </p>
+            <form className="mt-4 w-11/12 h-full">
+              <div className="flex">
+                <label className="">Post:</label>
+                <input className="ml-auto" type="submit" value="Leak"></input>
+                <br></br>
+              </div>
+                <div className="h-5/6 flex">
+                  <textarea placeholder="Write Post Here.." className="resize-none box-border text-start border-2 border-white rounded-md w-full h-full bg-neutral-800 text-white"></textarea>
+                </div>
+            </form>
           )}
           {posts && (
             <p>{myPosts}</p>
