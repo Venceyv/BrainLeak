@@ -4,8 +4,8 @@ function Header({follower, following}) {
 
   return (
     //Profile Parent Container
-    <div className="pb-3">
-      <div className="border-2 rounded-lg h-1/10 w-3/5 flex items-center mt-5 translate-x-1/3 overflow-auto p-1 bg-neutral-800 text-white	">
+    <div className="flex flex-row pb-3 bg-lime-600  rounded-lg h-1/3">
+      <div className="flex items-center mt-auto overflow-auto text-white	">
         {/* Container for Image */}
           <div className="float-left p-1">
             {/* User Icon placeholder */}
@@ -43,6 +43,7 @@ function Header({follower, following}) {
           </div>
       </div>
     </div>
+
   )
 }
 

@@ -1,5 +1,4 @@
 import Header from "../components/Profile/Header";
-import Hero from "../components/Profile/Hero";
 import PostBox from "../components/Profile/PostBox";
 import { useState } from "react";
 
@@ -10,23 +9,20 @@ const home = () => {
    ]);
 
    const [postBox, setPostBox] = useState([
-    { myPosts: "USER POSTS placeholder", myFollowedTopics: "Followed TOPICS Placeholder", myFollowedPosts: "Followed POSTS Placeholder"}
+    { myPosts: "USER POSTS placeholder", myFollowedTopics: "COMMENT HISTORY PLACEHOLDER", myFollowedPosts: "LIKED POSTS PLACEHOLDER", subCount: 999, postCount: 888, likeCount: 777, commentCount: 666}
    ]);
    
     return (
       <>
-
-        <Hero />
 
         {followers.map(follow => (
           <Header follower={follow.follower} following={follow.following} />
         ))}
 
        {postBox.map((post => 
-          <PostBox myPosts={post.myPosts} myFollowedTopics={post.myFollowedTopics} myFollowedPosts={post.myFollowedPosts}/>
+          <PostBox myPosts={post.myPosts} myFollowedTopics={post.myFollowedTopics} myFollowedPosts={post.myFollowedPosts} subCount={post.subCount} numPosts={post.postCount} numLikes={post.likeCount} numComments={post.commentCount} />
        ))}
 
-        {/*<PostBox /> */}
 
       </>
     );
