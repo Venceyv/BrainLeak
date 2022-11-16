@@ -3,9 +3,12 @@ import { URL } from '../data/Constants';
 import { User } from '../interfaces/userData';
 import axios from './axiosConfig';
 
-export const getCheckAuth: Function = async (userId: string): Promise<User|undefined> => {
+export const getCheckAuth = async (userId: string): Promise<User> => {
   try {
-    const {data:{dbBack:userData}} = await axios.get(`${URL}/users/auth-check/${userId}`);
+    const {
+      data: { dbBack: userData },
+    } = await axios.get(`${URL}/users/auth-check/${userId}`);
+
     return userData;
   } catch (err) {
     if (axios.isAxiosError(err)) {
@@ -13,10 +16,12 @@ export const getCheckAuth: Function = async (userId: string): Promise<User|undef
     } else {
       console.log('unexpected error ' + err);
     }
+
+    throw err;
   }
 };
 
-export const getUser: Function = async (userId: string): Promise<unknown> => {
+export const getUser = async (userId: string): Promise<unknown> => {
   try {
     const data = await axios.get(`${URL}/users/${userId}`);
     return data;
