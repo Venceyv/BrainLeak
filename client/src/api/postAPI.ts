@@ -8,3 +8,11 @@ export const getTrendingPosts = async (): Promise<TrendingPost[]> => {
   } = await axios.get(`${URL}/posts/trending?q=8&type=trending`);
   return trendingPost as TrendingPost[];
 };
+
+export const getPosts = async (pageNum: number, pageSize: number, sortType: string = 'lastest') => {
+  const {
+    data: { dbBack: posts },
+  } = await axios.get(`${URL}/posts?pagenumber=${pageNum}&pagesize=${pageSize}&type=posts&sort=${sortType}`);
+  console.log(posts);
+  return posts;
+};

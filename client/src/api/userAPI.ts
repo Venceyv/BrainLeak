@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { URL } from '../data/Constants';
-import { User } from '../interfaces/userData';
+import { User } from '../interfaces/user';
 import axios from './axiosConfig';
 
 export const getCheckAuth = async (userId: string): Promise<User> => {
@@ -9,6 +9,7 @@ export const getCheckAuth = async (userId: string): Promise<User> => {
       data: { dbBack: userData },
     } = await axios.get(`${URL}/users/auth-check/${userId}`);
 
+    console.log(userData);
     return userData as User;
   } catch (err) {
     if (axios.isAxiosError(err)) {

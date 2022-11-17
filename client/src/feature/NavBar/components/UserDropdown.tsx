@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { postLogOut } from '../../../api/oAuthAPI';
-import { User } from '../../../interfaces/userData';
+import { User } from '../../../interfaces/user';
 
 interface UserDropdownProp {
   userRef: React.MutableRefObject<HTMLDivElement>;
