@@ -126,7 +126,7 @@ async function getPostTrending(num) {
     });
     leaderBoard = await Promise.all(
       leaderBoard.map(async (ranking) => {
-        const post = await Post.findById(ranking.postId, { title: 1, views: 1, commentCount: 1 })
+        const post = await Post.findById(ranking.postId, { title: 1, description:1})
           .lean()
           .populate("author", { username: 1, avatar: 1 }, { lean: true });
         leaderBoard.pop(ranking);
