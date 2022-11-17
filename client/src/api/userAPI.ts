@@ -9,7 +9,7 @@ export const getCheckAuth = async (userId: string): Promise<User> => {
       data: { dbBack: userData },
     } = await axios.get(`${URL}/users/auth-check/${userId}`);
 
-    return userData;
+    return userData as User;
   } catch (err) {
     if (axios.isAxiosError(err)) {
       console.log(err?.response?.status);

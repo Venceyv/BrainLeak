@@ -1,5 +1,6 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { postGoogleOAuth } from '../../api/oAuthAPI';
+import { errorToast } from '../../utils/errorToast';
 
 interface useLoginParam {
   setPresentLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,18 +18,19 @@ export const useLogin = ({ setPresentLogin, setLogin }: useLoginParam): useLogin
       try {
         const data = await postGoogleOAuth(code);
 
-        console.log(data);
         localStorage.setItem('jwt', JSON.stringify(data.accessToken));
         localStorage.setItem('userId', JSON.stringify(data.dbBack._id));
 
         setLogin(true);
         setPresentLogin(false);
       } catch (error) {
+        errorToast(`Oops! Something went wrong.`);
         throw error;
       }
     },
-    onError: async (err) => {
-      throw err;
+    onError: async (error) => {
+      errorToast(`Oops! Something went wrong.`);
+      throw error;
     },
     flow: 'auth-code',
   });

@@ -5,7 +5,7 @@ export const getRequestHeader: Function = (): { 'Content-Type': string; Authoriz
   const token: string = getJWT();
   return {
     'Content-Type': 'application/json',
-    Authorization: `${token}`,
+    Authorization: `${token ? token : ''}`,
   };
 };
 

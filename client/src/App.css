@@ -3,4 +3,8 @@ body,
 #root {
   height: 100%;
   width: 100%;
+
+  /* 💀 change later */
+  min-width: 530px;
+  min-height: 725px;
 }
