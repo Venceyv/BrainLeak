@@ -9,6 +9,7 @@ export const getTrendingPosts = async (): Promise<TrendingPost[]> => {
   return trendingPost as TrendingPost[];
 };
 
+// TODO: finish typing
 export const getPosts = async (pageNum: number, pageSize: number, sortType: string = 'lastest') => {
   const {
     data: { dbBack: posts },
