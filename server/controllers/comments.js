@@ -153,7 +153,6 @@ async function getComments(req, res) {
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
     let dbBack = await getCommentsUderPost(req.params.postId);
-    dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     if (dbBack.length != 0) {
       const [comments] = await Promise.all([
         addCommentsStatistics(dbBack),
@@ -166,6 +165,7 @@ async function getComments(req, res) {
         dbBack = await beautyCommentsInfo(dbBack, req.user._id);
       }
       dbBack = sortWith(dbBack, order);
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     }
     return res.status(200).json({ dbBack });
   } catch (error) {

@@ -86,7 +86,6 @@ async function findByTags(req, res) {
       }
       return res.status(200).json({ dbBack });
     }
-    dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     dbBack = postFilter(dbBack, timeInterval);
     dbBack = await Promise.all(
       dbBack.map(async (post) => {
@@ -106,6 +105,7 @@ async function findByTags(req, res) {
         dbBack = sortWith(dbBack, "likes");
         break;
     }
+    dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
@@ -120,8 +120,6 @@ async function findAll(req, res) {
     const order = req.query.sort;
     let dbBack = await Post.find({},{put:0})
       .lean()
-      .skip((pageNum - 1) * pageSize)
-      .limit(pageSize)
       .populate("author", "avatar username introduction", { lean: true });
     if (dbBack.length != 0) {
       dbBack = postFilter(dbBack, timeInterval);
@@ -143,6 +141,7 @@ async function findAll(req, res) {
           dbBack = sortWith(dbBack, "likes");
           break;
       }
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     }
     return res.status(200).json({ dbBack });
   } catch (error) {
@@ -163,8 +162,6 @@ async function findBySearch(req, res) {
       ],
     })
       .lean()
-      .skip((pageNum - 1) * pageSize)
-      .limit(pageSize)
       .populate("author", "avatar username", { lean: true });
     if (dbBack.length != 0) {
       dbBack = postFilter(dbBack, timeInterval);
@@ -186,6 +183,7 @@ async function findBySearch(req, res) {
           dbBack = sortWith(dbBack, "likes");
           break;
       }
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     }
     return res.status(200).json({ dbBack });
   } catch (error) {

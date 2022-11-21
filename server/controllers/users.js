@@ -300,8 +300,6 @@ async function getLikePosts(req, res) {
     const order = req.query.sort;
     let dbBack = await PostLike.find({ user: req.user._id, like: true }, { _id: 0, post: 1 })
       .lean()
-      .skip((pageNum - 1) * pageSize)
-      .limit(pageSize)
       .populate({
         path: "post",
         select: "title description author publishDate",
@@ -327,6 +325,7 @@ async function getLikePosts(req, res) {
         })
       );
       dbBack = sortWith(dbBack, order);
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     }
     return res.status(200).json({ dbBack });
   } catch (error) {
@@ -341,8 +340,6 @@ async function getDislikePosts(req, res) {
     const order = req.query.sort;
     let dbBack = await PostLike.find({ user: req.user._id, like: false }, { _id: 0, post: 1 })
       .lean()
-      .skip((pageNum - 1) * pageSize)
-      .limit(pageSize)
       .populate({
         path: "post",
         select: "title description author publishDate",
@@ -367,6 +364,7 @@ async function getDislikePosts(req, res) {
           return post;
         })
       );
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack = sortWith(dbBack, order);
     }
     return res.status(200).json({ dbBack });
@@ -381,8 +379,6 @@ async function getSavedPosts(req, res) {
     const order = req.query.sort;
     let dbBack = await SavedPost.find({ user: req.user._id }, { _id: 0, post: 1 })
       .lean()
-      .skip((pageNum - 1) * pageSize)
-      .limit(pageSize)
       .populate({
         path: "post",
         select: "title description author publishDate",
@@ -409,6 +405,7 @@ async function getSavedPosts(req, res) {
         })
       );
       dbBack = sortWith(dbBack, order);
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     }
     return res.status(200).json({ dbBack });
   } catch (error) {
@@ -638,6 +635,7 @@ async function getMyReplies(req, res) {
       resetUserNotification(userId, "replies"),
     ]);
     dbBack = sortWith(dbBack, "latest");
+    dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error: error });
@@ -687,6 +685,7 @@ async function getMyMarks(req, res) {
       resetUserNotification(userId, "marks"),
     ]);
     dbBack = sortWith(dbBack, "latest");
+    dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
