@@ -17,6 +17,7 @@ import {
   addComment,
   deleteComment,
   dislikeComment,
+  getComment,
   getComments,
   likeComment,
   updateComment,
@@ -28,7 +29,15 @@ import { verifyToken } from "../services/jwt.js";
 import { postValidator } from "../middleware/validator/postValidator.js";
 import { commentValidator } from "../middleware/validator/commentValidator.js";
 import { replyValidator } from "../middleware/validator/replyValidator.js";
-import { replyToComment, deleteReply, likeReply, dislikeReply, getReplies } from "../controllers/replies.js";
+import {
+  replyToComment,
+  deleteReply,
+  likeReply,
+  dislikeReply,
+  getReplies,
+  replyToUser,
+  getReply,
+} from "../controllers/replies.js";
 
 const postRouter = Router();
 
@@ -36,10 +45,19 @@ postRouter.get("/", verifyToken(false), findAll);
 postRouter.get("/trending", verifyToken(false), postTrending);
 postRouter.get("/search", verifyToken(false), findBySearch);
 postRouter.get("/tags", verifyToken(false), findByTags);
-postRouter.get("/allTags",getAllTags);
+postRouter.get("/allTags", getAllTags);
 postRouter.get("/:postId", checkPostExist, verifyToken(false), findOne);
 postRouter.get("/comments/:postId", verifyToken(false), checkPostExist, getComments);
 postRouter.get("/replies/:postId/:commentId", checkPostExist, checkCommentExist, verifyToken(false), getReplies);
+postRouter.get("/comment/:postId/:commentId", checkPostExist, checkCommentExist, verifyToken(false), getComment);
+postRouter.get(
+  "/comment/reply/:postId/:commentId/:replyId",
+  checkPostExist,
+  checkCommentExist,
+  checkReplyExist,
+  verifyToken(false),
+  getReply
+);
 
 postRouter.post("/", verifyToken(), postValidator, createPost);
 postRouter.post("/comment/:postId", checkPostExist, verifyToken(), commentValidator, addComment);
@@ -50,6 +68,14 @@ postRouter.post(
   verifyToken(),
   replyValidator,
   replyToComment
+);
+postRouter.post(
+  "/comment/reply/:postId/:commentId/:userId",
+  checkPostExist,
+  checkCommentExist,
+  verifyToken(),
+  replyValidator,
+  replyToUser
 );
 
 //reply to replies undercomment

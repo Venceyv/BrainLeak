@@ -9,22 +9,25 @@ import {
   incPostStatistics,
   postFilter,
   beautyPostsInfo,
+  addPostsStatistics,
 } from "../services/postServices.js";
-import { incUserStatistics, userTrendingInc } from "../services/userServices.js";
+import { incUserNotification, incUserStatistics, userTrendingInc } from "../services/userServices.js";
 import json from "body-parser";
 import { redisTrending } from "../configs/redis.js";
 import { sortWith } from "../services/arraySorter.js";
 
 async function createPost(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     const dbBack = new Post(req.body);
+    const userId = req.user._id;
     await incUserStatistics(req.user._id, "posts", 1);
-    dbBack.author = req.user._id;
+    dbBack.author = userId;
     dbBack.put = req.query.put === "true" ? true : false;
     dbBack.tags.map(async function (tag) {
       const record = await Tags.findOne({ tagName: tag });
       if (!record) {
-        await new Tags({ tagName: tag }).save();
+        new Tags({ tagName: tag }).save();
       }
     });
     dbBack.save();
@@ -35,6 +38,7 @@ async function createPost(req, res) {
 }
 async function findOne(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     const postId = req.params.postId;
     let dbBack = await getRedisPostProfile(postId);
     if (!dbBack) {
@@ -57,10 +61,8 @@ async function findOne(req, res) {
     ]);
     dbBack = postStatistics;
     if (req.user) {
-      const beautifulPost = await beautyPostInfo(dbBack, req.user._id);
-      dbBack = beautifulPost;
+      dbBack = await beautyPostInfo(dbBack, req.user._id);
     }
-    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
@@ -69,6 +71,7 @@ async function findOne(req, res) {
 
 async function findByTags(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     const tags = req.query.tags.split(" ");
     const pageNum = req.query.pagenumber;
     const pageSize = req.query.pagesize;
@@ -77,7 +80,6 @@ async function findByTags(req, res) {
     let dbBack = await Post.find({ tags: { $in: tags } })
       .lean()
       .populate("author", "avatar username follower upVoteGet");
-    res.setHeader("Content-Type", "application/json");
     if (dbBack.length === 0) {
       if (tags.length === 1) {
         await Tags.findOneAndDelete({ tagName: tags });
@@ -111,20 +113,19 @@ async function findByTags(req, res) {
 }
 async function findAll(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     const pageNum = req.query.pagenumber;
     const pageSize = req.query.pagesize;
     const timeInterval = req.query.timeInterval;
     const order = req.query.sort;
-    let dbBack = await Post.find().lean().populate("author", "avatar username introduction", { lean: true });
+    let dbBack = await Post.find({},{put:0})
+      .lean()
+      .skip((pageNum - 1) * pageSize)
+      .limit(pageSize)
+      .populate("author", "avatar username introduction", { lean: true });
     if (dbBack.length != 0) {
-      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack = postFilter(dbBack, timeInterval);
-      dbBack = await Promise.all(
-        dbBack.map(async (post) => {
-          post = await addPostStatistics(post);
-          return post;
-        })
-      );
+      dbBack = await addPostsStatistics(dbBack);
       if (req.user) {
         dbBack = await beautyPostsInfo(dbBack, req.user._id);
       }
@@ -143,7 +144,6 @@ async function findAll(req, res) {
           break;
       }
     }
-    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     return res.json({ error: error });
@@ -151,6 +151,7 @@ async function findAll(req, res) {
 }
 async function findBySearch(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     const pageNum = req.query.pagenumber;
     const pageSize = req.query.pagesize;
     const timeInterval = req.query.timeInterval;
@@ -162,9 +163,10 @@ async function findBySearch(req, res) {
       ],
     })
       .lean()
+      .skip((pageNum - 1) * pageSize)
+      .limit(pageSize)
       .populate("author", "avatar username", { lean: true });
     if (dbBack.length != 0) {
-      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack = postFilter(dbBack, timeInterval);
       dbBack = await Promise.all(
         dbBack.map(async (post) => {
@@ -185,7 +187,6 @@ async function findBySearch(req, res) {
           break;
       }
     }
-    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.json({ error: error });
@@ -193,6 +194,7 @@ async function findBySearch(req, res) {
 }
 async function updatePost(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     req.body.updateDate = Date.now();
     req.body.edited = true;
     const dbBack = await Post.findByIdAndUpdate(req.params.postId, req.body, { new: true });
@@ -201,7 +203,7 @@ async function updatePost(req, res) {
       tags.map(async function (tag) {
         const record = await Tags.findOne({ tagName: tag });
         if (!record) {
-          await new Tags({ tagName: tag }).save();
+          new Tags({ tagName: tag }).save();
         }
       });
     }
@@ -212,8 +214,10 @@ async function updatePost(req, res) {
 }
 async function likePost(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     const postId = req.params.postId;
     const postLike = await PostLike.findOne({ user: req.user._id, post: postId }, { like: 1 });
+    const post = req.post;
     let like = true;
     if (postLike && postLike.like) {
       await Promise.all([
@@ -231,6 +235,7 @@ async function likePost(req, res) {
       incPostStatistics(postId, "likes", 1),
       userTrendingInc(req.post.author, 2),
       incUserStatistics(req.post.author, "upvotes", 1),
+      incUserNotification(req.post.author, "likes", 1),
     ]);
     if (postLike) {
       postLike.like = true;
@@ -238,7 +243,7 @@ async function likePost(req, res) {
       postLike.save();
       return res.status(200).json({ like });
     }
-    await new PostLike({ user: req.user._id, post: postId }).save();
+    new PostLike({ user: req.user._id, post: postId, postAuthor: post.author }).save();
     return res.status(200).json({ like });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -246,8 +251,10 @@ async function likePost(req, res) {
 }
 async function dislikePost(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     const postId = req.params.postId;
     const postLike = await PostLike.findOne({ user: req.user._id, post: postId });
+    const post = req.post;
     let dislike = true;
     if (postLike && !postLike.like) {
       postLike.remove();
@@ -255,19 +262,19 @@ async function dislikePost(req, res) {
       dislike = false;
       return res.status(200).json({ dislike });
     }
-    await Promise.all([incPostStatistics(postId, "dislikes", 1), incUserStatistics(req.post.author, "upvotes", -1)]);
+    await Promise.all([incPostStatistics(postId, "dislikes", 1), incUserStatistics(post.author, "upvotes", -1)]);
     if (postLike) {
       await Promise.all([
         incPostStatistics(postId, "likes", -1),
         postTrendingInc(postId, -2),
-        userTrendingInc(req.post.author, -2),
-        incUserStatistics(req.post.author, "upvotes", -1),
+        userTrendingInc(post.author, -2),
+        incUserStatistics(post.author, "upvotes", -1),
       ]);
       postLike.like = false;
       postLike.save();
       return res.status(200).json({ dislike });
     }
-    await new PostLike({ user: req.user._id, post: postId, like: false }).save();
+    new PostLike({ user: req.user._id, post: postId, postAuthor: post.author, like: false }).save();
     return res.status(200).json({ dislike });
   } catch (error) {
     return res.status(401).json({ error: error });
@@ -275,25 +282,28 @@ async function dislikePost(req, res) {
 }
 async function savePost(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     const postId = req.params.postId;
+    const post = req.post;
     const dbBack = await SavedPost.findOne({ user: req.user._id, post: postId });
     let saved = true;
     if (dbBack) {
       await Promise.all([
-        postTrendingInc(req.params.postId, -4),
+        postTrendingInc(postId, -4),
         incPostStatistics(postId, "marks", -1),
-        userTrendingInc(req.post.author, -3),
+        userTrendingInc(post.author, -3),
       ]);
       saved = false;
       dbBack.remove();
       return res.status(200).json({ saved });
     }
     await Promise.all([
-      postTrendingInc(req.params.postId, 4),
+      postTrendingInc(postId, 4),
       incPostStatistics(postId, "marks", 1),
-      userTrendingInc(req.post.author, 3),
-      new SavedPost({ user: req.user._id, post: req.params.postId }).save(),
+      userTrendingInc(post.author, 3),
+      incUserNotification(post.author, "marks", 1),
     ]);
+    new SavedPost({ user: req.user._id, post: postId, postAuthor: post.author }).save();
     return res.status(200).json({ saved });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -301,12 +311,14 @@ async function savePost(req, res) {
 }
 async function deletePost(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
+    const postId = req.params.postId;
     await Promise.all([
       incUserStatistics(req.user._id, "posts", -1),
       Post.findByIdAndDelete(req.post._id),
-      redisTrending.zrem(" PostTrending", req.params.postId),
-      PostLike.deleteMany({ post: req.params.postId }),
-      SavedPost.deleteMany({ post: req.params.postId }),
+      redisTrending.zrem(" PostTrending", postId),
+      PostLike.deleteMany({ post: postId }),
+      SavedPost.deleteMany({ post: postId }),
     ]);
     const msg = "Delete Successfully";
     return res.status(402).json({ msg });
@@ -317,9 +329,9 @@ async function deletePost(req, res) {
 
 async function postTrending(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     const topNumber = req.query.q;
     const dbBack = await getPostTrending(topNumber);
-    res.setHeader("Content-Type", "application/json");
     res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -327,7 +339,7 @@ async function postTrending(req, res) {
 }
 async function getAllTags(req, res) {
   try {
-    const dbBack = await Tags.find({},{ tagName: 1, _id: 0 }).lean();
+    const dbBack = await Tags.find({}, { tagName: 1, _id: 0 }).lean();
     res.setHeader("Content-Type", "application/json");
     res.status(200).json({ dbBack });
   } catch (error) {

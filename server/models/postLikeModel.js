@@ -13,9 +13,19 @@ const postLikeSchema = new Schema({
     ref: "post",
     required: true,
   },
+  postAuthor:{
+    type: mongoose.ObjectId,
+    ref: "user",
+    index: true,
+    required: true,
+  },
   like: {
     type: Boolean,
     default: true,
+  },
+  publishDate: {
+    type: Date,
+    default: Date.now(),
   },
 });
 export { postLikeSchema };

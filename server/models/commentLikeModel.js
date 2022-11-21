@@ -10,12 +10,21 @@ const commentLikeSchema = new Schema({
   },
   comment: {
     type: mongoose.ObjectId,
-    ref: "post",
+    ref: "comment",
+    required: true,
+  },
+  commentAuthor:{
+    type: mongoose.ObjectId,
+    ref: "user",
     required: true,
   },
   like: {
     type: Boolean,
     default: true,
+  },
+  publishDate: {
+    type: Date,
+    default: Date.now(),
   },
 });
 export { commentLikeSchema };

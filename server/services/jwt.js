@@ -6,7 +6,6 @@ import schedule from "node-schedule";
 import { redisToken } from "../configs/redis.js";
 import { promisify } from "util";
 import { User } from "../models/index.js";
-import { getRedisUserInfo, saveRedisUserInfo } from "./userServices.js";
 const tojwt = promisify(jwt.sign);
 const verify = promisify(jwt.verify);
 
@@ -21,7 +20,7 @@ const createToken = async (userInfo) => {
     }
   );
 };
-// 
+//
 const createRefreshToken = async (userInfo) => {
   return await tojwt(
     {
@@ -29,16 +28,20 @@ const createRefreshToken = async (userInfo) => {
     },
     process.env.REFRESHSECRETORKEY,
     {
-      expiresIn: 60 * 60,
+      expiresIn: 24 * 60 * 60,
     }
   );
 };
 
 function tokenExpired(token) {
   try {
-    const currentDate = new Date();
-    const decodedToken = jwt_decode(token);
-    return decodedToken.exp * 1000 < currentDate.getTime();
+    if(token)
+    {
+      const currentDate = new Date();
+      const decodedToken = jwt_decode(token);
+      return decodedToken.exp * 1000 < currentDate.getTime();
+    }
+   return true;
   } catch (error) {
     console.log("tokenExpired Failed -- Jservice 36");
   }
@@ -53,14 +56,8 @@ function verifyToken(required = true) {
       if (!inBlockList) {
         try {
           const tokenInfo = await verify(token, process.env.SECRETORKEY);
-          const user = await getRedisUserInfo(tokenInfo.userInfo.userId);
-          if (user) {
-            req.user = user;
-            return next();
-          }
           req.user = await User.findById(tokenInfo.userInfo.userId, { username: 1 }).lean();
           if (req.user) {
-            await saveRedisUserInfo(req.user._id, req.user);
             return next();
           }
         } catch (error) {
@@ -139,16 +136,16 @@ async function removeExpiredToken(tokenList) {
   stream.on("end", () => {});
 }
 // removed expired token in a token
-function removeTokenByTime(time, tokenList) {
+function removeTokenByTime(time) {
   schedule.scheduleJob(
     time,
-    async function (tokenList) {
+    async function (redisToken) {
       try {
-        await removeExpiredToken(tokenList);
+        await removeExpiredToken(redisToken);
       } catch (error) {
         console.log("removeTokenByTime Failed -- Jservice 158");
       }
-    }.bind(null, tokenList)
+    }.bind(null, redisToken)
   );
 }
 

@@ -30,4 +30,16 @@ const ReplyLike = mongoose.model("replylike", replyLikeSchema);
 savedPostSchema.index({ user: 1, post: 1 });
 const SavedPost = mongoose.model("savedPost", savedPostSchema);
 
-export { User, Post, Comment, Reply, Follow, Tags, PostLike, SavedPost, CommentLike, ReplyLike };
+
+export {
+  User,
+  Post,
+  Comment,
+  Reply,
+  Follow,
+  Tags,
+  PostLike,
+  SavedPost,
+  CommentLike,
+  ReplyLike,
+};

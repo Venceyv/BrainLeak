@@ -54,7 +54,6 @@ async function addReplyUserInfo(userId, reply) {
     const like = dbBack === null ? false : dbBack.like;
     const dislike = dbBack === null ? false : !dbBack.like;
     reply = { ...reply, like, dislike };
-
     return reply;
   } catch (error) {
     console.log("addReplyUserInfoE Faild --Rservices 47");
@@ -65,7 +64,7 @@ async function saveRedisReplyProfile(replyId, profile) {
   try {
     const key = JSON.stringify(replyId) + " Profile";
     profile = JSON.stringify(profile);
-    await redisReplies.setex(key, 20, profile);
+    await redisReplies.setex(key, 30, profile);
   } catch (error) {
     console.log("saveRedisReplyProfile Faild --Rservices 69");
   }
@@ -83,6 +82,15 @@ async function getRedisReplyProfile(replyId) {
     console.log("getRedisReplyProfile Faild --Rservices 78");
   }
 }
+async function addRepliesStatistics(replies){
+  replies = await Promise.all(
+    replies.map(async (reply) => {
+      reply = await addReplyStatistics(reply);
+      return reply;
+    })
+  );
+  return replies;
+}
 export {
   clearReplyByTime,
   addReplyStatistics,
@@ -90,4 +98,5 @@ export {
   incReplyStatistics,
   saveRedisReplyProfile,
   getRedisReplyProfile,
+  addRepliesStatistics
 };

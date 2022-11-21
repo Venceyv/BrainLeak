@@ -5,7 +5,7 @@ const replySchema = new Schema({
     type: String,
     required: true,
   },
-  createTime: {
+  publishDate: {
     type: Date,
     default: Date.now(),
   },

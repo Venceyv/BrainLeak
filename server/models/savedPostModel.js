@@ -13,5 +13,15 @@ const savedPostSchema = new Schema({
     ref: "post",
     required: true,
   },
+  postAuthor:{
+    type: mongoose.ObjectId,
+    ref: "user",
+    index: true,
+    required: true,
+  },
+  publishDate: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 export { savedPostSchema };

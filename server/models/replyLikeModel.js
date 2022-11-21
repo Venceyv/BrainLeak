@@ -10,12 +10,21 @@ const replyLikeSchema = new Schema({
   },
   reply: {
     type: mongoose.ObjectId,
-    ref: "post",
+    ref: "reply",
+    required: true,
+  },
+  replyAuthor:{
+    type: mongoose.ObjectId,
+    ref: "user",
     required: true,
   },
   like: {
     type: Boolean,
     default: true,
+  },
+  publishDate: {
+    type: Date,
+    default: Date.now(),
   },
 });
 export { replyLikeSchema };

@@ -20,7 +20,7 @@ const stringifyUserInfo = fastJson({
   type: "object",
   properties: {
     _id: { type: "string" },
-    username:{type:"string"}
+    username: { type: "string" },
   },
 });
 
@@ -73,96 +73,6 @@ async function saveRedisUserProfile(userId, userInfo) {
   }
 }
 
-async function getRedisUserInfo(userId) {
-  try {
-    let userInfo = await redisUsers.get(userId);
-    if (userInfo) {
-      userInfo = JSON.parse(userInfo);
-      return userInfo;
-    }
-    return null;
-  } catch (error) {
-    console.log("getUserInfoRedis Failed Uservice 83");
-  }
-}
-async function saveRedisUserInfo(userId, userInfo) {
-  try {
-    userInfo = stringifyUserInfo(userInfo);
-    await redisUsers.setex(userId, 30, userInfo);
-  } catch (error) {
-    console.log("saveRedisUserInfo Failed Uservice 96");
-  }
-}
-
-async function saveRedisSavedPost(userId, savedPost) {
-  try {
-    const key = JSON.stringify(userId) + " SavedPost";
-    savedPost = JSON.stringify(savedPost);
-    await redisUsers.setex(key, 20, savedPost);
-  } catch (error) {
-    console.log("saveRedisSavedPost Failed, --Uservices 115");
-  }
-}
-async function getRedisSavedPost(userId) {
-  try {
-    const key = JSON.stringify(userId) + " SavedPost";
-    let post = await redisUsers.get(key);
-    if (!post) {
-      return null;
-    }
-    post = JSON.parse(post);
-    return post;
-  } catch (error) {
-    console.log("getRedisSavedPost Failed, --Uservices 124");
-  }
-}
-
-async function saveRedisLikedPost(userId, likedPost) {
-  try {
-    const key = JSON.stringify(userId) + " LikedPost";
-    likedPost = JSON.stringify(likedPost);
-    await redisUsers.setex(key, 20, likedPost);
-  } catch (error) {
-    console.log("saveRedisLikedPost Failed, --Uservices 146");
-  }
-}
-async function getRedisLikedPost(userId) {
-  try {
-    const key = JSON.stringify(userId) + " LikedPost";
-    let post = await redisUsers.get(key);
-    if (!post) {
-      return null;
-    }
-    post = JSON.parse(post);
-    return post;
-  } catch (error) {
-    console.log("getRedisLikedPost Failed, --Uservices 155");
-  }
-}
-
-async function saveRedisDisikedPost(userId, dislikedPost) {
-  try {
-    const key = JSON.stringify(userId) + " DislikedPost";
-    dislikedPost = JSON.stringify(dislikedPost);
-    await redisUsers.setex(key, 20, dislikedPost);
-  } catch (error) {
-    console.log("saveRedisDisikedPost Failed, --Uservices 177");
-  }
-}
-async function getRedisDislikedPost(userId) {
-  try {
-    const key = JSON.stringify(userId) + " DislikedPost";
-    let post = await redisUsers.get(key);
-    if (!post) {
-      return null;
-    }
-    post = JSON.parse(post);
-    return post;
-  } catch (error) {
-    console.log("getRedisDislikedPost Failed, --Uservices 186");
-  }
-}
-
 async function incUserStatistics(userId, field, incNum) {
   try {
     userId = JSON.stringify(userId);
@@ -175,7 +85,7 @@ async function incUserStatistics(userId, field, incNum) {
     console.log("incUserStatistics Failed -- Uservices 208");
   }
 }
-
+//to determind if the current user is following the targetUser
 function addFollowingInfo(targetUser, followingList) {
   try {
     const following = followingList.filter((e) => e.followedUser.equals(targetUser._id)).length > 0;
@@ -246,7 +156,13 @@ async function getUserTrending(num) {
     });
     leaderBoard = await Promise.all(
       leaderBoard.map(async (ranking) => {
-        const user = await User.findById(ranking.userId, { avatar: 1, username: 1, backgroundCover: 1 }).lean();
+        let user = await User.findById(ranking.userId, { avatar: 1, username: 1, backgroundCover: 1,introduction:1 }).lean();
+        const key = JSON.stringify(user._id) + " Statistics";
+        const [followerCount,postCount] = await Promise.all([
+          redisUsers.hget(key,"follower"),
+          redisUsers.hget(key,"posts")
+        ])
+        user = {...user,followerCount,postCount};
         leaderBoard.pop(ranking);
         const popularity = ranking.popularity;
         return { user, popularity };
@@ -275,7 +191,7 @@ async function saveRedisUserComment(userId, comments) {
   try {
     const key = JSON.stringify(userId) + " Comment";
     comments = JSON.stringify(comments);
-    await redisUsers.setex(key, 20, comments);
+    await redisUsers.setex(key, 30, comments);
   } catch (error) {
     console.log("saveRedisUserComment Failed -- Uservices 330");
   }
@@ -298,32 +214,78 @@ async function saveRedisUserPost(userId, posts) {
   try {
     const key = JSON.stringify(userId) + " Post";
     posts = JSON.stringify(posts);
-    await redisUsers.setex(key, 20, posts);
+    await redisUsers.setex(key, 30, posts);
   } catch (error) {
     console.log("saveRedisUserPost Failed -- Uservices 361");
   }
 }
-
+async function incUserNotification(userId, field, incNum) {
+  try {
+    userId = JSON.stringify(userId);
+    const key = userId + " NewMessages";
+    const result = await redisUsers.hincrby(key, field, incNum);
+    if (result < 0) {
+      await redisUsers.hset(key, field, 0);
+    }
+  } catch (error) {
+    console.log("incUserNewMessages Failed -- Uservices 208");
+  }
+}
+async function resetUserNotification(userId, field) {
+  try {
+    userId = JSON.stringify(userId);
+    const key = userId + " NewMessages";
+    await redisUsers.hset(key, field, 0);
+  } catch (error) {
+    console.log("resetUserNewMessages Failed -- Uservices 208");
+  }
+}
+async function getUserNotification(userId) {
+  try {
+    const key = JSON.stringify(userId) + " NewMessages";
+    const pipeline = redisUsers.pipeline();
+    pipeline.hget(key, "comments");
+    pipeline.hget(key, "replies");
+    pipeline.hget(key, "likes");
+    pipeline.hget(key,'marks');
+    const results = await pipeline.exec();
+    const newComments = results[0][1] === null ? 0 : Number(results[0][1]);
+    const newReplies = results[1][1] === null ? 0 : Number(results[1][1]);
+    const newLikes = results[2][1] === null ? 0 : Number(results[2][1]);
+    const newMarks = results[3][1] === null ? 0 : Number(results[3][1]);
+    return {
+      newComments,
+      newReplies,
+      newLikes,
+      newMarks,
+    };
+  } catch (error) {
+    console.log("getUserNewMessages Failed -- Uservices 232");
+  }
+}
+function addCategories(lists, type) {
+  lists.forEach((post, index) => {
+    const category = type;
+    lists[index] = { ...post, category };
+  });
+  return lists;
+}
 export {
   updatePicture,
   stringifyUserInfo,
   getRedisUserProfile,
   addFollowingInfo,
   addUserStatistics,
-  getRedisUserInfo,
-  saveRedisUserInfo,
   saveRedisUserProfile,
   incUserStatistics,
   userTrendingInc,
   getUserTrending,
-  saveRedisSavedPost,
-  getRedisSavedPost,
-  getRedisLikedPost,
-  saveRedisLikedPost,
-  getRedisDislikedPost,
-  saveRedisDisikedPost,
   getRedisUserComment,
   saveRedisUserComment,
   getRedisUserPost,
   saveRedisUserPost,
+  incUserNotification,
+  resetUserNotification,
+  getUserNotification,
+  addCategories,
 };

@@ -1,4 +1,4 @@
-import { PostLike, SavedPost, Follow, Post } from "../models/index.js";
+import { PostLike, SavedPost, Post } from "../models/index.js";
 import { redisPosts, redisTrending } from "../configs/redis.js";
 import schedule from "node-schedule";
 import fastJson from "fast-json-stringify";
@@ -75,17 +75,13 @@ async function saveRedisPostProfile(postId, postInfo) {
   try {
     const key = JSON.stringify(postId) + " Profile";
     postInfo = stringifyPostInfo(postInfo);
-    await redisPosts.setex(key, 20, postInfo);
+    await redisPosts.setex(key, 30, postInfo);
   } catch (error) {
     console.log("saveRedisPostProfile -- Pservices 78");
   }
 }
-function addUserPostInfo(post, followingList, likeList, saveList) {
+function addUserPostInfo(post, likeList, saveList) {
   try {
-    if (followingList != null) {
-      let following = followingList.filter((e) => e.followedUser.equals(post.author._id)).length > 0;
-      post.author = { ...post.author, following };
-    }
     const like = likeList.filter((e) => e.post.equals(post._id) && e.like).length > 0;
     const dislike = likeList.filter((e) => e.post.equals(post._id) && !e.like).length > 0;
     const save = saveList.filter((e) => e.post.equals(post._id)).length > 0;
@@ -184,37 +180,26 @@ async function addPostStatistics(post) {
 
 async function beautyPostInfo(post, userId) {
   try {
-    const [followingList, likeList, PostSaveList] = await Promise.all([
-      Follow.find({ user: userId }, { followedUser: 1, _id: 0 }).lean(),
+    const [ likeList, PostSaveList] = await Promise.all([
       PostLike.find({ user: userId }, { post: 1, like: 1, _id: 0 }).lean(),
       SavedPost.find({ user: userId }, { post: 1, _id: 0 }).lean(),
     ]);
-    post = addUserPostInfo(post, followingList, likeList, PostSaveList);
+    post = addUserPostInfo(post, likeList, PostSaveList);
     return post;
   } catch (error) {
     console.log("beautyPostInfo Failed -- Pservices 198");
   }
 }
 
-async function beautyPostsInfo(posts, userId, self = false) {
+async function beautyPostsInfo(posts, userId) {
   try {
-    const [followingList, likeList, saveList] = await Promise.all([
-      Follow.find({ user: userId }, { followedUser: 1, _id: 0 }).lean(),
+    const [ likeList, saveList] = await Promise.all([
       PostLike.find({ user: userId }, { post: 1, like: 1, _id: 0 }).lean(),
       SavedPost.find({ user: userId }, { post: 1, _id: 0 }).lean(),
     ]);
-    switch (self) {
-      case false:
-        posts.forEach((post, index) => {
-          posts[index] = addUserPostInfo(post, followingList, likeList, saveList);
-        });
-        break;
-      default:
-        posts.forEach((post, index) => {
-          posts[index] = addUserPostInfo(post, null, likeList, saveList);
-        });
-        break;
-    }
+    posts.forEach((post, index) => {
+      posts[index] = addUserPostInfo(post, likeList, saveList);
+    });
     return posts;
   } catch (error) {
     console.log("beautyPostInfo Failed -- Pservices 214");
@@ -264,6 +249,7 @@ function postFilter(posts, timeInterval = "default") {
     console.log("getPosts Failed -- Pservices 251");
   }
 }
+
 export {
   getOnePostInfo,
   stringifyPostInfo,

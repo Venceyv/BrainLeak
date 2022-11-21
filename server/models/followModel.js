@@ -14,5 +14,9 @@ const followSchema = new Schema({
     index: true,
     ref: "user",
   },
+  publishDate: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 export { followSchema };

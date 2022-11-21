@@ -12,17 +12,23 @@ const commentSchema = new Schema({
     ref: "user",
     require: true,
   },
-  createTime: {
+  publishDate: {
     type: Date,
     default: Date.now(),
   },
-  updateTime: {
+  updateDate: {
     type: Date,
     default: Date.now(),
   },
   relatedPost: {
     type: mongoose.ObjectId,
     ref: "post",
+    index: true,
+    required: true,
+  },
+  postAuthor:{
+    type: mongoose.ObjectId,
+    ref: "user",
     index: true,
     required: true,
   },

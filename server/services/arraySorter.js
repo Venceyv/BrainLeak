@@ -37,6 +37,7 @@ function sortWith(array, condition) {
         array.sort((a, b) => {
           return b.statistics.likes - a.statistics.likes;
         });
+        break;
     }
     return array;
   } catch (error) {

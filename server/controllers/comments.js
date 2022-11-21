@@ -1,28 +1,37 @@
-import { User, Comment, CommentLike } from "../models/index.js";
+import { User, Comment, CommentLike, Follow } from "../models/index.js";
 import { transpoter, notifyAuthor } from "../services/nodeMailer.js";
 import {
   addCommentsStatistics,
   getCommentsUderPost,
   incCommentStatistics,
   beautyCommentsInfo,
+  addCommentStatistics,
+  addCommentUserInfo,
 } from "../services/commentServices.js";
-import { incUserStatistics, userTrendingInc } from "../services/userServices.js";
+import { incUserNotification, incUserStatistics, userTrendingInc } from "../services/userServices.js";
 import { incPostStatistics, postTrendingInc } from "../services/postServices.js";
+import { sortWith } from "../services/arraySorter.js";
 async function addComment(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
+    const userId = req.user._id;
+    const postId = req.params.postId;
+    const post = req.post;
     const [postAuthor] = await Promise.all([
-      User.findById(req.post.author, { email:1 }).lean(),
-      postTrendingInc(req.post._id, 3),
-      incPostStatistics(req.post._id, "comments", 1),
-      incUserStatistics(req.params.userId, "comments", 1),
+      User.findById(req.post.author, { email: 1 }).lean(),
+      postTrendingInc(postId, 3),
+      incPostStatistics(postId, "comments", 1),
+      incUserStatistics(userId, "comments", 1),
+      incUserNotification(post.author, "comments", 1),
     ]);
     const dbBack = await new Comment({
       content: req.body.content,
-      author: req.user._id,
-      relatedPost: req.post._id,
+      author: userId,
+      relatedPost: postId,
+      postAuthor: post.author,
     }).save();
     //if author account is still active
-    if (req.post.put && postAuthor && req.user._id !== postAuthor._id) {
+    if (req.post.put && postAuthor && !req.user._id.equals(postAuthor._id)) {
       const mailOptions = notifyAuthor(
         postAuthor.email,
         req.user.username,
@@ -44,6 +53,7 @@ async function addComment(req, res) {
 
 async function updateComment(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     req.body.edited = true;
     req.body.updateTime = Date.now();
     const dbBack = await Comment.findByIdAndUpdate(req.comment._id, req.body, { new: true });
@@ -54,13 +64,14 @@ async function updateComment(req, res) {
 }
 async function deleteComment(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     await Promise.all([
       Comment.findByIdAndDelete(req.params.commentId),
       CommentLike.findOneAndDelete({ comment: req.params.commentId }),
       postTrendingInc(req.params.postId, -3),
       req.comment.relatedPost,
       incPostStatistics(req.comment.relatedPost, "comments", -1),
-      incUserStatistics(req.comment.author,"comments",-1),
+      incUserStatistics(req.comment.author, "comments", -1),
     ]);
     const msg = "Delete successfully.";
     return res.status(200).json({ msg });
@@ -70,9 +81,11 @@ async function deleteComment(req, res) {
 }
 async function likeComment(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     let like = true;
     const commentId = req.params.commentId;
     const userId = req.user._id;
+    const comment = req.comment;
     const dbBack = await CommentLike.findOne({ user: userId, comment: commentId }, { like: 1 });
     if (dbBack && dbBack.like) {
       like = false;
@@ -80,14 +93,15 @@ async function likeComment(req, res) {
       await Promise.all([
         userTrendingInc(req.comment.author, -6),
         incCommentStatistics(commentId, "likes", -1),
-        incUserStatistics(req.post.author, "upvotes", -1),
+        incUserStatistics(req.comment.author, "upvotes", -1),
       ]);
       return res.status(200).json({ like });
     }
     await Promise.all([
       incCommentStatistics(commentId, "likes", 1),
       userTrendingInc(req.comment.author, 6),
-      incUserStatistics(req.post.author, "upvotes", 1),
+      incUserStatistics(req.comment.author, "upvotes", 1),
+      incUserNotification(req.comment.author, "likes", 1),
     ]);
     if (dbBack) {
       dbBack.like = true;
@@ -95,7 +109,7 @@ async function likeComment(req, res) {
       await incCommentStatistics(commentId, "dislikes", -1);
       return res.status(200).json({ like });
     }
-    await new CommentLike({ user: userId, comment: commentId }).save();
+    new CommentLike({ user: userId, comment: commentId, commentAuthor: comment.author }).save();
     return res.status(200).json({ like });
   } catch (error) {
     return res.status(401).json({ error });
@@ -103,9 +117,11 @@ async function likeComment(req, res) {
 }
 async function dislikeComment(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     let dislike = true;
     const commentId = req.params.commentId;
     const userId = req.user._id;
+    const comment = req.comment;
     const dbBack = await CommentLike.findOne({ user: userId, comment: commentId }, { like: 1 });
     if (dbBack && !dbBack.like) {
       dislike = false;
@@ -119,12 +135,12 @@ async function dislikeComment(req, res) {
       dbBack.save();
       await Promise.all([
         incCommentStatistics(commentId, "likes", -1),
-        userTrendingInc(req.comment.author, -6),
-        incUserStatistics(req.post.author, "upvotes", -1),
+        userTrendingInc(comment.author, -6),
+        incUserStatistics(comment.author, "upvotes", -1),
       ]);
       return res.status(200).json({ dislike });
     }
-    await new CommentLike({ user: userId, comment: commentId, like: false }).save();
+    new CommentLike({ user: userId, comment: commentId, commentAuthor: comment.author,like: false }).save();
     return res.status(200).json({ dislike });
   } catch (error) {
     return res.status(401).json({ error });
@@ -132,8 +148,12 @@ async function dislikeComment(req, res) {
 }
 async function getComments(req, res) {
   try {
+    res.setHeader("Content-Type", "application/json");
     const order = req.query.sort;
+    const pageNum = Number(req.query.pagenumber);
+    const pageSize = Number(req.query.pagesize);
     let dbBack = await getCommentsUderPost(req.params.postId);
+    dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     if (dbBack.length != 0) {
       const [comments] = await Promise.all([
         addCommentsStatistics(dbBack),
@@ -145,24 +165,28 @@ async function getComments(req, res) {
       if (req.user) {
         dbBack = await beautyCommentsInfo(dbBack, req.user._id);
       }
-      switch (order) {
-        case "latest":
-          dbBack.sort((a, b) => {
-            return new Date(b.createTime) - new Date(a.createTime);
-          });
-          break;
-        default:
-          dbBack.sort((a, b) => {
-            return b.statistics.likes - a.statistics.likes;
-          });
-          break;
-      }
+      dbBack = sortWith(dbBack, order);
     }
-    res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error });
   }
 }
-
-export { addComment, updateComment, deleteComment, likeComment, dislikeComment, getComments };
+async function getComment(req, res) {
+  try {
+    res.setHeader("Content-Type", "application/json");
+    let dbBack = await Comment.findById(req.params.commentId)
+      .lean()
+      .populate("author", { username: 1, avatar: 1 }, { lean: true });
+    dbBack = await addCommentStatistics(dbBack);
+    if (req.user) {
+      const userId = req.user._id;
+      const commentLikeList = await CommentLike.find({ user: userId }, { comment: 1, like: 1, _id: 0 }).lean();
+      dbBack = addCommentUserInfo(dbBack, commentLikeList);
+    }
+    return res.status(200).json({ dbBack });
+  } catch (error) {
+    return res.status(401).json({ error });
+  }
+}
+export { addComment, updateComment, deleteComment, likeComment, dislikeComment, getComments, getComment };

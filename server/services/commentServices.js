@@ -1,7 +1,6 @@
 import schedule from "node-schedule";
 import { redisComments } from "../configs/redis.js";
-import { Post, Comment, CommentLike, Follow } from "../models/index.js";
-
+import { Post, Comment, CommentLike } from "../models/index.js";
 function clearCommentByTime(time) {
   schedule.scheduleJob(
     time,
@@ -50,12 +49,8 @@ async function addCommentStatistics(comment) {
     console.log("addCommentStatistics Failed -- Cservices 31");
   }
 }
-function addCommentUserInfo(comment, followingList, likeList) {
+function addCommentUserInfo(comment, likeList) {
   try {
-    if (followingList != null) {
-      let following = followingList.filter((e) => e.followedUser.equals(comment.author._id)).length > 0;
-      comment.author = { ...comment.author, following };
-    }
     const like = likeList.filter((e) => e.comment.equals(comment._id) && e.like).length > 0;
     const dislike = likeList.filter((e) => e.comment.equals(comment._id) && !e.like).length > 0;
     comment = { ...comment, like, dislike };
@@ -78,15 +73,15 @@ async function addCommentsStatistics(commentList) {
     console.log("addCommentsStatistics Failed -- Cservices 66");
   }
 }
-async function getCommentsUderPost(postId) {
+async function getCommentsUderPost(commentId) {
   try {
-    let commentUnderPost = await getRedisCommentProfile(postId);
+    let commentUnderPost = await getRedisCommentProfile(commentId);
     if (!commentUnderPost) {
-      commentUnderPost = await Comment.find({ relatedPost: postId })
+      commentUnderPost = await Comment.find({ relatedPost: commentId })
         .lean()
         .populate("author", { username: 1, avatar: 1 }, { lean: true });
       if (commentUnderPost.length != 0) {
-        await saveRedisCommentProfile(postId, commentUnderPost);
+        await saveRedisCommentProfile(commentId, commentUnderPost);
       }
     }
     return commentUnderPost;
@@ -95,18 +90,18 @@ async function getCommentsUderPost(postId) {
   }
 }
 
-async function saveRedisCommentProfile(postId, profile) {
+async function saveRedisCommentProfile(commentId, profile) {
   try {
-    const key = JSON.stringify(postId) + " Profile";
+    const key = JSON.stringify(commentId) + " Profile";
     profile = JSON.stringify(profile);
-    await redisComments.setex(key, 10, profile);
+    await redisComments.setex(key, 30, profile);
   } catch (error) {
     console.log("saveRedisCommentProfile Faild --Cservices 104");
   }
 }
-async function getRedisCommentProfile(postId) {
+async function getRedisCommentProfile(commentId) {
   try {
-    const key = JSON.stringify(postId) + " Profile";
+    const key = JSON.stringify(commentId) + " Profile";
     let profile = await redisComments.get(key);
     if (!profile) {
       return null;
@@ -118,24 +113,12 @@ async function getRedisCommentProfile(postId) {
   }
 }
 
-async function beautyCommentsInfo(comments, userId, self = false) {
+async function beautyCommentsInfo(comments, userId) {
   try {
-    const [commentLikeList, followingList] = await Promise.all([
-      CommentLike.find({ user: userId }, { comment: 1, like: 1, _id: 0 }).lean(),
-      Follow.find({ user: userId }, { followedUser: 1, _id: 0 }).lean(),
-    ]);
-    switch (self) {
-      case false:
-        comments.forEach((comment, index) => {
-          comments[index] = addCommentUserInfo(comment, followingList, commentLikeList);
-        });
-        break;
-      default:
-        comments.forEach((comment, index) => {
-          comments[index] = addCommentUserInfo(comment, null, commentLikeList);
-        });
-        break;
-    }
+    const commentLikeList = await CommentLike.find({ user: userId }, { comment: 1, like: 1, _id: 0 }).lean();
+    comments.forEach((comment, index) => {
+      comments[index] = addCommentUserInfo(comment, commentLikeList);
+    });
     return comments;
   } catch (error) {
     console.log("beautyCommentsInfo Failed -- Cservices 127");
