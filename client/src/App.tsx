@@ -1,8 +1,8 @@
 import { FC, Suspense, lazy, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { Home } from './pages/Home';
-import { Layout } from './layouts/Layout';
+import { Home } from './pages/home';
+import { Layout } from './layouts/layout';
 import { Test } from './Test';
 import './App.css';
 import { NavBar } from './feature/NavBar';
@@ -20,7 +20,7 @@ const App: FC = (): JSX.Element => {
 
         {/* <Route path="/1" element={<NavBar />} /> */}
 
-        <Route path="*" element={<div>IP</div>}/>
+        <Route path="*" element={<div>IP</div>} />
       </Routes>
       {/* <Routes>
         <Route path="/login" element={<Login />} />

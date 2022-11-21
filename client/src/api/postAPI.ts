@@ -1,19 +1,43 @@
 import axios from './axiosConfig';
 import { URL } from '../data/Constants';
-import { TrendingPost } from '../interfaces/post';
+import { IntervalItem, MenuItem, Post, TrendingPost } from '../interfaces/post';
 
 export const getTrendingPosts = async (): Promise<TrendingPost[]> => {
   const {
     data: { dbBack: trendingPost },
-  } = await axios.get(`${URL}/posts/trending?q=8&type=trending`);
+  } = await axios.get(`${URL}/posts/trending?q=4&type=trending`);
+  console.log(trendingPost);
   return trendingPost as TrendingPost[];
 };
 
-// TODO: finish typing
-export const getPosts = async (pageNum: number, pageSize: number, sortType: string = 'lastest') => {
+export const getPosts = async (pageNum: number, pageSize: number, sortType: MenuItem, timeInterval: IntervalItem = 'allTime'): Promise<Post[]> => {
+  let interval;
+
+  if (timeInterval !== 'allTime') {
+    switch (timeInterval) {
+      case 'today':
+        interval = 'a_day';
+        break;
+      case 'week':
+        interval = 'a_week';
+        break;
+      case 'month':
+        interval = 'a_month';
+        break;
+      case 'year':
+        interval = 'a_year';
+        break;
+    }
+  }
+
+  const queryUrl =
+    timeInterval === 'allTime'
+      ? `${URL}/posts?pagenumber=${pageNum}&pagesize=${pageSize}&type=posts&sort=${sortType}`
+      : `${URL}/posts?pagenumber=${pageNum}&pagesize=${pageSize}&type=posts&timeInterval=${interval}&sort=${sortType}`;
+
   const {
     data: { dbBack: posts },
-  } = await axios.get(`${URL}/posts?pagenumber=${pageNum}&pagesize=${pageSize}&type=posts&sort=${sortType}`);
+  } = await axios.get(queryUrl);
   console.log(posts);
-  return posts;
+  return posts as Post[];
 };

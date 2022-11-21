@@ -14,6 +14,8 @@ export const getCheckAuth = async (userId: string): Promise<User> => {
   } catch (err) {
     if (axios.isAxiosError(err)) {
       console.log(err?.response?.status);
+      localStorage.removeItem('userId');
+      localStorage.removeItem('jwt');
     } else {
       console.log('unexpected error ' + err);
     }

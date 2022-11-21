@@ -1,12 +1,16 @@
 import axios from 'axios';
 import { getJWT } from '../utils/getLocalStorage';
 
-export const getRequestHeader: Function = (): { 'Content-Type': string; Authorization: string } => {
+export const getRequestHeader: Function = (): { 'Content-Type': string; Authorization: string } | { 'Content-Type': string } => {
   const token: string = getJWT();
-  return {
-    'Content-Type': 'application/json',
-    Authorization: `${token ? token : ''}`,
-  };
+  return token
+    ? {
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
+      }
+    : {
+        'Content-Type': 'application/json',
+      };
 };
 
 axios.interceptors.request.use(
