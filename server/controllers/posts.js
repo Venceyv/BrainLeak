@@ -96,15 +96,7 @@ async function findByTags(req, res) {
     if (req.user) {
       dbBack = await beautyPostsInfo(dbBack, req.user._id);
     }
-    switch (order) {
-      case "latest":
-        dbBack = sortWith(dbBack, "latest");
-        break;
-
-      default:
-        dbBack = sortWith(dbBack, "likes");
-        break;
-    }
+    dbBack = sortWith(dbBack,order);
     dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     return res.status(200).json({ dbBack });
   } catch (error) {
@@ -127,20 +119,7 @@ async function findAll(req, res) {
       if (req.user) {
         dbBack = await beautyPostsInfo(dbBack, req.user._id);
       }
-      switch (order) {
-        case "latest":
-          dbBack = sortWith(dbBack, "latest");
-          break;
-        case "best":
-          dbBack = sortWith(dbBack, "best");
-          break;
-        case "hot":
-          dbBack = sortWith(dbBack, "hot");
-          break;
-        default:
-          dbBack = sortWith(dbBack, "likes");
-          break;
-      }
+      dbBack = sortWith(dbBack,order);
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     }
     return res.status(200).json({ dbBack });
@@ -174,15 +153,7 @@ async function findBySearch(req, res) {
       if (req.user) {
         dbBack = await beautyPostsInfo(dbBack, req.user._id);
       }
-      switch (order) {
-        case "latest":
-          dbBack = sortWith(dbBack, "latest");
-          break;
-
-        default:
-          dbBack = sortWith(dbBack, "likes");
-          break;
-      }
+      dbBack = sortWith(dbBack, order);
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     }
     return res.status(200).json({ dbBack });
