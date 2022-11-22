@@ -475,14 +475,7 @@ async function getUserPosts(req, res) {
         dbBack = await beautyPostsInfo(dbBack, req.user._id);
       }
       dbBack = await addPostsStatistics(dbBack);
-      switch (order) {
-        case "latest":
-          dbBack = sortWith(dbBack, "latest");
-          break;
-        default:
-          dbBack = sortWith(dbBack, "likes");
-          break;
-      }
+      dbBack = sortWith(dbBack,order);
     }
     return res.status(200).json({ dbBack });
   } catch (error) {
@@ -614,7 +607,7 @@ async function getMyComments(req, res) {
       resetUserNotification(userId, "comments"),
     ]);
     dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
-    dbBack = sortWith(dbBack, "latest");
+    dbBack = sortWith(dbBack, "new");
     return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error: error });
@@ -634,7 +627,7 @@ async function getMyReplies(req, res) {
         .populate("author", { username: 1, avatar: 1, introduction: 1 }, { lean: true }),
       resetUserNotification(userId, "replies"),
     ]);
-    dbBack = sortWith(dbBack, "latest");
+    dbBack = sortWith(dbBack, "new");
     dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     return res.status(200).json({ dbBack });
   } catch (error) {
@@ -664,7 +657,7 @@ async function getMylikes(req, res) {
     replyLike = addCategories(replyLike, "reply likes");
     let dbBack = postLike.concat(commentLike, replyLike);
     dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
-    dbBack = sortWith(dbBack, "latest");
+    dbBack = sortWith(dbBack, "new");
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -684,7 +677,7 @@ async function getMyMarks(req, res) {
         .populate("user", { username: 1, avatar: 1, introduction: 1 }, { lean: true }),
       resetUserNotification(userId, "marks"),
     ]);
-    dbBack = sortWith(dbBack, "latest");
+    dbBack = sortWith(dbBack, "new");
     dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     return res.status(200).json({ dbBack });
   } catch (error) {

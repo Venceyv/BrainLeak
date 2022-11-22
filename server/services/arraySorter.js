@@ -1,7 +1,7 @@
 function sortWith(array, condition) {
   try {
     switch (condition) {
-      case "latest":
+      case "new":
         array.sort((a, b) => {
           return new Date(b.publishDate) - new Date(a.publishDate);
         });
