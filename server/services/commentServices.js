@@ -90,7 +90,7 @@ async function getCommentsUderPost(commentId) {
   }
 }
 
-async function saveRedisCommentProfile(commentId, profile) {
+function saveRedisCommentProfile(commentId, profile) {
   try {
     const key = JSON.stringify(commentId) + " Profile";
     profile = JSON.stringify(profile);
