@@ -34,6 +34,10 @@ const userSchema = new Schema({
   birthDate:{
     type:Date,
   },
+  createTime:{
+    type:Date,
+    default:Date.now()
+  },
   isDelete: {
     type: Boolean,
     default: false,
