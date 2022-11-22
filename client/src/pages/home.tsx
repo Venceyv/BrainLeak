@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Posts } from '../components/index';
 import { AbstractPost } from '../feature/AbstractPost';
 import { TopUser } from '../feature/TopUser';
-import { Trending } from '../feature/Trending';
+import { Trending } from '../feature/trending';
 
 export const Home: FC = (): JSX.Element => {
   return (

@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { URL } from '../data/Constants';
-import { User } from '../interfaces/user';
+import { TrendingUser, User } from '../interfaces/user';
 import axios from './axiosConfig';
 
 export const getCheckAuth = async (userId: string): Promise<User> => {
@@ -8,8 +8,6 @@ export const getCheckAuth = async (userId: string): Promise<User> => {
     const {
       data: { dbBack: userData },
     } = await axios.get(`${URL}/users/auth-check/${userId}`);
-
-    console.log(userData);
     return userData as User;
   } catch (err) {
     if (axios.isAxiosError(err)) {
@@ -34,5 +32,23 @@ export const getUser = async (userId: string): Promise<unknown> => {
     } else {
       console.log('unexpected error ' + err);
     }
+
+    throw err;
+  }
+};
+
+export const getUserTrending = async (): Promise<TrendingUser[]> => {
+  try {
+    const {
+      data: { dbBack: topUsers },
+    } = await axios.get(`${URL}/users/trending?top=5`);
+    return topUsers as TrendingUser[];
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      console.log(err?.response?.status);
+    } else {
+      console.log('unexpected error ' + err);
+    }
+    throw err;
   }
 };

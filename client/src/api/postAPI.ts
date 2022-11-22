@@ -6,11 +6,15 @@ export const getTrendingPosts = async (): Promise<TrendingPost[]> => {
   const {
     data: { dbBack: trendingPost },
   } = await axios.get(`${URL}/posts/trending?q=4&type=trending`);
-  console.log(trendingPost);
   return trendingPost as TrendingPost[];
 };
 
-export const getPosts = async (pageNum: number, pageSize: number, sortType: MenuItem, timeInterval: IntervalItem = 'allTime'): Promise<Post[]> => {
+export const getPosts = async (
+  pageNum: number,
+  pageSize: number,
+  sortType: MenuItem,
+  timeInterval: IntervalItem = 'allTime'
+): Promise<Post[]> => {
   let interval;
 
   if (timeInterval !== 'allTime') {
@@ -35,9 +39,12 @@ export const getPosts = async (pageNum: number, pageSize: number, sortType: Menu
       ? `${URL}/posts?pagenumber=${pageNum}&pagesize=${pageSize}&type=posts&sort=${sortType}`
       : `${URL}/posts?pagenumber=${pageNum}&pagesize=${pageSize}&type=posts&timeInterval=${interval}&sort=${sortType}`;
 
-  const {
-    data: { dbBack: posts },
-  } = await axios.get(queryUrl);
-  console.log(posts);
-  return posts as Post[];
+  try {
+    const {
+      data: { dbBack: posts },
+    } = await axios.get(queryUrl);
+    return posts as Post[];
+  } catch (err) {
+    throw err;
+  }
 };

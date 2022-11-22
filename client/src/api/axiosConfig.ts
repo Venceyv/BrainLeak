@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { getJWT } from '../utils/getLocalStorage';
 
-export const getRequestHeader: Function = (): { 'Content-Type': string; Authorization: string } | { 'Content-Type': string } => {
+export const getRequestHeader: Function = ():
+  | { 'Content-Type': string; Authorization: string }
+  | { 'Content-Type': string } => {
   const token: string = getJWT();
   return token
     ? {

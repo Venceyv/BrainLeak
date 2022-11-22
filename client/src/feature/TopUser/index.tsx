@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { TopUserBanner } from './components/TopUserBanner';
 import { UserCard } from './components/UserCard';
+import { UserCards } from './components/UserCards';
 
 const users: any[] = [
   {
@@ -56,6 +57,7 @@ export const TopUser: FC = (): JSX.Element => {
           return <UserCard key={index} user={user} />;
         })}
       </div>
+      <UserCards />
     </div>
   );
 };
