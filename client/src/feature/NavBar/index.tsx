@@ -10,7 +10,7 @@ export const NavBar: FC = (): JSX.Element => {
   useCheckAuth({ setLogin });
 
   return (
-    <div className="sticky flex items-center justify-start top-0 flex-1 h-[56px] w-full gap-8 px-4 mx-auto drop-shadow-md z-[1] bg-secondary-black">
+    <div className="sticky flex items-center justify-start top-0 flex-1 h-[56px] w-full gap-8 px-4 mx-auto drop-shadow-md z-10 bg-secondary-black">
       <div className="flex items-center text-white ">
         <span className="sr-only">Home</span>
         <div className="h-full font-gemini text-3xl m-2">BrainLeak</div>

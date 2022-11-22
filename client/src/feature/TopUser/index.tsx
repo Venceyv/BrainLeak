@@ -52,11 +52,6 @@ export const TopUser: FC = (): JSX.Element => {
   return (
     <div>
       <TopUserBanner />
-      <div className="flex flex-col h-fit w-fit items-end bg-primary-black">
-        {users.map((user, index) => {
-          return <UserCard key={index} user={user} />;
-        })}
-      </div>
       <UserCards />
     </div>
   );

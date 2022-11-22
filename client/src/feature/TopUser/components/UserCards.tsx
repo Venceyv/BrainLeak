@@ -1,10 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import { FC } from 'react';
 import { getUserTrending } from '../../../api/userAPI';
+import { Loading } from '../../../components/Loading';
+import { UserCard } from './UserCard';
 
-export const UserCards: FC = ({ user }: any): JSX.Element => {
-  const { data } = useQuery(['userCards'], () => getUserTrending());
+export const UserCards: FC = (): JSX.Element => {
+  const { data, isLoading } = useQuery(['userCards'], () => getUserTrending());
+
+  if (isLoading) {
+    return <Loading width={'[270px]'} height={'full'} />;
+  }
+
   return (
-    <div className="grid grid-cols-3 grid-rows-3 gap-2 py-3 overflow-hidden w-[260px] h-[160px] rounded-2xl p-3 pb-[0px] border-2 bg-secondary-black"></div>
+    <div className="flex flex-col h-fit w-fit items-end gap-4 bg-primary-black">
+      {data &&
+        data.map((userCard, index) => {
+          return <UserCard key={index} {...userCard} />;
+        })}
+    </div>
   );
 };
