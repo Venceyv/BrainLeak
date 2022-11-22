@@ -18,7 +18,6 @@ export const postOAuth = async (req, res) => {
       email: decoded.email,
       backgroundCover:backgroundCover[index],
     };
-    console.log(userInfo);
     let dbBack = await User.findOne({ email: userInfo.email,isDelete:false });
     if (!dbBack) {
       dbBack = await new User(userInfo).save();
