@@ -158,10 +158,12 @@ async function getUserTrending(num) {
       leaderBoard.map(async (ranking) => {
         let user = await User.findById(ranking.userId, { avatar: 1, username: 1, backgroundCover: 1,introduction:1 }).lean();
         const key = JSON.stringify(user._id) + " Statistics";
-        const [followerCount,postCount] = await Promise.all([
+        let [followerCount,postCount] = await Promise.all([
           redisUsers.hget(key,"follower"),
           redisUsers.hget(key,"posts")
         ])
+        followerCount = followerCount === null?0:Number(followerCount);
+        postCount = postCount === null?0:Number(postCount);
         user = {...user,followerCount,postCount};
         leaderBoard.pop(ranking);
         const popularity = ranking.popularity;

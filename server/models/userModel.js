@@ -24,7 +24,7 @@ const userSchema = new Schema({
   },
   backgroundCover: {
     type: String,
-    default: "https://storage.googleapis.com/brainleak/backgroundImg(default).png",
+    required: true,
   },
   gender:{
     type:String,

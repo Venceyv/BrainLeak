@@ -3,6 +3,7 @@ import { User } from "../models/index.js";
 import { createToken, createRefreshToken, saveRefreshToken } from "../services/jwt.js";
 import jwt_decode from "jwt-decode";
 import dotenv from "dotenv";
+import { backgroundCover } from "../configs/backgroundCover.js";
 dotenv.config();
 // Google Oauth 😎
 export const postOAuth = async (req, res) => {
@@ -10,11 +11,14 @@ export const postOAuth = async (req, res) => {
     const oAuth2Client = new OAuth2Client(process.env.CLIENT_ID, process.env.CLIENT_SECRET, "postmessage");
     const { tokens } = await oAuth2Client.getToken(req.body.code);
     const decoded = jwt_decode(tokens.id_token);
+    const index = Math.floor(Math.random() * 3);
     let userInfo = {
       avatar: decoded.picture,
       username: decoded.name,
       email: decoded.email,
+      backgroundCover:backgroundCover[index],
     };
+    console.log(userInfo);
     let dbBack = await User.findOne({ email: userInfo.email,isDelete:false });
     if (!dbBack) {
       dbBack = await new User(userInfo).save();
