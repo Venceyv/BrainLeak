@@ -1,0 +1,104 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BrainLeak",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "posts"
+    }
+  ],
+  "paths": {
+    "/posts/allTags": {
+      "get": {
+        "summary": "getAllTags",
+        "x-apidog-folder": "posts",
+        "x-apidog-status": -2,
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "posts"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dbBack": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "tagName": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "tagName"
+                        ],
+                        "x-apidog-ignore-properties": [],
+                        "x-apidog-orders": [
+                          "tagName"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "dbBack"
+                  ],
+                  "x-apidog-ignore-properties": [],
+                  "x-apidog-orders": [
+                    "dbBack"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Success",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "tagName": "水贴"
+                        },
+                        {
+                          "tagName": "舔狗日记"
+                        },
+                        {
+                          "tagName": "notion"
+                        },
+                        {
+                          "tagName": "cheese post"
+                        },
+                        {
+                          "tagName": "保安日记"
+                        },
+                        {
+                          "tagName": "凯瑟喵"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3566926-run"
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
+}

@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/posts/{postId}/comments": {
+    "/posts/comments/{postId}": {
       "get": {
         "summary": "getPostComments",
         "x-apidog-folder": "posts",
@@ -27,7 +27,26 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634b94eb6e87a982313aab3d",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagenumber",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagesize",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "10",
             "schema": {
               "type": "string"
             }
@@ -73,32 +92,30 @@
                               },
                               "username": {
                                 "type": "string"
-                              },
-                              "following": {
-                                "type": "boolean"
                               }
                             },
                             "required": [
                               "_id",
                               "avatar",
-                              "username",
-                              "following"
+                              "username"
                             ],
                             "x-apidog-orders": [
                               "_id",
                               "avatar",
-                              "username",
-                              "following"
+                              "username"
                             ],
                             "x-apidog-ignore-properties": []
                           },
-                          "createTime": {
+                          "publishDate": {
                             "type": "string"
                           },
-                          "updateTime": {
+                          "updateDate": {
                             "type": "string"
                           },
                           "relatedPost": {
+                            "type": "string"
+                          },
+                          "postAuthor": {
                             "type": "string"
                           },
                           "edited": {
@@ -143,22 +160,22 @@
                           "_id",
                           "content",
                           "author",
-                          "createTime",
-                          "updateTime",
+                          "publishDate",
+                          "updateDate",
                           "relatedPost",
+                          "postAuthor",
                           "edited",
                           "__v",
-                          "statistics",
-                          "like",
-                          "dislike"
+                          "statistics"
                         ],
                         "x-apidog-orders": [
                           "_id",
                           "content",
                           "author",
-                          "createTime",
-                          "updateTime",
+                          "publishDate",
+                          "updateDate",
                           "relatedPost",
+                          "postAuthor",
                           "edited",
                           "__v",
                           "statistics",
@@ -167,19 +184,13 @@
                         ],
                         "x-apidog-ignore-properties": []
                       }
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "nullable": true
                     }
                   },
                   "required": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
                   "x-apidog-orders": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
                   "x-apidog-ignore-properties": []
                 },
@@ -189,21 +200,43 @@
                     "value": {
                       "dbBack": [
                         {
-                          "_id": "634f34945fe83173dfe04f76",
-                          "content": "其实也没那么复杂，她就是单纯的无知者无畏，从他注册了十几个小微企业以及个人独资有限公司来看，她身边搞财务的水平比较的拉跨。她自己也不懂，手底下财务水平太烂也不懂，然后在被那些野路子搞税筹的忽悠了。",
+                          "_id": "6378f6862c5f62d7f5484955",
+                          "content": "舔狗日记 6月12日 阴 今天看到你发朋友圈说你分手了，我很开心，因为你说我是63号，今天开始我就是62号了，距离和你在一起又进一步了。",
                           "author": {
-                            "_id": "634f1c83425aca4adb9dc523",
-                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0gctg8JFc12eHne-8hZ_2RLR1B28yKEekxkrHP=s96-c",
-                            "username": "丁真纯一郎",
-                            "following": true
+                            "_id": "6375d3b71e0c13b2fa52e189",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                            "username": "丁真纯一郎"
                           },
-                          "createTime": "2022-10-18T23:17:04.314Z",
-                          "updateTime": "2022-10-18T23:17:04.314Z",
-                          "relatedPost": "634f1d50425aca4adb9dc52d",
+                          "publishDate": "2022-11-19T15:27:43.068Z",
+                          "updateDate": "2022-11-19T15:27:43.068Z",
+                          "relatedPost": "6375d5981e0c13b2fa52e1c5",
+                          "postAuthor": "6375d3b71e0c13b2fa52e189",
                           "edited": false,
                           "__v": 0,
                           "statistics": {
-                            "likes": 1,
+                            "likes": 0,
+                            "dislikes": 0,
+                            "replies": 0
+                          },
+                          "like": false,
+                          "dislike": false
+                        },
+                        {
+                          "_id": "6378f56b12b14d56cc3a9105",
+                          "content": "斯哈斯哈",
+                          "author": {
+                            "_id": "635b13385d39af977f76d36d",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                            "username": "叽急挤寄"
+                          },
+                          "publishDate": "2022-11-19T15:24:03.206Z",
+                          "updateDate": "2022-11-19T15:24:03.206Z",
+                          "relatedPost": "6375d5981e0c13b2fa52e1c5",
+                          "postAuthor": "6375d3b71e0c13b2fa52e189",
+                          "edited": false,
+                          "__v": 0,
+                          "statistics": {
+                            "likes": 2,
                             "dislikes": 0,
                             "replies": 0
                           },
@@ -211,17 +244,17 @@
                           "dislike": false
                         },
                         {
-                          "_id": "634f954a34b5ac202513592d",
-                          "content": "痛，太痛了。",
+                          "_id": "6378e90e346d0a9a01d223c0",
+                          "content": "变态日记 3月12日 晴 嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿",
                           "author": {
-                            "_id": "634f1bcc7b5e14c2c8f70325",
-                            "avatar": "https://storage.googleapis.com/brainleak/ji.png",
-                            "username": "理塘最速传说",
-                            "following": false
+                            "_id": "6375d3861e0c13b2fa52e149",
+                            "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
+                            "username": "理塘最速传说"
                           },
-                          "createTime": "2022-10-19T03:09:36.284Z",
-                          "updateTime": "2022-10-19T03:09:36.284Z",
-                          "relatedPost": "634f1d50425aca4adb9dc52d",
+                          "publishDate": "2022-11-19T14:28:38.337Z",
+                          "updateDate": "2022-11-19T14:28:38.337Z",
+                          "relatedPost": "6375d5981e0c13b2fa52e1c5",
+                          "postAuthor": "6375d3b71e0c13b2fa52e189",
                           "edited": false,
                           "__v": 0,
                           "statistics": {
@@ -233,29 +266,28 @@
                           "dislike": false
                         },
                         {
-                          "_id": "635068c7d646d16d6af1d0bf",
-                          "content": "阿这",
+                          "_id": "6378d5de35e332d27894f05a",
+                          "content": "舔狗日记 3月12日 晴 孩子生下来吧，我跟他姓",
                           "author": {
-                            "_id": "634f1bcc7b5e14c2c8f70325",
-                            "avatar": "https://storage.googleapis.com/brainleak/ji.png",
-                            "username": "理塘最速传说",
-                            "following": false
+                            "_id": "6375d3b71e0c13b2fa52e189",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                            "username": "丁真纯一郎"
                           },
-                          "createTime": "2022-10-19T21:11:22.122Z",
-                          "updateTime": "2022-10-19T21:11:22.122Z",
-                          "relatedPost": "634f1d50425aca4adb9dc52d",
+                          "publishDate": "2022-11-19T13:10:21.130Z",
+                          "updateDate": "2022-11-19T13:10:21.130Z",
+                          "relatedPost": "6375d5981e0c13b2fa52e1c5",
+                          "postAuthor": "6375d3b71e0c13b2fa52e189",
                           "edited": false,
                           "__v": 0,
                           "statistics": {
-                            "likes": 0,
+                            "likes": 3,
                             "dislikes": 0,
-                            "replies": 0
+                            "replies": 1
                           },
-                          "like": false,
+                          "like": true,
                           "dislike": false
                         }
-                      ],
-                      "accessToken": null
+                      ]
                     }
                   },
                   "2": {
@@ -263,35 +295,17 @@
                     "value": {
                       "dbBack": [
                         {
-                          "_id": "634f34945fe83173dfe04f76",
-                          "content": "其实也没那么复杂，她就是单纯的无知者无畏，从他注册了十几个小微企业以及个人独资有限公司来看，她身边搞财务的水平比较的拉跨。她自己也不懂，手底下财务水平太烂也不懂，然后在被那些野路子搞税筹的忽悠了。",
+                          "_id": "6378f6862c5f62d7f5484955",
+                          "content": "舔狗日记 6月12日 阴 今天看到你发朋友圈说你分手了，我很开心，因为你说我是63号，今天开始我就是62号了，距离和你在一起又进一步了。",
                           "author": {
-                            "_id": "634f1c83425aca4adb9dc523",
-                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0gctg8JFc12eHne-8hZ_2RLR1B28yKEekxkrHP=s96-c",
+                            "_id": "6375d3b71e0c13b2fa52e189",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
                             "username": "丁真纯一郎"
                           },
-                          "createTime": "2022-10-18T23:17:04.314Z",
-                          "updateTime": "2022-10-18T23:17:04.314Z",
-                          "relatedPost": "634f1d50425aca4adb9dc52d",
-                          "edited": false,
-                          "__v": 0,
-                          "statistics": {
-                            "likes": 1,
-                            "dislikes": 0,
-                            "replies": 0
-                          }
-                        },
-                        {
-                          "_id": "634f954a34b5ac202513592d",
-                          "content": "痛，太痛了。",
-                          "author": {
-                            "_id": "634f1bcc7b5e14c2c8f70325",
-                            "avatar": "https://storage.googleapis.com/brainleak/ji.png",
-                            "username": "理塘最速传说"
-                          },
-                          "createTime": "2022-10-19T03:09:36.284Z",
-                          "updateTime": "2022-10-19T03:09:36.284Z",
-                          "relatedPost": "634f1d50425aca4adb9dc52d",
+                          "publishDate": "2022-11-19T15:27:43.068Z",
+                          "updateDate": "2022-11-19T15:27:43.068Z",
+                          "relatedPost": "6375d5981e0c13b2fa52e1c5",
+                          "postAuthor": "6375d3b71e0c13b2fa52e189",
                           "edited": false,
                           "__v": 0,
                           "statistics": {
@@ -301,26 +315,66 @@
                           }
                         },
                         {
-                          "_id": "635068c7d646d16d6af1d0bf",
-                          "content": "阿这",
+                          "_id": "6378f56b12b14d56cc3a9105",
+                          "content": "斯哈斯哈",
                           "author": {
-                            "_id": "634f1bcc7b5e14c2c8f70325",
-                            "avatar": "https://storage.googleapis.com/brainleak/ji.png",
+                            "_id": "635b13385d39af977f76d36d",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                            "username": "叽急挤寄"
+                          },
+                          "publishDate": "2022-11-19T15:24:03.206Z",
+                          "updateDate": "2022-11-19T15:24:03.206Z",
+                          "relatedPost": "6375d5981e0c13b2fa52e1c5",
+                          "postAuthor": "6375d3b71e0c13b2fa52e189",
+                          "edited": false,
+                          "__v": 0,
+                          "statistics": {
+                            "likes": 2,
+                            "dislikes": 0,
+                            "replies": 0
+                          }
+                        },
+                        {
+                          "_id": "6378e90e346d0a9a01d223c0",
+                          "content": "变态日记 3月12日 晴 嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿",
+                          "author": {
+                            "_id": "6375d3861e0c13b2fa52e149",
+                            "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
                             "username": "理塘最速传说"
                           },
-                          "createTime": "2022-10-19T21:11:22.122Z",
-                          "updateTime": "2022-10-19T21:11:22.122Z",
-                          "relatedPost": "634f1d50425aca4adb9dc52d",
+                          "publishDate": "2022-11-19T14:28:38.337Z",
+                          "updateDate": "2022-11-19T14:28:38.337Z",
+                          "relatedPost": "6375d5981e0c13b2fa52e1c5",
+                          "postAuthor": "6375d3b71e0c13b2fa52e189",
                           "edited": false,
                           "__v": 0,
                           "statistics": {
                             "likes": 0,
                             "dislikes": 0,
                             "replies": 0
+                          }
+                        },
+                        {
+                          "_id": "6378d5de35e332d27894f05a",
+                          "content": "舔狗日记 3月12日 晴 孩子生下来吧，我跟他姓",
+                          "author": {
+                            "_id": "6375d3b71e0c13b2fa52e189",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                            "username": "丁真纯一郎"
+                          },
+                          "publishDate": "2022-11-19T13:10:21.130Z",
+                          "updateDate": "2022-11-19T13:10:21.130Z",
+                          "relatedPost": "6375d5981e0c13b2fa52e1c5",
+                          "postAuthor": "6375d3b71e0c13b2fa52e189",
+                          "edited": false,
+                          "__v": 0,
+                          "statistics": {
+                            "likes": 3,
+                            "dislikes": 0,
+                            "replies": 1
                           }
                         }
-                      ],
-                      "accessToken": null
+                      ]
                     }
                   }
                 }

@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/users/{userId}/follow": {
+    "/users/follow/{userId}": {
       "put": {
         "summary": "follow/unfollow user",
         "x-apidog-folder": "users",
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f1bcc7b5e14c2c8f70325",
             "schema": {
               "type": "string"
             }
@@ -43,21 +42,29 @@
                   "properties": {
                     "msg": {
                       "type": "string"
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "nullable": true
                     }
                   },
                   "required": [
-                    "msg",
-                    "accessToken"
+                    "msg"
                   ],
+                  "x-apidog-ignore-properties": [],
                   "x-apidog-orders": [
-                    "msg",
-                    "accessToken"
-                  ],
-                  "x-apidog-ignore-properties": []
+                    "msg"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Success",
+                    "value": {
+                      "msg": "follow successfully."
+                    }
+                  },
+                  "2": {
+                    "summary": "Success",
+                    "value": {
+                      "msg": "unfollow successfully."
+                    }
+                  }
                 }
               }
             }
@@ -86,6 +93,14 @@
                     "accessToken"
                   ],
                   "x-apidog-ignore-properties": []
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Exception",
+                    "value": {
+                      "error": "cant follow yourself!"
+                    }
+                  }
                 }
               }
             }

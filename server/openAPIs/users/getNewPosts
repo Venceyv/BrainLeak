@@ -11,9 +11,9 @@
     }
   ],
   "paths": {
-    "/users/savedPosts/{userId}": {
+    "/users/newPosts/{userId}": {
       "get": {
-        "summary": "userSavedPost",
+        "summary": "getNewPosts",
         "x-apidog-folder": "users",
         "x-apidog-status": "developing",
         "deprecated": false,
@@ -27,46 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "pagenumber",
-            "in": "query",
-            "description": "",
-            "required": true,
-            "example": "1",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "pagesize",
-            "in": "query",
-            "description": "",
-            "required": true,
-            "example": "10",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "",
-            "required": true,
-            "example": "savedPosts",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "description": "",
-            "required": true,
-            "example": "latest",
             "schema": {
               "type": "string"
             }
@@ -86,12 +46,6 @@
                         "type": "object",
                         "properties": {
                           "_id": {
-                            "type": "string"
-                          },
-                          "title": {
-                            "type": "string"
-                          },
-                          "description": {
                             "type": "string"
                           },
                           "publishDate": {
@@ -126,63 +80,18 @@
                               "username",
                               "introduction"
                             ]
-                          },
-                          "like": {
-                            "type": "boolean"
-                          },
-                          "dislike": {
-                            "type": "boolean"
-                          },
-                          "save": {
-                            "type": "boolean"
-                          },
-                          "statistics": {
-                            "type": "object",
-                            "properties": {
-                              "likes": {
-                                "type": "integer"
-                              },
-                              "dislikes": {
-                                "type": "integer"
-                              },
-                              "marks": {
-                                "type": "integer"
-                              },
-                              "comments": {
-                                "type": "integer"
-                              },
-                              "views": {
-                                "type": "integer"
-                              }
-                            },
-                            "required": [
-                              "likes",
-                              "dislikes",
-                              "marks",
-                              "comments",
-                              "views"
-                            ],
-                            "x-apidog-ignore-properties": [],
-                            "x-apidog-orders": [
-                              "likes",
-                              "dislikes",
-                              "marks",
-                              "comments",
-                              "views"
-                            ]
                           }
                         },
+                        "required": [
+                          "_id",
+                          "publishDate",
+                          "author"
+                        ],
                         "x-apidog-ignore-properties": [],
                         "x-apidog-orders": [
                           "_id",
-                          "title",
-                          "description",
                           "publishDate",
-                          "author",
-                          "like",
-                          "dislike",
-                          "save",
-                          "statistics"
+                          "author"
                         ]
                       }
                     }
@@ -201,25 +110,83 @@
                     "value": {
                       "dbBack": [
                         {
+                          "_id": "6378eb062c9d6e566d81658b",
+                          "publishDate": "2022-11-19T14:36:34.341Z",
+                          "author": {
+                            "_id": "635b13385d39af977f76d36d",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                            "username": "叽急挤寄",
+                            "introduction": "WASE SUKI"
+                          }
+                        },
+                        {
+                          "_id": "6378eb502c9d6e566d816590",
+                          "publishDate": "2022-11-19T14:36:34.341Z",
+                          "author": {
+                            "_id": "635b13385d39af977f76d36d",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                            "username": "叽急挤寄",
+                            "introduction": "WASE SUKI"
+                          }
+                        },
+                        {
                           "_id": "6375d46f1e0c13b2fa52e1b1",
-                          "title": "舔狗日记 3月18日 暴雨",
-                          "description": "刚从派出所出来，原因前几天14号情人节，我想送你礼物，我去偷东西的时候被抓了，我本来想反抗，警察说了一句老实点别动，我立刻就放弃了反抗，因为我记得你说过，你喜欢老实人。",
                           "publishDate": "2022-11-17T06:23:41.587Z",
                           "author": {
                             "_id": "6375d3b71e0c13b2fa52e189",
                             "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
                             "username": "丁真纯一郎",
                             "introduction": "我和我的动物朋友们"
-                          },
-                          "like": false,
-                          "dislike": false,
-                          "save": true,
-                          "statistics": {
-                            "likes": 1,
-                            "dislikes": 0,
-                            "marks": 1,
-                            "comments": 0,
-                            "views": 1
+                          }
+                        },
+                        {
+                          "_id": "6375d4df1e0c13b2fa52e1b6",
+                          "publishDate": "2022-11-17T06:23:41.587Z",
+                          "author": {
+                            "_id": "6375d3b71e0c13b2fa52e189",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                            "username": "丁真纯一郎",
+                            "introduction": "我和我的动物朋友们"
+                          }
+                        },
+                        {
+                          "_id": "6375d50a1e0c13b2fa52e1bb",
+                          "publishDate": "2022-11-17T06:23:41.587Z",
+                          "author": {
+                            "_id": "6375d3b71e0c13b2fa52e189",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                            "username": "丁真纯一郎",
+                            "introduction": "我和我的动物朋友们"
+                          }
+                        },
+                        {
+                          "_id": "6375d5771e0c13b2fa52e1c0",
+                          "publishDate": "2022-11-17T06:23:41.587Z",
+                          "author": {
+                            "_id": "6375d3b71e0c13b2fa52e189",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                            "username": "丁真纯一郎",
+                            "introduction": "我和我的动物朋友们"
+                          }
+                        },
+                        {
+                          "_id": "6375d5981e0c13b2fa52e1c5",
+                          "publishDate": "2022-11-17T06:23:41.587Z",
+                          "author": {
+                            "_id": "6375d3b71e0c13b2fa52e189",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                            "username": "丁真纯一郎",
+                            "introduction": "我和我的动物朋友们"
+                          }
+                        },
+                        {
+                          "_id": "63784ce75c5efdad913a1c4e",
+                          "publishDate": "2022-11-19T03:23:45.601Z",
+                          "author": {
+                            "_id": "6375d3b71e0c13b2fa52e189",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                            "username": "丁真纯一郎",
+                            "introduction": "我和我的动物朋友们"
                           }
                         }
                       ]
@@ -229,8 +196,8 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -282,7 +249,7 @@
             }
           }
         },
-        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552167-run"
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3566497-run"
       }
     }
   },

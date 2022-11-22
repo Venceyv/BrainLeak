@@ -48,8 +48,8 @@ postRouter.get("/tags", verifyToken(false), findByTags);
 postRouter.get("/allTags", getAllTags);
 postRouter.get("/:postId", checkPostExist, verifyToken(false), findOne);
 postRouter.get("/comments/:postId", verifyToken(false), checkPostExist, getComments);
-postRouter.get("/replies/:postId/:commentId", checkPostExist, checkCommentExist, verifyToken(false), getReplies);
 postRouter.get("/comment/:postId/:commentId", checkPostExist, checkCommentExist, verifyToken(false), getComment);
+postRouter.get("/comment/replies/:postId/:commentId", checkPostExist, checkCommentExist, verifyToken(false), getReplies);
 postRouter.get(
   "/comment/reply/:postId/:commentId/:replyId",
   checkPostExist,

@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/users/{userId}/followerList": {
+    "/users/followerList/{userId}": {
       "get": {
         "summary": "userFollowers",
         "x-apidog-folder": "users",
@@ -27,7 +27,7 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f1bcc7b5e14c2c8f70325",
+            "example": "6375d3861e0c13b2fa52e149",
             "schema": {
               "type": "string"
             }
@@ -122,6 +122,10 @@
                               "upvotes"
                             ],
                             "x-apidog-ignore-properties": []
+                          },
+                          "following": {
+                            "type": "boolean",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -136,25 +140,90 @@
                           "avatar",
                           "username",
                           "introduction",
-                          "statistics"
+                          "statistics",
+                          "following"
                         ],
                         "x-apidog-ignore-properties": []
                       }
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "nullable": true
                     }
                   },
                   "required": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
                   "x-apidog-orders": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
                   "x-apidog-ignore-properties": []
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Success with token passed",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "_id": "635b13385d39af977f76d36d",
+                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                          "username": "叽急挤寄",
+                          "introduction": "WASE SUKI",
+                          "statistics": {
+                            "following": 1,
+                            "follower": 1,
+                            "posts": 2,
+                            "comments": 1,
+                            "upvotes": 1
+                          },
+                          "following": false
+                        },
+                        {
+                          "_id": "6375d3b71e0c13b2fa52e189",
+                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                          "username": "丁真纯一郎",
+                          "introduction": "我和我的动物朋友们",
+                          "statistics": {
+                            "following": 1,
+                            "follower": 1,
+                            "posts": 6,
+                            "comments": 2,
+                            "upvotes": 12
+                          },
+                          "following": null
+                        }
+                      ]
+                    }
+                  },
+                  "2": {
+                    "summary": "Success without token passed",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "_id": "635b13385d39af977f76d36d",
+                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                          "username": "叽急挤寄",
+                          "introduction": "WASE SUKI",
+                          "statistics": {
+                            "following": 1,
+                            "follower": 1,
+                            "posts": 2,
+                            "comments": 1,
+                            "upvotes": 1
+                          }
+                        },
+                        {
+                          "_id": "6375d3b71e0c13b2fa52e189",
+                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                          "username": "丁真纯一郎",
+                          "introduction": "我和我的动物朋友们",
+                          "statistics": {
+                            "following": 1,
+                            "follower": 1,
+                            "posts": 6,
+                            "comments": 2,
+                            "upvotes": 12
+                          }
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }

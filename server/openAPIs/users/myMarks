@@ -11,9 +11,9 @@
     }
   ],
   "paths": {
-    "/users/dislikedPosts/{userId}": {
+    "/users/myMarks/{userId}": {
       "get": {
-        "summary": "userDislikedPost",
+        "summary": "myMarks",
         "x-apidog-folder": "users",
         "x-apidog-status": "developing",
         "deprecated": false,
@@ -50,26 +50,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "",
-            "required": true,
-            "example": "dislikedPosts",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "description": "",
-            "required": true,
-            "example": "latest",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -88,16 +68,7 @@
                           "_id": {
                             "type": "string"
                           },
-                          "title": {
-                            "type": "string"
-                          },
-                          "description": {
-                            "type": "string"
-                          },
-                          "publishDate": {
-                            "type": "string"
-                          },
-                          "author": {
+                          "user": {
                             "type": "object",
                             "properties": {
                               "_id": {
@@ -119,92 +90,49 @@
                               "username",
                               "introduction"
                             ],
+                            "x-apidog-ignore-properties": [],
                             "x-apidog-orders": [
                               "_id",
                               "avatar",
                               "username",
                               "introduction"
-                            ],
-                            "x-apidog-ignore-properties": []
+                            ]
                           },
-                          "like": {
-                            "type": "boolean"
+                          "post": {
+                            "type": "string"
                           },
-                          "dislike": {
-                            "type": "boolean"
+                          "publishDate": {
+                            "type": "string"
                           },
-                          "save": {
-                            "type": "boolean"
-                          },
-                          "statistics": {
-                            "type": "object",
-                            "properties": {
-                              "likes": {
-                                "type": "integer"
-                              },
-                              "dislikes": {
-                                "type": "integer"
-                              },
-                              "marks": {
-                                "type": "integer"
-                              },
-                              "comments": {
-                                "type": "integer"
-                              },
-                              "views": {
-                                "type": "integer"
-                              }
-                            },
-                            "required": [
-                              "likes",
-                              "dislikes",
-                              "marks",
-                              "comments",
-                              "views"
-                            ],
-                            "x-apidog-orders": [
-                              "likes",
-                              "dislikes",
-                              "marks",
-                              "comments",
-                              "views"
-                            ],
-                            "x-apidog-ignore-properties": []
+                          "__v": {
+                            "type": "integer"
                           }
                         },
-                        "x-apidog-orders": [
-                          "_id",
-                          "title",
-                          "description",
-                          "publishDate",
-                          "author",
-                          "like",
-                          "dislike",
-                          "save",
-                          "statistics"
-                        ],
                         "required": [
                           "_id",
-                          "title",
-                          "description",
+                          "user",
+                          "post",
                           "publishDate",
-                          "author",
-                          "like",
-                          "dislike",
-                          "save",
-                          "statistics"
+                          "__v"
                         ],
-                        "x-apidog-ignore-properties": []
+                        "x-apidog-ignore-properties": [],
+                        "x-apidog-orders": [
+                          "_id",
+                          "user",
+                          "post",
+                          "publishDate",
+                          "__v"
+                        ]
                       }
                     }
                   },
                   "required": [
                     "dbBack"
                   ],
+                  "x-apidog-ignore-properties": [],
                   "x-apidog-orders": [
                     "dbBack"
-                  ],
-                  "x-apidog-ignore-properties": []
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -212,26 +140,64 @@
                     "value": {
                       "dbBack": [
                         {
-                          "_id": "6376cb6509e17a087cd37546",
-                          "title": "舔狗日记 3月18日",
-                          "description": "昨晚你和朋友大佬一晚上游戏，你破天荒的给我看了你的战绩，虽然我看不懂但我相信你一定是最厉害的，最棒的！我给你发了好多消息夸你，告诉你我多崇拜你，你回了我一句：啥b我翻来覆去思考这是什么意思？sh-a傻，噢你的意思是说我傻，那b就是baby的意思了吧，原来你是在叫我傻宝，这么宠溺的语气，我竟一时不相信，其实你也是喜欢我的对吧",
-                          "publishDate": "2022-11-17T23:57:42.283Z",
-                          "author": {
+                          "_id": "637b24b0a4d0786045033129",
+                          "user": {
                             "_id": "6375d3861e0c13b2fa52e149",
                             "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
                             "username": "理塘最速传说",
                             "introduction": "电子烟，我只抽RLEX"
                           },
-                          "like": false,
-                          "dislike": true,
-                          "save": false,
-                          "statistics": {
-                            "likes": 0,
-                            "dislikes": 3,
-                            "marks": 0,
-                            "comments": 1,
-                            "views": 0
-                          }
+                          "post": "6376cb9909e17a087cd3754b",
+                          "publishDate": "2022-11-21T05:03:45.549Z",
+                          "__v": 0
+                        },
+                        {
+                          "_id": "637a2c346728f43a5b099be5",
+                          "user": {
+                            "_id": "635b13385d39af977f76d36d",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                            "username": "叽急挤寄",
+                            "introduction": "WASE SUKI"
+                          },
+                          "post": "6376cd8c09e17a087cd37653",
+                          "publishDate": "2022-11-20T13:29:47.619Z",
+                          "__v": 0
+                        },
+                        {
+                          "_id": "637a2c796728f43a5b099c05",
+                          "user": {
+                            "_id": "635b13385d39af977f76d36d",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                            "username": "叽急挤寄",
+                            "introduction": "WASE SUKI"
+                          },
+                          "post": "6376cb9909e17a087cd3754b",
+                          "publishDate": "2022-11-20T13:29:47.619Z",
+                          "__v": 0
+                        },
+                        {
+                          "_id": "637a2c9c6728f43a5b099c0a",
+                          "user": {
+                            "_id": "635b13385d39af977f76d36d",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                            "username": "叽急挤寄",
+                            "introduction": "WASE SUKI"
+                          },
+                          "post": "6376cb1d09e17a087cd37541",
+                          "publishDate": "2022-11-20T13:29:47.619Z",
+                          "__v": 0
+                        },
+                        {
+                          "_id": "637984a14a0388c205c8cffe",
+                          "user": {
+                            "_id": "6375d3861e0c13b2fa52e149",
+                            "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
+                            "username": "理塘最速传说",
+                            "introduction": "电子烟，我只抽RLEX"
+                          },
+                          "post": "6376cd8c09e17a087cd37653",
+                          "publishDate": "2022-11-20T01:35:53.425Z",
+                          "__v": 0
                         }
                       ]
                     }
@@ -240,8 +206,8 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -293,7 +259,7 @@
             }
           }
         },
-        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552166-run"
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3566826-run"
       }
     }
   },

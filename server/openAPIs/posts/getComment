@@ -12,8 +12,8 @@
   ],
   "paths": {
     "/posts/comment/{postId}/{commentId}": {
-      "put": {
-        "summary": "updateComment",
+      "get": {
+        "summary": "getComment",
         "x-apidog-folder": "posts",
         "x-apidog-status": -2,
         "deprecated": false,
@@ -27,6 +27,7 @@
             "in": "path",
             "description": "",
             "required": true,
+            "example": "6376cb6509e17a087cd37546",
             "schema": {
               "type": "string"
             }
@@ -36,21 +37,12 @@
             "in": "path",
             "description": "",
             "required": true,
+            "example": "6378f56b12b14d56cc3a9105",
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {}
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -69,7 +61,29 @@
                           "type": "string"
                         },
                         "author": {
-                          "type": "string"
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string"
+                            },
+                            "avatar": {
+                              "type": "string"
+                            },
+                            "username": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "_id",
+                            "avatar",
+                            "username"
+                          ],
+                          "x-apidog-ignore-properties": [],
+                          "x-apidog-orders": [
+                            "_id",
+                            "avatar",
+                            "username"
+                          ]
                         },
                         "publishDate": {
                           "type": "string"
@@ -88,6 +102,31 @@
                         },
                         "__v": {
                           "type": "integer"
+                        },
+                        "statistics": {
+                          "type": "object",
+                          "properties": {
+                            "likes": {
+                              "type": "integer"
+                            },
+                            "dislikes": {
+                              "type": "integer"
+                            },
+                            "replies": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "likes",
+                            "dislikes",
+                            "replies"
+                          ],
+                          "x-apidog-ignore-properties": [],
+                          "x-apidog-orders": [
+                            "likes",
+                            "dislikes",
+                            "replies"
+                          ]
                         }
                       },
                       "required": [
@@ -99,7 +138,8 @@
                         "relatedPost",
                         "postAuthor",
                         "edited",
-                        "__v"
+                        "__v",
+                        "statistics"
                       ],
                       "x-apidog-ignore-properties": [],
                       "x-apidog-orders": [
@@ -111,7 +151,8 @@
                         "relatedPost",
                         "postAuthor",
                         "edited",
-                        "__v"
+                        "__v",
+                        "statistics"
                       ]
                     }
                   },
@@ -125,49 +166,30 @@
                 },
                 "examples": {
                   "1": {
-                    "summary": "Success",
+                    "summary": "Success with token",
                     "value": {
                       "dbBack": {
-                        "_id": "6378e90e346d0a9a01d223c0",
-                        "content": "变态日记 3月12日 晴 嘿嘿，嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿",
-                        "author": "6375d3861e0c13b2fa52e149",
-                        "publishDate": "2022-11-19T14:28:38.337Z",
-                        "updateDate": "2022-11-19T14:28:38.337Z",
+                        "_id": "6378f56b12b14d56cc3a9105",
+                        "content": "斯哈斯哈",
+                        "author": {
+                          "_id": "635b13385d39af977f76d36d",
+                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                          "username": "叽急挤寄"
+                        },
+                        "publishDate": "2022-11-19T15:24:03.206Z",
+                        "updateDate": "2022-11-19T15:24:03.206Z",
                         "relatedPost": "6375d5981e0c13b2fa52e1c5",
                         "postAuthor": "6375d3b71e0c13b2fa52e189",
-                        "edited": true,
-                        "__v": 0
+                        "edited": false,
+                        "__v": 0,
+                        "statistics": {
+                          "likes": 2,
+                          "dislikes": 0,
+                          "replies": 0
+                        },
+                        "like": true,
+                        "dislike": false
                       }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "x-apidog-ignore-properties": [],
-                  "x-apidog-orders": [
-                    "error"
-                  ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "unauthorized"
                     }
                   }
                 }
@@ -211,12 +233,17 @@
             }
           }
         },
-        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552372-run"
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3566927-run"
       }
     }
   },
   "components": {
     "schemas": {}
   },
-  "servers": []
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
 }

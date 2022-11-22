@@ -11,9 +11,9 @@
     }
   ],
   "paths": {
-    "/posts/comment/{postId}/{commentId}": {
-      "put": {
-        "summary": "updateComment",
+    "/posts/comment/reply/{postId}/{commentId}/{replyId}": {
+      "get": {
+        "summary": "getReply",
         "x-apidog-folder": "posts",
         "x-apidog-status": -2,
         "deprecated": false,
@@ -27,6 +27,7 @@
             "in": "path",
             "description": "",
             "required": true,
+            "example": "6376cb6509e17a087cd37546",
             "schema": {
               "type": "string"
             }
@@ -36,21 +37,22 @@
             "in": "path",
             "description": "",
             "required": true,
+            "example": "63798efdb4e41f1d38f642b7",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "replyId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "6379aa19f1912ca20dce254a",
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {}
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -68,50 +70,67 @@
                         "content": {
                           "type": "string"
                         },
-                        "author": {
-                          "type": "string"
-                        },
                         "publishDate": {
                           "type": "string"
                         },
-                        "updateDate": {
+                        "relatedComment": {
                           "type": "string"
                         },
                         "relatedPost": {
                           "type": "string"
                         },
-                        "postAuthor": {
+                        "mentionedUser": {
                           "type": "string"
                         },
-                        "edited": {
-                          "type": "boolean"
+                        "author": {
+                          "type": "string"
                         },
                         "__v": {
                           "type": "integer"
+                        },
+                        "statistics": {
+                          "type": "object",
+                          "properties": {
+                            "likes": {
+                              "type": "integer"
+                            },
+                            "dislikes": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "likes",
+                            "dislikes"
+                          ],
+                          "x-apidog-ignore-properties": [],
+                          "x-apidog-orders": [
+                            "likes",
+                            "dislikes"
+                          ]
                         }
                       },
                       "required": [
                         "_id",
                         "content",
-                        "author",
                         "publishDate",
-                        "updateDate",
+                        "relatedComment",
                         "relatedPost",
-                        "postAuthor",
-                        "edited",
-                        "__v"
+                        "mentionedUser",
+                        "author",
+                        "__v",
+                        "statistics"
                       ],
                       "x-apidog-ignore-properties": [],
                       "x-apidog-orders": [
                         "_id",
                         "content",
-                        "author",
                         "publishDate",
-                        "updateDate",
+                        "relatedComment",
                         "relatedPost",
-                        "postAuthor",
-                        "edited",
-                        "__v"
+                        "mentionedUser",
+                        "author",
+                        "__v",
+                        "statistics"
                       ]
                     }
                   },
@@ -128,46 +147,19 @@
                     "summary": "Success",
                     "value": {
                       "dbBack": {
-                        "_id": "6378e90e346d0a9a01d223c0",
-                        "content": "变态日记 3月12日 晴 嘿嘿，嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿",
+                        "_id": "6379aa19f1912ca20dce254a",
+                        "content": "嗯？？sb难道不是super boy的意思嘛？",
+                        "publishDate": "2022-11-20T04:10:02.901Z",
+                        "relatedComment": "63798efdb4e41f1d38f642b7",
+                        "relatedPost": "6376cb6509e17a087cd37546",
+                        "mentionedUser": "6375d3861e0c13b2fa52e149",
                         "author": "6375d3861e0c13b2fa52e149",
-                        "publishDate": "2022-11-19T14:28:38.337Z",
-                        "updateDate": "2022-11-19T14:28:38.337Z",
-                        "relatedPost": "6375d5981e0c13b2fa52e1c5",
-                        "postAuthor": "6375d3b71e0c13b2fa52e189",
-                        "edited": true,
-                        "__v": 0
+                        "__v": 0,
+                        "statistics": {
+                          "likes": 0,
+                          "dislikes": 0
+                        }
                       }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "x-apidog-ignore-properties": [],
-                  "x-apidog-orders": [
-                    "error"
-                  ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "unauthorized"
                     }
                   }
                 }
@@ -205,18 +197,29 @@
                     "value": {
                       "error": "Comment does not exist"
                     }
+                  },
+                  "3": {
+                    "summary": "Exception",
+                    "value": {
+                      "error": "Reply does not exist"
+                    }
                   }
                 }
               }
             }
           }
         },
-        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552372-run"
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3566928-run"
       }
     }
   },
   "components": {
     "schemas": {}
   },
-  "servers": []
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
 }

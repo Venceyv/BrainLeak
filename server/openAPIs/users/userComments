@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/users/{userId}/comments": {
+    "/users/comments/{userId}": {
       "get": {
         "summary": "userComments",
         "x-apidog-folder": "users",
@@ -57,7 +57,7 @@
             "in": "query",
             "description": "",
             "required": true,
-            "example": "latest",
+            "example": "latest/likes",
             "schema": {
               "type": "string"
             }
@@ -112,10 +112,10 @@
                             ],
                             "x-apidog-ignore-properties": []
                           },
-                          "createTime": {
+                          "publishDate": {
                             "type": "string"
                           },
-                          "updateTime": {
+                          "updateDate": {
                             "type": "string"
                           },
                           "relatedPost": {
@@ -138,8 +138,17 @@
                             ],
                             "x-apidog-ignore-properties": []
                           },
+                          "postAuthor": {
+                            "type": "string"
+                          },
                           "__v": {
                             "type": "integer"
+                          },
+                          "like": {
+                            "type": "boolean"
+                          },
+                          "dislike": {
+                            "type": "boolean"
                           },
                           "statistics": {
                             "type": "object",
@@ -167,33 +176,153 @@
                             "x-apidog-ignore-properties": []
                           }
                         },
+                        "required": [
+                          "_id",
+                          "content",
+                          "author",
+                          "publishDate",
+                          "updateDate",
+                          "relatedPost",
+                          "postAuthor",
+                          "__v",
+                          "statistics"
+                        ],
                         "x-apidog-orders": [
                           "_id",
                           "content",
                           "author",
-                          "createTime",
-                          "updateTime",
+                          "publishDate",
+                          "updateDate",
                           "relatedPost",
+                          "postAuthor",
                           "__v",
+                          "like",
+                          "dislike",
                           "statistics"
                         ],
                         "x-apidog-ignore-properties": []
                       }
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "nullable": true
                     }
                   },
                   "required": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
                   "x-apidog-orders": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
                   "x-apidog-ignore-properties": []
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Success with token passed",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "_id": "6378e90e346d0a9a01d223c0",
+                          "content": "变态日记 3月12日 晴 嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿",
+                          "author": {
+                            "_id": "6375d3861e0c13b2fa52e149",
+                            "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
+                            "username": "理塘最速传说",
+                            "introduction": "电子烟，我只抽RLEX"
+                          },
+                          "publishDate": "2022-11-19T14:28:38.337Z",
+                          "updateDate": "2022-11-19T14:28:38.337Z",
+                          "relatedPost": {
+                            "_id": "6375d5981e0c13b2fa52e1c5",
+                            "title": "保安日记 3月19日 雨"
+                          },
+                          "postAuthor": "6375d3b71e0c13b2fa52e189",
+                          "__v": 0,
+                          "like": false,
+                          "dislike": false,
+                          "statistics": {
+                            "likes": 0,
+                            "dislikes": 0,
+                            "replies": 0
+                          }
+                        },
+                        {
+                          "_id": "63798efdb4e41f1d38f642b7",
+                          "content": "no no no, sb是sweet baby的意思",
+                          "author": {
+                            "_id": "6375d3861e0c13b2fa52e149",
+                            "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
+                            "username": "理塘最速传说",
+                            "introduction": "电子烟，我只抽RLEX"
+                          },
+                          "publishDate": "2022-11-20T02:18:41.605Z",
+                          "updateDate": "2022-11-20T02:18:41.605Z",
+                          "relatedPost": {
+                            "_id": "6376cb6509e17a087cd37546",
+                            "title": "舔狗日记 3月18日"
+                          },
+                          "postAuthor": "6375d3861e0c13b2fa52e149",
+                          "__v": 0,
+                          "like": false,
+                          "dislike": false,
+                          "statistics": {
+                            "likes": 0,
+                            "dislikes": 0,
+                            "replies": 3
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "2": {
+                    "summary": "Success without token pass",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "_id": "6378e90e346d0a9a01d223c0",
+                          "content": "变态日记 3月12日 晴 嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿",
+                          "author": {
+                            "_id": "6375d3861e0c13b2fa52e149",
+                            "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
+                            "username": "理塘最速传说",
+                            "introduction": "电子烟，我只抽RLEX"
+                          },
+                          "publishDate": "2022-11-19T14:28:38.337Z",
+                          "updateDate": "2022-11-19T14:28:38.337Z",
+                          "relatedPost": {
+                            "_id": "6375d5981e0c13b2fa52e1c5",
+                            "title": "保安日记 3月19日 雨"
+                          },
+                          "postAuthor": "6375d3b71e0c13b2fa52e189",
+                          "__v": 0,
+                          "statistics": {
+                            "likes": 0,
+                            "dislikes": 0,
+                            "replies": 0
+                          }
+                        },
+                        {
+                          "_id": "63798efdb4e41f1d38f642b7",
+                          "content": "no no no, sb是sweet baby的意思",
+                          "author": {
+                            "_id": "6375d3861e0c13b2fa52e149",
+                            "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
+                            "username": "理塘最速传说",
+                            "introduction": "电子烟，我只抽RLEX"
+                          },
+                          "publishDate": "2022-11-20T02:18:41.605Z",
+                          "updateDate": "2022-11-20T02:18:41.605Z",
+                          "relatedPost": {
+                            "_id": "6376cb6509e17a087cd37546",
+                            "title": "舔狗日记 3月18日"
+                          },
+                          "postAuthor": "6375d3861e0c13b2fa52e149",
+                          "__v": 0,
+                          "statistics": {
+                            "likes": 0,
+                            "dislikes": 0,
+                            "replies": 3
+                          }
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }

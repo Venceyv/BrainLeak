@@ -11,8 +11,8 @@
     }
   ],
   "paths": {
-    "/posts/{postId}/{commentId}/like": {
-      "get": {
+    "/posts/like/{postId}/{commentId}": {
+      "put": {
         "summary": "likeComment",
         "x-apidog-folder": "posts",
         "x-apidog-status": "developing",
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f1d50425aca4adb9dc52d",
             "schema": {
               "type": "string"
             }
@@ -37,7 +36,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f34945fe83173dfe04f76",
             "schema": {
               "type": "string"
             }
@@ -53,34 +51,27 @@
                   "properties": {
                     "like": {
                       "type": "boolean"
-                    },
-                    "accessToken": {
-                      "type": "string"
                     }
                   },
                   "required": [
-                    "like",
-                    "accessToken"
+                    "like"
                   ],
+                  "x-apidog-ignore-properties": [],
                   "x-apidog-orders": [
-                    "like",
-                    "accessToken"
-                  ],
-                  "x-apidog-ignore-properties": []
+                    "like"
+                  ]
                 },
                 "examples": {
                   "1": {
                     "summary": "Success",
                     "value": {
-                      "like": true,
-                      "accessToken": null
+                      "like": true
                     }
                   },
                   "2": {
                     "summary": "Success",
                     "value": {
-                      "like": false,
-                      "accessToken": null
+                      "like": false
                     }
                   }
                 }
@@ -110,13 +101,13 @@
                   "1": {
                     "summary": "Exception",
                     "value": {
-                      "error": "Comment does not exist"
+                      "error": "Post does not exist"
                     }
                   },
                   "2": {
                     "summary": "Exception",
                     "value": {
-                      "error": "Post does not exist"
+                      "error": "Comment does not exist"
                     }
                   }
                 }
@@ -131,5 +122,10 @@
   "components": {
     "schemas": {}
   },
-  "servers": []
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
 }

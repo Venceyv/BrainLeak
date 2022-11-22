@@ -96,6 +96,9 @@
                             "upvotes"
                           ],
                           "x-apidog-ignore-properties": []
+                        },
+                        "following": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -114,69 +117,19 @@
                         "introduction",
                         "backgroundCover",
                         "__v",
-                        "statistics"
+                        "statistics",
+                        "following"
                       ],
                       "x-apidog-ignore-properties": []
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "nullable": true
                     }
                   },
                   "required": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
                   "x-apidog-orders": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
                   "x-apidog-ignore-properties": []
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Success with token(self) passed",
-                    "value": {
-                      "dbBack": {
-                        "_id": "634f1bcc7b5e14c2c8f70325",
-                        "avatar": "https://storage.googleapis.com/brainleak/ji.png",
-                        "username": "理塘最速传说",
-                        "introduction": "我是妈妈生的",
-                        "backgroundCover": "https://storage.googleapis.com/brainleak/流星雨.png",
-                        "__v": 0,
-                        "statistics": {
-                          "following": 2,
-                          "follower": 2,
-                          "posts": 1,
-                          "comments": 2,
-                          "upvotes": 1
-                        }
-                      },
-                      "accessToken": null
-                    }
-                  },
-                  "2": {
-                    "summary": "Success with token(not self) passed",
-                    "value": {
-                      "dbBack": {
-                        "_id": "634f1bcc7b5e14c2c8f70325",
-                        "avatar": "https://storage.googleapis.com/brainleak/ji.png",
-                        "username": "理塘最速传说",
-                        "introduction": "我是妈妈生的",
-                        "backgroundCover": "https://storage.googleapis.com/brainleak/流星雨.png",
-                        "__v": 0,
-                        "statistics": {
-                          "following": 2,
-                          "follower": 2,
-                          "posts": 1,
-                          "comments": 2,
-                          "upvotes": 1
-                        },
-                        "following": true
-                      },
-                      "accessToken": null
-                    }
-                  }
                 }
               }
             }
@@ -199,14 +152,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "User does not exist"
-                    }
-                  }
                 }
               }
             }

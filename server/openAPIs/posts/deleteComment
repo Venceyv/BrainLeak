@@ -11,11 +11,11 @@
     }
   ],
   "paths": {
-    "/posts/{postId}/{commentId}/comment": {
+    "/posts/comment/{postId}/{commentId}": {
       "delete": {
         "summary": "deleteComment",
         "x-apidog-folder": "posts",
-        "x-apidog-status": "developing",
+        "x-apidog-status": -2,
         "deprecated": false,
         "description": "",
         "tags": [
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634bb481fd2afd9b5921e278",
             "schema": {
               "type": "string"
             }
@@ -37,7 +36,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634e73ff0297eca3d27b03e7",
             "schema": {
               "type": "string"
             }
@@ -68,15 +66,6 @@
                     "accessToken"
                   ],
                   "x-apidog-ignore-properties": []
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Success",
-                    "value": {
-                      "msg": "Delete successfully.",
-                      "accessToken": null
-                    }
-                  }
                 }
               }
             }
@@ -99,14 +88,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "unauthorized"
-                    }
-                  }
                 }
               }
             }
@@ -129,20 +110,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "Comment does not exist"
-                    }
-                  },
-                  "2": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "Post does not exist"
-                    }
-                  }
                 }
               }
             }

@@ -11,11 +11,11 @@
     }
   ],
   "paths": {
-    "/posts/{postId}/comment": {
+    "/posts/comment/{postId}": {
       "post": {
         "summary": "commentPost",
         "x-apidog-folder": "posts",
-        "x-apidog-status": "developing",
+        "x-apidog-status": -2,
         "deprecated": false,
         "description": "",
         "tags": [
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "6353552921ffa5a24af3caee",
             "schema": {
               "type": "string"
             }
@@ -50,13 +49,16 @@
                         "author": {
                           "type": "string"
                         },
-                        "createTime": {
+                        "publishDate": {
                           "type": "string"
                         },
-                        "updateTime": {
+                        "updateDate": {
                           "type": "string"
                         },
                         "relatedPost": {
+                          "type": "string"
+                        },
+                        "postAuthor": {
                           "type": "string"
                         },
                         "edited": {
@@ -72,55 +74,51 @@
                       "required": [
                         "content",
                         "author",
-                        "createTime",
-                        "updateTime",
+                        "publishDate",
+                        "updateDate",
                         "relatedPost",
+                        "postAuthor",
                         "edited",
                         "_id",
                         "__v"
                       ],
+                      "x-apidog-ignore-properties": [],
                       "x-apidog-orders": [
                         "content",
                         "author",
-                        "createTime",
-                        "updateTime",
+                        "publishDate",
+                        "updateDate",
                         "relatedPost",
+                        "postAuthor",
                         "edited",
                         "_id",
                         "__v"
-                      ],
-                      "x-apidog-ignore-properties": []
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "nullable": true
+                      ]
                     }
                   },
                   "required": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
+                  "x-apidog-ignore-properties": [],
                   "x-apidog-orders": [
-                    "dbBack",
-                    "accessToken"
-                  ],
-                  "x-apidog-ignore-properties": []
+                    "dbBack"
+                  ]
                 },
                 "examples": {
                   "1": {
                     "summary": "Success",
                     "value": {
                       "dbBack": {
-                        "content": "变态日记 3月27日 晴 嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿嘿",
-                        "author": "634f1bcc7b5e14c2c8f70325",
-                        "createTime": "2022-10-22T03:10:02.424Z",
-                        "updateTime": "2022-10-22T03:10:02.424Z",
-                        "relatedPost": "6353552921ffa5a24af3caee",
+                        "content": "大半夜的，给我整emo了",
+                        "author": "6375d3861e0c13b2fa52e149",
+                        "publishDate": "2022-11-21T13:47:44.051Z",
+                        "updateDate": "2022-11-21T13:47:44.051Z",
+                        "relatedPost": "637b85cc3a887636f09ebd01",
+                        "postAuthor": "6375d3861e0c13b2fa52e149",
                         "edited": false,
-                        "_id": "63537e99d7811d59905892b1",
+                        "_id": "637b866a3a887636f09ebd09",
                         "__v": 0
-                      },
-                      "accessToken": null
+                      }
                     }
                   }
                 }

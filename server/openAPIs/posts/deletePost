@@ -15,7 +15,7 @@
       "delete": {
         "summary": "deletePost",
         "x-apidog-folder": "posts",
-        "x-apidog-status": "developing",
+        "x-apidog-status": -2,
         "deprecated": false,
         "description": "",
         "tags": [
@@ -74,14 +74,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "unauthorized"
-                    }
-                  }
                 }
               }
             }

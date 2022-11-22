@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/users/{userId}/refreshToken": {
+    "/users/refreshToken/{userId}": {
       "get": {
         "summary": "refreshToken",
         "x-apidog-folder": "users",
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f1bcc7b5e14c2c8f70325",
             "schema": {
               "type": "string"
             }
@@ -57,15 +56,6 @@
                     "accessToken",
                     "refreshToken"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Success",
-                    "value": {
-                      "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJ1c2VySWQiOiI2MzRmMWM4MzQyNWFjYTRhZGI5ZGM1MjMiLCJ1c2VybmFtZSI6IuS4geecn-e6r-S4gOmDjiJ9LCJpYXQiOjE2NjY0NDM4MjUsImV4cCI6MTY2NjQ0NDcyNX0.Vfl2l1j1m0bNZ-7Eo9pOToeGBbh-YmUhiJcKPsMOXKE",
-                      "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJ1c2VySWQiOiI2MzRmMWM4MzQyNWFjYTRhZGI5ZGM1MjMiLCJ1c2VybmFtZSI6IuS4geecn-e6r-S4gOmDjiJ9LCJpYXQiOjE2NjY0NDM4MjUsImV4cCI6MTY2NjQ0NzQyNX0.q-WVyDFzoTEVOCQ3M8yj9j1jwgHg0UI7MrviXwnt01w"
-                    }
-                  }
                 }
               }
             }
@@ -88,14 +78,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "User does not exist"
-                    }
-                  }
                 }
               }
             }

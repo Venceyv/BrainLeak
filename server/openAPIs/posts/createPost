@@ -15,7 +15,7 @@
       "post": {
         "summary": "createPost",
         "x-apidog-folder": "posts",
-        "x-apidog-status": "developing",
+        "x-apidog-status": -2,
         "deprecated": false,
         "description": "",
         "tags": [
@@ -96,6 +96,7 @@
                         "_id",
                         "author"
                       ],
+                      "x-apidog-ignore-properties": [],
                       "x-apidog-orders": [
                         "title",
                         "description",
@@ -106,43 +107,34 @@
                         "put",
                         "_id",
                         "author"
-                      ],
-                      "x-apidog-ignore-properties": []
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "nullable": true
+                      ]
                     }
                   },
                   "required": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
+                  "x-apidog-ignore-properties": [],
                   "x-apidog-orders": [
-                    "dbBack",
-                    "accessToken"
-                  ],
-                  "x-apidog-ignore-properties": []
+                    "dbBack"
+                  ]
                 },
                 "examples": {
                   "1": {
                     "summary": "Success",
                     "value": {
                       "dbBack": {
-                        "title": "舔狗日记 3月17日 阴",
-                        "description": "你昨天晚上又没会我的消息，在我孜孜不倦的骚扰下，你终于舍得回我了，你说“滚”，这其中一定有什么含义，我想了很久，滚是三点水，这代表你对我的思念也如滚滚流水一样汹涌，我感动哭了，不知道你现在在干嘛，我很想你。",
-                        "publishDate": "2022-10-22T03:10:02.427Z",
-                        "updateDate": "2022-10-22T03:10:02.427Z",
+                        "title": "月亮不会奔你而来",
+                        "description": "我不摘月亮 我要它永远高悬天上 皎洁流芳 他始终陌生 才允许诸多浪漫想象 作为 我理想 我要写诗给他 不要求送达 他可以接很多人的鲜花 不必无暇 他也能自在去 漫步月球下 别去 对号入座谁爱意将真实灵魂蒸发 我知 再迷恋他也非我能私有 就当神爱世人遥远温柔 未必要牵手 隔千万光年宇宙献吻 亦真切感受 不用 强求 对号入座那虚构 也知道这诗给他 是无用情话 如若某天他偶然听到 不需要回答 期待是天梯 似乎快濒如悬崖 别再去 对号入座注销那鲜活的一千个他 他是 不可碰 复杂 悬空 快乐哀愁  我是 路人某 爱他禁止索要成就 我知道 再对号入座也不能将他私有 我爱月亮未必要去太空 陪着它漫游 他回应追光也未必需要 光临这沙丘 爱不被他知道也照旧不朽",
+                        "publishDate": "2022-11-21T13:47:44.054Z",
+                        "updateDate": "2022-11-21T13:47:44.054Z",
                         "tags": [
-                          "舔狗日记",
-                          "水贴"
+                          "凯瑟喵"
                         ],
                         "edited": false,
-                        "put": true,
-                        "_id": "63537d84d7811d599058929c",
-                        "author": "634f1bcc7b5e14c2c8f70325"
-                      },
-                      "accessToken": null
+                        "put": false,
+                        "_id": "637b85cc3a887636f09ebd01",
+                        "author": "6375d3861e0c13b2fa52e149"
+                      }
                     }
                   }
                 }
@@ -157,10 +149,5 @@
   "components": {
     "schemas": {}
   },
-  "servers": [
-    {
-      "url": "http://127.0.0.1",
-      "description": "Testing Env"
-    }
-  ]
+  "servers": []
 }

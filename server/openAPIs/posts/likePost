@@ -11,8 +11,8 @@
     }
   ],
   "paths": {
-    "/posts/{postId}/like": {
-      "get": {
+    "/posts/like/{postId}": {
+      "put": {
         "summary": "likePost",
         "x-apidog-folder": "posts",
         "x-apidog-status": "developing",
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f34e95fe83173dfe04f78",
             "schema": {
               "type": "string"
             }
@@ -43,34 +42,27 @@
                   "properties": {
                     "like": {
                       "type": "boolean"
-                    },
-                    "accessToken": {
-                      "type": "string"
                     }
                   },
                   "required": [
-                    "like",
-                    "accessToken"
+                    "like"
                   ],
+                  "x-apidog-ignore-properties": [],
                   "x-apidog-orders": [
-                    "like",
-                    "accessToken"
-                  ],
-                  "x-apidog-ignore-properties": []
+                    "like"
+                  ]
                 },
                 "examples": {
                   "1": {
                     "summary": "Success",
                     "value": {
-                      "like": true,
-                      "accessToken": null
+                      "like": true
                     }
                   },
                   "2": {
                     "summary": "Success",
                     "value": {
-                      "like": false,
-                      "accessToken": null
+                      "like": false
                     }
                   }
                 }
@@ -115,10 +107,5 @@
   "components": {
     "schemas": {}
   },
-  "servers": [
-    {
-      "url": "http://127.0.0.1",
-      "description": "Testing Env"
-    }
-  ]
+  "servers": []
 }

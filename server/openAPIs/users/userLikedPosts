@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/users/{userId}/likePosts": {
+    "/users/likedPosts/{userId}": {
       "get": {
         "summary": "userLikedPost",
         "x-apidog-folder": "users",
@@ -112,26 +112,21 @@
                               },
                               "introduction": {
                                 "type": "string"
-                              },
-                              "following": {
-                                "type": "boolean"
                               }
                             },
                             "required": [
                               "_id",
                               "avatar",
                               "username",
-                              "introduction",
-                              "following"
+                              "introduction"
                             ],
+                            "x-apidog-ignore-properties": [],
                             "x-apidog-orders": [
                               "_id",
                               "avatar",
                               "username",
-                              "introduction",
-                              "following"
-                            ],
-                            "x-apidog-ignore-properties": []
+                              "introduction"
+                            ]
                           },
                           "like": {
                             "type": "boolean"
@@ -168,14 +163,14 @@
                               "comments",
                               "views"
                             ],
+                            "x-apidog-ignore-properties": [],
                             "x-apidog-orders": [
                               "likes",
                               "dislikes",
                               "marks",
                               "comments",
                               "views"
-                            ],
-                            "x-apidog-ignore-properties": []
+                            ]
                           }
                         },
                         "required": [
@@ -189,6 +184,7 @@
                           "save",
                           "statistics"
                         ],
+                        "x-apidog-ignore-properties": [],
                         "x-apidog-orders": [
                           "_id",
                           "title",
@@ -199,23 +195,114 @@
                           "dislike",
                           "save",
                           "statistics"
-                        ],
-                        "x-apidog-ignore-properties": []
+                        ]
                       }
-                    },
-                    "accessToken": {
-                      "type": "string"
                     }
                   },
                   "required": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
+                  "x-apidog-ignore-properties": [],
                   "x-apidog-orders": [
-                    "dbBack",
-                    "accessToken"
-                  ],
-                  "x-apidog-ignore-properties": []
+                    "dbBack"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Success",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "_id": "6376cd8c09e17a087cd37653",
+                          "title": "保安日记 3月2日 阴",
+                          "description": "我不知道为什么，小区整顿说要提升员工文化素质，于是让大家每天练习英语并打卡，可是我会说的只有几句，I like you，I love you ，I miss you very much.我会好好学英语的，然后说给你听，想你了，over。",
+                          "publishDate": "2022-11-17T23:57:42.283Z",
+                          "author": {
+                            "_id": "6375d3861e0c13b2fa52e149",
+                            "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
+                            "username": "理塘最速传说",
+                            "introduction": "电子烟，我只抽RLEX"
+                          },
+                          "like": true,
+                          "dislike": false,
+                          "save": false,
+                          "statistics": {
+                            "likes": 4,
+                            "dislikes": 0,
+                            "marks": 3,
+                            "comments": 0,
+                            "views": 27
+                          }
+                        },
+                        {
+                          "_id": "6376cb9909e17a087cd3754b",
+                          "title": "舔狗日记 3月17日 阴",
+                          "description": "你昨天晚上又没会我的消息，在我孜孜不倦的骚扰下，你终于舍得回我了，你说“滚”，这其中一定有什么含义，我想了很久，滚是三点水，这代表你对我的思念也如滚滚流水一样汹涌，我感动哭了，不知道你现在在干嘛，我很想你。",
+                          "publishDate": "2022-11-17T23:57:42.283Z",
+                          "author": {
+                            "_id": "6375d3861e0c13b2fa52e149",
+                            "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
+                            "username": "理塘最速传说",
+                            "introduction": "电子烟，我只抽RLEX"
+                          },
+                          "like": true,
+                          "dislike": false,
+                          "save": false,
+                          "statistics": {
+                            "likes": 2,
+                            "dislikes": 0,
+                            "marks": 1,
+                            "comments": 0,
+                            "views": 1
+                          }
+                        },
+                        {
+                          "_id": "6375d50a1e0c13b2fa52e1bb",
+                          "title": "舔狗日记 3月17日 周二晴",
+                          "description": "我和他说我妈想见你，我搜索了一下关键字“妈”。在我们的聊天记录里，他只说过一次：妈的，滚",
+                          "publishDate": "2022-11-17T06:23:41.587Z",
+                          "author": {
+                            "_id": "6375d3b71e0c13b2fa52e189",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                            "username": "丁真纯一郎",
+                            "introduction": "我和我的动物朋友们"
+                          },
+                          "like": true,
+                          "dislike": false,
+                          "save": false,
+                          "statistics": {
+                            "likes": 2,
+                            "dislikes": 0,
+                            "marks": 0,
+                            "comments": 0,
+                            "views": 0
+                          }
+                        },
+                        {
+                          "_id": "6375d4df1e0c13b2fa52e1b6",
+                          "title": "舔狗日记 3月19日 周二晴",
+                          "description": "我坐在窗边给你发了99条消息，你终于肯回我了，你说“发你妈啊” 我一下子就哭了，原来努力真的有用，你已经开始考虑想见我的妈妈了，你也是挺喜欢我的。",
+                          "publishDate": "2022-11-17T06:23:41.587Z",
+                          "author": {
+                            "_id": "6375d3b71e0c13b2fa52e189",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                            "username": "丁真纯一郎",
+                            "introduction": "我和我的动物朋友们"
+                          },
+                          "like": true,
+                          "dislike": false,
+                          "save": false,
+                          "statistics": {
+                            "likes": 1,
+                            "dislikes": 0,
+                            "marks": 0,
+                            "comments": 0,
+                            "views": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }
@@ -238,6 +325,14 @@
                   "x-apidog-orders": [
                     "error"
                   ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Exception",
+                    "value": {
+                      "error": "unauthorized"
+                    }
+                  }
                 }
               }
             }

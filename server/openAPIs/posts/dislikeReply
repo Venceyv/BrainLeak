@@ -11,8 +11,8 @@
     }
   ],
   "paths": {
-    "/posts/{postId}/{commentId}/{replyId}/dislike": {
-      "get": {
+    "/posts/dislike/{postId}/{commentId}/{replyId}": {
+      "put": {
         "summary": "dislikeReply",
         "x-apidog-folder": "posts",
         "x-apidog-status": "developing",
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f1d50425aca4adb9dc52d",
             "schema": {
               "type": "string"
             }
@@ -37,7 +36,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f34945fe83173dfe04f76",
             "schema": {
               "type": "string"
             }
@@ -47,7 +45,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "63535fd8d7811d599058919c",
             "schema": {
               "type": "string"
             }
@@ -63,35 +60,27 @@
                   "properties": {
                     "dislike": {
                       "type": "boolean"
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "nullable": true
                     }
                   },
                   "required": [
-                    "dislike",
-                    "accessToken"
+                    "dislike"
                   ],
+                  "x-apidog-ignore-properties": [],
                   "x-apidog-orders": [
-                    "dislike",
-                    "accessToken"
-                  ],
-                  "x-apidog-ignore-properties": []
+                    "dislike"
+                  ]
                 },
                 "examples": {
                   "1": {
                     "summary": "Success",
                     "value": {
-                      "dislike": true,
-                      "accessToken": null
+                      "dislike": true
                     }
                   },
                   "2": {
                     "summary": "Success",
                     "value": {
-                      "dislike": false,
-                      "accessToken": null
+                      "dislike": false
                     }
                   }
                 }
@@ -121,7 +110,7 @@
                   "1": {
                     "summary": "Exception",
                     "value": {
-                      "error": "Reply does not exist"
+                      "error": "Post does not exist"
                     }
                   },
                   "2": {
@@ -133,7 +122,7 @@
                   "3": {
                     "summary": "Exception",
                     "value": {
-                      "error": "Post does not exist"
+                      "error": "Reply does not exist"
                     }
                   }
                 }

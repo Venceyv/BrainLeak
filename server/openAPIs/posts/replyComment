@@ -11,11 +11,11 @@
     }
   ],
   "paths": {
-    "/posts/{postId}/{commentId}/comment/reply": {
+    "/posts/comment/reply/{postId}/{commentId}": {
       "post": {
         "summary": "replyComment",
         "x-apidog-folder": "posts",
-        "x-apidog-status": "developing",
+        "x-apidog-status": -2,
         "deprecated": false,
         "description": "",
         "tags": [
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f1d50425aca4adb9dc52d",
             "schema": {
               "type": "string"
             }
@@ -37,7 +36,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f1d50425aca4adb9dc52d",
             "schema": {
               "type": "string"
             }
@@ -57,7 +55,7 @@
                         "content": {
                           "type": "string"
                         },
-                        "createTime": {
+                        "publishDate": {
                           "type": "string"
                         },
                         "relatedComment": {
@@ -81,7 +79,7 @@
                       },
                       "required": [
                         "content",
-                        "createTime",
+                        "publishDate",
                         "relatedComment",
                         "relatedPost",
                         "mentionedUser",
@@ -89,48 +87,41 @@
                         "_id",
                         "__v"
                       ],
+                      "x-apidog-ignore-properties": [],
                       "x-apidog-orders": [
                         "content",
-                        "createTime",
+                        "publishDate",
                         "relatedComment",
                         "relatedPost",
                         "mentionedUser",
                         "author",
                         "_id",
                         "__v"
-                      ],
-                      "x-apidog-ignore-properties": []
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "nullable": true
+                      ]
                     }
                   },
                   "required": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
+                  "x-apidog-ignore-properties": [],
                   "x-apidog-orders": [
-                    "dbBack",
-                    "accessToken"
-                  ],
-                  "x-apidog-ignore-properties": []
+                    "dbBack"
+                  ]
                 },
                 "examples": {
                   "1": {
                     "summary": "Success",
                     "value": {
                       "dbBack": {
-                        "content": "不，他的孩子你不配",
-                        "createTime": "2022-10-22T03:10:02.428Z",
-                        "relatedComment": "63537decd7811d59905892ad",
-                        "relatedPost": "6353552921ffa5a24af3caee",
-                        "mentionedUser": "634f1bcc7b5e14c2c8f70325",
-                        "author": "634f1bcc7b5e14c2c8f70325",
-                        "_id": "63537fc7d7811d59905892c7",
+                        "content": "俺也一样",
+                        "publishDate": "2022-11-21T13:47:44.055Z",
+                        "relatedComment": "637b866a3a887636f09ebd09",
+                        "relatedPost": "637b85cc3a887636f09ebd01",
+                        "mentionedUser": "6375d3861e0c13b2fa52e149",
+                        "author": "6375d3861e0c13b2fa52e149",
+                        "_id": "637b88553a887636f09ebd35",
                         "__v": 0
-                      },
-                      "accessToken": null
+                      }
                     }
                   }
                 }
@@ -160,13 +151,13 @@
                   "1": {
                     "summary": "Exception",
                     "value": {
-                      "error": "Comment does not exist"
+                      "error": "Post does not exist"
                     }
                   },
                   "2": {
                     "summary": "Exception",
                     "value": {
-                      "error": "Post does not exist"
+                      "error": "Comment does not exist"
                     }
                   }
                 }
