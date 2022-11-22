@@ -11,7 +11,7 @@ function clearCommentByTime(time) {
           commentList.map(async function (comment) {
             const record = await Post.findById(comment.relatedPost, { _id: 1 }).lean();
             if (!record) {
-              await Comment.findByIdAndDelete(comment._id);
+              Comment.findByIdAndDelete(comment._id);
             }
           })
         );
@@ -26,7 +26,7 @@ async function incCommentStatistics(commentId, field, incNum) {
     const key = JSON.stringify(commentId) + " Statistics";
     const result = await redisComments.hincrby(key, field, incNum);
     if (result < 0) {
-      await redisComments.hset(key, field, 0);
+      redisComments.hset(key, field, 0);
     }
   } catch (error) {
     console.log("incCommentStatistics Failed -- Cservices 20");
@@ -81,7 +81,7 @@ async function getCommentsUderPost(commentId) {
         .lean()
         .populate("author", { username: 1, avatar: 1 }, { lean: true });
       if (commentUnderPost.length != 0) {
-        await saveRedisCommentProfile(commentId, commentUnderPost);
+        saveRedisCommentProfile(commentId, commentUnderPost);
       }
     }
     return commentUnderPost;
@@ -94,7 +94,7 @@ async function saveRedisCommentProfile(commentId, profile) {
   try {
     const key = JSON.stringify(commentId) + " Profile";
     profile = JSON.stringify(profile);
-    await redisComments.setex(key, 30, profile);
+    redisComments.setex(key, 30, profile);
   } catch (error) {
     console.log("saveRedisCommentProfile Faild --Cservices 104");
   }
