@@ -17,7 +17,7 @@ export const getPosts = async (
 ): Promise<Post[]> => {
   let interval;
 
-  if (timeInterval !== 'allTime') {
+  if (timeInterval !== 'allTime' && sortType !== 'new') {
     switch (timeInterval) {
       case 'today':
         interval = 'a_day';
@@ -35,7 +35,7 @@ export const getPosts = async (
   }
 
   const queryUrl =
-    timeInterval === 'allTime'
+    sortType === 'new' || timeInterval === 'allTime'
       ? `${URL}/posts?pagenumber=${pageNum}&pagesize=${pageSize}&type=posts&sort=${sortType}`
       : `${URL}/posts?pagenumber=${pageNum}&pagesize=${pageSize}&type=posts&timeInterval=${interval}&sort=${sortType}`;
 

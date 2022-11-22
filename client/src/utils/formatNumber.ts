@@ -17,6 +17,5 @@ export const formatNumber = (num: string | number) => {
       return (num / ranges[i].divider).toString() + ranges[i].suffix;
     }
   }
-  console.log(num);
   return num;
 };
