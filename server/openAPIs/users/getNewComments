@@ -11,9 +11,9 @@
     }
   ],
   "paths": {
-    "/users/trending": {
+    "/users/newComments/{userId}": {
       "get": {
-        "summary": "userTrending",
+        "summary": "getNewComments",
         "x-apidog-folder": "users",
         "x-apidog-status": "developing",
         "deprecated": false,
@@ -23,11 +23,10 @@
         ],
         "parameters": [
           {
-            "name": "top",
-            "in": "query",
+            "name": "userId",
+            "in": "path",
             "description": "",
             "required": true,
-            "example": "10",
             "schema": {
               "type": "string"
             }
@@ -46,7 +45,10 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "user": {
+                          "_id": {
+                            "type": "string"
+                          },
+                          "author": {
                             "type": "object",
                             "properties": {
                               "_id": {
@@ -60,49 +62,36 @@
                               },
                               "introduction": {
                                 "type": "string"
-                              },
-                              "backgroundCover": {
-                                "type": "string"
-                              },
-                              "followerCount": {
-                                "type": "string"
-                              },
-                              "postCount": {
-                                "type": "string"
                               }
                             },
                             "required": [
                               "_id",
                               "avatar",
                               "username",
-                              "introduction",
-                              "backgroundCover",
-                              "followerCount",
-                              "postCount"
+                              "introduction"
                             ],
                             "x-apidog-ignore-properties": [],
                             "x-apidog-orders": [
                               "_id",
                               "avatar",
                               "username",
-                              "introduction",
-                              "backgroundCover",
-                              "followerCount",
-                              "postCount"
+                              "introduction"
                             ]
                           },
-                          "popularity": {
+                          "publishDate": {
                             "type": "string"
                           }
                         },
                         "required": [
-                          "user",
-                          "popularity"
+                          "_id",
+                          "author",
+                          "publishDate"
                         ],
                         "x-apidog-ignore-properties": [],
                         "x-apidog-orders": [
-                          "user",
-                          "popularity"
+                          "_id",
+                          "author",
+                          "publishDate"
                         ]
                       }
                     }
@@ -121,42 +110,66 @@
                     "value": {
                       "dbBack": [
                         {
-                          "user": {
-                            "_id": "6375d3861e0c13b2fa52e149",
-                            "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
-                            "username": "理塘最速传说",
-                            "introduction": "电子烟，我只抽RLEX",
-                            "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png",
-                            "followerCount": "6",
-                            "postCount": "4"
-                          },
-                          "popularity": "57"
-                        },
-                        {
-                          "user": {
-                            "_id": "635b13385d39af977f76d36d",
-                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
-                            "username": "叽急挤寄",
-                            "introduction": "WASE SUKI",
-                            "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png",
-                            "followerCount": "1",
-                            "postCount": "2"
-                          },
-                          "popularity": "6"
-                        },
-                        {
-                          "user": {
+                          "_id": "6378d5de35e332d27894f05a",
+                          "author": {
                             "_id": "6375d3b71e0c13b2fa52e189",
                             "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
                             "username": "丁真纯一郎",
-                            "introduction": "我和我的动物朋友们",
-                            "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png",
-                            "followerCount": "1",
-                            "postCount": "6"
+                            "introduction": "我和我的动物朋友们"
                           },
-                          "popularity": "5"
+                          "publishDate": "2022-11-19T13:10:21.130Z"
+                        },
+                        {
+                          "_id": "6378f56b12b14d56cc3a9105",
+                          "author": {
+                            "_id": "635b13385d39af977f76d36d",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu1jtooJT_6jToUY5onos5ZT4E_yoVoZ5-B5vPgh=s96-c",
+                            "username": "叽急挤寄",
+                            "introduction": "WASE SUKI"
+                          },
+                          "publishDate": "2022-11-19T15:24:03.206Z"
+                        },
+                        {
+                          "_id": "6378f6862c5f62d7f5484955",
+                          "author": {
+                            "_id": "6375d3b71e0c13b2fa52e189",
+                            "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                            "username": "丁真纯一郎",
+                            "introduction": "我和我的动物朋友们"
+                          },
+                          "publishDate": "2022-11-19T15:27:43.068Z"
                         }
                       ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "x-apidog-ignore-properties": [],
+                  "x-apidog-orders": [
+                    "error"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Exception",
+                    "value": {
+                      "error": "unauthorized"
                     }
                   }
                 }
@@ -169,20 +182,34 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {},
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
                   "x-apidog-ignore-properties": [],
-                  "x-apidog-orders": []
+                  "x-apidog-orders": [
+                    "error"
+                  ]
                 }
               }
             }
           }
         },
-        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552128-run"
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3566812-run"
       }
     }
   },
   "components": {
     "schemas": {}
   },
-  "servers": []
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
 }

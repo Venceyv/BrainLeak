@@ -11,8 +11,8 @@
     }
   ],
   "paths": {
-    "/posts/{postId}/dislike": {
-      "get": {
+    "/posts/dislike/{postId}": {
+      "put": {
         "summary": "dislikePost",
         "x-apidog-folder": "posts",
         "x-apidog-status": "developing",
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f34e95fe83173dfe04f78",
             "schema": {
               "type": "string"
             }
@@ -43,34 +42,27 @@
                   "properties": {
                     "dislike": {
                       "type": "boolean"
-                    },
-                    "accessToken": {
-                      "type": "string"
                     }
                   },
                   "required": [
-                    "dislike",
-                    "accessToken"
+                    "dislike"
                   ],
+                  "x-apidog-ignore-properties": [],
                   "x-apidog-orders": [
-                    "dislike",
-                    "accessToken"
-                  ],
-                  "x-apidog-ignore-properties": []
+                    "dislike"
+                  ]
                 },
                 "examples": {
                   "1": {
                     "summary": "Success",
                     "value": {
-                      "dislike": true,
-                      "accessToken": null
+                      "dislike": false
                     }
                   },
                   "2": {
                     "summary": "Success",
                     "value": {
-                      "dislike": false,
-                      "accessToken": null
+                      "dislike": true
                     }
                   }
                 }

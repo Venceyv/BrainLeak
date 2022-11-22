@@ -11,11 +11,11 @@
     }
   ],
   "paths": {
-    "/posts/{postId}/{commentId}/{replyId}/comment/reply": {
+    "/posts/comment/reply/{postId}/{commentId}/{replyId}": {
       "delete": {
         "summary": "deleteReply",
         "x-apidog-folder": "posts",
-        "x-apidog-status": "developing",
+        "x-apidog-status": -2,
         "deprecated": false,
         "description": "",
         "tags": [
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634973044c8601bf67536dee",
             "schema": {
               "type": "string"
             }
@@ -37,7 +36,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634a6f0466968de9a9aa37cd",
             "schema": {
               "type": "string"
             }
@@ -47,7 +45,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634a84c998cb93965647bc5b",
             "schema": {
               "type": "string"
             }
@@ -72,14 +69,6 @@
                   "x-apidog-orders": [
                     "msg"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Success",
-                    "value": {
-                      "msg": "delete successfully"
-                    }
-                  }
                 }
               }
             }
@@ -102,14 +91,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "unauthorized"
-                    }
-                  }
                 }
               }
             }
@@ -132,26 +113,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "Reply does not exist"
-                    }
-                  },
-                  "2": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "Comment does not exist"
-                    }
-                  },
-                  "3": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "Post does not exist"
-                    }
-                  }
                 }
               }
             }

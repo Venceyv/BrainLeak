@@ -11,9 +11,9 @@
     }
   ],
   "paths": {
-    "/users/avatar/{userId}": {
-      "put": {
-        "summary": "updateUserAvatar",
+    "/users/{userId}": {
+      "get": {
+        "summary": "userProfile",
         "x-apidog-folder": "users",
         "x-apidog-status": "developing",
         "deprecated": false,
@@ -27,6 +27,7 @@
             "in": "path",
             "description": "",
             "required": true,
+            "example": "634f1bcc7b5e14c2c8f70325",
             "schema": {
               "type": "string"
             }
@@ -52,9 +53,6 @@
                         "username": {
                           "type": "string"
                         },
-                        "email": {
-                          "type": "string"
-                        },
                         "introduction": {
                           "type": "string"
                         },
@@ -63,64 +61,75 @@
                         },
                         "__v": {
                           "type": "integer"
+                        },
+                        "statistics": {
+                          "type": "object",
+                          "properties": {
+                            "following": {
+                              "type": "integer"
+                            },
+                            "follower": {
+                              "type": "integer"
+                            },
+                            "posts": {
+                              "type": "integer"
+                            },
+                            "comments": {
+                              "type": "integer"
+                            },
+                            "upvotes": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "following",
+                            "follower",
+                            "posts",
+                            "comments",
+                            "upvotes"
+                          ],
+                          "x-apidog-orders": [
+                            "following",
+                            "follower",
+                            "posts",
+                            "comments",
+                            "upvotes"
+                          ],
+                          "x-apidog-ignore-properties": []
+                        },
+                        "following": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
                         "_id",
                         "avatar",
                         "username",
-                        "email",
                         "introduction",
                         "backgroundCover",
-                        "__v"
+                        "__v",
+                        "statistics"
                       ],
                       "x-apidog-orders": [
                         "_id",
                         "avatar",
                         "username",
-                        "email",
                         "introduction",
                         "backgroundCover",
-                        "__v"
+                        "__v",
+                        "statistics",
+                        "following"
                       ],
                       "x-apidog-ignore-properties": []
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "nullable": true
                     }
                   },
                   "required": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
                   "x-apidog-orders": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
                   "x-apidog-ignore-properties": []
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "x-apidog-ignore-properties": [],
-                  "x-apidog-orders": [
-                    "error"
-                  ]
                 }
               }
             }
@@ -148,12 +157,17 @@
             }
           }
         },
-        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552171-run"
+        "x-run-in-apidog'": "https://www.apidog.com/web/project/347788/apis/api-3552130-run"
       }
     }
   },
   "components": {
     "schemas": {}
   },
-  "servers": []
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
 }

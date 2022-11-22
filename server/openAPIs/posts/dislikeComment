@@ -11,8 +11,8 @@
     }
   ],
   "paths": {
-    "/posts/{postId}/{commentId}/dislike": {
-      "get": {
+    "/posts/dislike/{postId}/{commentId}": {
+      "put": {
         "summary": "dislikeComment",
         "x-apidog-folder": "posts",
         "x-apidog-status": "developing",
@@ -27,7 +27,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f1d50425aca4adb9dc52d",
             "schema": {
               "type": "string"
             }
@@ -37,7 +36,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "example": "634f34945fe83173dfe04f76",
             "schema": {
               "type": "string"
             }
@@ -53,34 +51,27 @@
                   "properties": {
                     "dislike": {
                       "type": "boolean"
-                    },
-                    "accessToken": {
-                      "type": "null"
                     }
                   },
                   "required": [
-                    "dislike",
-                    "accessToken"
+                    "dislike"
                   ],
                   "x-apidog-ignore-properties": [],
                   "x-apidog-orders": [
-                    "dislike",
-                    "accessToken"
+                    "dislike"
                   ]
                 },
                 "examples": {
                   "1": {
                     "summary": "Success",
                     "value": {
-                      "dislike": true,
-                      "accessToken": null
+                      "dislike": true
                     }
                   },
                   "2": {
                     "summary": "Success",
                     "value": {
-                      "dislike": false,
-                      "accessToken": null
+                      "dislike": false
                     }
                   }
                 }
@@ -105,6 +96,20 @@
                   "x-apidog-orders": [
                     "error"
                   ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Exception",
+                    "value": {
+                      "error": "Post does not exist"
+                    }
+                  },
+                  "2": {
+                    "summary": "Exception",
+                    "value": {
+                      "error": "Comment does not exist"
+                    }
+                  }
                 }
               }
             }

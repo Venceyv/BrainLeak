@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/users/{userId}/backgroundCover": {
+    "/users/backgroundCover/{userId}": {
       "put": {
         "summary": "backgroundCover",
         "x-apidog-folder": "users",

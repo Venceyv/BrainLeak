@@ -100,23 +100,6 @@
                     "accessToken"
                   ],
                   "x-apidog-ignore-properties": []
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Success",
-                    "value": {
-                      "dbBack": {
-                        "_id": "634f1c83425aca4adb9dc523",
-                        "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0gctg8JFc12eHne-8hZ_2RLR1B28yKEekxkrHP=s96-c",
-                        "username": "丁真纯一郎",
-                        "email": "yafking20@gmail.com",
-                        "introduction": "我爱我的动物朋友们",
-                        "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png",
-                        "__v": 0
-                      },
-                      "accessToken": null
-                    }
-                  }
                 }
               }
             }
@@ -139,14 +122,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "unauthorized"
-                    }
-                  }
                 }
               }
             }
@@ -169,14 +144,6 @@
                   "x-apidog-orders": [
                     "error"
                   ]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "User does not exist"
-                    }
-                  }
                 }
               }
             }

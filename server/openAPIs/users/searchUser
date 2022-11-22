@@ -85,13 +85,13 @@
                           "username": {
                             "type": "string"
                           },
-                          "email": {
-                            "type": "string"
-                          },
                           "introduction": {
                             "type": "string"
                           },
                           "backgroundCover": {
+                            "type": "string"
+                          },
+                          "gender": {
                             "type": "string"
                           },
                           "__v": {
@@ -131,60 +131,113 @@
                               "upvotes"
                             ],
                             "x-apidog-ignore-properties": []
+                          },
+                          "following": {
+                            "type": "boolean"
                           }
                         },
                         "x-apidog-orders": [
                           "_id",
                           "avatar",
                           "username",
-                          "email",
                           "introduction",
                           "backgroundCover",
+                          "gender",
                           "__v",
+                          "statistics",
+                          "following"
+                        ],
+                        "required": [
+                          "_id",
+                          "avatar",
+                          "username",
+                          "introduction",
+                          "backgroundCover",
+                          "gender",
                           "statistics"
                         ],
                         "x-apidog-ignore-properties": []
                       }
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "nullable": true
                     }
                   },
                   "required": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
                   "x-apidog-orders": [
-                    "dbBack",
-                    "accessToken"
+                    "dbBack"
                   ],
                   "x-apidog-ignore-properties": []
                 },
                 "examples": {
                   "1": {
+                    "summary": "Success with token passed (himself)",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "_id": "6375d3861e0c13b2fa52e149",
+                          "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
+                          "username": "理塘最速传说",
+                          "introduction": "电子烟，我只抽RLEX",
+                          "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png",
+                          "gender": "male",
+                          "__v": 0,
+                          "statistics": {
+                            "following": 8,
+                            "follower": 6,
+                            "posts": 4,
+                            "comments": 2,
+                            "upvotes": 6
+                          },
+                          "following": null
+                        }
+                      ]
+                    }
+                  },
+                  "2": {
                     "summary": "Success without token passed",
                     "value": {
                       "dbBack": [
                         {
-                          "_id": "634f1bcc7b5e14c2c8f70325",
-                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu2yrHY8AYkznfNg39I_wAVPyzUHWwecIt0JWPOG=s96-c",
+                          "_id": "6375d3861e0c13b2fa52e149",
+                          "avatar": "https://storage.googleapis.com/brainleak/niganma.png",
                           "username": "理塘最速传说",
-                          "email": "349332929yaofu@gmail.com",
-                          "introduction": "我是妈妈生的",
+                          "introduction": "电子烟，我只抽RLEX",
                           "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png",
+                          "gender": "male",
                           "__v": 0,
                           "statistics": {
-                            "following": 2,
-                            "follower": 1,
-                            "posts": 1,
+                            "following": 8,
+                            "follower": 6,
+                            "posts": 4,
                             "comments": 2,
-                            "upvotes": 1
+                            "upvotes": 6
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "3": {
+                    "summary": "Success with token passed(not himself)",
+                    "value": {
+                      "dbBack": [
+                        {
+                          "_id": "6375d3b71e0c13b2fa52e189",
+                          "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0u-ubRJ0TIXCEeUbTrCzJNkI9YrGxaak_fBr6o=s96-c",
+                          "username": "丁真纯一郎",
+                          "introduction": "我和我的动物朋友们",
+                          "backgroundCover": "https://storage.googleapis.com/brainleak/backgroundImg(default).png",
+                          "gender": "male",
+                          "__v": 0,
+                          "statistics": {
+                            "following": 1,
+                            "follower": 1,
+                            "posts": 6,
+                            "comments": 2,
+                            "upvotes": 12
                           },
                           "following": true
                         }
-                      ],
-                      "accessToken": null
+                      ]
                     }
                   }
                 }
@@ -200,14 +253,6 @@
                   "properties": {},
                   "x-apidog-ignore-properties": [],
                   "x-apidog-orders": []
-                },
-                "examples": {
-                  "1": {
-                    "summary": "Exception",
-                    "value": {
-                      "error": "user not found"
-                    }
-                  }
                 }
               }
             }
@@ -220,5 +265,10 @@
   "components": {
     "schemas": {}
   },
-  "servers": []
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": "Testing Env"
+    }
+  ]
 }
