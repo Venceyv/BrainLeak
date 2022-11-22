@@ -9,9 +9,9 @@ interface Statistics {
 interface TrendingUserType {
   avatar: string;
   backgroundCover: string;
-  followCount: string;
+  followerCount: number;
   introduction: string;
-  postCount: string;
+  postCount: number;
   username: string;
   _id: string;
 }

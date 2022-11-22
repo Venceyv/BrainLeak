@@ -49,7 +49,7 @@ export const UserCard: FC<TrendingUser> = (trendingUser): JSX.Element => {
         <div className="flex w-[130px] ml-3">
           <img src="../../../assets/img/follower.svg" className="w-6 h-6" alt="followers" />
           <p className="text-sm ml-1 align-middle text-center truncate pt-1">
-            Followers: {formatNumber(trendingUser.user.followCount)}
+            Followers: {formatNumber(trendingUser.user.followerCount)}
           </p>
         </div>
       </div>

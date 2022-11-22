@@ -8,11 +8,15 @@ const ranges = [
 ];
 
 export const formatNumber = (num: string | number) => {
-  num = Number(num);
-  for (var i = 0; i < ranges.length; i++) {
+  if (typeof num === 'string') {
+    num = Number(num);
+  }
+
+  for (let i = 0; i < ranges.length; i++) {
     if (num >= ranges[i].divider) {
       return (num / ranges[i].divider).toString() + ranges[i].suffix;
     }
   }
-  return num.toString();
+  console.log(num);
+  return num;
 };
