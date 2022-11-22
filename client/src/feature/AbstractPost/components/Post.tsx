@@ -22,25 +22,25 @@ export const Post: FC<PostProp> = ({ user, post }): JSX.Element => {
       <div className="flex flex-col items-center justify-center gap-2">
         <img
           className="h-[50px] w-[50px] rounded-full border-2 cursor-pointer border-border-black  text-zinc-50"
-          src={user.avatar || ''}
+          src={user?.avatar || ''}
           alt="user"
         />
-        <p className="text-sm cursor-pointer w-[100px] text-center truncate">{user.username}</p>
+        <p className="text-sm cursor-pointer w-[100px] text-center truncate">{user?.username}</p>
       </div>
 
       <div className="flex flex-col gap-2 grow shrink w-[558px] bg-secondary-black rounded-2xl p-3 pb-[1px] border-2 border-border-black cursor-pointer">
-        <h1 className="text-[14px] font-bold w-full truncate">{post.title}</h1>
-        <p className="text-[12px] overflow-hidden truncate w-full text-zinc-400">{post.description}</p>
+        <h1 className="text-[14px] font-bold w-full truncate">{post?.title}</h1>
+        <p className="text-[12px] overflow-hidden truncate w-full text-zinc-400">{post?.description}</p>
         <span className="flex flex-row gap-2 text-xs pb-1 w-full">
           <div className="flex">
             <img src="../../../assets/img/like.svg" className="w-5 h-5" alt="like" />
-            <p className="truncate pl-[2px] pt-[2px]">Like: {formatNumber(post.like)}</p>
+            <p className="truncate pl-[2px] pt-[2px]">Like: {formatNumber(post?.like)}</p>
           </div>
           <div className="flex">
             <img src="../../../assets/img/dislike.svg" className="w-5 h-5" alt="dislike" />
-            <p className="truncate pl-[2px] pt-[2px]">Dislike: {formatNumber(post.dislike)}</p>
+            <p className="truncate pl-[2px] pt-[2px]">Dislike: {formatNumber(post?.dislike)}</p>
           </div>
-          <p className="ml-auto truncate">{convertDate(post.date)}</p>
+          <p className="ml-auto truncate">{convertDate(post?.date)}</p>
         </span>
       </div>
     </div>

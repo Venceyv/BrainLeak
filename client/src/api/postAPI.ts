@@ -11,7 +11,6 @@ export const getTrendingPosts = async (): Promise<TrendingPost[]> => {
 
 export const getPosts = async (
   pageNum: number,
-  pageSize: number,
   sortType: MenuItem,
   timeInterval: IntervalItem = 'allTime'
 ): Promise<Post[]> => {
@@ -36,8 +35,8 @@ export const getPosts = async (
 
   const queryUrl =
     sortType === 'new' || timeInterval === 'allTime'
-      ? `${URL}/posts?pagenumber=${pageNum}&pagesize=${pageSize}&type=posts&sort=${sortType}`
-      : `${URL}/posts?pagenumber=${pageNum}&pagesize=${pageSize}&type=posts&timeInterval=${interval}&sort=${sortType}`;
+      ? `${URL}/posts?pagenumber=${pageNum}&pagesize=10&type=posts&sort=${sortType}`
+      : `${URL}/posts?pagenumber=${pageNum}&pagesize=10&type=posts&timeInterval=${interval}&sort=${sortType}`;
 
   try {
     const {
