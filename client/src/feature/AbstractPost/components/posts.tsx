@@ -11,6 +11,20 @@ interface PostsProp {
   selectedTimeInterval: IntervalItem;
 }
 
+const calcLength = (dataArr: [][]) => {
+  let itemCount = 0;
+
+  dataArr.forEach((postArr) => {
+    postArr.forEach((post) => {
+      itemCount++;
+    });
+  });
+
+  console.log(itemCount);
+
+  return itemCount;
+};
+
 export const Posts: FC<PostsProp> = ({ selectedMenuItem, selectedTimeInterval }): JSX.Element => {
   // const { data, isLoading } = useQuery(['posts', selectedMenuItem, selectedTimeInterval], () => getPosts(1, 10, selectedMenuItem, selectedTimeInterval));
 
@@ -38,7 +52,7 @@ export const Posts: FC<PostsProp> = ({ selectedMenuItem, selectedTimeInterval })
       <div>
         <>
           <InfiniteScroll
-            dataLength={10} //This is important field to render the next data
+            dataLength={calcLength(data?.pages as [][])}
             next={fetchNextPage}
             hasMore={hasNextPage ? true : false}
             loader={<Loading width={'full'} height={'full'} />}
