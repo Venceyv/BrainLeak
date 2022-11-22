@@ -42,7 +42,6 @@ export const getUserTrending = async (): Promise<TrendingUser[]> => {
     const {
       data: { dbBack: topUsers },
     } = await axios.get(`${URL}/users/trending?top=5`);
-    console.log(topUsers);
     return topUsers as TrendingUser[];
   } catch (err) {
     if (axios.isAxiosError(err)) {
