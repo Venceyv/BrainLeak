@@ -4,6 +4,7 @@ import { Post } from './Post';
 import { getPosts } from '../../../api/postAPI';
 import { Loading } from '../../../components/Loading';
 import { IntervalItem, MenuItem } from '../../../interfaces/post';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 interface PostsProp {
   selectedMenuItem: MenuItem;
@@ -36,23 +37,35 @@ export const Posts: FC<PostsProp> = ({ selectedMenuItem, selectedTimeInterval })
     <>
       <div>
         <>
-          {isSuccess &&
-            data?.pages?.map((page) => {
-              return page.map((post, index) => {
-                const postProp = {
-                  title: post?.title,
-                  description: post?.description,
-                  like: post?.statistics?.likes,
-                  dislike: post?.statistics?.dislikes,
-                  date: post?.publishDate,
-                  _id: post?._id,
-                };
-                return <Post key={index} user={post.author} post={postProp} />;
-              });
-            })}
+          <InfiniteScroll
+            dataLength={10} //This is important field to render the next data
+            next={fetchNextPage}
+            hasMore={hasNextPage ? true : false}
+            loader={<Loading width={'full'} height={'full'} />}
+            endMessage={
+              <p className="text-center">
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+          >
+            {isSuccess &&
+              data?.pages?.map((page) => {
+                return page.map((post, index) => {
+                  const postProp = {
+                    title: post?.title,
+                    description: post?.description,
+                    like: post?.statistics?.likes,
+                    dislike: post?.statistics?.dislikes,
+                    date: post?.publishDate,
+                    _id: post?._id,
+                  };
+                  return <Post key={index} user={post.author} post={postProp} />;
+                });
+              })}
+          </InfiniteScroll>
         </>
 
-        <button
+        {/* <button
           onClick={() => {
             if (hasNextPage) {
               console.log('has next page');
@@ -61,7 +74,7 @@ export const Posts: FC<PostsProp> = ({ selectedMenuItem, selectedTimeInterval })
           }}
         >
           Fetch next
-        </button>
+        </button> */}
       </div>
     </>
   );
