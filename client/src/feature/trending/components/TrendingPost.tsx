@@ -17,8 +17,12 @@ interface TrendingPostProp {
 export const TrendingPost: FC<TrendingPostProp> = ({ popularity, post }): JSX.Element => {
   return (
     <div className="grid grid-cols-3 grid-rows-3 gap-2 py-3 overflow-hidden w-[250px] h-[160px] rounded-2xl p-3 pb-1 border-2 bg-secondary-black border-border-black cursor-pointer">
-      <h1 className="col-span-3 text-[14px] w-full h-[40px] line-clamp-2 break-words whitespace-normal font-black">{post.title}</h1>
-      <p className="col-span-3 row-span-1 w-full h-[38px] text-[12px] line-clamp-2 break-words whitespace-normal">{post.description}</p>
+      <h1 className="col-span-3 text-[14px] w-full h-[40px] line-clamp-2 break-words whitespace-normal font-[800]">
+        {post.title}
+      </h1>
+      <p className="col-span-3 row-span-1 w-full h-[38px] text-[12px] line-clamp-2 break-words whitespace-normal">
+        {post.description}
+      </p>
       <div className="flex items-center justify-start gap-2 col-span-2">
         <img
           className="w-[37px] h-[37px] rounded-full border-2 cursor-pointer border-border-black text-zinc-50"
