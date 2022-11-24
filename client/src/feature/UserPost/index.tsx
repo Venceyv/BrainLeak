@@ -1,0 +1,15 @@
+import { useQuery } from '@tanstack/react-query';
+import { FC } from 'react';
+import { useParams } from 'react-router-dom';
+import { getPost } from '../../api/postAPI';
+import { PostContent } from './components/PostContent';
+
+export const UserPost: FC = (): JSX.Element => {
+  const { postId } = useParams();
+  const { data, isLoading, isError } = useQuery(['postData'], () => getPost(postId));
+  return (
+    <div>
+      <PostContent {...data!} />
+    </div>
+  );
+};

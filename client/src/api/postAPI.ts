@@ -3,10 +3,26 @@ import { URL } from '../data/Constants';
 import { IntervalItem, MenuItem, Post, TrendingPost } from '../interfaces/post';
 
 export const getTrendingPosts = async (): Promise<TrendingPost[]> => {
-  const {
-    data: { dbBack: trendingPost },
-  } = await axios.get(`${URL}/posts/trending?q=4&type=trending`);
-  return trendingPost as TrendingPost[];
+  try {
+    const {
+      data: { dbBack: trendingPost },
+    } = await axios.get(`${URL}/posts/trending?q=4&type=trending`);
+    return trendingPost as TrendingPost[];
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getPost = async (postId: string | undefined): Promise<Post> => {
+  try {
+    const {
+      data: { dbBack: postData },
+    } = await axios.get(`${URL}/posts/${postId}`);
+    console.log(postData);
+    return postData as Post;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getPosts = async (
