@@ -14,17 +14,15 @@ async function replyToComment(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     const comment = req.comment;
-    const [dbBack] = await Promise.all([
-      new Reply({
-        content: req.body.content,
-        relatedComment: comment._id,
-        relatedPost: req.params.postId,
-        mentionedUser: comment.author,
-        author: req.user._id,
-      }).save(),
-      incCommentStatistics(req.params.commentId, "replies", 1),
-      incUserNotification(comment.author, "replies", 1),
-    ]);
+    const dbBack = await new Reply({
+      content: req.body.content,
+      relatedComment: comment._id,
+      relatedPost: req.params.postId,
+      mentionedUser: comment.author,
+      author: req.user._id,
+    }).save();
+    incCommentStatistics(req.params.commentId, "replies", 1);
+    incUserNotification(comment.author, "replies", 1);
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -33,10 +31,8 @@ async function replyToComment(req, res) {
 async function deleteReply(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
-    await Promise.all([
-      incCommentStatistics(req.params.commentId, "replies", -1),
-      Reply.findByIdAndDelete(req.params.replyId),
-    ]);
+    incCommentStatistics(req.params.commentId, "replies", -1);
+    Reply.findByIdAndDelete(req.params.replyId);
     res.status(200).json({ msg: "delete successfully" });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -53,19 +49,15 @@ async function likeReply(req, res) {
     if (dbBack && dbBack.like) {
       like = false;
       dbBack.remove();
-      await Promise.all([
-        incReplyStatistics(replyId, "likes", -1),
-        userTrendingInc(req.reply.author, -4),
-        incUserStatistics(req.reply.author, "upvotes", -1),
-      ]);
+      incReplyStatistics(replyId, "likes", -1);
+      userTrendingInc(req.reply.author, -4);
+      incUserStatistics(req.reply.author, "upvotes", -1);
       return res.status(200).json({ like });
     }
-    await Promise.all([
-      incReplyStatistics(replyId, "likes", 1),
-      userTrendingInc(req.reply.author, 4),
-      incUserStatistics(req.reply.author, "upvotes", 1),
-      incUserNotification(req.reply.author, "likes", 1),
-    ]);
+    incReplyStatistics(replyId, "likes", 1);
+    userTrendingInc(req.reply.author, 4);
+    incUserStatistics(req.reply.author, "upvotes", 1);
+    incUserNotification(req.reply.author, "likes", 1);
     if (dbBack) {
       dbBack.like = true;
       dbBack.save();
@@ -89,21 +81,19 @@ async function dislikeReply(req, res) {
     if (dbBack && !dbBack.like) {
       dislike = false;
       dbBack.remove();
-      await incReplyStatistics(replyId, "dislikes", -1);
+      incReplyStatistics(replyId, "dislikes", -1);
       return res.status(200).json({ dislike });
     }
-    await incReplyStatistics(replyId, "dislikes", 1);
+    incReplyStatistics(replyId, "dislikes", 1);
     if (dbBack) {
       dbBack.like = false;
       dbBack.save();
-      await Promise.all([
-        incReplyStatistics(replyId, "likes", -1),
-        userTrendingInc(reply.author, -4),
-        incUserStatistics(reply.author, "upvotes", -1),
-      ]);
+      incReplyStatistics(replyId, "likes", -1);
+      userTrendingInc(reply.author, -4);
+      incUserStatistics(reply.author, "upvotes", -1);
       return res.status(200).json({ dislike });
     }
-    new ReplyLike({ user: userId, reply: replyId,replyAuthor: reply.author, like: false }).save();
+    new ReplyLike({ user: userId, reply: replyId, replyAuthor: reply.author, like: false }).save();
     return res.status(200).json({ dislike });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -122,7 +112,7 @@ async function getReplies(req, res) {
         .populate("author", { username: 1, avatar: 1 }, { lean: true });
     }
     if (dbBack.length != 0) {
-      await saveRedisReplyProfile(commentId, dbBack);
+      saveRedisReplyProfile(commentId, dbBack);
       if (req.user) {
         dbBack = await Promise.all(
           dbBack.map(async (reply) => {
@@ -143,17 +133,15 @@ async function replyToUser(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     const comment = req.comment;
-    const [dbBack] = await Promise.all([
-      new Reply({
-        content: req.body.content,
-        relatedComment: comment._id,
-        relatedPost: req.params.postId,
-        mentionedUser: req.params.userId,
-        author: req.user._id,
-      }).save(),
-      incCommentStatistics(req.params.commentId, "replies", 1),
-      incUserNotification(req.params.userId, "replies", 1),
-    ]);
+    const dbBack = await new Reply({
+      content: req.body.content,
+      relatedComment: comment._id,
+      relatedPost: req.params.postId,
+      mentionedUser: req.params.userId,
+      author: req.user._id,
+    }).save();
+    incCommentStatistics(req.params.commentId, "replies", 1);
+    incUserNotification(req.params.userId, "replies", 1);
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });

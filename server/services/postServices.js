@@ -51,7 +51,7 @@ async function incPostStatistics(postId, field, incNum) {
     const key = JSON.stringify(postId) + " Statiscs";
     const result = await redisPosts.hincrby(key, field, incNum);
     if (result < 0) {
-      await redisPosts.hset(key, field, 0);
+      redisPosts.hset(key, field, 0);
     }
   } catch (error) {
     console.log("incPostStatistics Failed --Pservices 52");
@@ -71,11 +71,11 @@ async function getRedisPostProfile(postId) {
     console.log("getRedisPostProfile Failed -- Pservices 65");
   }
 }
-async function saveRedisPostProfile(postId, postInfo) {
+function saveRedisPostProfile(postId, postInfo) {
   try {
     const key = JSON.stringify(postId) + " Profile";
     postInfo = stringifyPostInfo(postInfo);
-    await redisPosts.setex(key, 30, postInfo);
+    redisPosts.setex(key, 30, postInfo);
   } catch (error) {
     console.log("saveRedisPostProfile -- Pservices 78");
   }
@@ -97,12 +97,12 @@ async function postTrendingInc(postId, incNum) {
     const data = await redisTrending.zscore(" PostTrending", postId);
     if (data) {
       if (Number(data) + incNum >= 0) {
-        await redisTrending.zincrby(" PostTrending", incNum, postId);
+        redisTrending.zincrby(" PostTrending", incNum, postId);
       }
       return data;
     }
     incNum = incNum < 0 ? 0 : incNum;
-    await redisTrending.zadd(" PostTrending", incNum, postId);
+    redisTrending.zadd(" PostTrending", incNum, postId);
     return data;
   } catch (error) {
     console.log("trendingIncFiled -- Pservices 114");
@@ -117,6 +117,9 @@ async function getPostTrending(num) {
     topPosts.forEach((postId, index) => {
       if (index % 2 === 0) {
         const popularity = topPosts[index + 1];
+        if(popularity === '0'){
+          return ;
+        }
         leaderBoard.push({ postId, popularity });
       }
     });
@@ -141,7 +144,7 @@ function clearTrendingByTime(time) {
     time,
     async function (redisTrending) {
       try {
-        await redisTrending.flushdb();
+        redisTrending.flushdb();
       } catch (error) {
         console.log("clearTrendingByTime Failed -- Pservices 161");
       }

@@ -62,12 +62,12 @@ async function getRedisUserProfile(userId) {
     console.log("getRedisUserProfileFailed Uservice 58");
   }
 }
-async function saveRedisUserProfile(userId, userInfo) {
+function saveRedisUserProfile(userId, userInfo) {
   try {
     userId = JSON.stringify(userId);
     const key = userId + " Profile";
     userInfo = stringifyUserProfile(userInfo);
-    await redisUsers.setex(key, 40, userInfo);
+    redisUsers.setex(key, 40, userInfo);
   } catch (error) {
     console.log("saveRedisUserProfile Failed Uservice 72");
   }
@@ -79,7 +79,7 @@ async function incUserStatistics(userId, field, incNum) {
     const key = userId + " Statistics";
     const result = await redisUsers.hincrby(key, field, incNum);
     if (result < 0) {
-      await redisUsers.hset(key, field, 0);
+      redisUsers.hset(key, field, 0);
     }
   } catch (error) {
     console.log("incUserStatistics Failed -- Uservices 208");
@@ -131,12 +131,12 @@ async function userTrendingInc(userId, incNum) {
     const data = await redisTrending.zscore(" UserTrending", userId);
     if (data) {
       if (Number(data) + incNum >= 0) {
-        await redisTrending.zincrby(" UserTrending", incNum, userId);
+        redisTrending.zincrby(" UserTrending", incNum, userId);
       }
       return data;
     }
     incNum = incNum < 0 ? 0 : incNum;
-    await redisTrending.zadd(" UserTrending", incNum, userId);
+    redisTrending.zadd(" UserTrending", incNum, userId);
     return data;
   } catch (error) {
     console.log("userTrendingInc Filed -- Uservices 271");
@@ -151,20 +151,28 @@ async function getUserTrending(num) {
     topUsers.forEach((userId, index) => {
       if (index % 2 === 0) {
         const popularity = topUsers[index + 1];
+        if (popularity === "0") {
+          return;
+        }
         leaderBoard.push({ userId, popularity });
       }
     });
     leaderBoard = await Promise.all(
       leaderBoard.map(async (ranking) => {
-        let user = await User.findById(ranking.userId, { avatar: 1, username: 1, backgroundCover: 1,introduction:1 }).lean();
+        let user = await User.findById(ranking.userId, {
+          avatar: 1,
+          username: 1,
+          backgroundCover: 1,
+          introduction: 1,
+        }).lean();
         const key = JSON.stringify(user._id) + " Statistics";
-        let [followerCount,postCount] = await Promise.all([
-          redisUsers.hget(key,"follower"),
-          redisUsers.hget(key,"posts")
-        ])
-        followerCount = followerCount === null?0:Number(followerCount);
-        postCount = postCount === null?0:Number(postCount);
-        user = {...user,followerCount,postCount};
+        let [followerCount, postCount] = await Promise.all([
+          redisUsers.hget(key, "follower"),
+          redisUsers.hget(key, "posts"),
+        ]);
+        followerCount = followerCount === null ? 0 : Number(followerCount);
+        postCount = postCount === null ? 0 : Number(postCount);
+        user = { ...user, followerCount, postCount };
         leaderBoard.pop(ranking);
         const popularity = ranking.popularity;
         return { user, popularity };
@@ -189,11 +197,11 @@ async function getRedisUserComment(userId) {
     console.log("getRedisUserComment Failed -- Uservices 317");
   }
 }
-async function saveRedisUserComment(userId, comments) {
+function saveRedisUserComment(userId, comments) {
   try {
     const key = JSON.stringify(userId) + " Comment";
     comments = JSON.stringify(comments);
-    await redisUsers.setex(key, 30, comments);
+    redisUsers.setex(key, 30, comments);
   } catch (error) {
     console.log("saveRedisUserComment Failed -- Uservices 330");
   }
@@ -212,11 +220,11 @@ async function getRedisUserPost(userId) {
     console.log("getRedisUserPost Failed -- Uservices 348");
   }
 }
-async function saveRedisUserPost(userId, posts) {
+function saveRedisUserPost(userId, posts) {
   try {
     const key = JSON.stringify(userId) + " Post";
     posts = JSON.stringify(posts);
-    await redisUsers.setex(key, 30, posts);
+    redisUsers.setex(key, 30, posts);
   } catch (error) {
     console.log("saveRedisUserPost Failed -- Uservices 361");
   }
@@ -227,17 +235,17 @@ async function incUserNotification(userId, field, incNum) {
     const key = userId + " NewMessages";
     const result = await redisUsers.hincrby(key, field, incNum);
     if (result < 0) {
-      await redisUsers.hset(key, field, 0);
+      redisUsers.hset(key, field, 0);
     }
   } catch (error) {
     console.log("incUserNewMessages Failed -- Uservices 208");
   }
 }
-async function resetUserNotification(userId, field) {
+function resetUserNotification(userId, field) {
   try {
     userId = JSON.stringify(userId);
     const key = userId + " NewMessages";
-    await redisUsers.hset(key, field, 0);
+    redisUsers.hset(key, field, 0);
   } catch (error) {
     console.log("resetUserNewMessages Failed -- Uservices 208");
   }
@@ -249,7 +257,7 @@ async function getUserNotification(userId) {
     pipeline.hget(key, "comments");
     pipeline.hget(key, "replies");
     pipeline.hget(key, "likes");
-    pipeline.hget(key,'marks');
+    pipeline.hget(key, "marks");
     const results = await pipeline.exec();
     const newComments = results[0][1] === null ? 0 : Number(results[0][1]);
     const newReplies = results[1][1] === null ? 0 : Number(results[1][1]);

@@ -42,7 +42,7 @@ async function incReplyStatistics(replyId, field, incNum) {
     const key = JSON.stringify(replyId) + " Statistics";
     const result = await redisReplies.hincrby(key, field, incNum);
     if (result < 0) {
-      await redisReplies.hset(key, field, 0);
+      redisReplies.hset(key, field, 0);
     }
   } catch (error) {
     console.log("incReplyStatistics Failed -- Rservices 35");
@@ -60,11 +60,11 @@ async function addReplyUserInfo(userId, reply) {
   }
 }
 
-async function saveRedisReplyProfile(replyId, profile) {
+function saveRedisReplyProfile(replyId, profile) {
   try {
     const key = JSON.stringify(replyId) + " Profile";
     profile = JSON.stringify(profile);
-    await redisReplies.setex(key, 30, profile);
+    redisReplies.setex(key, 30, profile);
   } catch (error) {
     console.log("saveRedisReplyProfile Faild --Rservices 69");
   }

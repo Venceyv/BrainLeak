@@ -71,10 +71,10 @@ function verifyToken(required = true) {
     return next();
   };
 }
-async function blockToken(token) {
+function blockToken(token) {
   try {
     const key = token + " BlockList";
-    await redisToken.set(key, token);
+    redisToken.set(key, token);
   } catch (error) {
     console.log("blockToken Failed -- Jservice 91");
   }
@@ -89,10 +89,10 @@ async function getblockToken(key) {
     console.log("getblockToken Failed -- Jservice 100");
   }
 }
-async function saveRefreshToken(userId, token) {
+function saveRefreshToken(userId, token) {
   try {
     const key = userId + " Refresh";
-    await redisToken.set(key, token);
+    redisToken.set(key, token);
   } catch (error) {
     console.log("saveRefreshToken Failed -- Jservice 109");
   }
@@ -106,10 +106,10 @@ async function getRefreshToken(userId) {
     console.log("getRefreshToken Failed -- Jservice 117");
   }
 }
-async function delRefreshToken(userEmail) {
+function delRefreshToken(userEmail) {
   try {
     const key = userEmail + " Refresh";
-    await redisToken.del(key);
+    redisToken.del(key);
   } catch (error) {
     console.log("delRefreshToken Failed -- Jservice 126");
   }

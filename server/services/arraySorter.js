@@ -6,7 +6,7 @@ function sortWith(array, condition) {
           return new Date(b.publishDate) - new Date(a.publishDate);
         });
         break;
-      case "best":
+      case "top":
         array.sort((a, b) => {
           if (b.statistics.likes - b.statistics.dislikes > a.statistics.likes - a.statistics.dislikes) {
             return 1;
