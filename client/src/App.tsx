@@ -1,26 +1,25 @@
-import { FC, Suspense, lazy, useState } from 'react';
+import { FC } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { Home } from './pages/home';
+import { Home } from './pages/Home';
 import { Layout } from './layouts/layout';
-import { Test } from './Test';
 import './App.css';
-import { NavBar } from './feature/NavBar';
+import { Post } from './pages/Post';
 
 const App: FC = (): JSX.Element => {
   return (
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="post" element={<div>IP</div>} />
-          <Route path="profile" element={<div>IP</div>} />
-          <Route path="search" element={<div>IP</div>} />
+          <Route path="" element={<Home />}></Route>
+          <Route path="post/:postId" element={<Post />} />
+          {/* <Route path="profile" element={<div>IP</div>} />
+          <Route path="search" element={<div>IP</div>} /> */}
         </Route>
 
         {/* <Route path="/1" element={<NavBar />} /> */}
 
-        <Route path="*" element={<div>IP</div>} />
+        {/* <Route path="*" element={<div>IP</div>} /> */}
       </Routes>
       {/* <Routes>
         <Route path="/login" element={<Login />} />
