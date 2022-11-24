@@ -1,4 +1,6 @@
 import { bucket } from "../configs/googleCloud.js";
+import dotenv from "dotenv";
+dotenv.config();
 //upload file to google cloud
 function uploadFile(req, res) {
   try {
@@ -10,8 +12,10 @@ function uploadFile(req, res) {
         console.log("success");
       });
       blobStream.end(req.file.buffer);
-      const fileUrl = "https://storage.googleapis.com/brainleak/" + req.file.originalname;
-      return fileUrl;
+      const head = process.env.FILETAG + "<img src=";
+      const fileUrl = '"'+"https://storage.googleapis.com/brainleak/" + req.file.originalname + '"';
+      const Tag = head +fileUrl + ">" + process.env.FILETAG;
+      return Tag;
     } else throw "error with img";
   } catch (error) {
     blobStream.end(req.file.buffer);
