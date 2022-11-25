@@ -1,6 +1,6 @@
 import axios from './axiosConfig';
 import { URL } from '../data/Constants';
-import { IntervalItem, MenuItem, Post, TrendingPost } from '../interfaces/post';
+import { IntervalItem, MenuItem, Post, Statistic, StatisticWithMark, TrendingPost } from '../interfaces/post';
 
 export const getTrendingPosts = async (): Promise<TrendingPost[]> => {
   try {
@@ -13,13 +13,13 @@ export const getTrendingPosts = async (): Promise<TrendingPost[]> => {
   }
 };
 
-export const getPost = async (postId: string | undefined): Promise<Post> => {
+export const getPost = async (postId: string | undefined): Promise<Post<StatisticWithMark>> => {
   try {
     const {
       data: { dbBack: postData },
     } = await axios.get(`${URL}/posts/${postId}`);
     console.log(postData);
-    return postData as Post;
+    return postData as Post<StatisticWithMark>;
   } catch (error) {
     throw error;
   }
@@ -29,7 +29,7 @@ export const getPosts = async (
   pageNum: number,
   sortType: MenuItem,
   timeInterval: IntervalItem = 'allTime'
-): Promise<Post[]> => {
+): Promise<Post<Statistic>[]> => {
   let interval;
 
   if (timeInterval !== 'allTime' && sortType !== 'new') {
@@ -58,7 +58,7 @@ export const getPosts = async (
     const {
       data: { dbBack: posts },
     } = await axios.get(queryUrl);
-    return posts as Post[];
+    return posts as Post<Statistic>[];
   } catch (err) {
     throw err;
   }

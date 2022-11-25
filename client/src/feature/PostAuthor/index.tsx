@@ -2,18 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPost } from '../../api/postAPI';
-import { PostContent } from './components/PostContent';
+import { AuthorCard } from './components/AuthorCard';
 
-export const UserPost: FC = (): JSX.Element => {
+export const PostAuthor: FC = (): JSX.Element => {
   const { postId } = useParams();
   const { data, isLoading, isError } = useQuery(['postData'], () => getPost(postId), { refetchOnWindowFocus: false });
+
   return (
-    <div className="flex h-full w-full">
-      {!!data && (
-        <div className="flex flex-col gap-2 w-full">
-          <PostContent {...data} />
-        </div>
-      )}
+    <div className="flex items-start h-full pt-[76px] pr-4">
+      {!!data && <AuthorCard authorId={data?.author?._id} />}
     </div>
   );
 };

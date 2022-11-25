@@ -11,6 +11,15 @@ export interface Statistic {
   likes: number;
   dislikes: number;
   views: number;
+  comments: number;
+}
+
+export interface StatisticWithMark {
+  likes: number;
+  dislikes: number;
+  views: number;
+  comments: number;
+  marks: number;
 }
 
 export interface TrendingPost {
@@ -23,9 +32,9 @@ export interface TrendingPost {
   };
 }
 
-export interface Post {
+export interface Post<T> {
   author: Author;
-  statistics: Statistic;
+  statistics: T;
 
   tags: string[];
   edited: boolean;

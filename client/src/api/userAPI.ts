@@ -22,10 +22,12 @@ export const getCheckAuth = async (userId: string): Promise<User> => {
   }
 };
 
-export const getUser = async (userId: string): Promise<unknown> => {
+export const getUser = async (userId: string): Promise<User> => {
   try {
-    const data = await axios.get(`${URL}/users/${userId}`);
-    return data;
+    const {
+      data: { dbBack: userData },
+    } = await axios.get(`${URL}/users/${userId}`);
+    return userData as User;
   } catch (err) {
     if (axios.isAxiosError(err)) {
       console.log(err?.response?.status);

@@ -6,6 +6,14 @@ interface Statistics {
   upvotes: number;
 }
 
+export interface UserStatistics {
+  comments: number;
+  follower: number;
+  following: number;
+  posts: number;
+  upvotes: number;
+}
+
 interface TrendingUserType {
   avatar: string;
   backgroundCover: string;
