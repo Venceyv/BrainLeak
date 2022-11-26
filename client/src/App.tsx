@@ -11,8 +11,9 @@ const App: FC = (): JSX.Element => {
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="" element={<Home />}></Route>
-          <Route path="post/:postId" element={<Post />} />
+          <Route path="" element={<Home />}>
+            <Route path="post/:postId" element={<Post />} />
+          </Route>
           {/* <Route path="profile" element={<div>IP</div>} />
           <Route path="search" element={<div>IP</div>} /> */}
         </Route>

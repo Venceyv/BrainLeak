@@ -4,6 +4,7 @@ import { Statistics } from './Statistics';
 import { Tag } from './Tag';
 import { TopBar } from './TopBar';
 import TimeAgo from 'react-timeago';
+import { NewComment } from './NewComment';
 
 const PostBy: FC<{ author: Author; publishDate: string }> = ({ author, publishDate }): JSX.Element => {
   return (
@@ -40,6 +41,7 @@ export const PostContent: FC<Post<StatisticWithMark>> = (post): JSX.Element => {
           marks={post?.statistics?.marks}
         />
       </div>
+      <NewComment />
     </div>
   );
 };

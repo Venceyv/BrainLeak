@@ -12,14 +12,11 @@ export const AuthorCard: FC<{ authorId: string }> = ({ authorId }): JSX.Element 
   const toggleStatText = () => {
     let ref = statRef?.current;
     if (!ref?.classList.contains('hidden')) {
-      console.log('returned');
       return;
     }
 
     ref?.classList?.remove('hidden');
-    console.log('added hidden');
     setTimeout(() => {
-      console.log('in timeout');
       ref?.classList?.add('hidden');
     }, 2000);
   };

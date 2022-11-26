@@ -9,7 +9,7 @@ export const PostAuthor: FC = (): JSX.Element => {
   const { data, isLoading, isError } = useQuery(['postData'], () => getPost(postId), { refetchOnWindowFocus: false });
 
   return (
-    <div className="flex items-start h-full pt-[76px] pr-4">
+    <div className="flex items-start justify-end h-full pt-[76px] pr-4">
       {!!data && <AuthorCard authorId={data?.author?._id} />}
     </div>
   );
