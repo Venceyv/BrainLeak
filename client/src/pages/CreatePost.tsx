@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 
 let profile = {
   name: "HelloKitty",
@@ -29,6 +29,36 @@ let list = [
 const CreatePost: React.FC = () => {
   let [tag, setTag] = useState<string | null>(null);
   let [addTag, setaddTag] = useState<any>([]);
+  let [textInputs, setTextInputs] = useState({
+    title: "",
+    body: "",
+  });
+  //for images
+  let [selectedFile, setSelectedFile] = useState<string>();
+  // let [loading, setLoading] = useState(false);
+
+  const handleCreatePost = async () => {
+    const newPost = {
+      title: textInputs.title,
+      body: textInputs.body,
+    };
+    try {
+      //store the post in database
+    } catch (error: any) {
+      console.log("handleCreatePost error", error.message);
+    }
+  };
+
+  const onSelectedImage = () => {};
+
+  const onTextChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const {
+      target: { name, value },
+    } = event;
+    setTextInputs((prev) => ({ ...prev, [name]: value }));
+  };
 
   let changeHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
@@ -36,7 +66,9 @@ const CreatePost: React.FC = () => {
   };
   let addTags = () => {
     const newTag = tag;
-    setaddTag([...addTag, newTag]);
+    if (addTag.length < 3) {
+      setaddTag([...addTag, newTag]);
+    }
   };
 
   return (
@@ -55,6 +87,8 @@ const CreatePost: React.FC = () => {
                   id="title"
                   placeholder="Title..."
                   name="title"
+                  // value={textInputs.title}
+                  // onChange={onTextChange}
                 ></input>
                 <textarea
                   className="w-full bg-secondary-black caret-white text-xs text-white border border-white mt-8 resize-none overflow-y-auto"
@@ -62,6 +96,8 @@ const CreatePost: React.FC = () => {
                   rows={18}
                   name="textarea"
                   placeholder="Create a post..."
+                  // value={textInputs.body}
+                  // onChange={onTextChange}
                 ></textarea>
                 <div className="flex justify-between">
                   <div className="flex">
