@@ -71,23 +71,3 @@ export const getPosts = async (
     throw err;
   }
 };
-
-export const getComments = async (postId: string) => {
-  try {
-    const {
-      data: { dbBack: comments },
-    } = await axios.get(`${URL}/posts/comments/${postId}`, { params: { sort: 'lastest' } });
-    console.log(comments);
-    return comments;
-  } catch (err) {
-    throw err;
-  }
-};
-
-export const postComment = async (postId: string, commentContent: string) => {
-  const dbBack = await axios.post(`${URL}/posts/comments/${postId}`, {
-    content: commentContent,
-  });
-
-  console.log(dbBack);
-};

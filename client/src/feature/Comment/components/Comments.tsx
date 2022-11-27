@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { FC } from 'react';
-import { getComments } from '../../../api/postAPI';
+import { getComments } from '../../../api/commentAPI';
+import { IndividualComment } from './IndividualComment';
+import TimeAgo from 'react-timeago';
 
 interface CommentsProp {
   postId: string;
@@ -8,5 +10,14 @@ interface CommentsProp {
 
 export const Comments: FC<CommentsProp> = ({ postId }): JSX.Element => {
   const { data, isError } = useQuery(['postComment'], () => getComments(postId));
-  return <div></div>;
+  return (
+    <>
+      <div>
+        {data &&
+          data.map((comment) => {
+            return <IndividualComment {...comment} />;
+          })}
+      </div>
+    </>
+  );
 };

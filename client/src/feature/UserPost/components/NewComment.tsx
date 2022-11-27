@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { FC, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { postComment } from '../../../api/postAPI';
+import { postComment } from '../../../api/commentAPI';
 import { queryClient } from '../../../main';
 import './NewComment.css';
 
@@ -10,6 +10,7 @@ export const NewComment: FC<{ postId: string }> = ({ postId }): JSX.Element => {
   const [value, setValue] = useState<string>('');
   const postCommentMutation = useMutation(() => postComment(postId, value), {
     onSuccess: () => {
+      setValue('');
       queryClient.invalidateQueries(['postComment']);
     },
   });

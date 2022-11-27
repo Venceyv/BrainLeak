@@ -38,3 +38,9 @@ export interface TrendingUser {
   popularity: string;
   user: TrendingUserType;
 }
+
+export interface Author {
+  avatar: string;
+  username: string;
+  _id: string;
+}

@@ -1,12 +1,8 @@
+import { Author } from './user';
+
 export type MenuItem = 'top' | 'new' | 'hot' | null;
 export type IntervalItem = 'today' | 'week' | 'month' | 'year' | 'allTime' | null;
 export type CommentSortByType = 'lastest' | 'likes';
-
-export interface Author {
-  avatar: string;
-  username: string;
-  _id: string;
-}
 
 export interface Statistic {
   likes: number;

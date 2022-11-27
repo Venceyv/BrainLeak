@@ -8,7 +8,6 @@ export const Comment: FC = (): JSX.Element => {
   const { postId } = useParams();
   return (
     <div>
-      <IndividualComment />
       <Comments postId={postId!} />
     </div>
   );
