@@ -16,15 +16,14 @@ const PostBy: FC<{ author: Author; publishDate: string }> = ({ author, publishDa
       />
       <p className="truncate pl-[2px] pt-[3px] text-xs text-white">{author?.username}</p>
       <div className="ml-2 pt-[3px] h-[calc(100%-2px)] text-white">*</div>
-      <TimeAgo className="text-xs pt-[2px] text-white" date={`${publishDate}`} />
-      {/* <p className="truncate pl-[2px] pt-[3px] text-xs text-white">{author?.username}</p> */}
+      <TimeAgo className="text-xs pt-[2px] opacity-90 text-white" date={`${publishDate}`} />
     </div>
   );
 };
 
-export const PostContent: FC<Post<StatisticWithMark>> = (post): JSX.Element => {
+export const PostContent: FC<{ post: Post<StatisticWithMark>; postId: string }> = ({ post, postId }): JSX.Element => {
   return (
-    <div className="flex shrink grow flex-col w-[720px] h-full p-4 pr-0">
+    <div className="flex gap-5 shrink grow flex-col w-[720px] h-full p-4 pr-0">
       <TopBar likes={post.statistics.likes} dislikes={post.statistics.dislikes} />
       <div className="flex flex-col gap-1 mt-[60px] p-2 border-2 rounded-md bg-secondary-black border-border-black">
         <PostBy author={post?.author} publishDate={post.publishDate} />
@@ -41,7 +40,7 @@ export const PostContent: FC<Post<StatisticWithMark>> = (post): JSX.Element => {
           marks={post?.statistics?.marks}
         />
       </div>
-      <NewComment />
+      <NewComment postId={postId} />
     </div>
   );
 };

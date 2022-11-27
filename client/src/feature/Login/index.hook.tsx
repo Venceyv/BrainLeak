@@ -37,6 +37,7 @@ export const useLogin = ({ setPresentLogin, setLogin }: useLoginParam): useLogin
 
   const closeLogin: React.MouseEventHandler<HTMLButtonElement> = (): void => {
     setPresentLogin(false);
+    console.log('closed');
   };
 
   return { googleLogin, closeLogin };

@@ -11,7 +11,7 @@ export const UserPost: FC = (): JSX.Element => {
     <div className="flex h-full w-full">
       {!!data && (
         <div className="flex flex-col gap-2 w-full">
-          <PostContent {...data} />
+          <PostContent post={data} postId={postId!} />
         </div>
       )}
     </div>

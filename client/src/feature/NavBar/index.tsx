@@ -1,9 +1,10 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { UserItem } from './components/UserItem';
 import { SearchItem } from './components/SearchItem';
 import { NotificationItem } from './components/NotificationItem';
 import { LoginItem } from './components/LoginItem';
 import { useCheckAuth } from './index.hook';
+import { useParams } from 'react-router-dom';
 
 export const NavBar: FC = (): JSX.Element => {
   const [isLoggedIn, setLogin] = useState<boolean>(false);

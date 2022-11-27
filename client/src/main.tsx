@@ -10,7 +10,7 @@ import App from './App';
 
 import './index.css';
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: () => {
       console.log('global err handle');

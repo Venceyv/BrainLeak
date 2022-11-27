@@ -14,6 +14,7 @@ module.exports = {
         'primary-black': '#181818',
         'secondary-black': '#202020',
         'border-black': '#474748',
+        'post-bg-black': '#161616',
       },
 
       screens: {

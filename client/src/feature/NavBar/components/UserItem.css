@@ -1,0 +1,8 @@
+.popup-content {
+  position: relative;
+  background: transparent;
+  width: 300px;
+  padding: 0;
+  border: 0;
+  padding-top: 10px;
+}
