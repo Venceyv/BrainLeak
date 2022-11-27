@@ -65,8 +65,10 @@ async function deleteComment(req, res) {
     res.setHeader("Content-Type", "application/json");
     const comment = req.comment;
     const commentId = req.params.commentId;
-    Comment.findByIdAndDelete(commentId);
-    CommentLike.findOneAndDelete({ commentId });
+    await Promise.all([
+      Comment.findByIdAndDelete(commentId),
+      CommentLike.deleteMany({ commentId })
+    ])
     postTrendingInc(req.params.postId, -3);
     incPostStatistics(comment.relatedPost, "comments", -1);
     incUserStatistics(comment.author, "comments", -1);

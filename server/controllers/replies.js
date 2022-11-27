@@ -32,7 +32,10 @@ async function deleteReply(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     incCommentStatistics(req.params.commentId, "replies", -1);
-    Reply.findByIdAndDelete(req.params.replyId);
+    await Promise.all([
+      Reply.findByIdAndDelete(req.params.replyId),
+      ReplyLike.deleteMany({reply:req.params.replyId}),
+    ]);
     res.status(200).json({ msg: "delete successfully" });
   } catch (error) {
     res.status(401).json({ error: error });

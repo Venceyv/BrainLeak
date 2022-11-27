@@ -80,7 +80,7 @@ async function findByTags(req, res) {
       .populate("author", "avatar username follower upVoteGet");
     if (dbBack.length === 0) {
       if (tags.length === 1) {
-        Tags.findOneAndDelete({ tagName: tags });
+        await Tags.findOneAndDelete({ tagName: tags[0] });
       }
       return res.status(200).json({ dbBack });
     }
@@ -272,10 +272,12 @@ async function deletePost(req, res) {
     res.setHeader("Content-Type", "application/json");
     const postId = req.params.postId;
     incUserStatistics(req.user._id, "posts", -1);
-    Post.findByIdAndDelete(req.post._id);
+    await Promise.all([
+      Post.findByIdAndDelete(req.post._id),
+      PostLike.deleteMany({ post: postId }),
+      SavedPost.deleteMany({ post: postId }),
+    ])
     redisTrending.zrem(" PostTrending", postId);
-    PostLike.deleteMany({ post: postId });
-    SavedPost.deleteMany({ post: postId });
     const msg = "Delete Successfully";
     return res.status(402).json({ msg });
   } catch (error) {

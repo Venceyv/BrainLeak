@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const { Schema } = mongoose;
-
+const date = new Date();
 const commentSchema = new Schema({
   content: {
     type: String,

@@ -30,7 +30,7 @@ export const postOAuth = async (req, res) => {
     console.log(accessToken);
     accessToken = "Bearer " + accessToken;
     const refreshToken = await createRefreshToken(userInfo);
-    await saveRefreshToken(userInfo.userId, refreshToken);
+    saveRefreshToken(userInfo.userId, refreshToken);
     console.log(refreshToken);
     res.status(200).json({ accessToken,refreshToken, dbBack });
   } catch (error) {

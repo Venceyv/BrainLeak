@@ -40,8 +40,10 @@ async function deleteUser(req, res) {
     res.setHeader("Content-Type", "application/json");
     let accessToken = req.headers.authorization;
     accessToken = accessToken ? accessToken.replace("Bearer ", "") : null;
-    const refreshToken = await getRefreshToken(req.user._id);
-    User.findByIdAndUpdate(req.params.userId, { isDelete: true });
+    const [refreshToken] = await Promise.all([
+      getRefreshToken(req.user._id),
+      User.findByIdAndUpdate(req.params.userId, { isDelete: true })
+    ]);
     blockToken(accessToken);
     blockToken(refreshToken);
     return res.status(200).json({ msg: "delete succesfully" });

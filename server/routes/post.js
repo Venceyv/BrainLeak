@@ -38,6 +38,7 @@ import {
   replyToUser,
   getReply,
 } from "../controllers/replies.js";
+import { checkUserExist } from "../middleware/userMiddleware.js";
 
 const postRouter = Router();
 
@@ -73,6 +74,7 @@ postRouter.post(
   "/comment/reply/:postId/:commentId/:userId",
   checkPostExist,
   checkCommentExist,
+  checkUserExist,
   verifyToken(),
   replyValidator,
   replyToUser
