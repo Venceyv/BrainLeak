@@ -6,7 +6,11 @@ import { PostContent } from './components/PostContent';
 
 export const UserPost: FC = (): JSX.Element => {
   const { postId } = useParams();
-  const { data, isLoading, isError } = useQuery(['postData'], () => getPost(postId), { refetchOnWindowFocus: false });
+  const { data, isLoading, isError } = useQuery(
+    ['postData'],
+    () => getPost(postId),
+    { refetchOnWindowFocus: false }
+  );
   return (
     <div className="flex h-full w-full">
       {!!data && (
