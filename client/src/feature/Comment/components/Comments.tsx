@@ -4,18 +4,29 @@ import { getComments } from '../../../api/commentAPI';
 import { IndividualComment } from './IndividualComment';
 import TimeAgo from 'react-timeago';
 import { Loading } from '../../../components/Loading';
-import InfiniteScroll from 'react-infinite-scroll-component';
+// import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from 'react-infinite-scroller';
 import { NoMore } from '../../../components/NoMore';
 
 interface CommentsProp {
   postId: string;
 }
 
+import { useEffect } from 'react';
+
+export function useTriggerScrollFix(deps: number) {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('scroll'));
+    }
+  }, [deps]);
+}
+
 export const Comments: FC<CommentsProp> = ({ postId }): JSX.Element => {
   // const { data, isLoading, isError } = useQuery(['postComment'], () =>
   //   getComments(postId)
   // );
-
+  const [itemSize, setItemSize] = useState(0);
   const {
     data,
     isSuccess,
@@ -37,31 +48,26 @@ export const Comments: FC<CommentsProp> = ({ postId }): JSX.Element => {
     return <Loading width={'full'} height={'full'} />;
   }
 
-  if (isFetchingNextPage) {
-    console.log('fetching next');
-  }
-
   return (
     <>
       <div className="mt-3">
-        <>
-          <InfiniteScroll
-            dataLength={0}
-            next={() => fetchNextPage()}
-            hasMore={hasNextPage ? true : false}
-            loader={<Loading width={'full'} height={'full'} />}
-            endMessage={<NoMore />}
-            scrollableTarget="scroll-target-node"
-          >
-            {isSuccess &&
-              data?.pages?.map((comments) => {
-                return comments.map((comment, index) => {
-                  return <IndividualComment key={index} {...comment} />;
-                });
-              })}
-          </InfiniteScroll>
-        </>
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={() => fetchNextPage()}
+          hasMore={hasNextPage ? true : false}
+          loader={<Loading width={'full'} height={'full'} />}
+          useWindow={false}
+        >
+          {isSuccess &&
+            data?.pages?.map((comments) => {
+              return comments.map((comment, index) => {
+                return <IndividualComment key={index} {...comment} />;
+              });
+            })}
+        </InfiniteScroll>
       </div>
+
+      {!hasNextPage && <NoMore />}
     </>
   );
 };

@@ -4,7 +4,8 @@ import { Post } from './Post';
 import { getPosts } from '../../../api/postAPI';
 import { Loading } from '../../../components/Loading';
 import { IntervalItem, MenuItem } from '../../../interfaces/post';
-import InfiniteScroll from 'react-infinite-scroll-component';
+// import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from 'react-infinite-scroller';
 import { NoMore } from '../../../components/NoMore';
 
 interface PostsProp {
@@ -43,11 +44,11 @@ export const Posts: FC<PostsProp> = ({
       <div>
         <>
           <InfiniteScroll
-            dataLength={0}
-            next={() => fetchNextPage()}
+            pageStart={0}
+            loadMore={() => fetchNextPage()}
             hasMore={hasNextPage ? true : false}
             loader={<Loading width={'full'} height={'full'} />}
-            endMessage={<NoMore />}
+            // endMessage={<NoMore />}
           >
             {isSuccess &&
               data?.pages?.map((page) => {
@@ -68,6 +69,8 @@ export const Posts: FC<PostsProp> = ({
           </InfiniteScroll>
         </>
       </div>
+
+      {!hasNextPage && <NoMore />}
     </>
   );
 };

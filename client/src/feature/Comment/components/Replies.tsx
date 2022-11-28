@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { FC } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+// import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from 'react-infinite-scroller';
 import { useParams } from 'react-router-dom';
 import { getReplies } from '../../../api/commentAPI';
 import { Loading } from '../../../components/Loading';
@@ -34,10 +35,6 @@ export const Replies: FC<RepliesType> = ({ commentId }): JSX.Element => {
     return <Loading width={'full'} height={'full'} />;
   }
 
-  if (isSuccess) {
-    console.log(data);
-  }
-
   if (isFetchingNextPage) {
     console.log('fetching next');
   }
@@ -45,8 +42,8 @@ export const Replies: FC<RepliesType> = ({ commentId }): JSX.Element => {
   return (
     <div>
       <InfiniteScroll
-        dataLength={0}
-        next={() => console.log()}
+        pageStart={0}
+        loadMore={() => console.log()}
         hasMore={hasNextPage ? true : false}
         loader={<Loading width={'full'} height={'full'} />}
       >

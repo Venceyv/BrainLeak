@@ -10,7 +10,7 @@ export const getComments = async (
     const {
       data: { dbBack: comments },
     } = await axios.get(
-      `${URL}/posts/comments/${postId}?pagesize=10&pagenumber=${pageNumber}&sort=latest`
+      `${URL}/posts/comments/${postId}?pagesize=10&pagenumber=${pageNumber}&sort=new`
     );
     return comments as PostComment[];
   } catch (err) {
@@ -27,7 +27,7 @@ export const getReplies = async (
     const {
       data: { dbBack: replies },
     } = await axios.get(
-      `${URL}/posts/comment/replies/${postId}/${commentId}?pagesize=2&pagenumber=${pageNumber}&sort=latest`
+      `${URL}/posts/comment/replies/${postId}/${commentId}?pagesize=2&pagenumber=${pageNumber}&sort=new`
     );
     return replies as CommentReply[];
   } catch (err) {
