@@ -106,6 +106,8 @@ async function getReplies(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     const commentId = req.params.commentId;
+    const pageNum = Number(req.query.pagenumber);
+    const pageSize = Number(req.query.pagesize);
     const order = req.query.sort;
     let dbBack = await getRedisReplyProfile(commentId);
     if (!dbBack) {
@@ -124,6 +126,7 @@ async function getReplies(req, res) {
           })
         );
       }
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack = await addRepliesStatistics(dbBack);
       dbBack = sortWith(dbBack, order);
     }
