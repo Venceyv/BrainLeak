@@ -44,9 +44,6 @@ export const Comments: FC<CommentsProp> = ({ postId }): JSX.Element => {
   return (
     <>
       <div>
-        <button type="button" onClick={() => fetchNextPage()}>
-          Click
-        </button>
         <>
           <InfiniteScroll
             dataLength={0}

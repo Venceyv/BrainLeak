@@ -7,7 +7,7 @@ import { IndividualComment } from './components/IndividualComment';
 export const Comment: FC = (): JSX.Element => {
   const { postId } = useParams();
   return (
-    <div>
+    <div className="w-[720px]">
       <Comments postId={postId!} />
     </div>
   );
