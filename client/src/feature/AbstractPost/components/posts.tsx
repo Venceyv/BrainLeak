@@ -44,7 +44,7 @@ export const Posts: FC<PostsProp> = ({
         <>
           <InfiniteScroll
             dataLength={0}
-            next={fetchNextPage}
+            next={() => fetchNextPage()}
             hasMore={hasNextPage ? true : false}
             loader={<Loading width={'full'} height={'full'} />}
             endMessage={<NoMore />}

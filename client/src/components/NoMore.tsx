@@ -8,7 +8,7 @@ export const NoMore: FC = (): JSX.Element => {
         className="w-[60px] h-[56px]"
         alt="no more"
       />
-      <p className="text-lg">You have seen it all !!!</p>
+      <p className="text-lg text-white">You have seen it all !!!</p>
     </div>
   );
 };
