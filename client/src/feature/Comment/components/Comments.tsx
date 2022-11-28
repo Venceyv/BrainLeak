@@ -14,8 +14,8 @@ export const Comments: FC<CommentsProp> = ({ postId }): JSX.Element => {
     <>
       <div>
         {data &&
-          data.map((comment) => {
-            return <IndividualComment {...comment} />;
+          data.map((comment, index) => {
+            return <IndividualComment key={index} {...comment} />;
           })}
       </div>
     </>

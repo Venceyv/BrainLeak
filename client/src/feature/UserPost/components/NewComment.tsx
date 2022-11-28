@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import { postComment } from '../../../api/commentAPI';
 import { queryClient } from '../../../main';
 import './NewComment.css';
+import 'react-quill/dist/quill.snow.css';
 
 export const NewComment: FC<{ postId: string }> = ({ postId }): JSX.Element => {
   const [value, setValue] = useState<string>('');
@@ -14,6 +14,7 @@ export const NewComment: FC<{ postId: string }> = ({ postId }): JSX.Element => {
       queryClient.invalidateQueries(['postComment']);
     },
   });
+
   return (
     <>
       <div className="flex flex-col gap-2 p-2 border-2 text-white bg-secondary-black border-border-black rounded-md">
