@@ -7,14 +7,21 @@ interface useDropdownReturn {
   setUserDropdown: (dropdownState: boolean) => void;
 }
 
-export const useDetectOutsideClick = (userRef: React.MutableRefObject<HTMLDivElement>, setUserDropDown: (a: boolean) => void) => {
+export const useDetectOutsideClick = (
+  userRef: React.MutableRefObject<HTMLDivElement>,
+  setUserDropDown: (a: boolean) => void
+) => {
   const detectOutsideClick = (event: globalThis.MouseEvent) => {
     // detect clicks outside dropdown
     const target: HTMLImageElement = event.target as HTMLImageElement;
-    if (userRef.current && !userRef.current.contains(event.target as Node) && !(target.id === 'user-img')) {
+    if (
+      userRef.current &&
+      !userRef.current.contains(event.target as Node) &&
+      !(target.id === 'user-img')
+    ) {
       setUserDropDown(false);
     }
-  }
+  };
 
   useEffect(() => {
     document.addEventListener('mousedown', (e: globalThis.MouseEvent) => {
@@ -25,7 +32,9 @@ export const useDetectOutsideClick = (userRef: React.MutableRefObject<HTMLDivEle
 
 export const useDropdown = (): useDropdownReturn => {
   const [isDropdown, setDropdown] = useState<boolean>(false);
-  const userRef = useRef<HTMLDivElement>(null) as React.MutableRefObject<HTMLDivElement>;
+  const userRef = useRef<HTMLDivElement>(
+    null
+  ) as React.MutableRefObject<HTMLDivElement>;
 
   const toggleUserDropdown: React.MouseEventHandler<HTMLElement> = (): void => {
     setDropdown((prev) => !prev);

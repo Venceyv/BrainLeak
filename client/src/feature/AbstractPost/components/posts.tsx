@@ -12,10 +12,21 @@ interface PostsProp {
   selectedTimeInterval: IntervalItem;
 }
 
-export const Posts: FC<PostsProp> = ({ selectedMenuItem, selectedTimeInterval }): JSX.Element => {
-  const { data, isSuccess, hasNextPage, isInitialLoading, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+export const Posts: FC<PostsProp> = ({
+  selectedMenuItem,
+  selectedTimeInterval,
+}): JSX.Element => {
+  const {
+    data,
+    isSuccess,
+    hasNextPage,
+    isInitialLoading,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery(
     ['posts', selectedMenuItem, selectedTimeInterval],
-    ({ pageParam = 1 }) => getPosts(pageParam, selectedMenuItem, selectedTimeInterval),
+    ({ pageParam = 1 }) =>
+      getPosts(pageParam, selectedMenuItem, selectedTimeInterval),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length >= 10 ? allPages.length + 1 : undefined;
@@ -49,7 +60,9 @@ export const Posts: FC<PostsProp> = ({ selectedMenuItem, selectedTimeInterval })
                     date: post?.publishDate,
                     _id: post?._id,
                   };
-                  return <Post key={index} user={post.author} post={postProp} />;
+                  return (
+                    <Post key={index} user={post.author} post={postProp} />
+                  );
                 });
               })}
           </InfiniteScroll>

@@ -6,7 +6,8 @@ import { IntervalItem, MenuItem } from '../../interfaces/post';
 export const AbstractPost: FC = (): JSX.Element => {
   // const { data, isLoading, isSuccess } = useQuery(['posts'], () => getPosts(1, 5));
   const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem>('hot');
-  const [selectedTimeInterval, setSelectedTimeInterval] = useState<IntervalItem>('today');
+  const [selectedTimeInterval, setSelectedTimeInterval] =
+    useState<IntervalItem>('today');
 
   // if (isLoading) {
   //   return <Loading width={80} height={500} />;
@@ -14,8 +15,15 @@ export const AbstractPost: FC = (): JSX.Element => {
 
   return (
     <div className="h-full w-full bg-primary-black">
-      <PostFilterBar selectedMenuItem={selectedMenuItem} setSelectedMenuItem={setSelectedMenuItem} setSelectedTimeInterval={setSelectedTimeInterval} />
-      <Posts selectedMenuItem={selectedMenuItem} selectedTimeInterval={selectedTimeInterval} />
+      <PostFilterBar
+        selectedMenuItem={selectedMenuItem}
+        setSelectedMenuItem={setSelectedMenuItem}
+        setSelectedTimeInterval={setSelectedTimeInterval}
+      />
+      <Posts
+        selectedMenuItem={selectedMenuItem}
+        selectedTimeInterval={selectedTimeInterval}
+      />
       {/* <Loading width={'full'} height={'[500px]'} /> */}
       {/* <div>
         {data?.map((post, index) => {

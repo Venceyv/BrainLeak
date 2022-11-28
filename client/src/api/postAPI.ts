@@ -21,7 +21,9 @@ export const getTrendingPosts = async (): Promise<TrendingPost[]> => {
   }
 };
 
-export const getPost = async (postId: string | undefined): Promise<Post<StatisticWithMark>> => {
+export const getPost = async (
+  postId: string | undefined
+): Promise<Post<StatisticWithMark>> => {
   try {
     const {
       data: { dbBack: postData },

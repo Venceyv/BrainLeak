@@ -14,7 +14,10 @@ interface TrendingPostProp {
   };
 }
 
-export const TrendingPost: FC<TrendingPostProp> = ({ popularity, post }): JSX.Element => {
+export const TrendingPost: FC<TrendingPostProp> = ({
+  popularity,
+  post,
+}): JSX.Element => {
   return (
     <div className="grid grid-cols-3 grid-rows-3 gap-2 py-3 overflow-hidden w-[250px] h-[160px] rounded-2xl p-3 pb-1 border-2 bg-secondary-black border-border-black cursor-pointer">
       <h1 className="col-span-3 text-[14px] w-full h-[40px] line-clamp-2 break-words whitespace-normal font-[800]">
@@ -29,7 +32,9 @@ export const TrendingPost: FC<TrendingPostProp> = ({ popularity, post }): JSX.El
           src={post.author?.avatar}
           alt="profile picture"
         />
-        <p className="text-sm cursor-pointer truncate">{post.author?.username}</p>
+        <p className="text-sm cursor-pointer truncate">
+          {post.author?.username}
+        </p>
       </div>
       <div className="flex pb-2 items-end justify-end gap-1">
         <img src="../../../assets/img/hot.svg" alt="trending" className="w-6" />

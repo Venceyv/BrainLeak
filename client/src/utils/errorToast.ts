@@ -1,6 +1,8 @@
 import toast from 'react-hot-toast';
 
-export const errorToast = (errorMessage: string = 'Oops! Something went wrong.') =>
+export const errorToast = (
+  errorMessage: string = 'Oops! Something went wrong.'
+) =>
   toast.error(errorMessage, {
     style: {
       border: '2px solid white',

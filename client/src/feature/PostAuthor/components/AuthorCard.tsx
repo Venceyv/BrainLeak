@@ -3,11 +3,17 @@ import { FC, useRef } from 'react';
 import { getUser } from '../../../api/userAPI';
 import { AuthorStats } from './AuthorStats';
 
-export const AuthorCard: FC<{ authorId: string }> = ({ authorId }): JSX.Element => {
+export const AuthorCard: FC<{ authorId: string }> = ({
+  authorId,
+}): JSX.Element => {
   const statRef = useRef<HTMLDivElement>(null);
-  const { data, isLoading, isSuccess, isError } = useQuery(['postData', authorId], () => getUser(authorId), {
-    refetchOnWindowFocus: false,
-  });
+  const { data, isLoading, isSuccess, isError } = useQuery(
+    ['postData', authorId],
+    () => getUser(authorId),
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const toggleStatText = () => {
     let ref = statRef?.current;
@@ -23,7 +29,11 @@ export const AuthorCard: FC<{ authorId: string }> = ({ authorId }): JSX.Element 
 
   return (
     <div className="relative grid grid-cols-3 grid-rows-7 gap-1 py-3 overflow-hidden w-[270px] h-[330px] rounded-md p-3 pb-[0px] border-2 bg-secondary-black border-border-black">
-      <img src={data?.backgroundCover} className="absolute w-full h-16 z-[1] object-cover" alt="background cover" />
+      <img
+        src={data?.backgroundCover}
+        className="absolute w-full h-16 z-[1] object-cover"
+        alt="background cover"
+      />
 
       <div className="absolute flex text-sm w-[calc(100%-80px)] truncate top-[72px] left-[80px]">
         <p className="w-[120px] truncate text-white">{data?.username}</p>
@@ -64,7 +74,9 @@ export const AuthorCard: FC<{ authorId: string }> = ({ authorId }): JSX.Element 
           className="absolute h-4 w-14 top-[22px] left-[7px] bg-secondary-black rotate-[13deg] rounded-tr-[30px] rounded-br-[30px] cursor-pointer"
           onClick={() => console.log('profile')}
         >
-          <p className="absolute top-0 left-[7px] text-sm text-white">Profile</p>
+          <p className="absolute top-0 left-[7px] text-sm text-white">
+            Profile
+          </p>
         </div>
         <div
           className="absolute h-4 w-14 top-[46px] left-[0px] bg-secondary-black rotate-[12deg] rounded-tl-[30px] rounded-bl-[30px] cursor-pointer"

@@ -39,7 +39,9 @@ export const UserDropdown: FC<UserDropdownProp> = ({
           alt="user"
         />
 
-        <div className="align overflow-hidden text-ellipsis h-fit text-zinc-50">{userData?.username}</div>
+        <div className="align overflow-hidden text-ellipsis h-fit text-zinc-50">
+          {userData?.username}
+        </div>
       </div>
       <ul className="mb-2 text-center w-full">
         <li

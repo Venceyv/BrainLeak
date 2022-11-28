@@ -27,7 +27,8 @@ export const PostFilterBar: FC<PostFilterBarProp> = ({
     console.log(selectedMenuItem);
   }, [selectedMenuItem]);
 
-  const isShowTimeInterval = selectedMenuItem === 'top' || selectedMenuItem === 'hot';
+  const isShowTimeInterval =
+    selectedMenuItem === 'top' || selectedMenuItem === 'hot';
 
   const setSelectedTime = (ev: React.ChangeEvent<HTMLSelectElement>) => {
     console.log(ev.target.value as IntervalItem);
@@ -46,7 +47,11 @@ export const PostFilterBar: FC<PostFilterBarProp> = ({
           applyFocus(0);
         }}
       >
-        <img src="../../../assets/img/fire.svg" className="w-7 h-8 pb-1" alt="hot" />
+        <img
+          src="../../../assets/img/fire.svg"
+          className="w-7 h-8 pb-1"
+          alt="hot"
+        />
         <p className="align-middle pr-1 text-opacity-75 group-hover:text-opacity-100 group-focus:text-opacity-100 text-white">
           Hot
         </p>
@@ -78,25 +83,44 @@ export const PostFilterBar: FC<PostFilterBarProp> = ({
 
       {isShowTimeInterval && (
         <div className="group flex items-center h-fit rounded-md p-[2px] hover:cursor-pointer border-2 border-border-black bg-primary-black">
-          <img src="../../../assets/img/timer.svg" className="w-7 h-7 opacity-[.9] group-hover:opacity-100" alt="top" />
+          <img
+            src="../../../assets/img/timer.svg"
+            className="w-7 h-7 opacity-[.9] group-hover:opacity-100"
+            alt="top"
+          />
           <select
             className="rounded-md h-[24px] align-middle hover:cursor-pointer bg-primary-black focus:text-white focus:bg-primary-black focus:outline-none hover:bg-secondary-black text-white"
             defaultValue="today"
             onChange={(ev) => setSelectedTime(ev)}
           >
-            <option value="today" className="align-middle hover:bg-secondary-black">
+            <option
+              value="today"
+              className="align-middle hover:bg-secondary-black"
+            >
               Today
             </option>
-            <option value="week" className="align-middle hover:bg-secondary-black">
+            <option
+              value="week"
+              className="align-middle hover:bg-secondary-black"
+            >
               This Week
             </option>
-            <option value="month" className="align-middle hover:bg-secondary-black">
+            <option
+              value="month"
+              className="align-middle hover:bg-secondary-black"
+            >
               This Month
             </option>
-            <option value="year" className="align-middle hover:bg-secondary-black">
+            <option
+              value="year"
+              className="align-middle hover:bg-secondary-black"
+            >
               This Year
             </option>
-            <option value="allTime" className="align-middle hover:bg-secondary-black">
+            <option
+              value="allTime"
+              className="align-middle hover:bg-secondary-black"
+            >
               All Time
             </option>
           </select>

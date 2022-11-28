@@ -6,7 +6,11 @@ import { AuthorCard } from './components/AuthorCard';
 
 export const PostAuthor: FC = (): JSX.Element => {
   const { postId } = useParams();
-  const { data, isLoading, isError } = useQuery(['postData'], () => getPost(postId), { refetchOnWindowFocus: false });
+  const { data, isLoading, isError } = useQuery(
+    ['postData'],
+    () => getPost(postId),
+    { refetchOnWindowFocus: false }
+  );
 
   return (
     <div className="flex items-start justify-end h-full pt-[76px] pr-4">

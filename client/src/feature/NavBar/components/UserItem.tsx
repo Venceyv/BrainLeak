@@ -14,12 +14,17 @@ interface UserItemProp {
 }
 
 export const UserItem: FC<UserItemProp> = ({ setLogin }): JSX.Element => {
-  const { userRef, isDropdown, toggleUserDropdown, setUserDropdown } = useDropdown();
+  const { userRef, isDropdown, toggleUserDropdown, setUserDropdown } =
+    useDropdown();
   useDetectOutsideClick(userRef, setUserDropdown);
 
-  const { data, refetch } = useQuery(['user', getUserId], () => getCheckAuth(getUserId()), {
-    enabled: false,
-  });
+  const { data, refetch } = useQuery(
+    ['user', getUserId],
+    () => getCheckAuth(getUserId()),
+    {
+      enabled: false,
+    }
+  );
 
   useEffect(() => {
     if (getUserId()) {
@@ -39,7 +44,12 @@ export const UserItem: FC<UserItemProp> = ({ setLogin }): JSX.Element => {
         arrow={false}
         open={isDropdown}
       >
-        <UserDropdown userRef={userRef} toggleUserDropdown={toggleUserDropdown} setLogin={setLogin} userData={data} />
+        <UserDropdown
+          userRef={userRef}
+          toggleUserDropdown={toggleUserDropdown}
+          setLogin={setLogin}
+          userData={data}
+        />
       </Popup>
     </>
   );

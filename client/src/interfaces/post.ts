@@ -1,7 +1,13 @@
 import { Author } from './user';
 
 export type MenuItem = 'top' | 'new' | 'hot' | null;
-export type IntervalItem = 'today' | 'week' | 'month' | 'year' | 'allTime' | null;
+export type IntervalItem =
+  | 'today'
+  | 'week'
+  | 'month'
+  | 'year'
+  | 'allTime'
+  | null;
 export type CommentSortByType = 'lastest' | 'likes';
 
 export interface Statistic {

@@ -1,12 +1,16 @@
 import { FC } from 'react';
-import { Author, Post, Statistic, StatisticWithMark } from '../../../interfaces/post';
+import { Post, Statistic, StatisticWithMark } from '../../../interfaces/post';
 import { Statistics } from './Statistics';
 import { Tag } from './Tag';
 import { TopBar } from './TopBar';
 import TimeAgo from 'react-timeago';
 import { NewComment } from './NewComment';
+import { Author } from '../../../interfaces/user';
 
-const PostBy: FC<{ author: Author; publishDate: string }> = ({ author, publishDate }): JSX.Element => {
+const PostBy: FC<{ author: Author; publishDate: string }> = ({
+  author,
+  publishDate,
+}): JSX.Element => {
   return (
     <div className="flex gap-1">
       <img
@@ -14,20 +18,33 @@ const PostBy: FC<{ author: Author; publishDate: string }> = ({ author, publishDa
         className="w-5 h-5 rounded-full border-2 border-border-black cursor-pointer"
         alt="user image"
       />
-      <p className="truncate pl-[2px] pt-[3px] text-xs text-white">{author?.username}</p>
+      <p className="truncate pl-[2px] pt-[3px] text-xs text-white">
+        {author?.username}
+      </p>
       <div className="ml-2 pt-[3px] h-[calc(100%-2px)] text-white">*</div>
-      <TimeAgo className="text-xs pt-[2px] opacity-90 text-white" date={`${publishDate}`} />
+      <TimeAgo
+        className="text-xs pt-[2px] opacity-90 text-white"
+        date={`${publishDate}`}
+      />
     </div>
   );
 };
 
-export const PostContent: FC<{ post: Post<StatisticWithMark>; postId: string }> = ({ post, postId }): JSX.Element => {
+export const PostContent: FC<{
+  post: Post<StatisticWithMark>;
+  postId: string;
+}> = ({ post, postId }): JSX.Element => {
   return (
     <div className="flex gap-5 shrink grow flex-col w-[720px] h-full p-4 pr-0">
-      <TopBar likes={post.statistics.likes} dislikes={post.statistics.dislikes} />
+      <TopBar
+        likes={post.statistics.likes}
+        dislikes={post.statistics.dislikes}
+      />
       <div className="flex flex-col gap-1 mt-[60px] p-2 border-2 rounded-md bg-secondary-black border-border-black">
         <PostBy author={post?.author} publishDate={post.publishDate} />
-        <div className="w-full text-[20px] font-bold text-white">{post.title}</div>
+        <div className="w-full text-[20px] font-bold text-white">
+          {post.title}
+        </div>
         <div className="flex my-2 flex-wrap w-full">
           {post.tags.map((tag, index) => {
             return <Tag key={index} tag={tag} />;

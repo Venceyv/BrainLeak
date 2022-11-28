@@ -17,10 +17,16 @@ export const UserCard: FC<TrendingUser> = (trendingUser): JSX.Element => {
       />
 
       <div className="absolute flex text-sm cursor-pointer w-[calc(100%-80px)] truncate top-[52px] left-[80px]">
-        <p className="w-[120px] truncate text-white">{trendingUser.user.username}</p>
+        <p className="w-[120px] truncate text-white">
+          {trendingUser.user.username}
+        </p>
 
         <div className="flex pb-1 pr-1 items-end justify-end gap-1 ml-auto">
-          <img src="../../../assets/img/hot.svg" alt="trending" className="w-5 h-5" />
+          <img
+            src="../../../assets/img/hot.svg"
+            alt="trending"
+            className="w-5 h-5"
+          />
           <p className="h-fit truncate text-sm tracking-wide align-middle pt-1">
             {formatNumber(trendingUser.popularity)}
           </p>
@@ -41,13 +47,21 @@ export const UserCard: FC<TrendingUser> = (trendingUser): JSX.Element => {
 
       <div className="flex items-start justify-start col-span-3 row-span-1">
         <div className="flex w-[110px]">
-          <img src="../../../assets/img/Postit.svg" className="w-6 h-6" alt="posts" />
+          <img
+            src="../../../assets/img/Postit.svg"
+            className="w-6 h-6"
+            alt="posts"
+          />
           <p className="text-sm ml-1 align-middle text-center truncate pt-1">
             Posts: {formatNumber(trendingUser.user.postCount)}
           </p>
         </div>
         <div className="flex w-[130px] ml-3">
-          <img src="../../../assets/img/follower.svg" className="w-6 h-6" alt="followers" />
+          <img
+            src="../../../assets/img/follower.svg"
+            className="w-6 h-6"
+            alt="followers"
+          />
           <p className="text-sm ml-1 align-middle text-center truncate pt-1">
             Followers: {formatNumber(trendingUser.user.followerCount)}
           </p>

@@ -12,7 +12,9 @@ interface LoginItemProp {
 export const LoginItem: FC<LoginItemProp> = ({ setLogin }): JSX.Element => {
   const [isPresentLogin, setPresentLogin] = useState<boolean>(false);
 
-  const togglePresentLogin: React.MouseEventHandler<HTMLButtonElement> = (): void => {
+  const togglePresentLogin: React.MouseEventHandler<
+    HTMLButtonElement
+  > = (): void => {
     setPresentLogin(true);
   };
 

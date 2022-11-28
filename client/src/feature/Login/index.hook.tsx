@@ -12,7 +12,10 @@ interface useLoginReturn {
   closeLogin: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const useLogin = ({ setPresentLogin, setLogin }: useLoginParam): useLoginReturn => {
+export const useLogin = ({
+  setPresentLogin,
+  setLogin,
+}: useLoginParam): useLoginReturn => {
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
       try {

@@ -1,7 +1,10 @@
 import { FC } from 'react';
 import { MagnifyingGlass } from 'react-loader-spinner';
 
-export const Loading: FC<{ width: string; height: string }> = ({ height = 'full', width = 'full' }): JSX.Element => {
+export const Loading: FC<{ width: string; height: string }> = ({
+  height = 'full',
+  width = 'full',
+}): JSX.Element => {
   return (
     <div className={`flex justify-center w-${width} h-${height}`}>
       <MagnifyingGlass

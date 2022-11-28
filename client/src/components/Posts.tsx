@@ -6,11 +6,11 @@ import PostAbstract from './PostAbstract';
 
 export const Posts: FC = (): JSX.Element => {
   const postAbstractArr = PostAbstractData;
-  const { data, isLoading } = useQuery(['posts'], () => getPosts(1, 5));
+  // const { data, isLoading } = useQuery(['posts'], () => getPosts(1, 5));
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
   return (
     <div className="w-full h-full overflow-auto">
       {postAbstractArr.map(({ user, post }, index) => {

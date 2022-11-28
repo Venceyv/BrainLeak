@@ -9,7 +9,9 @@ interface CommentsProp {
 }
 
 export const Comments: FC<CommentsProp> = ({ postId }): JSX.Element => {
-  const { data, isError } = useQuery(['postComment'], () => getComments(postId));
+  const { data, isError } = useQuery(['postComment'], () =>
+    getComments(postId)
+  );
   return (
     <>
       <div>

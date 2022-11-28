@@ -3,7 +3,12 @@ import { useState } from 'react';
 const useLocalStorage = (
   dataName: string,
   data: string | object
-): [string, (a: string) => string | object, (a: string, b: string | object) => void, (a: string) => void] => {
+): [
+  string,
+  (a: string) => string | object,
+  (a: string, b: string | object) => void,
+  (a: string) => void
+] => {
   // const [dataName, setDataName] = useState<string | Object>('');
   const setStorage = (dataName: string, inputData: string | object): void => {
     if (dataName != null) {
