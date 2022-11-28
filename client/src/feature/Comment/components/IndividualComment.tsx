@@ -16,7 +16,7 @@ export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
   const [showUserReply, setShowUserReply] = useState<boolean>(false);
 
   return (
-    <div className="pl-4 w-full mb-2">
+    <div className="pl-4 w-full mb-3">
       <div className="flex items-center justify-start gap-2 col-span-2">
         <img
           className="w-[32px] h-[32px] rounded-full border-2 cursor-pointer border-border-black text-zinc-50"
@@ -33,7 +33,7 @@ export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
         />
       </div>
 
-      <div className="flex flex-col gap-4 border-l-2 pl-6 ml-[14px] mt-2 text-sm border-border-black text-white">
+      <div className="flex flex-col gap-3 border-l-2 pl-6 ml-[14px] mt-2 text-sm border-border-black text-white">
         <ReactQuill theme="bubble" value={comment.content} readOnly />
 
         <div className="flex gap-3 mb-2">
