@@ -34,7 +34,7 @@ async function deleteReply(req, res) {
     incCommentStatistics(req.params.commentId, "replies", -1);
     await Promise.all([
       Reply.findByIdAndDelete(req.params.replyId),
-      ReplyLike.deleteMany({reply:req.params.replyId}),
+      ReplyLike.deleteMany({ reply: req.params.replyId }),
     ]);
     res.status(200).json({ msg: "delete successfully" });
   } catch (error) {
@@ -157,8 +157,12 @@ async function replyToUser(req, res) {
 async function getReply(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
-    let dbBack = await Reply.findById(req.params.replyId).lean();
-    dbBack = await addReplyStatistics(dbBack);
+    let reply = req.reply;
+    let [author,dbBack] = await Promise.all([
+      User.findById(reply.author, { username: 1, avatar: 1 }).lean(),
+      addReplyStatistics(reply)
+    ]);
+    dbBack.author = author;
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });

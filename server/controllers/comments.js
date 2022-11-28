@@ -22,6 +22,7 @@ async function addComment(req, res) {
     incPostStatistics(postId, "comments", 1);
     incUserStatistics(userId, "comments", 1);
     incUserNotification(post.author, "comments", 1);
+    const commentContent = req.body.content.replace(/<\/?.+?>/g, "");
     const dbBack = await new Comment({
       content: req.body.content,
       author: userId,
@@ -33,7 +34,7 @@ async function addComment(req, res) {
       const mailOptions = notifyAuthor(
         postAuthor.email,
         req.user.username,
-        req.body.content,
+        commentContent,
         req.post.title,
         req.post.description
       );
@@ -166,10 +167,13 @@ async function getComments(req, res) {
 async function getComment(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
-    let dbBack = await Comment.findById(req.params.commentId)
-      .lean()
-      .populate("author", { username: 1, avatar: 1 }, { lean: true });
-    dbBack = await addCommentStatistics(dbBack);
+    const comment = req.comment;
+    let [author,dbBack] = await Promise.all([
+      User.findById(comment.author,{username: 1, avatar: 1})
+      .lean(),
+      addCommentStatistics(comment),
+    ]);
+    dbBack.author = author;
     if (req.user) {
       const userId = req.user._id;
       const commentLikeList = await CommentLike.find({ user: userId }, { comment: 1, like: 1, _id: 0 }).lean();
