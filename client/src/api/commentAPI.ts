@@ -1,6 +1,6 @@
 import axios from './axiosConfig';
 import { URL } from '../data/Constants';
-import { PostComment } from '../interfaces/comment';
+import { CommentReply, PostComment } from '../interfaces/comment';
 
 export const getComments = async (
   postId: string,
@@ -10,9 +10,26 @@ export const getComments = async (
     const {
       data: { dbBack: comments },
     } = await axios.get(
-      `${URL}/posts/comments/${postId}?pagesize=10&pagenumber=${pageNumber}`
+      `${URL}/posts/comments/${postId}?pagesize=10&pagenumber=${pageNumber}&sort=latest`
     );
     return comments as PostComment[];
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getReplies = async (
+  postId: string,
+  commentId: string,
+  pageNumber: number
+): Promise<CommentReply[]> => {
+  try {
+    const {
+      data: { dbBack: replies },
+    } = await axios.get(
+      `${URL}/posts/comment/replies/${postId}/${commentId}?pagesize=2&pagenumber=${pageNumber}&sort=latest`
+    );
+    return replies as CommentReply[];
   } catch (err) {
     throw err;
   }
@@ -23,6 +40,23 @@ export const postComment = async (postId: string, commentContent: string) => {
     const dbBack = await axios.post(`${URL}/posts/comment/${postId}`, {
       content: commentContent,
     });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postReply = async (
+  postId: string,
+  commentId: string,
+  commentContent: string
+) => {
+  try {
+    const dbBack = await axios.post(
+      `${URL}/posts/comment/reply/${postId}/${commentId}`,
+      {
+        content: commentContent,
+      }
+    );
   } catch (error) {
     throw error;
   }

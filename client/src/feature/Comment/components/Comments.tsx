@@ -43,7 +43,7 @@ export const Comments: FC<CommentsProp> = ({ postId }): JSX.Element => {
 
   return (
     <>
-      <div>
+      <div className="mt-3">
         <>
           <InfiniteScroll
             dataLength={0}

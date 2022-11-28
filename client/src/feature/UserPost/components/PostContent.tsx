@@ -57,7 +57,7 @@ export const PostContent: FC<{
           marks={post?.statistics?.marks}
         />
       </div>
-      <NewComment postId={postId} />
+      <NewComment postId={postId} isReply={false} />
     </div>
   );
 };

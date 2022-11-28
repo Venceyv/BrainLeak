@@ -11,3 +11,13 @@ export const errorToast = (
     },
     position: 'top-right',
   });
+
+export const successToast = (successMessage: string = 'Success!') =>
+  toast.success(successMessage, {
+    style: {
+      border: '2px solid white',
+      background: '#181818',
+      color: 'white',
+    },
+    position: 'top-right',
+  });

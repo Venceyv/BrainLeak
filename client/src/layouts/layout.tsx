@@ -7,8 +7,6 @@ export const Layout: FC = (): JSX.Element => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log('in useeffect');
-    console.log(hasParam);
     if (Object.keys(hasParam).length > 0) {
       containerRef?.current?.classList.add('overflow-hidden');
     } else {

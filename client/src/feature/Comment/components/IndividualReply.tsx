@@ -1,35 +1,35 @@
 import { FC, useState } from 'react';
 import ReactQuill from 'react-quill';
 import TimeAgo from 'react-timeago';
-import { PostComment } from '../../../interfaces/comment';
+import { CommentReply, PostComment } from '../../../interfaces/comment';
 import { formatNumber } from '../../../utils/formatNumber';
 import 'react-quill/dist/quill.bubble.css';
 import './IndividualComment.css';
 import { Replies } from './Replies';
 import { NewComment } from '../../UserPost/components/NewComment';
 
-export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
+export const IndividualReply: FC<CommentReply> = (reply): JSX.Element => {
   const [showReply, setShowReply] = useState<boolean>(false);
   return (
     <div className="pl-4 w-full mb-2">
       <div className="flex items-center justify-start gap-2 col-span-2">
         <img
           className="w-[32px] h-[32px] rounded-full border-2 cursor-pointer border-border-black text-zinc-50"
-          src={comment.author.avatar}
+          src={reply.author.avatar}
           alt="profile picture"
         />
         <p className="text-sm cursor-pointer truncate text-white">
-          {comment.author.username}
+          {reply.author.username}
         </p>
         <div className="pt-[8px] h-[calc(100%-2px)] text-xs text-white">*</div>
         <TimeAgo
           className="text-xs pt-[2px] text-white opacity-90"
-          date={comment.publishDate}
+          date={reply.publishDate}
         />
       </div>
 
       <div className="flex flex-col gap-4 border-l-2 pl-6 ml-[14px] mt-2 text-sm border-border-black text-white">
-        <ReactQuill theme="bubble" value={comment.content} readOnly />
+        <ReactQuill theme="bubble" value={reply.content} readOnly />
 
         <div className="flex gap-3 mb-2">
           <div className="flex gap-3">
@@ -40,7 +40,7 @@ export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
                 alt="like"
               />
               <p className="truncate pl-[2px] pt-[1px] text-sm text-white">
-                {comment.statistics.likes}
+                {reply.statistics.likes}
               </p>
             </div>
             <div className="flex items-center">
@@ -50,7 +50,7 @@ export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
                 alt="dislike"
               />
               <p className="truncate pl-[2px] pt-[1px] text-sm text-white">
-                {comment.statistics.dislikes}
+                {reply.statistics.dislikes}
               </p>
             </div>
             <div
@@ -70,13 +70,11 @@ export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
         </div>
         {showReply && (
           <NewComment
-            postId={comment.relatedPost}
-            commentId={comment._id}
+            postId={reply.relatedPost}
+            commentId={reply.relatedComment}
             isReply={true}
-            setShowReply={setShowReply}
           />
         )}
-        <Replies commentId={comment?._id} />
       </div>
     </div>
   );

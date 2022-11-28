@@ -18,10 +18,6 @@ export const LoginItem: FC<LoginItemProp> = ({ setLogin }): JSX.Element => {
     setPresentLogin(true);
   };
 
-  useEffect(() => {
-    console.log(isPresentLogin);
-  }, [isPresentLogin]);
-
   return (
     <>
       <Popup

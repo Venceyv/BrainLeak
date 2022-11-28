@@ -23,10 +23,6 @@ export const PostFilterBar: FC<PostFilterBarProp> = ({
     sessionStorage.setItem('currMenuItemLoc', '0');
   }, []);
 
-  useEffect(() => {
-    console.log(selectedMenuItem);
-  }, [selectedMenuItem]);
-
   const isShowTimeInterval =
     selectedMenuItem === 'top' || selectedMenuItem === 'hot';
 
