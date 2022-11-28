@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import TimeAgo from 'react-timeago';
 import { PostComment } from '../../../interfaces/comment';
@@ -7,9 +7,14 @@ import 'react-quill/dist/quill.bubble.css';
 import './IndividualComment.css';
 import { Replies } from './Replies';
 import { NewComment } from '../../UserPost/components/NewComment';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { getReplies } from '../../../api/commentAPI';
+import { useParams } from 'react-router-dom';
 
 export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
   const [showReply, setShowReply] = useState<boolean>(false);
+  const [showUserReply, setShowUserReply] = useState<boolean>(false);
+
   return (
     <div className="pl-4 w-full mb-2">
       <div className="flex items-center justify-start gap-2 col-span-2">
@@ -53,6 +58,16 @@ export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
                 {comment.statistics.dislikes}
               </p>
             </div>
+            <div className="flex items-center">
+              <img
+                src="../../../assets/img/reply.svg"
+                className="w-5 h-5 cursor-pointer"
+                alt="reply"
+              />
+              <p className="truncate pl-[2px] pt-[1px] text-sm text-white">
+                {comment.statistics.replies}
+              </p>
+            </div>
             <div
               className="flex items-center cursor-pointer"
               onClick={() => setShowReply((prev) => !prev)}
@@ -76,7 +91,24 @@ export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
             setShowReply={setShowReply}
           />
         )}
-        <Replies commentId={comment?._id} />
+        {showUserReply && (
+          <div
+            onClick={() => setShowUserReply((prev) => !prev)}
+            className="cursor-pointer text-white"
+          >
+            Hide comment
+          </div>
+        )}
+        {showUserReply && <Replies commentId={comment?._id} />}
+
+        {!showUserReply && comment.statistics.replies > 0 && (
+          <div
+            className="cursor-pointer text-white"
+            onClick={() => setShowUserReply((prev) => !prev)}
+          >
+            Load comments...
+          </div>
+        )}
       </div>
     </div>
   );

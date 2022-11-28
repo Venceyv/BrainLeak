@@ -41,23 +41,20 @@ export const Replies: FC<RepliesType> = ({ commentId }): JSX.Element => {
 
   return (
     <div>
-      <InfiniteScroll
-        pageStart={0}
-        loadMore={() => console.log()}
-        hasMore={hasNextPage ? true : false}
-        loader={<Loading width={'full'} height={'full'} />}
-      >
-        {isSuccess &&
-          data?.pages?.map((pages) => {
-            return pages.map((reply, index) => {
-              return commentId === reply.relatedComment ? (
-                <IndividualReply key={index} {...reply} />
-              ) : null;
-            });
-          })}
-      </InfiniteScroll>
+      {isSuccess &&
+        data?.pages?.map((pages) => {
+          return pages.map((reply, index) => {
+            return commentId === reply.relatedComment ? (
+              <IndividualReply key={index} {...reply} />
+            ) : null;
+          });
+        })}
       {hasNextPage && (
-        <button type="button" onClick={() => fetchNextPage()}>
+        <button
+          className="text-white"
+          type="button"
+          onClick={() => fetchNextPage()}
+        >
           Load more...
         </button>
       )}

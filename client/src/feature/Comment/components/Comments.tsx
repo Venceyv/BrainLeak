@@ -26,7 +26,6 @@ export const Comments: FC<CommentsProp> = ({ postId }): JSX.Element => {
   // const { data, isLoading, isError } = useQuery(['postComment'], () =>
   //   getComments(postId)
   // );
-  const [itemSize, setItemSize] = useState(0);
   const {
     data,
     isSuccess,
@@ -49,13 +48,13 @@ export const Comments: FC<CommentsProp> = ({ postId }): JSX.Element => {
   }
 
   return (
-    <>
+    <div>
       <div className="mt-3">
         <InfiniteScroll
           pageStart={0}
           loadMore={() => fetchNextPage()}
           hasMore={hasNextPage ? true : false}
-          loader={<Loading width={'full'} height={'full'} />}
+          loader={<Loading key={0} width={'full'} height={'full'} />}
           useWindow={false}
         >
           {isSuccess &&
@@ -68,6 +67,6 @@ export const Comments: FC<CommentsProp> = ({ postId }): JSX.Element => {
       </div>
 
       {!hasNextPage && <NoMore />}
-    </>
+    </div>
   );
 };
