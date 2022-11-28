@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { FC, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
-import { postComment } from '../../../api/commentAPI';
-import { queryClient } from '../../../main';
 import './NewComment.css';
 import 'react-quill/dist/quill.snow.css';
+import { postComment } from '../../../api/commentAPI';
+import { queryClient } from '../../../main';
 
 export const NewComment: FC<{ postId: string }> = ({ postId }): JSX.Element => {
   const [value, setValue] = useState<string>('');

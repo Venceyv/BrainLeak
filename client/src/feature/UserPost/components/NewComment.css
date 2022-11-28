@@ -4,12 +4,12 @@
 }
 
 .ql-toolbar.ql-snow {
-  border: none;
+  border: none !important;
 }
 
 .ql-container.ql-snow {
   margin-top: 8px;
-  border: 1px var(--border-black) solid;
+  border: 1px var(--border-black) solid !important;
   border-radius: 4px;
 }
 
@@ -22,18 +22,18 @@
 
 .ql-toolbar .ql-stroke {
   fill: none;
-  stroke: #fff;
+  stroke: #fff !important;
   font-family: 'virgil';
 }
 
 .ql-toolbar .ql-fill {
-  fill: #fff;
+  fill: #fff !important;
   stroke: none;
   font-family: 'virgil';
 }
 
 .ql-toolbar .ql-picker {
-  color: #fff;
+  color: #fff !important;
   font-family: 'virgil';
 }
 
@@ -44,7 +44,7 @@
 }
 
 .ql-toolbar .ql-picker .ql-picker-options span:hover {
-  color: #fff;
+  color: #fff !important;
   font-family: 'virgil';
   border-radius: 4px;
 }
@@ -73,7 +73,7 @@
 .ql-snow.ql-toolbar .ql-picker-item:hover,
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
 .ql-snow .ql-toolbar .ql-picker-item.ql-picker-options {
-  color: #fff;
+  color: #fff !important;
   background: var(--border-black);
   border: 2px var(--border-black) solid;
   border-radius: 4px;
