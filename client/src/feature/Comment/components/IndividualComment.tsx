@@ -10,9 +10,6 @@ import { NewComment } from '../../UserPost/components/NewComment';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { getReplies } from '../../../api/commentAPI';
 import { useParams } from 'react-router-dom';
-import { DateTime } from 'luxon';
-import * as dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 
 dayjs.extend(relativeTime);
 
