@@ -1,5 +1,10 @@
 import { FC } from "react";
+import { Results } from "./components/Results";
 
-export const SearchResult: FC = (): JSX.Element => {
-  return <div></div>;
+export const UserSearch: FC = (): JSX.Element => {
+  return (
+    <div>
+      <Results />
+    </div>
+  );
 };

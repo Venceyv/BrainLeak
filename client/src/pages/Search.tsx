@@ -1,7 +1,10 @@
 import { FC } from "react";
+import { UserSearch } from "../feature/Search";
 
-export const Post: FC = (): JSX.Element => {
-  return <div></div>;
+export const Search: FC = (): JSX.Element => {
+  return (
+    <div>
+      <UserSearch />
+    </div>
+  );
 };
-
-// TODO: POST VALIDATOR

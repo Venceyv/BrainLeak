@@ -49,3 +49,9 @@ export interface Post<T> {
   _v?: number;
   _id: string;
 }
+
+export interface PostSearchResult extends Post<StatisticWithMark>{
+  save: boolean;
+  like:boolean;
+  dislike:boolean;
+}
