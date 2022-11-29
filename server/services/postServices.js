@@ -117,15 +117,15 @@ async function getPostTrending(num) {
     topPosts.forEach((postId, index) => {
       if (index % 2 === 0) {
         const popularity = topPosts[index + 1];
-        if(popularity === '0'){
-          return ;
+        if (popularity === "0") {
+          return;
         }
         leaderBoard.push({ postId, popularity });
       }
     });
     leaderBoard = await Promise.all(
       leaderBoard.map(async (ranking) => {
-        const post = await Post.findById(ranking.postId, { title: 1, description:1})
+        const post = await Post.findById(ranking.postId, { title: 1, description: 1 })
           .lean()
           .populate("author", { username: 1, avatar: 1 }, { lean: true });
         leaderBoard.pop(ranking);
@@ -183,7 +183,7 @@ async function addPostStatistics(post) {
 
 async function beautyPostInfo(post, userId) {
   try {
-    const [ likeList, PostSaveList] = await Promise.all([
+    const [likeList, PostSaveList] = await Promise.all([
       PostLike.find({ user: userId }, { post: 1, like: 1, _id: 0 }).lean(),
       SavedPost.find({ user: userId }, { post: 1, _id: 0 }).lean(),
     ]);
@@ -196,7 +196,7 @@ async function beautyPostInfo(post, userId) {
 
 async function beautyPostsInfo(posts, userId) {
   try {
-    const [ likeList, saveList] = await Promise.all([
+    const [likeList, saveList] = await Promise.all([
       PostLike.find({ user: userId }, { post: 1, like: 1, _id: 0 }).lean(),
       SavedPost.find({ user: userId }, { post: 1, _id: 0 }).lean(),
     ]);
@@ -252,7 +252,11 @@ function postFilter(posts, timeInterval = "default") {
     console.log("getPosts Failed -- Pservices 251");
   }
 }
-
+function postPopularity(post) {
+  const popularity =
+    post.statistics.likes * 2 + post.statistics.comments * 3 + post.statistics.marks * 4 + post.statistics.views;
+  return popularity;
+}
 export {
   getOnePostInfo,
   stringifyPostInfo,
@@ -269,4 +273,5 @@ export {
   beautyPostsInfo,
   addPostsStatistics,
   postFilter,
+  postPopularity,
 };

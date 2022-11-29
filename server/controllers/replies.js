@@ -113,7 +113,7 @@ async function getReplies(req, res) {
     if (!dbBack) {
       dbBack = await Reply.find({ relatedComment: commentId })
         .lean()
-        .populate("mentionedUser", { username: 1, avatar: 1 }, { lean: true })
+        .populate("mentionedUser", {  username: 1 }, { lean: true })
         .populate("author", { username: 1, avatar: 1 }, { lean: true });
     }
     if (dbBack.length != 0) {
@@ -158,9 +158,9 @@ async function getReply(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     let reply = req.reply;
-    let [author,dbBack] = await Promise.all([
+    let [author, dbBack] = await Promise.all([
       User.findById(reply.author, { username: 1, avatar: 1 }).lean(),
-      addReplyStatistics(reply)
+      addReplyStatistics(reply),
     ]);
     dbBack.author = author;
     return res.status(200).json({ dbBack });
