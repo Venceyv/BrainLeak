@@ -1,10 +1,11 @@
-import { FC } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { FC } from "react";
+import { Routes, Route } from "react-router-dom";
 
-import { Home } from './pages/Home';
-import { Layout } from './layouts/layout';
-import './App.css';
-import { Post } from './pages/Post';
+import { Home } from "./pages/Home";
+import { Layout } from "./layouts/layout";
+import "./App.css";
+import { Post } from "./pages/Post";
+import { Search } from "./pages/Search";
 
 const App: FC = (): JSX.Element => {
   return (
@@ -14,8 +15,9 @@ const App: FC = (): JSX.Element => {
           <Route path="" element={<Home />}>
             <Route path="post/:postId" element={<Post />} />
           </Route>
-          {/* <Route path="profile" element={<div>IP</div>} />
-          <Route path="search" element={<div>IP</div>} /> */}
+
+          {/* <Route path="profile" element={<div>IP</div>} /> */}
+          <Route path="search/:searchParam" element={<Search />} />
         </Route>
 
         {/* <Route path="/1" element={<NavBar />} /> */}

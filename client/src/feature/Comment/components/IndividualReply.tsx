@@ -1,14 +1,19 @@
-import { FC, useState } from 'react';
-import ReactQuill from 'react-quill';
-import TimeAgo from 'react-timeago';
-import { CommentReply, PostComment } from '../../../interfaces/comment';
-import { formatNumber } from '../../../utils/formatNumber';
-import 'react-quill/dist/quill.bubble.css';
-import './IndividualComment.css';
-import { Replies } from './Replies';
-import { NewComment } from '../../UserPost/components/NewComment';
+import { FC, useState } from "react";
+import ReactQuill from "react-quill";
+import TimeAgo from "react-timeago";
+import {
+  CommentReply,
+  PostComment,
+} from "../../../interfaces/comment";
+import { formatNumber } from "../../../utils/formatNumber";
+import "react-quill/dist/quill.bubble.css";
+import "./IndividualComment.css";
+import { Replies } from "./Replies";
+import { NewComment } from "../../UserPost/components/NewComment";
 
-export const IndividualReply: FC<CommentReply> = (reply): JSX.Element => {
+export const IndividualReply: FC<CommentReply> = (
+  reply
+): JSX.Element => {
   const [showReply, setShowReply] = useState<boolean>(false);
   return (
     <div className="pl-4 w-full mb-2">
@@ -21,13 +26,18 @@ export const IndividualReply: FC<CommentReply> = (reply): JSX.Element => {
         <p className="text-sm cursor-pointer truncate text-white">
           {reply.author.username}
         </p>
-        <div className="pt-[8px] h-[calc(100%-2px)] text-xs text-white">*</div>
+        <div className="pt-[8px] h-[calc(100%-2px)] text-xs text-white">
+          *
+        </div>
         <TimeAgo
           className="text-xs pt-[2px] text-white opacity-90"
           date={reply.publishDate}
         />
       </div>
 
+      <div className="ml-10 text-[10px] text-opacity-80 w-fit hover:underline cursor-pointer text-white">
+        @{reply.mentionedUser.username}
+      </div>
       <div className="flex flex-col gap-4 border-l-2 pl-6 ml-[14px] mt-2 text-sm border-border-black text-white">
         <ReactQuill theme="bubble" value={reply.content} readOnly />
 
