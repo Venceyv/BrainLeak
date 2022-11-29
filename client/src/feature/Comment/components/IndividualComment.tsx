@@ -11,8 +11,6 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { getReplies } from '../../../api/commentAPI';
 import { useParams } from 'react-router-dom';
 
-dayjs.extend(relativeTime);
-
 export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
   const [showReply, setShowReply] = useState<boolean>(false);
   const [showUserReply, setShowUserReply] = useState<boolean>(false);
