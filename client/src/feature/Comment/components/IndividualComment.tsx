@@ -10,6 +10,11 @@ import { NewComment } from '../../UserPost/components/NewComment';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { getReplies } from '../../../api/commentAPI';
 import { useParams } from 'react-router-dom';
+import { DateTime } from 'luxon';
+import * as dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
   const [showReply, setShowReply] = useState<boolean>(false);
@@ -87,6 +92,7 @@ export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
           <NewComment
             postId={comment.relatedPost}
             commentId={comment._id}
+            commentUserId={comment.author._id}
             isReply={true}
             setShowReply={setShowReply}
           />

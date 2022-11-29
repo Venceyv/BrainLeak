@@ -8,6 +8,7 @@ export const Loading: FC<{ width: string; height: string }> = ({
   return (
     <div className={`flex justify-center w-${width} h-${height}`}>
       <MagnifyingGlass
+        key={'l009'}
         visible={true}
         height="80px"
         width="80px"
