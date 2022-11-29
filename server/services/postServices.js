@@ -254,7 +254,7 @@ function postFilter(posts, timeInterval = "default") {
 }
 function postPopularity(post) {
   const popularity =
-    post.statistics.likes * 2 + post.statistics.comments * 3 + post.statistics.marks * 4 + post.statistics.views;
+    post.statistics.likes * 20 + post.statistics.comments * 30 + post.statistics.marks * 40 + post.statistics.views*10;
   return popularity;
 }
 export {
