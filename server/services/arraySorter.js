@@ -1,3 +1,5 @@
+import { postPopularity } from "./postServices.js";
+
 function sortWith(array, condition) {
   try {
     switch (condition) {
@@ -16,12 +18,12 @@ function sortWith(array, condition) {
         break;
       case "hot":
         array.sort((a, b) => {
-          //pubulished til now --minutes
-          const aCreateTime = (Date.now() - new Date(a.publishDate)) / 1000 / 60;
-          //pubulished til now --minutes
-          const bCreateTime = (Date.now() - new Date(b.publishDate)) / 1000 / 60;
-          const aHot = Math.round(a.statistics.likes / aCreateTime);
-          const bHot = Math.round(b.statistics.likes / bCreateTime);
+          //pubulished till now --seconds
+          const aCreateTime = (Date.now() - new Date(a.publishDate)) / 1000 / 60 / 60;
+          //pubulished till now --seconds
+          const bCreateTime = (Date.now() - new Date(b.publishDate)) / 1000 / 60 / 60;
+          const aHot = Math.round(postPopularity(a) / aCreateTime);
+          const bHot = Math.round(postPopularity(b) / bCreateTime);
           if (aHot > bHot) {
             return -1;
           }

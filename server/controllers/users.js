@@ -32,6 +32,7 @@ import { beautyCommentsInfo } from "../services/commentServices.js";
 import { sortWith } from "../services/arraySorter.js";
 import { promisify } from "util";
 import dotenv from "dotenv";
+import { regexFilter } from "../services/regexFilter.js";
 dotenv.config();
 const verify = promisify(jwt.verify);
 
@@ -127,9 +128,11 @@ async function findBySearch(req, res) {
     res.setHeader("Content-Type", "application/json");
     const pageNum = Number(req.query.pagenumber);
     const pageSize = Number(req.query.pagesize);
+    let query = req.query.q;
+    query = regexFilter(query);
     let dbBack = await User.find(
       {
-        username: { $regex: req.query.q, $options: "$i" },
+        username: { $regex: query, $options: "$i" },
       },
       { isDelete: 0, email: 0 }
     ).lean();
