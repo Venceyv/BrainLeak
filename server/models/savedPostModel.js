@@ -21,7 +21,7 @@ const savedPostSchema = new Schema({
   },
   publishDate: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
 });
 export { savedPostSchema };

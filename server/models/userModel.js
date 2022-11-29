@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
@@ -36,7 +35,7 @@ const userSchema = new Schema({
   },
   createTime:{
     type:Date,
-    default:Date.now()
+    default:Date.now
   },
   isDelete: {
     type: Boolean,
