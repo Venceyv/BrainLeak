@@ -15,6 +15,7 @@ import { incUserNotification, incUserStatistics, userTrendingInc } from "../serv
 import json from "body-parser";
 import { redisTrending } from "../configs/redis.js";
 import { sortWith } from "../services/arraySorter.js";
+import { regexFilter } from "../services/regexFilter.js";
 
 async function createPost(req, res) {
   try {
@@ -132,10 +133,12 @@ async function findBySearch(req, res) {
     const pageSize = req.query.pagesize;
     const timeInterval = req.query.timeInterval;
     const order = req.query.sort;
+    let query = req.query.q;
+    query = regexFilter(query); 
     let dbBack = await Post.find({
       $or: [
-        { title: { $regex: req.query.q, $options: "$i" } },
-        { description: { $regex: req.query.q, $options: "$i" } },
+        { title: { $regex: query, $options: "$i" } },
+        { description: { $regex: query, $options: "$i" } },
       ],
     })
       .lean()
