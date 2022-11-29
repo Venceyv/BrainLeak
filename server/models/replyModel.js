@@ -7,7 +7,7 @@ const replySchema = new Schema({
   },
   publishDate: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   relatedComment: {
     type: mongoose.ObjectId,

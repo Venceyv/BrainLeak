@@ -16,7 +16,7 @@ const followSchema = new Schema({
   },
   publishDate: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
 });
 export { followSchema };

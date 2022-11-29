@@ -14,11 +14,11 @@ const commentSchema = new Schema({
   },
   publishDate: {
     type: Date,
-    default: Date.now(),
+    default:Date.now,
   },
   updateDate: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   relatedPost: {
     type: mongoose.ObjectId,
