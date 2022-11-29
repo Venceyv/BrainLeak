@@ -12,6 +12,7 @@ export const getComments = async (
     } = await axios.get(
       `${URL}/posts/comments/${postId}?pagesize=10&pagenumber=${pageNumber}&sort=new`
     );
+    console.log(comments);
     return comments as PostComment[];
   } catch (err) {
     throw err;

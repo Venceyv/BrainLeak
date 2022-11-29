@@ -17,7 +17,7 @@ export const UserCard: FC<TrendingUser> = (trendingUser): JSX.Element => {
       />
 
       <div className="absolute flex text-sm cursor-pointer w-[calc(100%-80px)] truncate top-[52px] left-[80px]">
-        <p className="w-[120px] truncate text-white">
+        <p className="w-[100px] truncate text-white">
           {trendingUser.user.username}
         </p>
 

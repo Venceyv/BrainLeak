@@ -38,7 +38,7 @@ export const getPosts = async (
   pageNum: number,
   sortType: MenuItem,
   timeInterval: IntervalItem = 'allTime'
-): Promise<Post<Statistic>[]> => {
+): Promise<Post<StatisticWithMark>[]> => {
   let interval;
 
   if (timeInterval !== 'allTime' && sortType !== 'new') {
@@ -67,7 +67,44 @@ export const getPosts = async (
     const {
       data: { dbBack: posts },
     } = await axios.get(queryUrl);
-    return posts as Post<Statistic>[];
+    console.log(posts);
+    return posts as Post<StatisticWithMark>[];
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const putLikePost = async (postId: string) => {
+  try {
+    const {
+      data: { dbBack: post },
+    } = await axios.put(`${URL}/posts/like/${postId}`);
+    console.log(post);
+    return post;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const putDislikePost = async (postId: string) => {
+  try {
+    const {
+      data: { dbBack: post },
+    } = await axios.put(`${URL}/posts/dislike/${postId}`);
+    console.log(post);
+    return post;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const putSavePost = async (postId: string) => {
+  try {
+    const {
+      data: { dbBack: post },
+    } = await axios.put(`${URL}/posts/save/${postId}`);
+    console.log(post);
+    return post;
   } catch (err) {
     throw err;
   }

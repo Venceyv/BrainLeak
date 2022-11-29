@@ -35,8 +35,8 @@ export const NewComment: FC<{
         if (setShowReply) {
           setShowReply(false);
         }
-        queryClient.invalidateQueries(['postComment', 'postCommentReply']);
-        queryClient.refetchQueries(['postComment', 'postCommentReply']);
+        queryClient.invalidateQueries(['postComment']);
+        queryClient.invalidateQueries(['postCommentReply']);
       },
       onError: (err: AxiosError) => {
         console.log(err);

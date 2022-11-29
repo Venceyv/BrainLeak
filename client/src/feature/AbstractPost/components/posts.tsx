@@ -60,9 +60,23 @@ export const Posts: FC<PostsProp> = ({
                     dislike: post?.statistics?.dislikes,
                     date: post?.publishDate,
                     _id: post?._id,
+                    marks: post?.statistics?.marks,
+                  };
+
+                  const userStatProp = {
+                    like: post?.like,
+                    dislike: post?.dislike,
+                    save: post?.save,
                   };
                   return (
-                    <Post key={index} user={post.author} post={postProp} />
+                    <Post
+                      key={index}
+                      user={post.author}
+                      post={postProp}
+                      like={userStatProp.like}
+                      dislike={userStatProp.dislike}
+                      save={userStatProp.save}
+                    />
                   );
                 });
               })}

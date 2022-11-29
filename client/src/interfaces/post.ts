@@ -46,12 +46,15 @@ export interface Post<T> {
   description: string;
   publishDate: string;
   updateDate: string;
+  like?: boolean;
+  dislike?: boolean;
+  save?: boolean;
   _v?: number;
   _id: string;
 }
 
-export interface PostSearchResult extends Post<StatisticWithMark>{
+export interface PostSearchResult extends Post<StatisticWithMark> {
   save: boolean;
-  like:boolean;
-  dislike:boolean;
+  like: boolean;
+  dislike: boolean;
 }
