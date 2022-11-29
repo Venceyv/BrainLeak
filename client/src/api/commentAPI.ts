@@ -45,14 +45,15 @@ export const postComment = async (postId: string, commentContent: string) => {
   }
 };
 
-export const postReply = async (
+export const postUserReply = async (
   postId: string,
   commentId: string,
+  commentUserId: string,
   commentContent: string
 ) => {
   try {
     const dbBack = await axios.post(
-      `${URL}/posts/comment/reply/${postId}/${commentId}`,
+      `${URL}/posts/comment/reply/${postId}/${commentId}/${commentUserId}`,
       {
         content: commentContent,
       }
