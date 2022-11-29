@@ -9,8 +9,6 @@ import { convertDate } from '../../../utils/convertDate';
 import { formatNumber } from '../../../utils/formatNumber';
 import { usePutUserStatusMutation } from './Post.hook';
 
-// TODO: add post interface on api && move to interface folder
-
 interface PostProp {
   user: Author;
   post: {
@@ -35,8 +33,12 @@ export const Post: FC<PostProp> = ({
   dislike,
   save,
 }): JSX.Element => {
-  const [isLiked, setIsLiked] = useState<boolean>(like ? true : false);
-  const [isSaved, setIsSaved] = useState<boolean>(save ? true : false);
+  const [isLiked, setIsLiked] = useState<boolean>(
+    like ? true : false
+  );
+  const [isSaved, setIsSaved] = useState<boolean>(
+    save ? true : false
+  );
 
   const { putDislikeMutation, putLikeMutation, putSaveMutation } =
     usePutUserStatusMutation(post._id);
@@ -63,7 +65,10 @@ export const Post: FC<PostProp> = ({
           </p>
         </Link>
         <span className="flex flex-row gap-3 text-xs pb-1 w-full">
-          <div className="flex" onClick={() => putLikeMutation.mutate()}>
+          <div
+            className="flex"
+            onClick={() => putLikeMutation.mutate()}
+          >
             {/* <img
                 src="../../../assets/img/like.svg"
                 className="w-5 h-5"
@@ -74,19 +79,27 @@ export const Post: FC<PostProp> = ({
               Like: {formatNumber(post?.like)}
             </p>
           </div>
-          <div className="flex" onClick={() => putDislikeMutation.mutate()}>
+          <div
+            className="flex"
+            onClick={() => putDislikeMutation.mutate()}
+          >
             <DislikeThumb isTrue={dislike ? true : false} />
             <p className="truncate pl-[2px] pt-[2px]">
               Dislike: {formatNumber(post?.dislike)}
             </p>
           </div>
-          <div className="flex" onClick={() => putSaveMutation.mutate()}>
+          <div
+            className="flex"
+            onClick={() => putSaveMutation.mutate()}
+          >
             <Bookmark isTrue={isSaved} />
             <p className="truncate pl-[2px] pt-[2px]">
               Bookmark: {formatNumber(post?.marks)}
             </p>
           </div>
-          <p className="ml-auto truncate">{convertDate(post?.date)}</p>
+          <p className="ml-auto truncate">
+            {convertDate(post?.date)}
+          </p>
         </span>
       </div>
     </div>

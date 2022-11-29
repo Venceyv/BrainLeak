@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { UserSearch } from "../feature/Search";
+import { FC } from 'react';
+import { UserSearch } from '../feature/Search';
 
 export const Search: FC = (): JSX.Element => {
   return (

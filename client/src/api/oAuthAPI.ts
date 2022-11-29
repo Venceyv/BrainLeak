@@ -2,7 +2,9 @@ import { URL } from '../data/Constants';
 import axios from './axiosConfig';
 
 // google OAuth
-export const postGoogleOAuth: Function = async (code: string): Promise<any> => {
+export const postGoogleOAuth: Function = async (
+  code: string
+): Promise<any> => {
   try {
     const { data } = await axios.post(`${URL}/auth/google`, {
       code,

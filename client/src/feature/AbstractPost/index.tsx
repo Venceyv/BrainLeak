@@ -5,7 +5,8 @@ import { IntervalItem, MenuItem } from '../../interfaces/post';
 
 export const AbstractPost: FC = (): JSX.Element => {
   // const { data, isLoading, isSuccess } = useQuery(['posts'], () => getPosts(1, 5));
-  const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem>('hot');
+  const [selectedMenuItem, setSelectedMenuItem] =
+    useState<MenuItem>('hot');
   const [selectedTimeInterval, setSelectedTimeInterval] =
     useState<IntervalItem>('today');
 

@@ -5,8 +5,9 @@ import { Loading } from '../../../components/Loading';
 import { TrendingPost } from './TrendingPost';
 
 export const TrendingPosts: FC = () => {
-  const { data, isLoading, isSuccess } = useQuery(['trendingPosts'], () =>
-    getTrendingPosts()
+  const { data, isLoading, isSuccess } = useQuery(
+    ['trendingPosts'],
+    () => getTrendingPosts()
   );
 
   if (isLoading) {

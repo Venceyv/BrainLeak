@@ -51,7 +51,11 @@ export const NewComment: FC<{
     <>
       <div className="flex flex-col gap-2 p-2 border-2 text-white bg-secondary-black border-border-black rounded-md">
         <div>
-          <ReactQuill theme="snow" value={value} onChange={setValue} />
+          <ReactQuill
+            theme="snow"
+            value={value}
+            onChange={setValue}
+          />
         </div>
 
         <button

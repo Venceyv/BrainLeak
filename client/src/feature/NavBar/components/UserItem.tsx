@@ -13,7 +13,9 @@ interface UserItemProp {
   setLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const UserItem: FC<UserItemProp> = ({ setLogin }): JSX.Element => {
+export const UserItem: FC<UserItemProp> = ({
+  setLogin,
+}): JSX.Element => {
   const { userRef, isDropdown, toggleUserDropdown, setUserDropdown } =
     useDropdown();
   useDetectOutsideClick(userRef, setUserDropdown);

@@ -11,7 +11,9 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { getReplies } from '../../../api/commentAPI';
 import { useParams } from 'react-router-dom';
 
-export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
+export const IndividualComment: FC<PostComment> = (
+  comment
+): JSX.Element => {
   const [showReply, setShowReply] = useState<boolean>(false);
   const [showUserReply, setShowUserReply] = useState<boolean>(false);
 
@@ -26,7 +28,9 @@ export const IndividualComment: FC<PostComment> = (comment): JSX.Element => {
         <p className="text-sm cursor-pointer truncate text-white">
           {comment.author.username}
         </p>
-        <div className="pt-[8px] h-[calc(100%-2px)] text-xs text-white">*</div>
+        <div className="pt-[8px] h-[calc(100%-2px)] text-xs text-white">
+          *
+        </div>
         <TimeAgo
           className="text-xs pt-[2px] text-white opacity-90"
           date={comment.publishDate}

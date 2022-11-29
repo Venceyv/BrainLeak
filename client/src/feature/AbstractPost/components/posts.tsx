@@ -30,7 +30,9 @@ export const Posts: FC<PostsProp> = ({
       getPosts(pageParam, selectedMenuItem, selectedTimeInterval),
     {
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage.length >= 10 ? allPages.length + 1 : undefined;
+        return lastPage.length >= 10
+          ? allPages.length + 1
+          : undefined;
       },
     }
   );

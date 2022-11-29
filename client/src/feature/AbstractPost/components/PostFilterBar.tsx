@@ -2,12 +2,20 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { useApplyFocus } from './PostFilterBar.hook';
 
 type MenuItem = 'top' | 'new' | 'hot' | null;
-type IntervalItem = 'today' | 'week' | 'month' | 'year' | 'allTime' | null;
+type IntervalItem =
+  | 'today'
+  | 'week'
+  | 'month'
+  | 'year'
+  | 'allTime'
+  | null;
 
 interface PostFilterBarProp {
   selectedMenuItem: MenuItem;
   setSelectedMenuItem: React.Dispatch<React.SetStateAction<MenuItem>>;
-  setSelectedTimeInterval: React.Dispatch<React.SetStateAction<IntervalItem>>;
+  setSelectedTimeInterval: React.Dispatch<
+    React.SetStateAction<IntervalItem>
+  >;
 }
 
 export const PostFilterBar: FC<PostFilterBarProp> = ({
@@ -26,7 +34,9 @@ export const PostFilterBar: FC<PostFilterBarProp> = ({
   const isShowTimeInterval =
     selectedMenuItem === 'top' || selectedMenuItem === 'hot';
 
-  const setSelectedTime = (ev: React.ChangeEvent<HTMLSelectElement>) => {
+  const setSelectedTime = (
+    ev: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     console.log(ev.target.value as IntervalItem);
     setSelectedTimeInterval(ev.target.value as IntervalItem);
   };
@@ -59,7 +69,11 @@ export const PostFilterBar: FC<PostFilterBarProp> = ({
           applyFocus(1);
         }}
       >
-        <img src="../../assets/img/new4.svg" className="w-7 h-7" alt="new" />
+        <img
+          src="../../assets/img/new4.svg"
+          className="w-7 h-7"
+          alt="new"
+        />
         <p className="align-middle text-opacity-75 pl-[3px] group-hover:text-opacity-100 group-focus:text-opacity-100 text-white">
           New
         </p>
@@ -71,7 +85,11 @@ export const PostFilterBar: FC<PostFilterBarProp> = ({
           applyFocus(2);
         }}
       >
-        <img src="../../../assets/img/Top.svg" className="w-7 h-7" alt="top" />
+        <img
+          src="../../../assets/img/Top.svg"
+          className="w-7 h-7"
+          alt="top"
+        />
         <p className="align-middle text-opacity-75 pl-1 group-hover:text-opacity-100 group-focus:text-opacity-100 text-white">
           Top
         </p>

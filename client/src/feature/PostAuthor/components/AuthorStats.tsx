@@ -2,7 +2,9 @@ import { FC } from 'react';
 import { UserStatistics } from '../../../interfaces/user';
 import { formatNumber } from '../../../utils/formatNumber';
 
-export const AuthorStats: FC<UserStatistics> = (statistics): JSX.Element => {
+export const AuthorStats: FC<UserStatistics> = (
+  statistics
+): JSX.Element => {
   return (
     <div className="flex items-start flex-wrap gap-1 pb-1 justify-start col-span-2 row-span-3">
       <div className="flex w-[130px] gap-1">

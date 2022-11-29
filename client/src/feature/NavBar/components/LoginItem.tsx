@@ -9,7 +9,9 @@ interface LoginItemProp {
   setLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const LoginItem: FC<LoginItemProp> = ({ setLogin }): JSX.Element => {
+export const LoginItem: FC<LoginItemProp> = ({
+  setLogin,
+}): JSX.Element => {
   const [isPresentLogin, setPresentLogin] = useState<boolean>(false);
 
   const togglePresentLogin: React.MouseEventHandler<
@@ -39,7 +41,10 @@ export const LoginItem: FC<LoginItemProp> = ({ setLogin }): JSX.Element => {
         onClose={() => setPresentLogin(false)}
       >
         <div className="fixed top-0 left-0 flex items-center h-screen w-[calc(100vw-18px)] blur bg-opacity-80 bg-primary-black "></div>
-        <Login setLogin={setLogin} setPresentLogin={setPresentLogin} />
+        <Login
+          setLogin={setLogin}
+          setPresentLogin={setPresentLogin}
+        />
       </Popup>
     </>
   );

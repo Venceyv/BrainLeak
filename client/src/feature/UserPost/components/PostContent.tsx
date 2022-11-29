@@ -1,5 +1,9 @@
 import { FC } from 'react';
-import { Post, Statistic, StatisticWithMark } from '../../../interfaces/post';
+import {
+  Post,
+  Statistic,
+  StatisticWithMark,
+} from '../../../interfaces/post';
 import { Statistics } from './Statistics';
 import { Tag } from './Tag';
 import { TopBar } from './TopBar';
@@ -21,7 +25,9 @@ const PostBy: FC<{ author: Author; publishDate: string }> = ({
       <p className="truncate pl-[2px] pt-[3px] text-xs text-white">
         {author?.username}
       </p>
-      <div className="ml-2 pt-[3px] h-[calc(100%-2px)] text-white">*</div>
+      <div className="ml-2 pt-[3px] h-[calc(100%-2px)] text-white">
+        *
+      </div>
       <TimeAgo
         className="text-xs pt-[2px] opacity-90 text-white"
         date={`${publishDate}`}
@@ -41,7 +47,10 @@ export const PostContent: FC<{
         dislikes={post.statistics.dislikes}
       />
       <div className="flex flex-col gap-1 mt-[60px] p-2 border-2 rounded-md bg-secondary-black border-border-black">
-        <PostBy author={post?.author} publishDate={post.publishDate} />
+        <PostBy
+          author={post?.author}
+          publishDate={post.publishDate}
+        />
         <div className="w-full text-[20px] font-bold text-white">
           {post.title}
         </div>
@@ -50,7 +59,9 @@ export const PostContent: FC<{
             return <Tag key={index} tag={tag} />;
           })}
         </div>
-        <div className="text-sm mt-3 w-full text-white">{post.description}</div>
+        <div className="text-sm mt-3 w-full text-white">
+          {post.description}
+        </div>
         <Statistics
           view={post?.statistics?.views}
           comment={post?.statistics?.comments}

@@ -1,7 +1,13 @@
-const focusStyle = ['border-border-black', 'bg-primary-black', 'outline-none'];
+const focusStyle = [
+  'border-border-black',
+  'bg-primary-black',
+  'outline-none',
+];
 const removeStyle = 'border-secondary-black';
 
-export const useApplyFocus = (buttonRef: React.RefObject<HTMLDivElement>) => {
+export const useApplyFocus = (
+  buttonRef: React.RefObject<HTMLDivElement>
+) => {
   const applyFocus = (index: number) => {
     const button = buttonRef?.current;
     let location = Number(sessionStorage.getItem('currMenuItemLoc'));

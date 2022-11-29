@@ -22,7 +22,10 @@ export const useLogin = ({
         const data = await postGoogleOAuth(code);
 
         localStorage.setItem('jwt', JSON.stringify(data.accessToken));
-        localStorage.setItem('userId', JSON.stringify(data.dbBack._id));
+        localStorage.setItem(
+          'userId',
+          JSON.stringify(data.dbBack._id)
+        );
 
         setLogin(true);
         setPresentLogin(false);
@@ -38,7 +41,9 @@ export const useLogin = ({
     flow: 'auth-code',
   });
 
-  const closeLogin: React.MouseEventHandler<HTMLButtonElement> = (): void => {
+  const closeLogin: React.MouseEventHandler<
+    HTMLButtonElement
+  > = (): void => {
     setPresentLogin(false);
     console.log('closed');
   };

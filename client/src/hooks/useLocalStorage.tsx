@@ -10,7 +10,10 @@ const useLocalStorage = (
   (a: string) => void
 ] => {
   // const [dataName, setDataName] = useState<string | Object>('');
-  const setStorage = (dataName: string, inputData: string | object): void => {
+  const setStorage = (
+    dataName: string,
+    inputData: string | object
+  ): void => {
     if (dataName != null) {
       localStorage.setItem(dataName, JSON.stringify(inputData));
     }

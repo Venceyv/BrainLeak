@@ -14,7 +14,10 @@ export const Layout: FC = (): JSX.Element => {
     }
   });
   return (
-    <div ref={containerRef} className="w-full h-full bg-primary-black">
+    <div
+      ref={containerRef}
+      className="w-full h-full bg-primary-black"
+    >
       <NavBar />
       <Outlet />
     </div>

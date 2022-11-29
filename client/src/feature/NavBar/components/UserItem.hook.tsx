@@ -24,9 +24,12 @@ export const useDetectOutsideClick = (
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', (e: globalThis.MouseEvent) => {
-      detectOutsideClick(e);
-    });
+    document.addEventListener(
+      'mousedown',
+      (e: globalThis.MouseEvent) => {
+        detectOutsideClick(e);
+      }
+    );
   }, []);
 };
 
@@ -36,7 +39,9 @@ export const useDropdown = (): useDropdownReturn => {
     null
   ) as React.MutableRefObject<HTMLDivElement>;
 
-  const toggleUserDropdown: React.MouseEventHandler<HTMLElement> = (): void => {
+  const toggleUserDropdown: React.MouseEventHandler<
+    HTMLElement
+  > = (): void => {
     setDropdown((prev) => !prev);
   };
   const setUserDropdown = (dropdownState: boolean) => {

@@ -36,7 +36,9 @@ export const AuthorCard: FC<{ authorId: string }> = ({
       />
 
       <div className="absolute flex text-sm w-[calc(100%-80px)] truncate top-[72px] left-[80px]">
-        <p className="w-[120px] truncate text-white">{data?.username}</p>
+        <p className="w-[120px] truncate text-white">
+          {data?.username}
+        </p>
       </div>
 
       <div className="flex items-center justify-start gap-2 mt-5 col-span-2 row-span-2">
@@ -82,7 +84,9 @@ export const AuthorCard: FC<{ authorId: string }> = ({
           className="absolute h-4 w-14 top-[46px] left-[0px] bg-secondary-black rotate-[12deg] rounded-tl-[30px] rounded-bl-[30px] cursor-pointer"
           onClick={toggleStatText}
         >
-          <p className="absolute text-sm top-0 left-[10px] text-white">Stats</p>
+          <p className="absolute text-sm top-0 left-[10px] text-white">
+            Stats
+          </p>
         </div>
       </div>
     </div>

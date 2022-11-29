@@ -12,7 +12,9 @@ interface RepliesType {
   commentId: string;
 }
 
-export const Replies: FC<RepliesType> = ({ commentId }): JSX.Element => {
+export const Replies: FC<RepliesType> = ({
+  commentId,
+}): JSX.Element => {
   const { postId } = useParams();
   const {
     data,

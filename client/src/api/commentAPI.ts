@@ -36,11 +36,17 @@ export const getReplies = async (
   }
 };
 
-export const postComment = async (postId: string, commentContent: string) => {
+export const postComment = async (
+  postId: string,
+  commentContent: string
+) => {
   try {
-    const dbBack = await axios.post(`${URL}/posts/comment/${postId}`, {
-      content: commentContent,
-    });
+    const dbBack = await axios.post(
+      `${URL}/posts/comment/${postId}`,
+      {
+        content: commentContent,
+      }
+    );
   } catch (error) {
     throw error;
   }

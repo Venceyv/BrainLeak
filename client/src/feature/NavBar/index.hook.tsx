@@ -7,7 +7,9 @@ interface useCheckAuthParam {
   setLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const useCheckAuth = ({ setLogin }: useCheckAuthParam): void => {
+export const useCheckAuth = ({
+  setLogin,
+}: useCheckAuthParam): void => {
   useEffect(() => {
     const checkUserAuth = async (userId: string): Promise<void> => {
       const userData: User | undefined = await getCheckAuth(userId);

@@ -18,7 +18,9 @@ export const NavBar: FC = (): JSX.Element => {
         onClick={() => navigate('')}
       >
         <span className="sr-only">Home</span>
-        <div className="h-full font-gemini text-3xl m-2">BrainLeak</div>
+        <div className="h-full font-gemini text-3xl m-2">
+          BrainLeak
+        </div>
       </div>
       <SearchItem />
       {isLoggedIn && <NotificationItem />}

@@ -1,11 +1,11 @@
-import { FC } from "react";
-import { Routes, Route } from "react-router-dom";
+import { FC } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-import { Home } from "./pages/Home";
-import { Layout } from "./layouts/layout";
-import "./App.css";
-import { Post } from "./pages/Post";
-import { Search } from "./pages/Search";
+import { Home } from './pages/Home';
+import { Layout } from './layouts/layout';
+import './App.css';
+import { Post } from './pages/Post';
+import { Search } from './pages/Search';
 
 const App: FC = (): JSX.Element => {
   return (

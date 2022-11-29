@@ -40,11 +40,15 @@ export const PostAbstract: FC<PostAbstractProp> = ({
           {post.description}
         </p>
         <span className="flex flex-row gap-2 text-[11px] pt-3">
-          <p className="overflow-hidden truncate">Like: {post.likeCount}</p>
+          <p className="overflow-hidden truncate">
+            Like: {post.likeCount}
+          </p>
           <p className="overflow-hidden truncate">
             Dislike: {post.dislikeCount}
           </p>
-          <p className="ml-auto overflow-hidden truncate">{post.date}</p>
+          <p className="ml-auto overflow-hidden truncate">
+            {post.date}
+          </p>
         </span>
       </div>
     </div>

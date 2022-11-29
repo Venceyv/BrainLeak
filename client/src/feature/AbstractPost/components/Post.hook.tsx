@@ -1,6 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { putDislikePost, putLikePost, putSavePost } from '../../../api/postAPI';
+import {
+  putDislikePost,
+  putLikePost,
+  putSavePost,
+} from '../../../api/postAPI';
 import { errorToast, successToast } from '../../../utils/errorToast';
 
 export const usePutUserStatusMutation = (postId: string) => {
@@ -16,17 +20,20 @@ export const usePutUserStatusMutation = (postId: string) => {
     },
   });
 
-  const putDislikeMutation = useMutation(() => putDislikePost(postId), {
-    onSuccess: () => {
-      successToast('Successfully Disliked');
-    },
-    onError: (err: AxiosError) => {
-      console.log(err);
-      if (err?.response?.status === 401) {
-        errorToast('Please Login First');
-      }
-    },
-  });
+  const putDislikeMutation = useMutation(
+    () => putDislikePost(postId),
+    {
+      onSuccess: () => {
+        successToast('Successfully Disliked');
+      },
+      onError: (err: AxiosError) => {
+        console.log(err);
+        if (err?.response?.status === 401) {
+          errorToast('Please Login First');
+        }
+      },
+    }
+  );
 
   const putSaveMutation = useMutation(() => putSavePost(postId), {
     onSuccess: () => {

@@ -22,7 +22,9 @@ export function useTriggerScrollFix(deps: number) {
   }, [deps]);
 }
 
-export const Comments: FC<CommentsProp> = ({ postId }): JSX.Element => {
+export const Comments: FC<CommentsProp> = ({
+  postId,
+}): JSX.Element => {
   // const { data, isLoading, isError } = useQuery(['postComment'], () =>
   //   getComments(postId)
   // );

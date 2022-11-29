@@ -7,7 +7,9 @@ import { formatNumber } from '../../../utils/formatNumber';
 //   user: TrendingUserType;
 // }
 
-export const UserCard: FC<TrendingUser> = (trendingUser): JSX.Element => {
+export const UserCard: FC<TrendingUser> = (
+  trendingUser
+): JSX.Element => {
   return (
     <div className="relative grid grid-cols-3 grid-rows-4 gap-1 py-3 overflow-hidden w-[270px] h-[160px] rounded-2xl p-3 pb-[0px] border-2 bg-secondary-black border-border-black cursor-pointer">
       <img

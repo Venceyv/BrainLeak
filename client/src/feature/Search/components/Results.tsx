@@ -1,10 +1,10 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { FC } from "react";
-import InfiniteScroll from "react-infinite-scroller";
-import { useParams } from "react-router-dom";
-import { getSearch } from "../../../api/searchAPI";
-import { Loading } from "../../../components/Loading";
-import { NoMore } from "../../../components/NoMore";
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { FC } from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
+import { useParams } from 'react-router-dom';
+import { getSearch } from '../../../api/searchAPI';
+import { Loading } from '../../../components/Loading';
+import { NoMore } from '../../../components/NoMore';
 
 export const Results: FC = (): JSX.Element => {
   const { searchParam } = useParams();
@@ -16,7 +16,7 @@ export const Results: FC = (): JSX.Element => {
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    ["postComment"],
+    ['postComment'],
     ({ pageParam = 1 }) => getSearch(searchParam!, pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
@@ -26,7 +26,7 @@ export const Results: FC = (): JSX.Element => {
   );
 
   if (isInitialLoading) {
-    return <Loading width={"full"} height={"full"} />;
+    return <Loading width={'full'} height={'full'} />;
   }
 
   return (
@@ -36,7 +36,7 @@ export const Results: FC = (): JSX.Element => {
           pageStart={0}
           loadMore={() => fetchNextPage()}
           hasMore={hasNextPage ? true : false}
-          loader={<Loading key={0} width={"full"} height={"full"} />}
+          loader={<Loading key={0} width={'full'} height={'full'} />}
           useWindow={false}
         >
           {/* {isSuccess && data.pages.map(page => {

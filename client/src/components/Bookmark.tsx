@@ -4,10 +4,14 @@ interface BookmarkProp {
   isTrue: boolean;
 }
 
-export const Bookmark: FC<BookmarkProp> = ({ isTrue }): JSX.Element => {
+export const Bookmark: FC<BookmarkProp> = ({
+  isTrue,
+}): JSX.Element => {
   return (
     <svg
-      className={`icon w-5 h-5 ${isTrue ? 'fill-red-secondary' : 'fill-white'}`}
+      className={`icon w-5 h-5 ${
+        isTrue ? 'fill-red-secondary' : 'fill-white'
+      }`}
       viewBox="0 0 1024 1024"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"

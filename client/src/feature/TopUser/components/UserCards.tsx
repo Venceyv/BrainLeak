@@ -5,7 +5,9 @@ import { Loading } from '../../../components/Loading';
 import { UserCard } from './UserCard';
 
 export const UserCards: FC = (): JSX.Element => {
-  const { data, isLoading } = useQuery(['userCards'], () => getUserTrending());
+  const { data, isLoading } = useQuery(['userCards'], () =>
+    getUserTrending()
+  );
 
   if (isLoading) {
     return <Loading width={'[270px]'} height={'full'} />;
