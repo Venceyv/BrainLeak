@@ -1,50 +1,54 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-function Header(/*{follower, following}*/) {
+function Header() {
 
+
+  // const [headerAPI, setHeaderAPI] = useState([]); 
+  // const [name, setName] = useState([]);
+
+  // const fetchHeader = () => {
+  //   fetch("https://jsonplaceholder.typicode.com/photos?id=1").then(response => response.json()).then((json) => setHeaderAPI(json));
+  // }
+
+  // const fetchName = () => {
+  //   fetch("https://jsonplaceholder.typicode.com/users").then(response => response.json()).then((json) => setName(json));
+  // }
+
+  // useEffect(() => {
+  //   fetchHeader();
+  //   fetchName();
+  // })
+
+  
   return (
     //Profile Parent Container
-    <div className="h-1/3">
-      <div className="flex flex-row pb-3 bg-teal-900  rounded-b-lg h-full">
+    //SET BANNER TO FIXED SIZE
+      <div className="bg-slate-700	 h-[210px] rounded-b-lg flex">
+        {/* <img className="border-2 border-black h-[210px] w-full rounded-b-lg flex flex-row" src={headerAPI[0]?.url}></img> */}
+          <div className="mb-2 flex items-center mt-auto overflow-auto text-black	pt-2">
+          
+          {/* Container for Image */}
+            <div className="ml-2 float-left p-1">
+              {/* User Icon placeholder */}
+                <img className='h-auto w-[105px] p-0.5'
+                src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar"></img>
+    
+            </div>
+            <div className='text-left p-2 leading-5'>
+                {/* UserName placeholder, need to add react imports (from API) */}
+                <div className='font-bold'>
+                  {/* {name[0]?.name} */}
+                  Name Place Holder
+                </div>
+    
+                {/* Link placeholder to send to profile page for editing */}
+    
+                <div className=''>
+                <a href="./">Edit your Profile</a>
+                </div>
+            </div>
+          </div>
       </div>
-      <div className="flex items-center mt-auto overflow-auto text-black	pt-2">
-      {/* Container for Image */}
-        <div className="float-left p-1">
-          {/* User Icon placeholder */}
-            <img className='h-auto w-14 p-0.5'
-            src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar"></img>
-
-        </div>
-        <div className='text-left p-2 leading-5'>
-            {/* UserName placeholder, need to add react imports (from API) */}
-            <div className='font-bold'>
-              UserName
-            </div>
-
-            {/* Link placeholder to send to profile page for editing */}
-
-            <div className=''>
-            <a href="./">Edit your Profile</a>
-            </div>
-        </div>
-        {/*<div className='text-center p-1 ml-auto mr-0'>
-              <div>
-                {follower}
-              </div>
-              <div>
-                Followers
-              </div>
-        </div>
-        <div className='text-center p-2.5'>
-              <div>
-                {following}
-              </div>
-              <div>
-                Following
-              </div>
-        </div>*/}
-    </div>
-  </div>
   )
 }
 
