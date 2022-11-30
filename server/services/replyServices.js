@@ -24,15 +24,18 @@ function clearReplyByTime(time) {
 }
 async function addReplyStatistics(reply) {
   try {
-    const replyId = JSON.stringify(reply._id) + " Statistics";
-    const pipeline = redisReplies.pipeline();
-    pipeline.hget(replyId, "likes");
-    pipeline.hget(replyId, "dislikes");
-    const results = await pipeline.exec();
-    const likes = results[0][1] === null ? 0 : Number(results[0][1]);
-    const dislikes = results[1][1] === null ? 0 : Number(results[1][1]);
-    const statistics = { likes, dislikes };
-    return { ...reply, statistics };
+    if (reply) {
+      const replyId = JSON.stringify(reply._id) + " Statistics";
+      const pipeline = redisReplies.pipeline();
+      pipeline.hget(replyId, "likes");
+      pipeline.hget(replyId, "dislikes");
+      const results = await pipeline.exec();
+      const likes = results[0][1] === null ? 0 : Number(results[0][1]);
+      const dislikes = results[1][1] === null ? 0 : Number(results[1][1]);
+      const statistics = { likes, dislikes };
+      reply = { ...reply, statistics };
+    }
+    return reply;
   } catch (error) {
     console.log("addReplyStatisticsError -- Rservices 20");
   }
@@ -48,12 +51,13 @@ async function incReplyStatistics(replyId, field, incNum) {
     console.log("incReplyStatistics Failed -- Rservices 35");
   }
 }
-async function addReplyUserInfo(userId, reply) {
+function addReplyUserInfo(reply, replyLikedList) {
   try {
-    const dbBack = await ReplyLike.findOne({ user: userId, reply: reply._id }, { _id: 0, like: 1 }).lean();
-    const like = dbBack === null ? false : dbBack.like;
-    const dislike = dbBack === null ? false : !dbBack.like;
-    reply = { ...reply, like, dislike };
+    if (reply) {
+      const like = replyLikedList.filter((e) => e.reply.equals(reply._id) && e.like).length > 0;
+      const dislike = replyLikedList.filter((e) => e.reply.equals(reply._id) && !e.like).length > 0;
+      reply = { ...reply, like, dislike };
+    }
     return reply;
   } catch (error) {
     console.log("addReplyUserInfoE Faild --Rservices 47");
@@ -82,7 +86,7 @@ async function getRedisReplyProfile(replyId) {
     console.log("getRedisReplyProfile Faild --Rservices 78");
   }
 }
-async function addRepliesStatistics(replies){
+async function addRepliesStatistics(replies) {
   replies = await Promise.all(
     replies.map(async (reply) => {
       reply = await addReplyStatistics(reply);
@@ -91,6 +95,17 @@ async function addRepliesStatistics(replies){
   );
   return replies;
 }
+async function addRepliesUserInfo(userId, replies){
+  try {
+    const replyLikeList = await ReplyLike.find({ user: userId }, { _id: 0, like: 1,reply:1 }).lean();
+    replies.forEach((reply, index) => {
+      replies[index] = addReplyUserInfo(reply, replyLikeList);
+    });
+    return replies;
+  } catch (error) {
+    console.log("addRepliesUserInfo Faild --Rservices 99");
+  }
+}
 export {
   clearReplyByTime,
   addReplyStatistics,
@@ -98,5 +113,6 @@ export {
   incReplyStatistics,
   saveRedisReplyProfile,
   getRedisReplyProfile,
-  addRepliesStatistics
+  addRepliesStatistics,
+  addRepliesUserInfo
 };

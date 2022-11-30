@@ -1,4 +1,4 @@
-import { Post, Tags, PostLike, SavedPost } from "../models/index.js";
+import { Post, Tags, PostLike, SavedPost, Comment, CommentLike } from "../models/index.js";
 import {
   getRedisPostProfile,
   saveRedisPostProfile,
@@ -16,6 +16,7 @@ import json from "body-parser";
 import { redisTrending } from "../configs/redis.js";
 import { sortWith } from "../services/arraySorter.js";
 import { regexFilter } from "../services/regexFilter.js";
+import { addCommentStatistics, addCommentUserInfo } from "../services/commentServices.js";
 
 async function createPost(req, res) {
   try {
@@ -54,13 +55,21 @@ async function findOne(req, res) {
       );
       saveRedisPostProfile(postId, dbBack);
     }
-    const postStatistics = await addPostStatistics(dbBack);
+    let pinnedComment = await Comment.findById(dbBack.pinnedComment)
+      .lean()
+      .populate("author", { avatar: 1, username: 1 }, { lean: true });
+    [dbBack, pinnedComment] = await Promise.all([addPostStatistics(dbBack), addCommentStatistics(pinnedComment)]);
     postTrendingInc(req.params.postId, 1);
     incPostStatistics(postId, "views", 1);
     userTrendingInc(req.post.author, 1);
-    dbBack = postStatistics;
+    dbBack.pinnedComment = pinnedComment;
     if (req.user) {
-      dbBack = await beautyPostInfo(dbBack, req.user._id);
+      let commentLikedList;
+      [dbBack, commentLikedList] = await Promise.all([
+        beautyPostInfo(dbBack, req.user._id),
+        CommentLike.find({ user: req.user._id }, { comment: 1, like: 1, _id: 0 }).lean(),
+      ]);
+      dbBack.pinnedComment = addCommentUserInfo(pinnedComment, commentLikedList);
     }
     return res.status(200).json({ dbBack });
   } catch (error) {
@@ -115,10 +124,10 @@ async function findAll(req, res) {
     if (dbBack.length != 0) {
       dbBack = postFilter(dbBack, timeInterval);
       dbBack = await addPostsStatistics(dbBack);
+      dbBack = sortWith(dbBack, order);
       if (req.user) {
         dbBack = await beautyPostsInfo(dbBack, req.user._id);
       }
-      dbBack = sortWith(dbBack, order);
       dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     }
     return res.status(200).json({ dbBack });
@@ -134,12 +143,9 @@ async function findBySearch(req, res) {
     const timeInterval = req.query.timeInterval;
     const order = req.query.sort;
     let query = req.query.q;
-    query = regexFilter(query); 
+    query = regexFilter(query);
     let dbBack = await Post.find({
-      $or: [
-        { title: { $regex: query, $options: "$i" } },
-        { description: { $regex: query, $options: "$i" } },
-      ],
+      $or: [{ title: { $regex: query, $options: "$i" } }, { description: { $regex: query, $options: "$i" } }],
     })
       .lean()
       .populate("author", "avatar username", { lean: true });
@@ -279,7 +285,7 @@ async function deletePost(req, res) {
       Post.findByIdAndDelete(req.post._id),
       PostLike.deleteMany({ post: postId }),
       SavedPost.deleteMany({ post: postId }),
-    ])
+    ]);
     redisTrending.zrem(" PostTrending", postId);
     const msg = "Delete Successfully";
     return res.status(402).json({ msg });
@@ -307,6 +313,7 @@ async function getAllTags(req, res) {
     res.status(401).json({ error: error });
   }
 }
+
 export {
   createPost,
   findOne,

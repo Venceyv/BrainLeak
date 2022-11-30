@@ -37,6 +37,11 @@ const postSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  pinnedComment:{
+    type:mongoose.ObjectId,
+    ref:"comment",
+    default: null,
+  },
   put: {
     type: Boolean,
     default: false,

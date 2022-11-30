@@ -21,6 +21,7 @@ import {
   getComments,
   likeComment,
   updateComment,
+  pinComment,
 } from "../controllers/comments.js";
 import { checkPostAuth, checkPostExist } from "../middleware/postMiddleware.js";
 import { checkCommentAuth, checkCommentExist } from "../middleware/commentMiddleware.js";
@@ -113,6 +114,7 @@ postRouter.put(
   verifyToken(),
   dislikeReply
 );
+postRouter.put("/pinComment/:postId/:commentId",checkPostExist,checkCommentExist,verifyToken(),checkPostAuth,pinComment);
 
 postRouter.delete("/:postId", checkPostExist, verifyToken(), checkPostAuth, deletePost);
 postRouter.delete(

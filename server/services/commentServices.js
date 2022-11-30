@@ -34,26 +34,31 @@ async function incCommentStatistics(commentId, field, incNum) {
 }
 async function addCommentStatistics(comment) {
   try {
-    const commentId = JSON.stringify(comment._id) + " Statistics";
-    const pipeline = redisComments.pipeline();
-    pipeline.hget(commentId, "likes");
-    pipeline.hget(commentId, "dislikes");
-    pipeline.hget(commentId, "replies");
-    const results = await pipeline.exec();
-    const likes = results[0][1] === null ? 0 : Number(results[0][1]);
-    const dislikes = results[1][1] === null ? 0 : Number(results[1][1]);
-    const replies = results[2][1] === null ? 0 : Number(results[2][1]);
-    const statistics = { likes, dislikes, replies };
-    return { ...comment, statistics };
+    if (comment) {
+      const commentId = JSON.stringify(comment._id) + " Statistics";
+      const pipeline = redisComments.pipeline();
+      pipeline.hget(commentId, "likes");
+      pipeline.hget(commentId, "dislikes");
+      pipeline.hget(commentId, "replies");
+      const results = await pipeline.exec();
+      const likes = results[0][1] === null ? 0 : Number(results[0][1]);
+      const dislikes = results[1][1] === null ? 0 : Number(results[1][1]);
+      const replies = results[2][1] === null ? 0 : Number(results[2][1]);
+      const statistics = { likes, dislikes, replies };
+      comment = { ...comment, statistics };
+    }
+    return comment;
   } catch (error) {
     console.log("addCommentStatistics Failed -- Cservices 31");
   }
 }
 function addCommentUserInfo(comment, likeList) {
   try {
-    const like = likeList.filter((e) => e.comment.equals(comment._id) && e.like).length > 0;
-    const dislike = likeList.filter((e) => e.comment.equals(comment._id) && !e.like).length > 0;
-    comment = { ...comment, like, dislike };
+    if (comment) {
+      const like = likeList.filter((e) => e.comment.equals(comment._id) && e.like).length > 0;
+      const dislike = likeList.filter((e) => e.comment.equals(comment._id) && !e.like).length > 0;
+      comment = { ...comment, like, dislike };
+    }
     return comment;
   } catch (error) {
     console.log("addCommentUserInfo Failed -- Cservices 48");

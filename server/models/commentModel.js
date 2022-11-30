@@ -32,6 +32,10 @@ const commentSchema = new Schema({
     index: true,
     required: true,
   },
+  pinned:{
+    type:Boolean,
+    default:false
+  },
   edited: {
     type: Boolean,
     default: false,
