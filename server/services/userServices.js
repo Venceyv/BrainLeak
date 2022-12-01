@@ -98,28 +98,30 @@ function addFollowingInfo(targetUser, followingList) {
 
 async function addUserStatistics(user) {
   try {
-    const key = JSON.stringify(user._id) + " Statistics";
-    const pipeline = redisUsers.pipeline();
-    pipeline.hget(key, "following");
-    pipeline.hget(key, "follower");
-    pipeline.hget(key, "posts");
-    pipeline.hget(key, "comments");
-    pipeline.hget(key, "upvotes");
-    const results = await pipeline.exec();
-    const following = results[0][1] === null ? 0 : Number(results[0][1]);
-    const follower = results[1][1] === null ? 0 : Number(results[1][1]);
-    const posts = results[2][1] === null ? 0 : Number(results[2][1]);
-    const comments = results[3][1] === null ? 0 : Number(results[3][1]);
-    const upvotes = results[4][1] === null ? 0 : Number(results[4][1]);
-    const statistics = {
-      following,
-      follower,
-      posts,
-      comments,
-      upvotes,
-      following,
-    };
-    user = { ...user, statistics };
+    if (user) {
+      const key = JSON.stringify(user._id) + " Statistics";
+      const pipeline = redisUsers.pipeline();
+      pipeline.hget(key, "following");
+      pipeline.hget(key, "follower");
+      pipeline.hget(key, "posts");
+      pipeline.hget(key, "comments");
+      pipeline.hget(key, "upvotes");
+      const results = await pipeline.exec();
+      const following = results[0][1] === null ? 0 : Number(results[0][1]);
+      const follower = results[1][1] === null ? 0 : Number(results[1][1]);
+      const posts = results[2][1] === null ? 0 : Number(results[2][1]);
+      const comments = results[3][1] === null ? 0 : Number(results[3][1]);
+      const upvotes = results[4][1] === null ? 0 : Number(results[4][1]);
+      const statistics = {
+        following,
+        follower,
+        posts,
+        comments,
+        upvotes,
+        following,
+      };
+      user = { ...user, statistics };
+    }
     return user;
   } catch (error) {
     console.log("addUserStatistics Failed -- Uservices 232");
@@ -201,7 +203,7 @@ function saveRedisUserComment(userId, comments) {
   try {
     const key = JSON.stringify(userId) + " Comment";
     comments = JSON.stringify(comments);
-    redisUsers.setex(key, 30, comments);
+    redisUsers.setex(key, 3, comments);
   } catch (error) {
     console.log("saveRedisUserComment Failed -- Uservices 330");
   }
@@ -224,7 +226,7 @@ function saveRedisUserPost(userId, posts) {
   try {
     const key = JSON.stringify(userId) + " Post";
     posts = JSON.stringify(posts);
-    redisUsers.setex(key, 30, posts);
+    redisUsers.setex(key, 3, posts);
   } catch (error) {
     console.log("saveRedisUserPost Failed -- Uservices 361");
   }

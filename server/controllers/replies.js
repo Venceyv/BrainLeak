@@ -1,8 +1,9 @@
-import { Reply, ReplyLike } from "../models/index.js";
+import { Reply, ReplyLike, User } from "../models/index.js";
 import { sortWith } from "../services/arraySorter.js";
 import { incCommentStatistics } from "../services/commentServices.js";
 import {
   addRepliesStatistics,
+  addRepliesUserInfo,
   addReplyStatistics,
   addReplyUserInfo,
   getRedisReplyProfile,
@@ -118,17 +119,12 @@ async function getReplies(req, res) {
     }
     if (dbBack.length != 0) {
       saveRedisReplyProfile(commentId, dbBack);
-      if (req.user) {
-        dbBack = await Promise.all(
-          dbBack.map(async (reply) => {
-            reply = await addReplyUserInfo(req.user._id, reply);
-            return reply;
-          })
-        );
-      }
-      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack = await addRepliesStatistics(dbBack);
       dbBack = sortWith(dbBack, order);
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
+      if (req.user) {
+        dbBack = await addRepliesUserInfo(req.user._id,dbBack);
+      }
     }
     return res.status(200).json({ dbBack });
   } catch (error) {
@@ -163,6 +159,10 @@ async function getReply(req, res) {
       addReplyStatistics(reply),
     ]);
     dbBack.author = author;
+    if(req.user){
+      const replyLikedList = await ReplyLike.find({ user: req.user._id }, { reply: 1, like: 1, _id: 0 }).lean();
+      dbBack = addReplyUserInfo(dbBack, replyLikedList);
+    }
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });

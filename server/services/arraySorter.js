@@ -18,16 +18,13 @@ function sortWith(array, condition) {
         break;
       case "hot":
         array.sort((a, b) => {
-          //pubulished till now --seconds
-          const aCreateTime = (Date.now() - new Date(a.publishDate)) / 1000 / 60 / 60;
-          //pubulished till now --seconds
-          const bCreateTime = (Date.now() - new Date(b.publishDate)) / 1000 / 60 / 60;
+          //pubulished till now --mins
+          const aCreateTime = (Date.now() - new Date(a.publishDate)) / 1000 / 60;
+          //pubulished till now --mins
+          const bCreateTime = (Date.now() - new Date(b.publishDate)) / 1000 / 60;
           const aHot = Math.round(postPopularity(a) / aCreateTime);
           const bHot = Math.round(postPopularity(b) / bCreateTime);
-          if (aHot > bHot) {
-            return -1;
-          }
-          return 1;
+          return bHot - aHot;
         });
         break;
       case "dislikes":

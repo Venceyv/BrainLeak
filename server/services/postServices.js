@@ -1,28 +1,7 @@
 import { PostLike, SavedPost, Post } from "../models/index.js";
 import { redisPosts, redisTrending } from "../configs/redis.js";
 import schedule from "node-schedule";
-import fastJson from "fast-json-stringify";
 import { addCommentsStatistics, getCommentsUderPost } from "./commentServices.js";
-const stringifyPostInfo = fastJson({
-  type: "object",
-  properties: {
-    _id: { type: "string" },
-    title: { type: "string" },
-    description: { type: "string" },
-    publishDate: { type: "string" },
-    updateDate: { type: "string" },
-    tags: { type: "array" },
-    author: {
-      type: "object",
-      properties: {
-        _id: { type: "string" },
-        avatar: { type: "string" },
-        username: { type: "string" },
-      },
-    },
-    __v: { type: "integer" },
-  },
-});
 
 //get the post info related to the loggined user.
 async function getOnePostInfo(postId) {
@@ -74,8 +53,8 @@ async function getRedisPostProfile(postId) {
 function saveRedisPostProfile(postId, postInfo) {
   try {
     const key = JSON.stringify(postId) + " Profile";
-    postInfo = stringifyPostInfo(postInfo);
-    redisPosts.setex(key, 30, postInfo);
+    postInfo = JSON.stringify(postInfo);
+    redisPosts.setex(key, 3, postInfo);
   } catch (error) {
     console.log("saveRedisPostProfile -- Pservices 78");
   }
@@ -154,27 +133,29 @@ function clearTrendingByTime(time) {
 
 async function addPostStatistics(post) {
   try {
-    const key = JSON.stringify(post._id) + " Statiscs";
-    const pipeline = redisPosts.pipeline();
-    pipeline.hget(key, "likes");
-    pipeline.hget(key, "dislikes");
-    pipeline.hget(key, "marks");
-    pipeline.hget(key, "comments");
-    pipeline.hget(key, "views");
-    const results = await pipeline.exec();
-    const likes = results[0][1] === null ? 0 : Number(results[0][1]);
-    const dislikes = results[1][1] === null ? 0 : Number(results[1][1]);
-    const marks = results[2][1] === null ? 0 : Number(results[2][1]);
-    const comments = results[3][1] === null ? 0 : Number(results[3][1]);
-    const views = results[4][1] === null ? 0 : Number(results[4][1]);
-    const statistics = {
-      likes,
-      dislikes,
-      marks,
-      comments,
-      views,
-    };
-    post = { ...post, statistics };
+    if (post) {
+      const key = JSON.stringify(post._id) + " Statiscs";
+      const pipeline = redisPosts.pipeline();
+      pipeline.hget(key, "likes");
+      pipeline.hget(key, "dislikes");
+      pipeline.hget(key, "marks");
+      pipeline.hget(key, "comments");
+      pipeline.hget(key, "views");
+      const results = await pipeline.exec();
+      const likes = results[0][1] === null ? 0 : Number(results[0][1]);
+      const dislikes = results[1][1] === null ? 0 : Number(results[1][1]);
+      const marks = results[2][1] === null ? 0 : Number(results[2][1]);
+      const comments = results[3][1] === null ? 0 : Number(results[3][1]);
+      const views = results[4][1] === null ? 0 : Number(results[4][1]);
+      const statistics = {
+        likes,
+        dislikes,
+        marks,
+        comments,
+        views,
+      };
+      post = { ...post, statistics };
+    }
     return post;
   } catch (error) {
     console.log("addPostStatistics Failed -- Pservices 171");
@@ -183,11 +164,13 @@ async function addPostStatistics(post) {
 
 async function beautyPostInfo(post, userId) {
   try {
-    const [likeList, PostSaveList] = await Promise.all([
-      PostLike.find({ user: userId }, { post: 1, like: 1, _id: 0 }).lean(),
-      SavedPost.find({ user: userId }, { post: 1, _id: 0 }).lean(),
-    ]);
-    post = addUserPostInfo(post, likeList, PostSaveList);
+    if (post) {
+      const [likeList, PostSaveList] = await Promise.all([
+        PostLike.find({ user: userId }, { post: 1, like: 1, _id: 0 }).lean(),
+        SavedPost.find({ user: userId }, { post: 1, _id: 0 }).lean(),
+      ]);
+      post = addUserPostInfo(post, likeList, PostSaveList);
+    }
     return post;
   } catch (error) {
     console.log("beautyPostInfo Failed -- Pservices 198");
@@ -254,12 +237,14 @@ function postFilter(posts, timeInterval = "default") {
 }
 function postPopularity(post) {
   const popularity =
-    post.statistics.likes * 2 + post.statistics.comments * 3 + post.statistics.marks * 4 + post.statistics.views;
+    post.statistics.likes * 20 +
+    post.statistics.comments * 30 +
+    post.statistics.marks * 40 +
+    post.statistics.views * 10;
   return popularity;
 }
 export {
   getOnePostInfo,
-  stringifyPostInfo,
   getRedisPostProfile,
   saveRedisPostProfile,
   addUserPostInfo,
