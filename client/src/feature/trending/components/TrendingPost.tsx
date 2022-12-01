@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
+import { fallback } from '../../../utils/imgFallback';
 
 interface TrendingPostProp {
   popularity: number;
@@ -32,6 +33,7 @@ export const TrendingPost: FC<TrendingPostProp> = ({
           <img
             className="w-[37px] h-[37px] rounded-full border-2 cursor-pointer border-border-black text-zinc-50"
             src={post.author?.avatar}
+            onError={fallback}
             alt="profile picture"
           />
           <p className="text-sm cursor-pointer truncate">

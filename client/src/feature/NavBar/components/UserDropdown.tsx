@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { postLogOut } from '../../../api/oAuthAPI';
 import { User } from '../../../interfaces/user';
+import { fallback } from '../../../utils/imgFallback';
 
 interface UserDropdownProp {
   userRef: React.MutableRefObject<HTMLDivElement>;
@@ -36,6 +37,7 @@ export const UserDropdown: FC<UserDropdownProp> = ({
         <img
           className="max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px] rounded-full border-[1px] cursor-pointer text-zinc-50"
           src={userData?.avatar}
+          onError={fallback}
           alt="user"
         />
 

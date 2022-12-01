@@ -10,6 +10,7 @@ import 'react-quill/dist/quill.bubble.css';
 import './IndividualComment.css';
 import { Replies } from './Replies';
 import { NewComment } from '../../UserPost/components/NewComment';
+import { fallback } from '../../../utils/imgFallback';
 
 export const IndividualReply: FC<CommentReply> = (
   reply
@@ -21,6 +22,7 @@ export const IndividualReply: FC<CommentReply> = (
         <img
           className="w-[32px] h-[32px] rounded-full border-2 cursor-pointer border-border-black text-zinc-50"
           src={reply.author.avatar}
+          onError={fallback}
           alt="profile picture"
         />
         <p className="text-sm cursor-pointer truncate text-white">

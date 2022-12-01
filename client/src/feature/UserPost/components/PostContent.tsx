@@ -10,6 +10,7 @@ import { TopBar } from './TopBar';
 import TimeAgo from 'react-timeago';
 import { NewComment } from './NewComment';
 import { Author } from '../../../interfaces/user';
+import { fallback } from '../../../utils/imgFallback';
 
 const PostBy: FC<{ author: Author; publishDate: string }> = ({
   author,
@@ -19,6 +20,7 @@ const PostBy: FC<{ author: Author; publishDate: string }> = ({
     <div className="flex gap-1">
       <img
         src={author?.avatar}
+        onError={fallback}
         className="w-5 h-5 rounded-full border-2 border-border-black cursor-pointer"
         alt="user image"
       />

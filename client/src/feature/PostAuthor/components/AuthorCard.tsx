@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { FC, useRef } from 'react';
 import { getUser } from '../../../api/userAPI';
+import { fallback } from '../../../utils/imgFallback';
 import { AuthorStats } from './AuthorStats';
 
 export const AuthorCard: FC<{ authorId: string }> = ({
@@ -45,6 +46,7 @@ export const AuthorCard: FC<{ authorId: string }> = ({
         <img
           className="w-[60px] h-[60px] mr-auto rounded-full border-2 z-[2] border-border-black  text-zinc-50"
           src={data?.avatar}
+          onError={fallback}
           alt="profile picture"
         />
       </div>

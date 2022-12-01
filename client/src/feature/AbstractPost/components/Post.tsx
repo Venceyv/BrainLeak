@@ -7,6 +7,7 @@ import { LikeThumb } from '../../../components/LikeThumb';
 import { Author } from '../../../interfaces/user';
 import { convertDate } from '../../../utils/convertDate';
 import { formatNumber } from '../../../utils/formatNumber';
+import { fallback } from '../../../utils/imgFallback';
 import { usePutUserStatusMutation } from './Post.hook';
 
 interface PostProp {
@@ -47,7 +48,8 @@ export const Post: FC<PostProp> = ({
       <div className="flex flex-col items-center justify-center gap-2">
         <img
           className="h-[50px] w-[50px] rounded-full border-2 cursor-pointer border-border-black  text-zinc-50"
-          src={user?.avatar || ''}
+          src={user?.avatar}
+          onError={fallback}
           alt="user"
         />
         <p className="text-sm cursor-pointer w-[100px] text-center truncate">

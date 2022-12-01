@@ -10,6 +10,7 @@ import { NewComment } from '../../UserPost/components/NewComment';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { getReplies } from '../../../api/commentAPI';
 import { useParams } from 'react-router-dom';
+import { fallback } from '../../../utils/imgFallback';
 
 export const IndividualComment: FC<PostComment> = (
   comment
@@ -23,6 +24,7 @@ export const IndividualComment: FC<PostComment> = (
         <img
           className="w-[32px] h-[32px] rounded-full border-2 cursor-pointer border-border-black text-zinc-50"
           src={comment.author.avatar}
+          onError={fallback}
           alt="profile picture"
         />
         <p className="text-sm cursor-pointer truncate text-white">

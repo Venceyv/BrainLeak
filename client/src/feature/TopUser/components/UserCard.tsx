@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { TrendingUser } from '../../../interfaces/user';
 import { formatNumber } from '../../../utils/formatNumber';
+import { fallback } from '../../../utils/imgFallback';
 
 // interface UserCardProp {
 //   popularity: string;
@@ -39,6 +40,7 @@ export const UserCard: FC<TrendingUser> = (
         <img
           className="w-[60px] h-[60px] mr-auto rounded-full border-2 cursor-pointer z-[2] border-border-black  text-zinc-50"
           src={trendingUser.user.avatar}
+          onError={fallback}
           alt="profile picture"
         />
       </div>
