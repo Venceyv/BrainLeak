@@ -99,7 +99,7 @@ function saveRedisCommentProfile(commentId, profile) {
   try {
     const key = JSON.stringify(commentId) + " Profile";
     profile = JSON.stringify(profile);
-    redisComments.setex(key, 30, profile);
+    redisComments.setex(key, 3, profile);
   } catch (error) {
     console.log("saveRedisCommentProfile Faild --Cservices 104");
   }

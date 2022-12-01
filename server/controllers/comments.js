@@ -182,6 +182,10 @@ async function getComment(req, res) {
 async function pinComment(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
+    if(!req.comment.relatedPost.equals(req.params.postId)){
+      res.status(403);
+      throw 'unauthorized';
+    }
     const [dbBack, comment] = await Promise.all([
       Post.findById(req.params.postId, { pinnedComment: 1 }),
       Comment.findById(req.params.commentId, { pinned: 1 }),
@@ -200,7 +204,7 @@ async function pinComment(req, res) {
     dbBack.save();
     return res.status(200).json({ dbBack });
   } catch (error) {
-    res.status(401).json({ error: error });
+    return res.json({ error: error });
   }
 }
 export { addComment, updateComment, deleteComment, likeComment, dislikeComment, getComments, getComment, pinComment };

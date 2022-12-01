@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const userSchema = new Schema({
   avatar: {
     type: String,
-    default: null,// google acount avatar
+    required: true, // google acount avatar
   },
   // user name
   username: {
@@ -25,21 +25,21 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  gender:{
-    type:String,
-    enum:['male','female','secret'],
-    default:'secret'
+  gender: {
+    type: String,
+    enum: ["male", "female", "secret"],
+    default: "secret",
   },
-  birthDate:{
-    type:Date,
+  birthDate: {
+    type: Date,
   },
-  createTime:{
-    type:Date,
-    default:Date.now
+  createTime: {
+    type: Date,
+    default: Date.now,
   },
   isDelete: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 export { userSchema };

@@ -203,7 +203,7 @@ function saveRedisUserComment(userId, comments) {
   try {
     const key = JSON.stringify(userId) + " Comment";
     comments = JSON.stringify(comments);
-    redisUsers.setex(key, 30, comments);
+    redisUsers.setex(key, 3, comments);
   } catch (error) {
     console.log("saveRedisUserComment Failed -- Uservices 330");
   }
@@ -226,7 +226,7 @@ function saveRedisUserPost(userId, posts) {
   try {
     const key = JSON.stringify(userId) + " Post";
     posts = JSON.stringify(posts);
-    redisUsers.setex(key, 30, posts);
+    redisUsers.setex(key, 3, posts);
   } catch (error) {
     console.log("saveRedisUserPost Failed -- Uservices 361");
   }

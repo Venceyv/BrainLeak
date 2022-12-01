@@ -54,7 +54,7 @@ function saveRedisPostProfile(postId, postInfo) {
   try {
     const key = JSON.stringify(postId) + " Profile";
     postInfo = JSON.stringify(postInfo);
-    redisPosts.setex(key, 30, postInfo);
+    redisPosts.setex(key, 3, postInfo);
   } catch (error) {
     console.log("saveRedisPostProfile -- Pservices 78");
   }

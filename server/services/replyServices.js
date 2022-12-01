@@ -68,7 +68,7 @@ function saveRedisReplyProfile(replyId, profile) {
   try {
     const key = JSON.stringify(replyId) + " Profile";
     profile = JSON.stringify(profile);
-    redisReplies.setex(key, 30, profile);
+    redisReplies.setex(key, 3, profile);
   } catch (error) {
     console.log("saveRedisReplyProfile Faild --Rservices 69");
   }
