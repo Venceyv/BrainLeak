@@ -35,6 +35,7 @@ function PostBox() {
     setFollowedPost(true);
   };
   
+  //Fetching data through standard fetch
   // const [postsAPI, setPostsAPI] = useState([]); 
   // const [postContent, setPostContent] = useState([]);
 
@@ -49,6 +50,28 @@ function PostBox() {
   //   fetchPosts();
   //   fetchPost();
   // })
+
+    //Fetching Data Through Axios
+    const [postApi, setPostApi] = useState([])
+  
+    const fetchPosts = () => {
+      axios.get("https://jsonplaceholder.typicode.com/posts").then(response => {
+        setPostApi(response.data)
+      })
+    }
+
+    const [users, setUsers] = useState([])
+  
+    const fetchUsers = () => {
+      axios.get("https://jsonplaceholder.typicode.com/users").then(response => {
+        setUsers(response.data)
+      })
+    }
+  
+    useEffect(() => {
+      fetchUsers();
+      fetchPosts();
+    }, [])
 
   return (
     <div className="pt-3 inline-flex w-7/12 h-3/4 ml-80">
@@ -72,20 +95,20 @@ function PostBox() {
           <div className="justify-center rounded-lg relative pl-2 pt-8 border-2 border-black flex p-2 h-1/2 bg-neutral-800 text-white	">
               <div className="space-y-3 flex flex-col">
                 <div>
-                  {/* <p>Subscriber Count: {postsAPI[1]?.id}</p> */}
-                  <p>Sub Count:</p>
+                  <p>Subscriber Count: {users[1]?.id}</p>
+                  {/* <p>Sub Count:</p> */}
                 </div>
                 <div>
-                  {/* <p>Posts: {postsAPI[2]?.id}</p> */}
-                  <p>Posts:</p>
+                  <p>Posts: {users[2]?.id}</p>
+                  {/* <p>Posts:</p> */}
                 </div>
                 <div>
-                  {/* <p>Likes: {postsAPI[4]?.address?.zipcode}</p> */}
-                  <p>Likes:</p>
+                  <p>Likes: {users[4]?.address?.zipcode}</p>
+                  {/* <p>Likes:</p> */}
                 </div>
                 <div>
-                  {/* <p>Comments: {postsAPI[8]?.id}</p> */}
-                  Comments:
+                  <p>Comments: {users[8]?.id}</p>
+                  {/* Comments: */}
                 </div>
               </div>
           </div>
@@ -94,8 +117,8 @@ function PostBox() {
       </div>
 
       {/* Main Post Container */}
-      <div className="content-center h-full w-full">
-        <div className="overflow-y-auto flex justify-center h-full rounded-md border-4 border-black p-2 bg-neutral-800 text-white mr-1.5">
+      <div className="min-h-full content-center w-full">
+        <div className="h-min flex justify-center  rounded-md border-4 border-black p-2 bg-neutral-800 text-white mr-1.5">
           <div className="">
           {profileDesc && (
             <div>
@@ -103,25 +126,26 @@ function PostBox() {
                 <p>Welcome to your Profile Page</p>
               </div>
               <div>
-                {/* <p>{postsAPI[0]?.company?.catchPhrase}</p> */}
+                <p>{users[0]?.company?.catchPhrase}</p>
               </div>
             </div>
           )}  
           {posts && (
-            // <p>{postsAPI[0]?.email}</p>
-            <p>My Posts Temp</p>
+            <p>{users[0]?.email}</p>
+            // <p>My Posts Temp</p>
           )}
-          {topics && /*postContent?.length > 0 && */(
-            // <ul>
-            //   {postContent.map(post => (
-            //   <li className="border-white border-4 p-2 mb-5" key={post?.id}>{post?.body}</li> 
-            //   ))}
-            // </ul>
-            <p>Comment History Temp</p>
+          {topics && postApi?.length > 0 && (
+            <ul>
+              {postApi.map(post => (
+              <li className="border-white border-4 p-2 mb-5" key={post.id}>{post.body}</li> 
+              ))}
+            </ul>
+            // {topics && ( 
+            // <p>Comment History Temp</p>
           )}
           {followedPost && (
-            // <p>{postsAPI[2]?.email}</p>
-            <p>Liked Posts Temp</p>
+            <p>{users[2]?.email}</p>
+            // <p>Liked Posts Temp</p>
           )}
           </div>
         </div>
