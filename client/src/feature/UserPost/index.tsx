@@ -9,7 +9,7 @@ export const UserPost: FC = (): JSX.Element => {
   const { data, isLoading, isError } = useQuery(
     ['postData'],
     () => getPost(postId),
-    { refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, cacheTime: 0 }
   );
   return (
     <div className="flex h-full w-full">

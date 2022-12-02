@@ -34,13 +34,6 @@ export const Post: FC<PostProp> = ({
   dislike,
   save,
 }): JSX.Element => {
-  const [isLiked, setIsLiked] = useState<boolean>(
-    like ? true : false
-  );
-  const [isSaved, setIsSaved] = useState<boolean>(
-    save ? true : false
-  );
-
   const { putDislikeMutation, putLikeMutation, putSaveMutation } =
     usePutUserStatusMutation(post._id);
   return (
@@ -76,7 +69,7 @@ export const Post: FC<PostProp> = ({
                 className="w-5 h-5"
                 alt="like"
               /> */}
-            <LikeThumb isTrue={isLiked} />
+            <LikeThumb isTrue={like ? true : false} />
             <p className="truncate pl-[2px] pt-[2px]">
               Like: {formatNumber(post?.like)}
             </p>
@@ -94,7 +87,7 @@ export const Post: FC<PostProp> = ({
             className="flex"
             onClick={() => putSaveMutation.mutate()}
           >
-            <Bookmark isTrue={isSaved} />
+            <Bookmark isTrue={save ? true : false} />
             <p className="truncate pl-[2px] pt-[2px]">
               Bookmark: {formatNumber(post?.marks)}
             </p>

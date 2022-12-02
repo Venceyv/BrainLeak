@@ -11,6 +11,9 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { getReplies } from '../../../api/commentAPI';
 import { useParams } from 'react-router-dom';
 import { fallback } from '../../../utils/imgFallback';
+import { LikeThumb } from '../../../components/LikeThumb';
+import { DislikeThumb } from '../../../components/DislikeThumb';
+import { useMutateUserComment } from './IndividualComment.hook';
 
 export const IndividualComment: FC<PostComment> = (
   comment
@@ -18,6 +21,8 @@ export const IndividualComment: FC<PostComment> = (
   const [showReply, setShowReply] = useState<boolean>(false);
   const [showUserReply, setShowUserReply] = useState<boolean>(false);
 
+  const { putLikeMutation, putDislikeMutation } =
+    useMutateUserComment(comment.relatedPost, comment._id);
   return (
     <div className="pl-4 w-full mb-3">
       <div className="flex items-center justify-start gap-2 col-span-2">
@@ -44,22 +49,30 @@ export const IndividualComment: FC<PostComment> = (
 
         <div className="flex gap-3 mb-2">
           <div className="flex gap-3">
-            <div className="flex items-center">
-              <img
+            <div
+              className="flex items-center cursor-pointer"
+              onClick={() => putLikeMutation.mutate()}
+            >
+              {/* <img
                 src="../../../assets/img/like.svg"
                 className="w-5 h-5 cursor-pointer"
                 alt="like"
-              />
+              /> */}
+              <LikeThumb isTrue={comment.like ? true : false} />
               <p className="truncate pl-[2px] pt-[1px] text-sm text-white">
                 {comment.statistics.likes}
               </p>
             </div>
-            <div className="flex items-center">
-              <img
+            <div
+              className="flex items-center cursor-pointer"
+              onClick={() => putDislikeMutation.mutate()}
+            >
+              {/* <img
                 src="../../../assets/img/dislike.svg"
                 className="w-5 h-5 cursor-pointer"
                 alt="dislike"
-              />
+              /> */}
+              <DislikeThumb isTrue={comment.dislike ? true : false} />
               <p className="truncate pl-[2px] pt-[1px] text-sm text-white">
                 {comment.statistics.dislikes}
               </p>
@@ -67,7 +80,7 @@ export const IndividualComment: FC<PostComment> = (
             <div className="flex items-center">
               <img
                 src="../../../assets/img/reply.svg"
-                className="w-5 h-5 cursor-pointer"
+                className="w-5 h-5"
                 alt="reply"
               />
               <p className="truncate pl-[2px] pt-[1px] text-sm text-white">

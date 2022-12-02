@@ -49,7 +49,9 @@ export const Posts: FC<PostsProp> = ({
             pageStart={0}
             loadMore={() => fetchNextPage()}
             hasMore={hasNextPage ? true : false}
-            loader={<Loading width={'full'} height={'full'} />}
+            loader={
+              <Loading key={0} width={'full'} height={'full'} />
+            }
             // endMessage={<NoMore />}
           >
             {isSuccess &&

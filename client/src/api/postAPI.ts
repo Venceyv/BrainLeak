@@ -28,6 +28,7 @@ export const getPost = async (
     const {
       data: { dbBack: postData },
     } = await axios.get(`${URL}/posts/${postId}`);
+    console.log(postData);
     return postData as Post<StatisticWithMark>;
   } catch (error) {
     throw error;
@@ -74,37 +75,33 @@ export const getPosts = async (
   }
 };
 
-export const putLikePost = async (postId: string) => {
+export const putLikePost = async (postId: string): Promise<void> => {
   try {
     const {
       data: { dbBack: post },
     } = await axios.put(`${URL}/posts/like/${postId}`);
-    console.log(post);
-    return post;
   } catch (err) {
     throw err;
   }
 };
 
-export const putDislikePost = async (postId: string) => {
+export const putDislikePost = async (
+  postId: string
+): Promise<void> => {
   try {
     const {
       data: { dbBack: post },
     } = await axios.put(`${URL}/posts/dislike/${postId}`);
-    console.log(post);
-    return post;
   } catch (err) {
     throw err;
   }
 };
 
-export const putSavePost = async (postId: string) => {
+export const putSavePost = async (postId: string): Promise<void> => {
   try {
     const {
       data: { dbBack: post },
     } = await axios.put(`${URL}/posts/save/${postId}`);
-    console.log(post);
-    return post;
   } catch (err) {
     throw err;
   }

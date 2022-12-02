@@ -42,6 +42,7 @@ export const Comments: FC<CommentsProp> = ({
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length < 10 ? undefined : allPages.length + 1;
       },
+      cacheTime: 0,
     }
   );
 

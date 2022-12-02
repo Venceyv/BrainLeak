@@ -69,3 +69,63 @@ export const postUserReply = async (
     throw error;
   }
 };
+
+export const putLikeComment = async (
+  postId: string,
+  commentId: string
+): Promise<void> => {
+  try {
+    const {
+      data: { dbBack: comment },
+    } = await axios.put(`${URL}/posts/like/${postId}/${commentId}`);
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const putDislikeComment = async (
+  postId: string,
+  commentId: string
+): Promise<void> => {
+  try {
+    const {
+      data: { dbBack: comment },
+    } = await axios.put(
+      `${URL}/posts/dislike/${postId}/${commentId}`
+    );
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const putLikeReply = async (
+  postId: string,
+  commentId: string,
+  replyId: string
+): Promise<void> => {
+  try {
+    const {
+      data: { dbBack: reply },
+    } = await axios.put(
+      `${URL}/posts/like/${postId}/${commentId}/${replyId}`
+    );
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const putDislikeReply = async (
+  postId: string,
+  commentId: string,
+  replyId: string
+): Promise<void> => {
+  try {
+    const {
+      data: { dbBack: reply },
+    } = await axios.put(
+      `${URL}/posts/dislike/${postId}/${commentId}/${replyId}`
+    );
+  } catch (err) {
+    throw err;
+  }
+};

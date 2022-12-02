@@ -8,14 +8,14 @@ import {
 import { queryClient } from '../../../main';
 import { errorToast, successToast } from '../../../utils/errorToast';
 
-export const usePutUserStatusMutation = (postId: string) => {
+export const usePutUserStatusOnPostMutation = (postId: string) => {
   const putLikeMutation = useMutation(
-    ['putLikeAbstractPost'],
+    ['putLikeOnPost'],
     () => putLikePost(postId),
     {
       onSuccess: () => {
         successToast('Success');
-        queryClient.invalidateQueries(['posts']);
+        queryClient.invalidateQueries(['postData']);
       },
       onError: (err: AxiosError) => {
         console.log(err);
@@ -27,12 +27,12 @@ export const usePutUserStatusMutation = (postId: string) => {
   );
 
   const putDislikeMutation = useMutation(
-    ['putDislikeAbstractPost'],
+    ['putDislikeOnPost'],
     () => putDislikePost(postId),
     {
       onSuccess: () => {
         successToast('Success');
-        queryClient.invalidateQueries(['posts']);
+        queryClient.invalidateQueries(['postData']);
       },
       onError: (err: AxiosError) => {
         console.log(err);
@@ -44,12 +44,12 @@ export const usePutUserStatusMutation = (postId: string) => {
   );
 
   const putSaveMutation = useMutation(
-    ['putSaveAbstractPost'],
+    ['putSaveOnPost'],
     () => putSavePost(postId),
     {
       onSuccess: () => {
         successToast('Success');
-        queryClient.invalidateQueries(['posts']);
+        queryClient.invalidateQueries(['postData']);
       },
       onError: (err: AxiosError) => {
         console.log(err);

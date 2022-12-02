@@ -47,6 +47,10 @@ export const PostContent: FC<{
       <TopBar
         likes={post.statistics.likes}
         dislikes={post.statistics.dislikes}
+        isLike={post?.like ? true : false}
+        isDislike={post?.dislike ? true : false}
+        isSave={post?.save ? true : false}
+        postId={postId}
       />
       <div className="flex flex-col gap-1 mt-[60px] p-2 border-2 rounded-md bg-secondary-black border-border-black">
         <PostBy

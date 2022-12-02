@@ -6,6 +6,7 @@ import { Layout } from './layouts/layout';
 import './App.css';
 import { Post } from './pages/Post';
 import { Search } from './pages/Search';
+import { Test } from './Test';
 
 const App: FC = (): JSX.Element => {
   return (
@@ -17,6 +18,7 @@ const App: FC = (): JSX.Element => {
           </Route>
 
           {/* <Route path="profile" element={<div>IP</div>} /> */}
+          <Route path="test" element={<Test />} />
           <Route path="search/:searchParam" element={<Search />} />
         </Route>
 
