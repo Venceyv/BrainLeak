@@ -44,7 +44,15 @@ async function findOne(req, res) {
     const postId = req.params.postId;
     let dbBack = await getRedisPostProfile(postId);
     if (!dbBack) {
-      dbBack = await Post.findById(postId, { put: 0, edited: 0, likes: 0 }).lean();
+      dbBack = await Post.findById(postId, { put: 0, edited: 0, likes: 0 }).lean().populate(
+        "author",
+        {
+          _id: 1,
+          avatar: 1,
+          username: 1,
+        },
+        { lean: true }
+      );
       saveRedisPostProfile(postId, dbBack);
     }
     let pinnedComment = await Comment.findById(dbBack.pinnedComment)
