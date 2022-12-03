@@ -1,6 +1,7 @@
 import schedule from "node-schedule";
 import { redisComments } from "../configs/redis.js";
 import { Post, Comment, CommentLike } from "../models/index.js";
+import { incUserStatistics, userTrendingInc } from "./userServices.js";
 function clearCommentByTime(time) {
   schedule.scheduleJob(
     time,
@@ -129,6 +130,14 @@ async function beautyCommentsInfo(comments, userId) {
     console.log("beautyCommentsInfo Failed -- Cservices 127");
   }
 }
+async function changeCommentStats(comment, likes = 0, trending = 0, upvotes = 0) {
+  const commentId = comment._id;
+  await Promise.all([
+    incCommentStatistics(commentId, "likes", likes),
+  userTrendingInc(comment.author, trending),
+  incUserStatistics(comment.author, "upvotes", upvotes),
+  ])
+}
 export {
   clearCommentByTime,
   addCommentStatistics,
@@ -137,4 +146,5 @@ export {
   getCommentsUderPost,
   incCommentStatistics,
   beautyCommentsInfo,
+  changeCommentStats
 };

@@ -7,6 +7,7 @@ import {
   beautyCommentsInfo,
   addCommentStatistics,
   addCommentUserInfo,
+  changeCommentStats,
 } from "../services/commentServices.js";
 import { incUserNotification, incUserStatistics, userTrendingInc } from "../services/userServices.js";
 import { incPostStatistics, postTrendingInc } from "../services/postServices.js";
@@ -17,11 +18,13 @@ async function addComment(req, res) {
     const userId = req.user._id;
     const postId = req.params.postId;
     const post = req.post;
-    const postAuthor = await User.findById(req.post.author, { email: 1 }).lean();
-    postTrendingInc(postId, 3);
-    incPostStatistics(postId, "comments", 1);
-    incUserStatistics(userId, "comments", 1);
-    incUserNotification(post.author, "comments", 1);
+    const [postAuthor] = await Promise.all([
+      User.findById(req.post.author, { email: 1 }).lean(),
+      postTrendingInc(postId, 3),
+      incPostStatistics(postId, "comments", 1),
+      incUserStatistics(userId, "comments", 1),
+      incUserNotification(post.author, "comments", 1),
+    ]);
     const commentContent = req.body.content.replace(/<\/?.+?>/g, "");
     const dbBack = await new Comment({
       content: req.body.content,
@@ -66,10 +69,13 @@ async function deleteComment(req, res) {
     res.setHeader("Content-Type", "application/json");
     const comment = req.comment;
     const commentId = req.params.commentId;
-    await Promise.all([Comment.findByIdAndDelete(commentId), CommentLike.deleteMany({ commentId })]);
-    postTrendingInc(req.params.postId, -3);
-    incPostStatistics(comment.relatedPost, "comments", -1);
-    incUserStatistics(comment.author, "comments", -1);
+    await Promise.all([
+      Comment.findByIdAndDelete(commentId),
+      CommentLike.deleteMany({ commentId }),
+      postTrendingInc(req.params.postId, -3),
+      incPostStatistics(comment.relatedPost, "comments", -1),
+      incUserStatistics(comment.author, "comments", -1),
+    ]);
     const msg = "Delete successfully.";
     return res.status(200).json({ msg });
   } catch (error) {
@@ -82,28 +88,32 @@ async function likeComment(req, res) {
     let like = true;
     const commentId = req.params.commentId;
     const userId = req.user._id;
-    const comment = req.comment;
-    const dbBack = await CommentLike.findOne({ user: userId, comment: commentId }, { like: 1 });
-    if (dbBack && dbBack.like) {
+    const [likedcomment, author] = await Promise.all([
+      CommentLike.findOne({ user: userId, comment: commentId }, { like: 1 }),
+      User.findById(req.comment.author, { avatar: 1, username: 1 }).lean(),
+    ]);
+    let dbBack, comment;
+    if (likedcomment && likedcomment.like) {
       like = false;
-      dbBack.remove();
-      userTrendingInc(comment.author, -6);
-      incCommentStatistics(commentId, "likes", -1);
-      incUserStatistics(comment.author, "upvotes", -1);
-      return res.status(200).json({ like });
+      likedcomment.remove();
+      await changeCommentStats(req.comment, -1, -6, -1);
+    } else {
+      await Promise.all([
+        changeCommentStats(req.comment, 1, 6, 1),
+        incUserNotification(req.comment.author, "likes", 1),
+      ]);
+      if (likedcomment) {
+        likedcomment.like = true;
+        likedcomment.save();
+        await incCommentStatistics(commentId, "dislikes", -1);
+      } else {
+        new CommentLike({ user: userId, comment: commentId, commentAuthor: req.comment.author }).save();
+      }
     }
-    incCommentStatistics(commentId, "likes", 1);
-    userTrendingInc(comment.author, 6);
-    incUserStatistics(comment.author, "upvotes", 1);
-    incUserNotification(comment.author, "likes", 1);
-    if (dbBack) {
-      dbBack.like = true;
-      dbBack.save();
-      incCommentStatistics(commentId, "dislikes", -1);
-      return res.status(200).json({ like });
-    }
-    new CommentLike({ user: userId, comment: commentId, commentAuthor: comment.author }).save();
-    return res.status(200).json({ like });
+    comment = await addCommentStatistics(req.comment);
+    comment.author = author;
+    dbBack = { ...comment, like };
+    return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error });
   }
@@ -114,25 +124,29 @@ async function dislikeComment(req, res) {
     let dislike = true;
     const commentId = req.params.commentId;
     const userId = req.user._id;
-    const comment = req.comment;
-    const dbBack = await CommentLike.findOne({ user: userId, comment: commentId }, { like: 1 });
-    if (dbBack && !dbBack.like) {
+    const [dislikedComment, author] = await Promise.all([
+      CommentLike.findOne({ user: userId, comment: commentId }, { like: 1 }),
+      User.findById(req.comment.author, { avatar: 1, username: 1 }).lean(),
+    ]);
+    let dbBack, comment;
+    if (dislikedComment && !dislikedComment.like) {
       dislike = false;
-      dbBack.remove();
-      incCommentStatistics(commentId, "dislikes", -1);
-      return res.status(200).json({ dislike });
+      dislikedComment.remove();
+      await incCommentStatistics(commentId, "dislikes", -1);
+    } else {
+      await incCommentStatistics(commentId, "dislikes", 1);
+      if (dislikedComment) {
+        dislikedComment.like = false;
+        dislikedComment.save();
+        await changeCommentStats(req.comment, -1, -6, -1);
+      } else {
+        new CommentLike({ user: userId, comment: commentId, commentAuthor: req.comment.author, like: false }).save();
+      }
     }
-    incCommentStatistics(commentId, "dislikes", 1);
-    if (dbBack) {
-      dbBack.like = false;
-      dbBack.save();
-      incCommentStatistics(commentId, "likes", -1);
-      userTrendingInc(comment.author, -6);
-      incUserStatistics(comment.author, "upvotes", -1);
-      return res.status(200).json({ dislike });
-    }
-    new CommentLike({ user: userId, comment: commentId, commentAuthor: comment.author, like: false }).save();
-    return res.status(200).json({ dislike });
+    comment = await addCommentStatistics(req.comment);
+    comment.author = author;
+    dbBack = { ...comment, dislike };
+    return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error });
   }
@@ -147,9 +161,6 @@ async function getComments(req, res) {
     if (dbBack.length != 0) {
       dbBack = await addCommentsStatistics(dbBack);
       dbBack = sortWith(dbBack, order);
-      postTrendingInc(req.params.postId, 1),
-        incPostStatistics(req.params.postId, "views", 1),
-        userTrendingInc(req.post.author, 1);
       if (req.user) {
         dbBack = await beautyCommentsInfo(dbBack, req.user._id);
       }
@@ -182,9 +193,9 @@ async function getComment(req, res) {
 async function pinComment(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
-    if(!req.comment.relatedPost.equals(req.params.postId)){
+    if (!req.comment.relatedPost.equals(req.params.postId)) {
       res.status(403);
-      throw 'unauthorized';
+      throw "unauthorized";
     }
     const [dbBack, comment] = await Promise.all([
       Post.findById(req.params.postId, { pinnedComment: 1 }),
