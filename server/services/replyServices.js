@@ -1,6 +1,8 @@
 import schedule from "node-schedule";
 import { redisReplies } from "../configs/redis.js";
 import { Reply, Comment, ReplyLike } from "../models/index.js";
+import { incCommentStatistics } from "./commentServices.js";
+import { incUserStatistics, userTrendingInc } from "./userServices.js";
 //clear reply that related post does not exist
 function clearReplyByTime(time) {
   schedule.scheduleJob(
@@ -106,6 +108,14 @@ async function addRepliesUserInfo(userId, replies){
     console.log("addRepliesUserInfo Faild --Rservices 99");
   }
 }
+async function updateReplyStats(reply, likes = 0, trending = 0, upvotes = 0) {
+  const replyId = reply._id;
+  await Promise.all([
+    incReplyStatistics(replyId, "likes", likes),
+    userTrendingInc(reply.author, trending),
+    incUserStatistics(reply.author, "upvotes", upvotes),
+  ])
+}
 export {
   clearReplyByTime,
   addReplyStatistics,
@@ -114,5 +124,6 @@ export {
   saveRedisReplyProfile,
   getRedisReplyProfile,
   addRepliesStatistics,
-  addRepliesUserInfo
+  addRepliesUserInfo,
+  updateReplyStats,
 };

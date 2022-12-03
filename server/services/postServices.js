@@ -2,6 +2,7 @@ import { PostLike, SavedPost, Post } from "../models/index.js";
 import { redisPosts, redisTrending } from "../configs/redis.js";
 import schedule from "node-schedule";
 import { addCommentsStatistics, getCommentsUderPost } from "./commentServices.js";
+import { incUserStatistics, userTrendingInc } from "./userServices.js";
 
 //get the post info related to the loggined user.
 async function getOnePostInfo(postId) {
@@ -235,6 +236,17 @@ function postFilter(posts, timeInterval = "default") {
     console.log("getPosts Failed -- Pservices 251");
   }
 }
+async function updatePostStats(post, likes = 0, trending = 0, upvotes = 0, marks = 0) {
+  const postId = post._id;
+  await Promise.all([
+    postTrendingInc(postId, trending),
+    incPostStatistics(postId, "likes", likes),
+    userTrendingInc(post.author, trending),
+    incUserStatistics(post.author, "upvotes", upvotes),
+    incPostStatistics(postId, "marks", marks),
+  ])
+}
+
 function postPopularity(post) {
   const popularity =
     post.statistics.likes * 20 +
@@ -259,4 +271,5 @@ export {
   addPostsStatistics,
   postFilter,
   postPopularity,
+  updatePostStats,
 };

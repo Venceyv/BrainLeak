@@ -197,15 +197,19 @@ async function followUser(req, res) {
     });
     if (dbBack) {
       dbBack.remove();
-        incUserStatistics(user._id, "following", -1);
-        incUserStatistics(targetUserId, "follower", -1);
-        userTrendingInc(targetUserId, -10);
+      await Promise.all([
+        incUserStatistics(user._id, "following", -1),
+        incUserStatistics(targetUserId, "follower", -1),
+        userTrendingInc(targetUserId, -10),
+      ])
       const msg = "unfollow successfully.";
       return res.status(200).json({ msg });
     }
-      incUserStatistics(user._id, "following", 1);
-      incUserStatistics(targetUserId, "follower", 1);
-      userTrendingInc(targetUserId, 10);
+    await Promise.all([
+      incUserStatistics(user._id, "following", 1),
+      incUserStatistics(targetUserId, "follower", 1),
+      userTrendingInc(targetUserId, 10),
+    ])
     new Follow({
       user: user._id,
       followedUser: targetUserId,
@@ -233,7 +237,7 @@ async function getFollower(req, res) {
       });
       dbBack = await Promise.all(
         dbBack.map(async (follower) => {
-          follower = addUserStatistics(follower);
+          follower =await addUserStatistics(follower);
           return follower;
         })
       );
@@ -270,7 +274,7 @@ async function getFollowing(req, res) {
       });
       dbBack = await Promise.all(
         dbBack.map(async (follower) => {
-          follower = addUserStatistics(follower);
+          follower = await addUserStatistics(follower);
           return follower;
         })
       );

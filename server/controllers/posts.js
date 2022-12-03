@@ -1,4 +1,4 @@
-import { Post, Tags, PostLike, SavedPost, Comment, CommentLike } from "../models/index.js";
+import { Post, Tags, PostLike, SavedPost, Comment, CommentLike, User } from "../models/index.js";
 import {
   getRedisPostProfile,
   saveRedisPostProfile,
@@ -10,6 +10,7 @@ import {
   postFilter,
   beautyPostsInfo,
   addPostsStatistics,
+  updatePostStats,
 } from "../services/postServices.js";
 import { incUserNotification, incUserStatistics, userTrendingInc } from "../services/userServices.js";
 import json from "body-parser";
@@ -23,7 +24,7 @@ async function createPost(req, res) {
     res.setHeader("Content-Type", "application/json");
     const dbBack = new Post(req.body);
     const userId = req.user._id;
-    incUserStatistics(req.user._id, "posts", 1);
+    await incUserStatistics(req.user._id, "posts", 1);
     dbBack.author = userId;
     dbBack.put = req.query.put === "true" ? true : false;
     dbBack.tags.map(async function (tag) {
@@ -58,10 +59,13 @@ async function findOne(req, res) {
     let pinnedComment = await Comment.findById(dbBack.pinnedComment)
       .lean()
       .populate("author", { avatar: 1, username: 1 }, { lean: true });
-    [dbBack, pinnedComment] = await Promise.all([addPostStatistics(dbBack), addCommentStatistics(pinnedComment)]);
-    postTrendingInc(req.params.postId, 1);
-    incPostStatistics(postId, "views", 1);
-    userTrendingInc(req.post.author, 1);
+    [dbBack, pinnedComment] = await Promise.all([
+      addPostStatistics(dbBack),
+      addCommentStatistics(pinnedComment),
+      postTrendingInc(req.params.postId, 1),
+      incPostStatistics(postId, "views", 1),
+      userTrendingInc(req.post.author, 1),
+    ]);
     dbBack.pinnedComment = pinnedComment;
     if (req.user) {
       let commentLikedList;
@@ -192,31 +196,30 @@ async function likePost(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     const postId = req.params.postId;
-    const postLike = await PostLike.findOne({ user: req.user._id, post: postId }, { like: 1 });
-    const post = req.post;
+    const [postLike, author] = await Promise.all([
+      PostLike.findOne({ user: req.user._id, post: postId }, { like: 1 }),
+      User.findById(req.post.author, { avatar: 1, username: 1 }).lean(),
+    ]);
     let like = true;
+    let dbBack, post;
     if (postLike && postLike.like) {
-      postTrendingInc(req.params.postId, -2);
-      incPostStatistics(postId, "likes", -1);
-      userTrendingInc(req.post.author, -2);
-      incUserStatistics(req.post.author, "upvotes", -1);
+      await updatePostStats(req.post, -1, -2, -1);
       like = false;
       postLike.remove();
-      return res.status(200).json({ like });
+    } else {
+      await Promise.all([updatePostStats(req.post, 1, 2, 1), incUserNotification(req.post.author, "likes", 1)]);
+      if (postLike) {
+        postLike.like = true;
+        await incPostStatistics(postId, "dislikes", -1);
+        postLike.save();
+      } else {
+        PostLike({ user: req.user._id, post: postId, postAuthor: req.post.author }).save();
+      }
     }
-    postTrendingInc(postId, 2);
-    incPostStatistics(postId, "likes", 1);
-    userTrendingInc(req.post.author, 2);
-    incUserStatistics(req.post.author, "upvotes", 1);
-    incUserNotification(req.post.author, "likes", 1);
-    if (postLike) {
-      postLike.like = true;
-      incPostStatistics(postId, "dislikes", -1);
-      postLike.save();
-      return res.status(200).json({ like });
-    }
-    PostLike({ user: req.user._id, post: postId, postAuthor: post.author }).save();
-    return res.status(200).json({ like });
+    post = await addPostStatistics(req.post);
+    post.author = author;
+    dbBack = { ...post, like };
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
@@ -225,28 +228,30 @@ async function dislikePost(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     const postId = req.params.postId;
-    const postLike = await PostLike.findOne({ user: req.user._id, post: postId });
-    const post = req.post;
+    const [postLike, author] = await Promise.all([
+      PostLike.findOne({ user: req.user._id, post: postId }, { like: 1 }),
+      User.findById(req.post.author, { avatar: 1, username: 1 }).lean(),
+    ]);
     let dislike = true;
+    let dbBack;
     if (postLike && !postLike.like) {
       postLike.remove();
-      incPostStatistics(postId, "dislikes", -1);
+      await incPostStatistics(postId, "dislikes", -1);
       dislike = false;
-      return res.status(200).json({ dislike });
+    } else {
+      await incPostStatistics(postId, "dislikes", 1);
+      if (postLike) {
+        await updatePostStats(req.post, -1, -2, -1);
+        postLike.like = false;
+        postLike.save();
+      } else {
+        new PostLike({ user: req.user._id, post: postId, postAuthor: req.post.author, like: false }).save();
+      }
     }
-    incPostStatistics(postId, "dislikes", 1);
-    incUserStatistics(post.author, "upvotes", -1);
-    if (postLike) {
-      incPostStatistics(postId, "likes", -1);
-      postTrendingInc(postId, -2);
-      userTrendingInc(post.author, -2);
-      incUserStatistics(post.author, "upvotes", -1);
-      postLike.like = false;
-      postLike.save();
-      return res.status(200).json({ dislike });
-    }
-    new PostLike({ user: req.user._id, post: postId, postAuthor: post.author, like: false }).save();
-    return res.status(200).json({ dislike });
+    const post = await addPostStatistics(req.post);
+    post.author = author;
+    dbBack = { ...post, dislike };
+    return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error: error });
   }
@@ -255,23 +260,24 @@ async function savePost(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     const postId = req.params.postId;
-    const post = req.post;
-    const dbBack = await SavedPost.findOne({ user: req.user._id, post: postId });
+    const [postSave, author] = await Promise.all([
+      SavedPost.findOne({ user: req.user._id, post: postId }),
+      User.findById(req.post.author, { avatar: 1, username: 1 }).lean(),
+    ]);
     let saved = true;
-    if (dbBack) {
-      postTrendingInc(postId, -4);
-      incPostStatistics(postId, "marks", -1);
-      userTrendingInc(post.author, -3);
+    let dbBack, post;
+    if (postSave) {
+      await updatePostStats(req.post, 0, -4, 0, -1);
       saved = false;
-      dbBack.remove();
-      return res.status(200).json({ saved });
+      postSave.remove();
+    } else {
+      await Promise.all([updatePostStats(req.post, 0, 4, 0, 1), incUserNotification(req.post.author, "marks", 1)]);
+      new SavedPost({ user: req.user._id, post: postId, postAuthor: req.post.author }).save();
     }
-    postTrendingInc(postId, 4);
-    incPostStatistics(postId, "marks", 1);
-    userTrendingInc(post.author, 3);
-    incUserNotification(post.author, "marks", 1);
-    new SavedPost({ user: req.user._id, post: postId, postAuthor: post.author }).save();
-    return res.status(200).json({ saved });
+    post = await addPostStatistics(req.post);
+    post.author = author;
+    dbBack = { ...post, saved };
+    return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
   }
@@ -280,15 +286,15 @@ async function deletePost(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     const postId = req.params.postId;
-    incUserStatistics(req.user._id, "posts", -1);
     await Promise.all([
+      incUserStatistics(req.user._id, "posts", -1),
       Post.findByIdAndDelete(req.post._id),
       PostLike.deleteMany({ post: postId }),
       SavedPost.deleteMany({ post: postId }),
     ]);
     redisTrending.zrem(" PostTrending", postId);
     const msg = "Delete Successfully";
-    return res.status(402).json({ msg });
+    return res.status(200).json({ msg });
   } catch (error) {
     res.json({ error: error });
   }
