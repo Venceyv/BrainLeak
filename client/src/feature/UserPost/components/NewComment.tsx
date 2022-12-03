@@ -42,6 +42,8 @@ export const NewComment: FC<{
         console.log(err);
         if (err?.response?.status === 401) {
           errorToast('Please Login First');
+        } else {
+          errorToast('An error has occurred');
         }
       },
     }

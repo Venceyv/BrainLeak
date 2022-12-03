@@ -20,9 +20,16 @@ export const IndividualComment: FC<PostComment> = (
 ): JSX.Element => {
   const [showReply, setShowReply] = useState<boolean>(false);
   const [showUserReply, setShowUserReply] = useState<boolean>(false);
+  const [postComment, setPostComment] =
+    useState<PostComment>(comment);
 
   const { putLikeMutation, putDislikeMutation } =
-    useMutateUserComment(comment.relatedPost, comment._id);
+    useMutateUserComment(
+      comment.relatedPost,
+      comment._id,
+      setPostComment
+    );
+
   return (
     <div className="pl-4 w-full mb-3">
       <div className="flex items-center justify-start gap-2 col-span-2">
@@ -58,9 +65,9 @@ export const IndividualComment: FC<PostComment> = (
                 className="w-5 h-5 cursor-pointer"
                 alt="like"
               /> */}
-              <LikeThumb isTrue={comment.like ? true : false} />
+              <LikeThumb isTrue={postComment.like ? true : false} />
               <p className="truncate pl-[2px] pt-[1px] text-sm text-white">
-                {comment.statistics.likes}
+                {postComment.statistics.likes}
               </p>
             </div>
             <div
@@ -72,9 +79,11 @@ export const IndividualComment: FC<PostComment> = (
                 className="w-5 h-5 cursor-pointer"
                 alt="dislike"
               /> */}
-              <DislikeThumb isTrue={comment.dislike ? true : false} />
+              <DislikeThumb
+                isTrue={postComment.dislike ? true : false}
+              />
               <p className="truncate pl-[2px] pt-[1px] text-sm text-white">
-                {comment.statistics.dislikes}
+                {postComment.statistics.dislikes}
               </p>
             </div>
             <div className="flex items-center">
@@ -121,7 +130,7 @@ export const IndividualComment: FC<PostComment> = (
         )}
         {showUserReply && <Replies commentId={comment?._id} />}
 
-        {!showUserReply && comment.statistics.replies > 0 && (
+        {!showUserReply && postComment.statistics.replies > 0 && (
           <div
             className="cursor-pointer text-white"
             onClick={() => setShowUserReply((prev) => !prev)}

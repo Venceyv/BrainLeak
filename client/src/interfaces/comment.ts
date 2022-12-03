@@ -22,6 +22,7 @@ export interface PostComment extends userInteractionStats {
   postAuthor: string;
   publishDate: string;
   relatedPost: string;
+  pinned: boolean;
 
   statistics: PostStatistics;
   updateDate: string;

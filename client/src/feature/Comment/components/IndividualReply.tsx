@@ -19,11 +19,14 @@ export const IndividualReply: FC<CommentReply> = (
   reply
 ): JSX.Element => {
   const [showReply, setShowReply] = useState<boolean>(false);
+  const [commentReply, setCommentReply] =
+    useState<CommentReply>(reply);
 
   const { putLikeMutation, putDislikeMutation } = useMutateUserReply(
     reply.relatedPost,
     reply.relatedComment,
-    reply._id
+    reply._id,
+    setCommentReply
   );
   return (
     <div className="pl-4 w-full mb-2">
@@ -63,9 +66,9 @@ export const IndividualReply: FC<CommentReply> = (
                 className="w-5 h-5 cursor-pointer"
                 alt="like"
               /> */}
-              <LikeThumb isTrue={reply.like ? true : false} />
+              <LikeThumb isTrue={commentReply.like ? true : false} />
               <p className="truncate pl-[2px] pt-[1px] text-sm text-white">
-                {reply.statistics.likes}
+                {commentReply.statistics.likes}
               </p>
             </div>
             <div
@@ -77,9 +80,11 @@ export const IndividualReply: FC<CommentReply> = (
                 className="w-5 h-5 cursor-pointer"
                 alt="dislike"
               /> */}
-              <DislikeThumb isTrue={reply.dislike ? true : false} />
+              <DislikeThumb
+                isTrue={commentReply.dislike ? true : false}
+              />
               <p className="truncate pl-[2px] pt-[1px] text-sm text-white">
-                {reply.statistics.dislikes}
+                {commentReply.statistics.dislikes}
               </p>
             </div>
             <div
@@ -109,5 +114,3 @@ export const IndividualReply: FC<CommentReply> = (
     </div>
   );
 };
-
-// COMMENT DATE WRONG

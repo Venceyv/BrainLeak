@@ -71,7 +71,7 @@ export const PostContent: FC<{
         <PostMetaData
           author={post?.author}
           publishDate={post.publishDate}
-          isAuthor={!author ? true : false}
+          isAuthor={author ? true : false}
           deletePostMutation={deletePostMutation}
         />
         <div className="w-full text-[20px] font-bold text-white">

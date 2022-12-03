@@ -74,11 +74,12 @@ export const postUserReply = async (
 export const putLikeComment = async (
   postId: string,
   commentId: string
-): Promise<void> => {
+): Promise<PostComment> => {
   try {
     const {
       data: { dbBack: comment },
     } = await axios.put(`${URL}/posts/like/${postId}/${commentId}`);
+    return comment as PostComment;
   } catch (err) {
     throw err;
   }
@@ -87,13 +88,14 @@ export const putLikeComment = async (
 export const putDislikeComment = async (
   postId: string,
   commentId: string
-): Promise<void> => {
+): Promise<PostComment> => {
   try {
     const {
       data: { dbBack: comment },
     } = await axios.put(
       `${URL}/posts/dislike/${postId}/${commentId}`
     );
+    return comment as PostComment;
   } catch (err) {
     throw err;
   }
@@ -103,13 +105,14 @@ export const putLikeReply = async (
   postId: string,
   commentId: string,
   replyId: string
-): Promise<void> => {
+): Promise<CommentReply> => {
   try {
     const {
       data: { dbBack: reply },
     } = await axios.put(
       `${URL}/posts/like/${postId}/${commentId}/${replyId}`
     );
+    return reply as CommentReply;
   } catch (err) {
     throw err;
   }
@@ -119,13 +122,14 @@ export const putDislikeReply = async (
   postId: string,
   commentId: string,
   replyId: string
-): Promise<void> => {
+): Promise<CommentReply> => {
   try {
     const {
       data: { dbBack: reply },
     } = await axios.put(
       `${URL}/posts/dislike/${postId}/${commentId}/${replyId}`
     );
+    return reply as CommentReply;
   } catch (err) {
     throw err;
   }
