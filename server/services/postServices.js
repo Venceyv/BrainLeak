@@ -236,7 +236,7 @@ function postFilter(posts, timeInterval = "default") {
     console.log("getPosts Failed -- Pservices 251");
   }
 }
-async function changePostStats(post, likes = 0, trending = 0, upvotes = 0, marks = 0) {
+async function updatePostStats(post, likes = 0, trending = 0, upvotes = 0, marks = 0) {
   const postId = post._id;
   await Promise.all([
     postTrendingInc(postId, trending),
@@ -271,5 +271,5 @@ export {
   addPostsStatistics,
   postFilter,
   postPopularity,
-  changePostStats,
+  updatePostStats,
 };

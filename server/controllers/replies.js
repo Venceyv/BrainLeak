@@ -6,7 +6,7 @@ import {
   addRepliesUserInfo,
   addReplyStatistics,
   addReplyUserInfo,
-  changeReplyStats,
+  updateReplyStats,
   getRedisReplyProfile,
   incReplyStatistics,
   saveRedisReplyProfile,
@@ -59,9 +59,9 @@ async function likeReply(req, res) {
     if (likedReply && likedReply.like) {
       like = false;
       likedReply.remove();
-      await changeReplyStats(req.reply, -1, -4, -1);
+      await updateReplyStats(req.reply, -1, -4, -1);
     } else {
-      await Promise.all([changeReplyStats(req.reply, 1, 4, 1), incUserNotification(req.reply.author, "likes", 1)]);
+      await Promise.all([updateReplyStats(req.reply, 1, 4, 1), incUserNotification(req.reply.author, "likes", 1)]);
       if (likedReply) {
         likedReply.like = true;
         likedReply.save();
@@ -98,7 +98,7 @@ async function dislikeReply(req, res) {
       if (dislikedReply) {
         dislikedReply.like = false;
         dislikedReply.save();
-        await changeReplyStats(req.reply, -1, -4, -1);
+        await updateReplyStats(req.reply, -1, -4, -1);
       } else {
         new ReplyLike({ user: userId, reply: replyId, replyAuthor: req.reply.author, like: false }).save();
       }

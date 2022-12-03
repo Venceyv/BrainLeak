@@ -108,7 +108,7 @@ async function addRepliesUserInfo(userId, replies){
     console.log("addRepliesUserInfo Faild --Rservices 99");
   }
 }
-async function changeReplyStats(reply, likes = 0, trending = 0, upvotes = 0) {
+async function updateReplyStats(reply, likes = 0, trending = 0, upvotes = 0) {
   const replyId = reply._id;
   await Promise.all([
     incReplyStatistics(replyId, "likes", likes),
@@ -125,5 +125,5 @@ export {
   getRedisReplyProfile,
   addRepliesStatistics,
   addRepliesUserInfo,
-  changeReplyStats,
+  updateReplyStats,
 };

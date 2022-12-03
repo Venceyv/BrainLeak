@@ -10,7 +10,7 @@ import {
   postFilter,
   beautyPostsInfo,
   addPostsStatistics,
-  changePostStats,
+  updatePostStats,
 } from "../services/postServices.js";
 import { incUserNotification, incUserStatistics, userTrendingInc } from "../services/userServices.js";
 import json from "body-parser";
@@ -203,11 +203,11 @@ async function likePost(req, res) {
     let like = true;
     let dbBack, post;
     if (postLike && postLike.like) {
-      await changePostStats(req.post, -1, -2, -1);
+      await updatePostStats(req.post, -1, -2, -1);
       like = false;
       postLike.remove();
     } else {
-      await Promise.all([changePostStats(req.post, 1, 2, 1), incUserNotification(req.post.author, "likes", 1)]);
+      await Promise.all([updatePostStats(req.post, 1, 2, 1), incUserNotification(req.post.author, "likes", 1)]);
       if (postLike) {
         postLike.like = true;
         await incPostStatistics(postId, "dislikes", -1);
@@ -241,7 +241,7 @@ async function dislikePost(req, res) {
     } else {
       await incPostStatistics(postId, "dislikes", 1);
       if (postLike) {
-        await changePostStats(req.post, -1, -2, -1);
+        await updatePostStats(req.post, -1, -2, -1);
         postLike.like = false;
         postLike.save();
       } else {
@@ -267,11 +267,11 @@ async function savePost(req, res) {
     let saved = true;
     let dbBack, post;
     if (postSave) {
-      await changePostStats(req.post, 0, -4, 0, -1);
+      await updatePostStats(req.post, 0, -4, 0, -1);
       saved = false;
       postSave.remove();
     } else {
-      await Promise.all([changePostStats(req.post, 0, 4, 0, 1), incUserNotification(req.post.author, "marks", 1)]);
+      await Promise.all([updatePostStats(req.post, 0, 4, 0, 1), incUserNotification(req.post.author, "marks", 1)]);
       new SavedPost({ user: req.user._id, post: postId, postAuthor: req.post.author }).save();
     }
     post = await addPostStatistics(req.post);

@@ -130,7 +130,7 @@ async function beautyCommentsInfo(comments, userId) {
     console.log("beautyCommentsInfo Failed -- Cservices 127");
   }
 }
-async function changeCommentStats(comment, likes = 0, trending = 0, upvotes = 0) {
+async function updateCommentStats(comment, likes = 0, trending = 0, upvotes = 0) {
   const commentId = comment._id;
   await Promise.all([
     incCommentStatistics(commentId, "likes", likes),
@@ -146,5 +146,5 @@ export {
   getCommentsUderPost,
   incCommentStatistics,
   beautyCommentsInfo,
-  changeCommentStats
+  updateCommentStats
 };

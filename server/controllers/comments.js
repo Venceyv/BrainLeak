@@ -7,7 +7,7 @@ import {
   beautyCommentsInfo,
   addCommentStatistics,
   addCommentUserInfo,
-  changeCommentStats,
+  updateCommentStats,
 } from "../services/commentServices.js";
 import { incUserNotification, incUserStatistics, userTrendingInc } from "../services/userServices.js";
 import { incPostStatistics, postTrendingInc } from "../services/postServices.js";
@@ -96,10 +96,10 @@ async function likeComment(req, res) {
     if (likedcomment && likedcomment.like) {
       like = false;
       likedcomment.remove();
-      await changeCommentStats(req.comment, -1, -6, -1);
+      await updateCommentStats(req.comment, -1, -6, -1);
     } else {
       await Promise.all([
-        changeCommentStats(req.comment, 1, 6, 1),
+        updateCommentStats(req.comment, 1, 6, 1),
         incUserNotification(req.comment.author, "likes", 1),
       ]);
       if (likedcomment) {
@@ -138,7 +138,7 @@ async function dislikeComment(req, res) {
       if (dislikedComment) {
         dislikedComment.like = false;
         dislikedComment.save();
-        await changeCommentStats(req.comment, -1, -6, -1);
+        await updateCommentStats(req.comment, -1, -6, -1);
       } else {
         new CommentLike({ user: userId, comment: commentId, commentAuthor: req.comment.author, like: false }).save();
       }
