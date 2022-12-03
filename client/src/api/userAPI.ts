@@ -3,12 +3,13 @@ import { URL } from '../data/Constants';
 import { TrendingUser, User } from '../interfaces/user';
 import axios from './axiosConfig';
 
-export const getCheckAuth = async (userId: string): Promise<User> => {
+export const getCheckAuth = async (
+  userId: string | null
+): Promise<User> => {
   try {
     const {
       data: { dbBack: userData },
     } = await axios.get(`${URL}/users/auth-check/${userId}`);
-    console.log(userData);
     return userData as User;
   } catch (err) {
     if (axios.isAxiosError(err)) {
@@ -20,6 +21,19 @@ export const getCheckAuth = async (userId: string): Promise<User> => {
     }
 
     throw err;
+  }
+};
+
+export const getCheckAuthAuthor = async (
+  userId: string | null
+): Promise<User | null> => {
+  try {
+    const {
+      data: { dbBack: userData },
+    } = await axios.get(`${URL}/users/auth-check/${userId}`);
+    return userData as User;
+  } catch (error) {
+    throw 'not author';
   }
 };
 

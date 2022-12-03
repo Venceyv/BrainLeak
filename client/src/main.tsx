@@ -16,8 +16,8 @@ import './index.css';
 
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
-    onError: () => {
-      console.log('global err handle');
+    onError: (err) => {
+      if (err === 'not author') return;
       errorToast();
     },
   }),

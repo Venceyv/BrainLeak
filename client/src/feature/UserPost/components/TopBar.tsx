@@ -32,6 +32,7 @@ export const TopBar: FC<TopBarProp> = ({
         <div
           className="flex items-center cursor-pointer"
           onClick={() => putLikeMutation.mutate()}
+          title="like"
         >
           {/* <img
             src="../../../assets/img/like.svg"
@@ -46,6 +47,7 @@ export const TopBar: FC<TopBarProp> = ({
         <div
           className="flex items-center cursor-pointer"
           onClick={() => putDislikeMutation.mutate()}
+          title="dislike"
         >
           {/* <img
             src="../../../assets/img/dislike.svg"
@@ -60,6 +62,7 @@ export const TopBar: FC<TopBarProp> = ({
         <div
           className="flex items-center cursor-pointer"
           onClick={() => putSaveMutation.mutate()}
+          title="bookmark"
         >
           {/* <img
             src="../../../assets/img/dislike.svg"
@@ -74,6 +77,7 @@ export const TopBar: FC<TopBarProp> = ({
         src="../../../assets/img/close-hanger.svg"
         className="w-8 h-8 cursor-pointer ml-auto mr-5"
         alt="close"
+        title="close"
         onClick={() => navigate(-1)}
       />
       {/* <img src="../../../assets/img/close.svg" className="w-6 h-6 cursor-pointer" alt="like" /> */}

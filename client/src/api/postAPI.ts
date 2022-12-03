@@ -35,6 +35,18 @@ export const getPost = async (
   }
 };
 
+export const deletePost = async (
+  postId: string | undefined
+): Promise<void> => {
+  try {
+    const {
+      data: { dbBack: postData },
+    } = await axios.delete(`${URL}/posts/${postId}`);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getPosts = async (
   pageNum: number,
   sortType: MenuItem,

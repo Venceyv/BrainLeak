@@ -1,5 +1,11 @@
 export const queryKeys = {
-  query: ['postData', 'posts', 'postCommentReply', 'postComment'],
+  query: [
+    'postData',
+    'posts',
+    'postCommentReply',
+    'postComment',
+    'checkAuthAuthor',
+  ],
   mutation: [
     'putLikeCommentMutation',
     'putDislikeCommentMutation',
