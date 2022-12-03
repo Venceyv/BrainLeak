@@ -1,26 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useQuery } from "react-query";
-//import fetchPhoto from './fetchphoto';
 
 function Header() {
-
-  //Fetching data through just js fetch
-  // const [headerAPI, setHeaderAPI] = useState([]); 
-  // const [name, setName] = useState([]);
-
-  // const fetchHeader = () => {
-  //   fetch("https://jsonplaceholder.typicode.com/photos?id=1").then(response => response.json()).then((json) => setHeaderAPI(json));
-  // }
-
-  // const fetchName = () => {
-  //   fetch("https://jsonplaceholder.typicode.com/users").then(response => response.json()).then((json) => setName(json));
-  // }
-
-  // useEffect(() => {
-  //   fetchHeader();
-  //   fetchName();
-  // })
 
 
     //Fetching data using axios
@@ -50,11 +31,10 @@ function Header() {
   
   return (
     //Profile Parent Container
-    //SET BANNER TO FIXED SIZE
-      <div className= "bg-slate-700 relative h-[210px] rounded-b-lg flex">
+      <div className= "bg-slate-700 relative h-[210px] rounded-b-lg flex max-w-[1920px] m-auto">
         <img className="border-2 border-black w-full h-[210px] rounded-b-lg flex flex-row" src={photos[0]?.url}></img>
         {/* <img className="border-2 border-black w-full h-[210px] rounded-b-lg flex flex-row" src={data[0]?.url}></img> */}
-          <div className="absolute mb-2 flex items-center mt-auto overflow-auto text-black	pt-2">
+          <div className="top-1/3 absolute mb-2 flex items-center mt-auto overflow-auto text-black	pt-2">
           
           {/* Container for Image */}
             <div className="ml-2 float-left p-1">

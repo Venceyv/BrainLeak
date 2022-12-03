@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import {useQuery} from 'react-query'
 
 
 function PostBox() {
@@ -35,22 +34,6 @@ function PostBox() {
     setFollowedPost(true);
   };
   
-  //Fetching data through standard fetch
-  // const [postsAPI, setPostsAPI] = useState([]); 
-  // const [postContent, setPostContent] = useState([]);
-
-  // const fetchPosts = () => {
-  //   fetch("https://jsonplaceholder.typicode.com/users").then(response => response.json()).then((json) => setPostsAPI(json));
-  // }
-  // const fetchPost = () => {
-  //   fetch("https://jsonplaceholder.typicode.com/posts?userId=10").then(response => response.json()).then((json) => setPostContent(json));
-  // }
-
-  // useEffect(() => {
-  //   fetchPosts();
-  //   fetchPost();
-  // })
-
     //Fetching Data Through Axios
     const [postApi, setPostApi] = useState([])
   
@@ -74,9 +57,9 @@ function PostBox() {
     }, [])
 
   return (
-    <div className="pt-3 inline-flex w-7/12 h-3/4 ml-80">
-      <div className="pr-3 h-4/5 w-1/3 space-y-4">
-        <div className="rounded-lg relative text-center align-middle pl-2 pt-8 border-2 border-black  p-2 h-1/2 bg-neutral-800 text-white	flex flex-col">
+    <div className="pt-3 flex w-7/12 h-3/4 ml-auto mr-auto">
+      <div className="pr-3 h-4/5 w-[298px] space-y-4 ">
+        <div className="max-w-[298px] max-h-[232px] rounded-lg relative text-center align-middle pl-2 pt-8 border-2 border-black  p-2 h-1/2 bg-neutral-800 text-white	flex flex-col">
           <div className="text-lg font-bold">
             <button onClick={descHandler}> &#8226; Profile &#8226;</button>
           </div>
@@ -92,8 +75,8 @@ function PostBox() {
         </div>
 
         {/* Container For Trackers, ie # of Posts */}
-          <div className="justify-center rounded-lg relative pl-2 pt-8 border-2 border-black flex p-2 h-1/2 bg-neutral-800 text-white	">
-              <div className="space-y-3 flex flex-col">
+          <div className="m-auto max-w-[256px] max-h-[232px] justify-center rounded-lg relative pl-2 pt-8 border-2 border-black flex p-2 h-1/2 bg-neutral-800 text-white	">
+              <div className="space-y-4 flex flex-col">
                 <div>
                   <p>Subscriber Count: {users[1]?.id}</p>
                   {/* <p>Sub Count:</p> */}
@@ -115,36 +98,36 @@ function PostBox() {
 
 
       </div>
-
+      {/* Set Max Width to 1024px  */}
       {/* Main Post Container */}
-      <div className="min-h-full content-center w-full">
-        <div className="h-min flex justify-center  rounded-md border-4 border-black p-2 bg-neutral-800 text-white mr-1.5">
-          <div className="">
+      <div className="h-[483px] content-center w-full">
+        <div className="max-w-[1024px] min-h-full flex rounded-md border-4 border-black p-2 bg-neutral-800 text-white mr-1.5">
+          <div className="w-full">
           {profileDesc && (
-            <div>
-              <div className="">
+            <div className="">
+              <div className="text-center mb-5 mt-2">
                 <p>Welcome to your Profile Page</p>
               </div>
-              <div>
-                <p>{users[0]?.company?.catchPhrase}</p>
+              <div className="">
+                <p className="border-white border-2 p-2 mb-5 rounded-lg">{users[0]?.company?.catchPhrase}</p>
               </div>
             </div>
           )}  
           {posts && (
-            <p>{users[0]?.email}</p>
+            <p className="border-white border-2 p-2 mb-5 rounded-lg">{users[0]?.email}</p>
             // <p>My Posts Temp</p>
           )}
           {topics && postApi?.length > 0 && (
             <ul>
               {postApi.map(post => (
-              <li className="border-white border-4 p-2 mb-5" key={post.id}>{post.body}</li> 
+              <li className="border-white border-2 p-2 mb-5 rounded-lg" key={post.id}>{post.body}</li> 
               ))}
             </ul>
             // {topics && ( 
             // <p>Comment History Temp</p>
           )}
           {followedPost && (
-            <p>{users[2]?.email}</p>
+            <p className="border-white border-2 p-2 mb-5 rounded-lg">{users[2]?.email}</p>
             // <p>Liked Posts Temp</p>
           )}
           </div>
