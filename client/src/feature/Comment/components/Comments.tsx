@@ -2,32 +2,22 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { FC, useState } from 'react';
 import { getComments } from '../../../api/commentAPI';
 import { IndividualComment } from './IndividualComment';
-import TimeAgo from 'react-timeago';
 import { Loading } from '../../../components/Loading';
-// import InfiniteScroll from 'react-infinite-scroll-component';
 import InfiniteScroll from 'react-infinite-scroller';
 import { NoMore } from '../../../components/NoMore';
+import { CommentSortBar } from './CommentSortBar';
 
 interface CommentsProp {
   postId: string;
 }
 
-import { useEffect } from 'react';
-
-export function useTriggerScrollFix(deps: number) {
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('scroll'));
-    }
-  }, [deps]);
-}
+export type SortByType = 'new' | 'hot' | 'top';
 
 export const Comments: FC<CommentsProp> = ({
   postId,
 }): JSX.Element => {
-  // const { data, isLoading, isError } = useQuery(['postComment'], () =>
-  //   getComments(postId)
-  // );
+  const [sortBy, setSortBy] = useState<SortByType>('new');
+
   const {
     data,
     isSuccess,
@@ -36,8 +26,8 @@ export const Comments: FC<CommentsProp> = ({
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    ['postComment'],
-    ({ pageParam = 1 }) => getComments(postId, pageParam),
+    ['postComment', sortBy],
+    ({ pageParam = 1 }) => getComments(postId, pageParam, sortBy),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length < 10 ? undefined : allPages.length + 1;
@@ -51,7 +41,8 @@ export const Comments: FC<CommentsProp> = ({
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-1">
+      <CommentSortBar sortBy={sortBy} setSortBy={setSortBy} />
       <div className="mt-3">
         <InfiniteScroll
           pageStart={0}

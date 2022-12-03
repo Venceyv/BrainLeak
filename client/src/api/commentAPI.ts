@@ -4,13 +4,14 @@ import { CommentReply, PostComment } from '../interfaces/comment';
 
 export const getComments = async (
   postId: string,
-  pageNumber: number
+  pageNumber: number,
+  sortBy: string
 ): Promise<PostComment[]> => {
   try {
     const {
       data: { dbBack: comments },
     } = await axios.get(
-      `${URL}/posts/comments/${postId}?pagesize=10&pagenumber=${pageNumber}&sort=new`
+      `${URL}/posts/comments/${postId}?pagesize=10&pagenumber=${pageNumber}&sort=${sortBy}`
     );
     console.log(comments);
     return comments as PostComment[];
