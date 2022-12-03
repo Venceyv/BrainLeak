@@ -1,7 +1,10 @@
-export const getJWT: Function = (): string => {
-  return JSON.parse(localStorage.getItem('jwt') as string);
+export const getJWT: Function = (): string | null => {
+  const jwt = localStorage.getItem('jwt') as string;
+
+  return jwt ? JSON.parse(jwt) : null;
 };
 
-export const getUserId = (): string => {
-  return JSON.parse(localStorage.getItem('userId') as string);
+export const getUserId = (): string | null => {
+  const userId = localStorage.getItem('userId') as string;
+  return userId ? JSON.parse(userId) : null;
 };
