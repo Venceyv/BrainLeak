@@ -17,5 +17,6 @@ export const queryKeys = {
     'putLikeAbstractPost',
     'putDislikeAbstractPost',
     'putSaveAbstractPost',
+    'deletePost',
   ],
 };

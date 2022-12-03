@@ -40,7 +40,7 @@ export const PostContent: FC<{
   );
 
   const deletePostMutation = useMutation(
-    ['putLikeOnPost'],
+    ['deletePost'],
     () => deletePost(postId),
     {
       onSuccess: () => {
