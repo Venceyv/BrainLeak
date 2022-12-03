@@ -294,7 +294,7 @@ async function deletePost(req, res) {
     ]);
     redisTrending.zrem(" PostTrending", postId);
     const msg = "Delete Successfully";
-    return res.status(402).json({ msg });
+    return res.status(200).json({ msg });
   } catch (error) {
     res.json({ error: error });
   }
