@@ -1,10 +1,12 @@
 import { useGoogleLogin } from '@react-oauth/google';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { postGoogleOAuth } from '../../api/oAuthAPI';
 import { errorToast } from '../../utils/errorToast';
 
 interface useLoginParam {
   setPresentLogin: React.Dispatch<React.SetStateAction<boolean>>;
   setLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  navigate: NavigateFunction;
 }
 
 interface useLoginReturn {
@@ -15,6 +17,7 @@ interface useLoginReturn {
 export const useLogin = ({
   setPresentLogin,
   setLogin,
+  navigate,
 }: useLoginParam): useLoginReturn => {
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
@@ -29,6 +32,7 @@ export const useLogin = ({
 
         setLogin(true);
         setPresentLogin(false);
+        navigate(0);
       } catch (error) {
         errorToast(`Oops! Something went wrong.`);
         throw error;

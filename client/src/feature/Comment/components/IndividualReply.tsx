@@ -168,6 +168,7 @@ export const IndividualReply: FC<IndividualReplyProp> = ({
             commentId={reply.relatedComment}
             commentUserId={reply.author._id}
             isReply={true}
+            content={''}
             setShowReply={setShowReply}
           />
         )}

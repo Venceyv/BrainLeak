@@ -27,14 +27,14 @@ export const getCheckAuth = async (
 
 export const getCheckAuthAuthor = async (
   userId: string | null
-): Promise<User | null> => {
+): Promise<User | null | undefined> => {
   try {
     const {
       data: { dbBack: userData },
     } = await axios.get(`${URL}/users/auth-check/${userId}`);
     return userData as User;
   } catch (error) {
-    throw 'not author';
+    throw 'Not author';
   }
 };
 

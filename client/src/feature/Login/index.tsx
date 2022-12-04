@@ -1,5 +1,6 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { postGoogleOAuth, postLogOut } from '../../api/oAuthAPI';
 import { CloseButtonSVG } from '../../components';
 import { LoginButton } from './components/LoginButton';
@@ -14,9 +15,11 @@ export const Login: FC<LoginProps> = ({
   setLogin,
   setPresentLogin,
 }): JSX.Element => {
+  const navigate = useNavigate();
   const { googleLogin, closeLogin } = useLogin({
     setLogin,
     setPresentLogin,
+    navigate,
   });
 
   return (

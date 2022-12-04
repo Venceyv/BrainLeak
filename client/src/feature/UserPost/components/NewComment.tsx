@@ -18,6 +18,7 @@ export const NewComment: FC<{
   commentUserId?: string;
   isReply: boolean;
   isEdit?: boolean;
+  content: string;
   setShowReply?: React.Dispatch<React.SetStateAction<boolean>>;
   setShowEdit?: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({
@@ -26,10 +27,11 @@ export const NewComment: FC<{
   commentUserId,
   isReply,
   isEdit,
+  content,
   setShowEdit,
   setShowReply,
 }): JSX.Element => {
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>(content);
   const postCommentFn = () => postComment(postId!, value);
   const commentReplyFn = () =>
     postUserReply(postId!, commentId!, commentUserId!, value);
@@ -92,6 +94,7 @@ export const NewComment: FC<{
       <div className="flex flex-col gap-2 p-2 border-2 text-white bg-secondary-black border-border-black rounded-md">
         <div>
           <ReactQuill
+            placeholder={`Fyi, internet is not a lawless place ... \n不要手嗨了`}
             theme="snow"
             value={value}
             onChange={setValue}

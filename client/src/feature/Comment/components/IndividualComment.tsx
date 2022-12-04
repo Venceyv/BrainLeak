@@ -185,6 +185,7 @@ export const IndividualComment: FC<{
             commentId={comment._id}
             commentUserId={comment.author._id}
             isReply={true}
+            content={''}
             setShowReply={setShowReply}
           />
         )}
@@ -195,6 +196,7 @@ export const IndividualComment: FC<{
             commentUserId={comment.author._id}
             isReply={false}
             isEdit={true}
+            content={comment.content ? comment.content : ''}
             setShowEdit={setShowEdit}
           />
         )}

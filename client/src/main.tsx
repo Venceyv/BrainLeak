@@ -13,13 +13,15 @@ import { CLIENT_ID } from './data/Constants';
 import App from './App';
 
 import './index.css';
+import { Axios, AxiosError } from 'axios';
 
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
-    onError: (err) => {
-      if (err === 'not author') return;
-      errorToast();
-    },
+    // onError: (err) => {
+    //   if (err === 'not author') return;
+    //   console.log(typeof err);
+    //   errorToast();
+    // },
   }),
 });
 

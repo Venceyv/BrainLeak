@@ -3,6 +3,10 @@
   --border-black: #474748;
 }
 
+.quill > .ql-container > .ql-editor.ql-blank::before {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .ql-toolbar.ql-snow {
   border: none !important;
 }

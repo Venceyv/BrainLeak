@@ -30,7 +30,7 @@ export const PostContent: FC<{
 }> = ({ post, postId }): JSX.Element => {
   const navigate = useNavigate();
   const {
-    data: author,
+    data: author = null,
     isSuccess,
     isError,
   } = useQuery(
@@ -91,7 +91,7 @@ export const PostContent: FC<{
           marks={post?.statistics?.marks}
         />
       </div>
-      <NewComment postId={postId} isReply={false} />
+      <NewComment postId={postId} isReply={false} content={''} />
     </div>
   );
 };

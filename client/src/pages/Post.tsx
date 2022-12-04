@@ -3,8 +3,23 @@ import { PostAuthor } from '../feature/PostAuthor';
 import { UserPost } from '../feature/UserPost';
 import { Comment } from '../feature/Comment';
 import { NewComment } from '../feature/UserPost/components/NewComment';
+import { useQuery } from '@tanstack/react-query';
+import { getPost } from '../api/postAPI';
+import { useParams } from 'react-router-dom';
+import { NotFound404 } from '../components/404';
 
 export const Post: FC = (): JSX.Element => {
+  const { postId } = useParams();
+  const { data, isLoading, isError } = useQuery(
+    ['postData'],
+    () => getPost(postId),
+    { refetchOnWindowFocus: false, cacheTime: 0 }
+  );
+
+  if (isError) {
+    return <NotFound404 />;
+  }
+
   return (
     <div
       id="scroll-target-node"
@@ -22,5 +37,3 @@ export const Post: FC = (): JSX.Element => {
     </div>
   );
 };
-
-// TODO: POST VALIDATOR

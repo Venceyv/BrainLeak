@@ -11,7 +11,7 @@ export const Comment: FC = (): JSX.Element => {
   const { postId } = useParams();
 
   const {
-    data: currentLoggedInUser,
+    data: currentLoggedInUser = null,
     isLoading,
     isError,
   } = useQuery(

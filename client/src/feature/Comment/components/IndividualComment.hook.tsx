@@ -25,7 +25,6 @@ export const useMutateUserComment = (
         queryClient.invalidateQueries(['postCommentReply']);
       },
       onError: (err: AxiosError) => {
-        console.log(err);
         if (err?.response?.status === 401) {
           errorToast('Please Login First');
         } else {

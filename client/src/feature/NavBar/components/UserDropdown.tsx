@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { postLogOut } from '../../../api/oAuthAPI';
 import { User } from '../../../interfaces/user';
 import { fallback } from '../../../utils/imgFallback';
@@ -16,6 +17,7 @@ export const UserDropdown: FC<UserDropdownProp> = ({
   setLogin,
   userData,
 }): JSX.Element => {
+  const navigate = useNavigate();
   const userLogout = async (): Promise<void> => {
     try {
       await postLogOut();
@@ -23,6 +25,7 @@ export const UserDropdown: FC<UserDropdownProp> = ({
       localStorage.removeItem('jwt');
       localStorage.removeItem('userId');
       setLogin(false);
+      navigate(0);
     } catch (error) {
       throw error;
     }
