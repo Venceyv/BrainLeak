@@ -21,6 +21,7 @@ export const useMutateUserComment = (
         successToast('Success');
         setPostComment({ ...data });
         queryClient.invalidateQueries(['postComment']);
+        queryClient.invalidateQueries(['postCommentReply']);
       },
       onError: (err: AxiosError) => {
         console.log(err);
@@ -41,6 +42,7 @@ export const useMutateUserComment = (
         successToast('Success');
         setPostComment({ ...data });
         queryClient.invalidateQueries(['postComment']);
+        queryClient.invalidateQueries(['postCommentReply']);
       },
       onError: (err: AxiosError) => {
         console.log(err);

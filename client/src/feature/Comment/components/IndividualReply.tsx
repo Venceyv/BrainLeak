@@ -108,6 +108,7 @@ export const IndividualReply: FC<CommentReply> = (
             commentId={reply.relatedComment}
             commentUserId={reply.author._id}
             isReply={true}
+            setShowReply={setShowReply}
           />
         )}
       </div>

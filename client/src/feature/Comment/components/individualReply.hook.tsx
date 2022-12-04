@@ -21,6 +21,7 @@ export const useMutateUserReply = (
       onSuccess: (data) => {
         successToast('Success');
         setCommentReply({ ...data });
+        // queryClient.invalidateQueries(['postComment']);
         queryClient.invalidateQueries(['postCommentReply']);
       },
       onError: (err: AxiosError) => {
@@ -41,6 +42,7 @@ export const useMutateUserReply = (
       onSuccess: (data) => {
         successToast('Success');
         setCommentReply({ ...data });
+        // queryClient.invalidateQueries(['postComment']);
         queryClient.invalidateQueries(['postCommentReply']);
       },
       onError: (err: AxiosError) => {

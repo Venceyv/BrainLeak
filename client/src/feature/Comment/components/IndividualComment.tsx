@@ -130,7 +130,7 @@ export const IndividualComment: FC<PostComment> = (
         )}
         {showUserReply && <Replies commentId={comment?._id} />}
 
-        {!showUserReply && postComment.statistics.replies > 0 && (
+        {!showUserReply && comment.statistics.replies > 0 && (
           <div
             className="cursor-pointer text-white"
             onClick={() => setShowUserReply((prev) => !prev)}
