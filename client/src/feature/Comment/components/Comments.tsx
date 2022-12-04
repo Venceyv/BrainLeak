@@ -9,12 +9,14 @@ import { CommentSortBar } from './CommentSortBar';
 
 interface CommentsProp {
   postId: string;
+  currentUserId: string | null;
 }
 
 export type SortByType = 'new' | 'hot' | 'top';
 
 export const Comments: FC<CommentsProp> = ({
   postId,
+  currentUserId,
 }): JSX.Element => {
   const [sortBy, setSortBy] = useState<SortByType>('new');
 
@@ -54,7 +56,13 @@ export const Comments: FC<CommentsProp> = ({
           {isSuccess &&
             data?.pages?.map((comments) => {
               return comments.map((comment, index) => {
-                return <IndividualComment key={index} {...comment} />;
+                return (
+                  <IndividualComment
+                    key={index}
+                    comment={comment}
+                    currentUserId={currentUserId}
+                  />
+                );
               });
             })}
         </InfiniteScroll>

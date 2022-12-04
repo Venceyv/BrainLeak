@@ -101,6 +101,41 @@ export const putDislikeComment = async (
   }
 };
 
+export const putEditComment = async (
+  postId: string,
+  commentId: string,
+  content: string
+) => {
+  try {
+    const {
+      data: { dbBack: comment },
+    } = await axios.put(
+      `${URL}/posts/comment/${postId}/${commentId}`,
+      {
+        content: `${content}`,
+      }
+    );
+    return comment;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const deleteComment = async (
+  postId: string,
+  commentId: string
+): Promise<void> => {
+  try {
+    const {
+      data: { dbBack: comment },
+    } = await axios.delete(
+      `${URL}/posts/comment/${postId}/${commentId}`
+    );
+  } catch (err) {
+    throw err;
+  }
+};
+
 export const putLikeReply = async (
   postId: string,
   commentId: string,
@@ -130,6 +165,22 @@ export const putDislikeReply = async (
       `${URL}/posts/dislike/${postId}/${commentId}/${replyId}`
     );
     return reply as CommentReply;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const deleteReply = async (
+  postId: string,
+  commentId: string,
+  replyId: string
+): Promise<void> => {
+  try {
+    const {
+      data: { dbBack: reply },
+    } = await axios.delete(
+      `${URL}/posts/comment/reply/${postId}/${commentId}/${replyId}`
+    );
   } catch (err) {
     throw err;
   }

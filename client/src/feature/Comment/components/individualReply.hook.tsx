@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import {
+  deleteReply,
   putDislikeReply,
   putLikeReply,
 } from '../../../api/commentAPI';
@@ -56,5 +57,25 @@ export const useMutateUserReply = (
     }
   );
 
-  return { putLikeMutation, putDislikeMutation };
+  const putDeleteMutation = useMutation(
+    ['putDeleteReply'],
+    () => deleteReply(postId, commentId, replyId),
+    {
+      onSuccess: (data) => {
+        successToast('Success');
+        // queryClient.invalidateQueries(['postComment']);
+        queryClient.invalidateQueries(['postCommentReply']);
+      },
+      onError: (err: AxiosError) => {
+        console.log(err);
+        if (err?.response?.status === 401) {
+          errorToast('Unauthorized');
+        } else {
+          errorToast('An error has occurred');
+        }
+      },
+    }
+  );
+
+  return { putLikeMutation, putDislikeMutation, putDeleteMutation };
 };

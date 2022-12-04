@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import {
+  deleteComment,
   putDislikeComment,
   putLikeComment,
 } from '../../../api/commentAPI';
@@ -54,6 +55,52 @@ export const useMutateUserComment = (
       },
     }
   );
+  const putEditMutation = useMutation(
+    ['putEditCommentMutation'],
+    () => putDislikeComment(postId, commentId),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+        successToast('Success');
+        setPostComment({ ...data });
+        queryClient.invalidateQueries(['postComment']);
+        queryClient.invalidateQueries(['postCommentReply']);
+      },
+      onError: (err: AxiosError) => {
+        console.log(err);
+        if (err?.response?.status === 401) {
+          errorToast('Please login first');
+        } else {
+          errorToast('An error has occurred');
+        }
+      },
+    }
+  );
 
-  return { putLikeMutation, putDislikeMutation };
+  const putDeleteMutation = useMutation(
+    ['putDeleteCommentMutation'],
+    () => deleteComment(postId, commentId),
+    {
+      onSuccess: (data) => {
+        successToast('Success');
+        queryClient.invalidateQueries(['postComment']);
+        queryClient.invalidateQueries(['postCommentReply']);
+      },
+      onError: (err: AxiosError) => {
+        console.log(err);
+        if (err?.response?.status === 401) {
+          errorToast('Please login first');
+        } else {
+          errorToast('An error has occurred');
+        }
+      },
+    }
+  );
+
+  return {
+    putLikeMutation,
+    putDislikeMutation,
+    putEditMutation,
+    putDeleteMutation,
+  };
 };

@@ -18,5 +18,8 @@ export const queryKeys = {
     'putDislikeAbstractPost',
     'putSaveAbstractPost',
     'deletePost',
+    'putEditCommentMutation',
+    'putDeleteCommentMutation',
+    'putDeleteReply',
   ],
 };

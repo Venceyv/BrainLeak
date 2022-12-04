@@ -8,27 +8,41 @@ import './IndividualComment.css';
 import { Replies } from './Replies';
 import { NewComment } from '../../UserPost/components/NewComment';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { getReplies } from '../../../api/commentAPI';
+import { getReplies, putEditComment } from '../../../api/commentAPI';
 import { useParams } from 'react-router-dom';
 import { fallback } from '../../../utils/imgFallback';
 import { LikeThumb } from '../../../components/LikeThumb';
 import { DislikeThumb } from '../../../components/DislikeThumb';
 import { useMutateUserComment } from './IndividualComment.hook';
+import Popup from 'reactjs-popup';
 
-export const IndividualComment: FC<PostComment> = (
-  comment
-): JSX.Element => {
+export const IndividualComment: FC<{
+  comment: PostComment;
+  currentUserId: string | null;
+}> = ({ comment, currentUserId }): JSX.Element => {
   const [showReply, setShowReply] = useState<boolean>(false);
   const [showUserReply, setShowUserReply] = useState<boolean>(false);
+  const [showEdit, setShowEdit] = useState<boolean>(false);
+  const [showConfirmDelete, setShowConfirmDelete] =
+    useState<boolean>(false);
   const [postComment, setPostComment] =
     useState<PostComment>(comment);
 
-  const { putLikeMutation, putDislikeMutation } =
-    useMutateUserComment(
-      comment.relatedPost,
-      comment._id,
-      setPostComment
-    );
+  const {
+    putLikeMutation,
+    putDislikeMutation,
+    putEditMutation,
+    putDeleteMutation,
+  } = useMutateUserComment(
+    comment.relatedPost,
+    comment._id,
+    setPostComment
+  );
+
+  const onDeleteComment = () => {
+    putDeleteMutation.mutate();
+    setShowConfirmDelete(false);
+  };
 
   return (
     <div className="pl-4 w-full mb-3">
@@ -49,6 +63,60 @@ export const IndividualComment: FC<PostComment> = (
           className="text-xs pt-[2px] text-white opacity-90"
           date={comment.publishDate}
         />
+        {currentUserId === comment.author._id && (
+          <>
+            <img
+              src="../../../assets/img/edit.svg"
+              alt="edit"
+              className="w-6 h-6 ml-2 cursor-pointer"
+              title="edit"
+              onClick={() => setShowEdit((prev) => !prev)}
+            />
+
+            <Popup
+              open={showConfirmDelete}
+              className="bg-opacity-90"
+              trigger={
+                <img
+                  src="../../../assets/img/delete.svg"
+                  alt="delete"
+                  className="w-6 h-6 ml-auto mr-2 cursor-pointer"
+                  title="delete"
+                  onClick={() => setShowConfirmDelete(true)}
+                />
+              }
+              onClose={() => setShowConfirmDelete(false)}
+              onOpen={() => setShowConfirmDelete(true)}
+              closeOnDocumentClick
+              modal
+            >
+              <div className="flex flex-col gap-4 w-[320px]">
+                <img
+                  src="../../../assets/img/confirmation.png"
+                  alt="confirmation image"
+                  className="w-[320px]"
+                />
+                <p className="text-2xl text-white">
+                  Wait! Are you sure you want to delete this comment?
+                </p>
+                <div className="flex px-4 text-white ">
+                  <button
+                    className="border-2 rounded-md p-1 transition-all ease-in-out hover:border-red-secondary hover:text-red-secondary border-border-black"
+                    onClick={onDeleteComment}
+                  >
+                    For sure
+                  </button>
+                  <button
+                    className="ml-auto border-2 rounded-md p-1 transition-all ease-in-out hover:border-red-secondary hover:text-red-secondary border-border-black"
+                    onClick={() => setShowConfirmDelete(false)}
+                  >
+                    Actually, no
+                  </button>
+                </div>
+              </div>
+            </Popup>
+          </>
+        )}
       </div>
 
       <div className="flex flex-col gap-3 border-l-2 pl-6 ml-[14px] mt-2 text-sm border-border-black text-white">
@@ -120,6 +188,16 @@ export const IndividualComment: FC<PostComment> = (
             setShowReply={setShowReply}
           />
         )}
+        {showEdit && (
+          <NewComment
+            postId={comment.relatedPost}
+            commentId={comment._id}
+            commentUserId={comment.author._id}
+            isReply={false}
+            isEdit={true}
+            setShowEdit={setShowEdit}
+          />
+        )}
         {showUserReply && (
           <div
             onClick={() => setShowUserReply((prev) => !prev)}
@@ -128,7 +206,12 @@ export const IndividualComment: FC<PostComment> = (
             Hide comment
           </div>
         )}
-        {showUserReply && <Replies commentId={comment?._id} />}
+        {showUserReply && (
+          <Replies
+            commentId={comment?._id}
+            currentUserId={currentUserId}
+          />
+        )}
 
         {!showUserReply && comment.statistics.replies > 0 && (
           <div

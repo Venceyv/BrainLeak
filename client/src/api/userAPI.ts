@@ -13,9 +13,10 @@ export const getCheckAuth = async (
     return userData as User;
   } catch (err) {
     if (axios.isAxiosError(err)) {
-      console.log(err?.response?.status);
-      localStorage.removeItem('userId');
-      localStorage.removeItem('jwt');
+      if (err?.response?.status === 401) {
+        localStorage.removeItem('userId');
+        localStorage.removeItem('jwt');
+      }
     } else {
       console.log('unexpected error ' + err);
     }

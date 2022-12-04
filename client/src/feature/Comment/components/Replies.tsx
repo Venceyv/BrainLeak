@@ -10,10 +10,12 @@ import { IndividualReply } from './IndividualReply';
 
 interface RepliesType {
   commentId: string;
+  currentUserId: string | null;
 }
 
 export const Replies: FC<RepliesType> = ({
   commentId,
+  currentUserId,
 }): JSX.Element => {
   const { postId } = useParams();
   const {
@@ -47,7 +49,11 @@ export const Replies: FC<RepliesType> = ({
         data?.pages?.map((pages) => {
           return pages.map((reply, index) => {
             return commentId === reply.relatedComment ? (
-              <IndividualReply key={index} {...reply} />
+              <IndividualReply
+                key={index}
+                reply={reply}
+                currentUserId={currentUserId}
+              />
             ) : null;
           });
         })}
