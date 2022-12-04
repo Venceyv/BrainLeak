@@ -23,6 +23,7 @@ import { queryClient } from '../../../main';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { PostMetaData } from './PostMetaData';
+import { getUserId } from '../../../utils/getLocalStorage';
 
 export const PostContent: FC<{
   post: Post<StatisticWithMark>;
@@ -35,7 +36,7 @@ export const PostContent: FC<{
     isError,
   } = useQuery(
     ['checkAuthAuthor'],
-    () => getCheckAuthAuthor(post.author._id),
+    () => getCheckAuthAuthor(getUserId()),
     { retry: false }
   );
 
@@ -71,7 +72,7 @@ export const PostContent: FC<{
         <PostMetaData
           author={post?.author}
           publishDate={post.publishDate}
-          isAuthor={author ? true : false}
+          isAuthor={author?._id === post.author._id ? true : false}
           deletePostMutation={deletePostMutation}
         />
         <div className="w-full text-[20px] font-bold text-white">

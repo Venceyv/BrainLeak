@@ -19,7 +19,14 @@ import Popup from 'reactjs-popup';
 export const IndividualComment: FC<{
   comment: PostComment;
   currentUserId: string | null;
-}> = ({ comment, currentUserId }): JSX.Element => {
+  pinnedComment: string | null;
+  isPostAuthor: boolean;
+}> = ({
+  comment,
+  currentUserId,
+  pinnedComment,
+  isPostAuthor,
+}): JSX.Element => {
   const [showReply, setShowReply] = useState<boolean>(false);
   const [showUserReply, setShowUserReply] = useState<boolean>(false);
   const [showEdit, setShowEdit] = useState<boolean>(false);
@@ -33,6 +40,7 @@ export const IndividualComment: FC<{
     putDislikeMutation,
     putEditMutation,
     putDeleteMutation,
+    putPinMutation,
   } = useMutateUserComment(
     comment.relatedPost,
     comment._id,
@@ -63,59 +71,74 @@ export const IndividualComment: FC<{
           className="text-xs pt-[2px] text-white opacity-90"
           date={comment.publishDate}
         />
-        {currentUserId === comment.author._id && (
-          <>
-            <img
-              src="../../../assets/img/edit.svg"
-              alt="edit"
-              className="w-6 h-6 ml-2 cursor-pointer"
-              title="edit"
-              onClick={() => setShowEdit((prev) => !prev)}
-            />
+        {comment.edited && (
+          <div className="text-xs pt-[2px] text-white opacity-90">
+            Edited
+          </div>
+        )}
 
-            <Popup
-              open={showConfirmDelete}
-              className="bg-opacity-90"
-              trigger={
-                <img
-                  src="../../../assets/img/delete.svg"
-                  alt="delete"
-                  className="w-6 h-6 ml-auto mr-2 cursor-pointer"
-                  title="delete"
-                  onClick={() => setShowConfirmDelete(true)}
-                />
-              }
-              onClose={() => setShowConfirmDelete(false)}
-              onOpen={() => setShowConfirmDelete(true)}
-              closeOnDocumentClick
-              modal
-            >
-              <div className="flex flex-col gap-4 w-[320px]">
-                <img
-                  src="../../../assets/img/confirmation.png"
-                  alt="confirmation image"
-                  className="w-[320px]"
-                />
-                <p className="text-2xl text-white">
-                  Wait! Are you sure you want to delete this comment?
-                </p>
-                <div className="flex px-4 text-white ">
-                  <button
-                    className="border-2 rounded-md p-1 transition-all ease-in-out hover:border-red-secondary hover:text-red-secondary border-border-black"
-                    onClick={onDeleteComment}
-                  >
-                    For sure
-                  </button>
-                  <button
-                    className="ml-auto border-2 rounded-md p-1 transition-all ease-in-out hover:border-red-secondary hover:text-red-secondary border-border-black"
-                    onClick={() => setShowConfirmDelete(false)}
-                  >
-                    Actually, no
-                  </button>
-                </div>
+        {currentUserId === comment.author._id && (
+          <img
+            src="../../../assets/img/edit.svg"
+            alt="edit"
+            className="w-6 h-6 ml-2 cursor-pointer"
+            title="edit"
+            onClick={() => setShowEdit((prev) => !prev)}
+          />
+        )}
+
+        {/*  */}
+        {pinnedComment === comment._id && (
+          <img
+            src="../../../assets/img/pin-fill.svg"
+            alt="pin"
+            className="w-7 h-7"
+          />
+        )}
+
+        {currentUserId === comment.author._id && (
+          <Popup
+            open={showConfirmDelete}
+            className="bg-opacity-90"
+            trigger={
+              <img
+                src="../../../assets/img/delete.svg"
+                alt="delete"
+                className="w-6 h-6 ml-auto mr-2 cursor-pointer"
+                title="delete"
+                onClick={() => setShowConfirmDelete(true)}
+              />
+            }
+            onClose={() => setShowConfirmDelete(false)}
+            onOpen={() => setShowConfirmDelete(true)}
+            closeOnDocumentClick
+            modal
+          >
+            <div className="flex flex-col gap-4 w-[320px]">
+              <img
+                src="../../../assets/img/confirmation.png"
+                alt="confirmation image"
+                className="w-[320px]"
+              />
+              <p className="text-2xl text-white">
+                Wait! Are you sure you want to delete this comment?
+              </p>
+              <div className="flex px-4 text-white ">
+                <button
+                  className="border-2 rounded-md p-1 transition-all ease-in-out hover:border-red-secondary hover:text-red-secondary border-border-black"
+                  onClick={onDeleteComment}
+                >
+                  For sure
+                </button>
+                <button
+                  className="ml-auto border-2 rounded-md p-1 transition-all ease-in-out hover:border-red-secondary hover:text-red-secondary border-border-black"
+                  onClick={() => setShowConfirmDelete(false)}
+                >
+                  Actually, no
+                </button>
               </div>
-            </Popup>
-          </>
+            </div>
+          </Popup>
         )}
       </div>
 
@@ -177,6 +200,42 @@ export const IndividualComment: FC<{
                 Reply
               </p>
             </div>
+
+            {isPostAuthor && pinnedComment !== comment._id && (
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() => putPinMutation.mutate()}
+              >
+                <img
+                  src="../../../assets/img/pin.svg"
+                  alt="pin"
+                  className="w-4 h-4 cursor-pointer"
+                  title="pin"
+                />
+
+                <p className="truncate pl-[2px] pt-[1px] text-sm text-white">
+                  Pin
+                </p>
+              </div>
+            )}
+
+            {isPostAuthor && pinnedComment === comment._id && (
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() => putPinMutation.mutate()}
+              >
+                <img
+                  src="../../../assets/img/pin.svg"
+                  alt="pin"
+                  className="w-4 h-4 cursor-pointer"
+                  title="pin"
+                />
+
+                <p className="truncate pl-[2px] pt-[1px] text-sm text-white">
+                  Unpin
+                </p>
+              </div>
+            )}
           </div>
         </div>
         {showReply && (

@@ -4,6 +4,7 @@ import {
   deleteComment,
   putDislikeComment,
   putLikeComment,
+  putPinComment,
 } from '../../../api/commentAPI';
 import { PostComment } from '../../../interfaces/comment';
 import { queryClient } from '../../../main';
@@ -23,6 +24,7 @@ export const useMutateUserComment = (
         setPostComment({ ...data });
         queryClient.invalidateQueries(['postComment']);
         queryClient.invalidateQueries(['postCommentReply']);
+        queryClient.invalidateQueries(['postData']);
       },
       onError: (err: AxiosError) => {
         if (err?.response?.status === 401) {
@@ -43,6 +45,7 @@ export const useMutateUserComment = (
         setPostComment({ ...data });
         queryClient.invalidateQueries(['postComment']);
         queryClient.invalidateQueries(['postCommentReply']);
+        queryClient.invalidateQueries(['postData']);
       },
       onError: (err: AxiosError) => {
         console.log(err);
@@ -96,10 +99,32 @@ export const useMutateUserComment = (
     }
   );
 
+  const putPinMutation = useMutation(
+    ['putPinCommentMutation'],
+    () => putPinComment(postId, commentId),
+    {
+      onSuccess: () => {
+        successToast('Success');
+        queryClient.invalidateQueries(['postComment']);
+        // queryClient.invalidateQueries(['postCommentReply']);
+        queryClient.invalidateQueries(['postData']);
+      },
+      onError: (err: AxiosError) => {
+        console.log(err);
+        if (err?.response?.status === 401) {
+          errorToast('Please login first');
+        } else {
+          errorToast('An error has occurred');
+        }
+      },
+    }
+  );
+
   return {
     putLikeMutation,
     putDislikeMutation,
     putEditMutation,
     putDeleteMutation,
+    putPinMutation,
   };
 };

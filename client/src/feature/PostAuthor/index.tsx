@@ -13,7 +13,7 @@ export const PostAuthor: FC = (): JSX.Element => {
   );
 
   return (
-    <div className="flex items-start justify-end h-full pt-[76px] pr-4">
+    <div className="flex items-start justify-end h-[330px] mt-[76px] pr-4">
       {!!data && <AuthorCard authorId={data?.author?._id} />}
     </div>
   );

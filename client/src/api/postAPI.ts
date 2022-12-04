@@ -28,7 +28,6 @@ export const getPost = async (
     const {
       data: { dbBack: postData },
     } = await axios.get(`${URL}/posts/${postId}`);
-    console.log(postData);
     return postData as Post<StatisticWithMark>;
   } catch (error) {
     throw error;

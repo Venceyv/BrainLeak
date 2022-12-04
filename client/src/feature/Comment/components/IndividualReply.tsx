@@ -63,6 +63,7 @@ export const IndividualReply: FC<IndividualReplyProp> = ({
           className="text-xs pt-[2px] text-white opacity-90"
           date={reply.publishDate}
         />
+
         {currentUserId === reply.author._id && (
           <Popup
             open={showConfirmDelete}

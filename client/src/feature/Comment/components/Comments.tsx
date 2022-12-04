@@ -6,10 +6,12 @@ import { Loading } from '../../../components/Loading';
 import InfiniteScroll from 'react-infinite-scroller';
 import { NoMore } from '../../../components/NoMore';
 import { CommentSortBar } from './CommentSortBar';
+import { getPost } from '../../../api/postAPI';
 
 interface CommentsProp {
   postId: string;
   currentUserId: string | null;
+  pinnedComment: string | null;
 }
 
 export type SortByType = 'new' | 'hot' | 'top';
@@ -17,8 +19,18 @@ export type SortByType = 'new' | 'hot' | 'top';
 export const Comments: FC<CommentsProp> = ({
   postId,
   currentUserId,
+  pinnedComment,
 }): JSX.Element => {
   const [sortBy, setSortBy] = useState<SortByType>('new');
+
+  const { data: post } = useQuery(
+    ['postData'],
+    () => getPost(postId),
+    {
+      refetchOnWindowFocus: false,
+      cacheTime: 0,
+    }
+  );
 
   const {
     data,
@@ -61,6 +73,12 @@ export const Comments: FC<CommentsProp> = ({
                     key={index}
                     comment={comment}
                     currentUserId={currentUserId}
+                    pinnedComment={pinnedComment}
+                    isPostAuthor={
+                      post?.author._id === currentUserId
+                        ? true
+                        : false
+                    }
                   />
                 );
               });

@@ -1,3 +1,4 @@
+import { CommentReply, PostComment } from './comment';
 import { Author } from './user';
 
 export type MenuItem = 'top' | 'new' | 'hot' | null;
@@ -43,6 +44,7 @@ export interface Post<T> {
   edited: boolean;
   put: boolean;
   title: string;
+  pinnedComment: PostComment | CommentReply | null;
   description: string;
   publishDate: string;
   updateDate: string;

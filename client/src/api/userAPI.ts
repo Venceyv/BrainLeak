@@ -27,7 +27,7 @@ export const getCheckAuth = async (
 
 export const getCheckAuthAuthor = async (
   userId: string | null
-): Promise<User | null | undefined> => {
+): Promise<User> => {
   try {
     const {
       data: { dbBack: userData },

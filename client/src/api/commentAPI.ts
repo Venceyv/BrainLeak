@@ -121,6 +121,21 @@ export const putEditComment = async (
   }
 };
 
+export const putPinComment = async (
+  postId: string,
+  commentId: string
+) => {
+  try {
+    const {
+      data: { dbBack: comment },
+    } = await axios.put(
+      `${URL}/posts/pinComment/${postId}/${commentId}`
+    );
+  } catch (err) {
+    throw err;
+  }
+};
+
 export const deleteComment = async (
   postId: string,
   commentId: string
