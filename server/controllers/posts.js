@@ -1,4 +1,4 @@
-import { Post, Tags, PostLike, SavedPost, Comment, CommentLike, User } from "../models/index.js";
+import { Post, Tags, PostLike, SavedPost, CommentLike, User } from "../models/index.js";
 import {
   getRedisPostProfile,
   saveRedisPostProfile,
@@ -17,7 +17,7 @@ import json from "body-parser";
 import { redisTrending } from "../configs/redis.js";
 import { sortWith } from "../services/arraySorter.js";
 import { regexFilter } from "../services/regexFilter.js";
-import { addCommentStatistics, addCommentUserInfo } from "../services/commentServices.js";
+import {  addCommentUserInfo, getPinnedComment } from "../services/commentServices.js";
 
 async function createPost(req, res) {
   try {
@@ -44,36 +44,30 @@ async function findOne(req, res) {
     res.setHeader("Content-Type", "application/json");
     const postId = req.params.postId;
     let dbBack = await getRedisPostProfile(postId);
+    let postAuthor,pinnedComment;
     if (!dbBack) {
-      dbBack = await Post.findById(postId, { put: 0, edited: 0, likes: 0 }).lean().populate(
-        "author",
-        {
-          _id: 1,
-          avatar: 1,
-          username: 1,
-        },
-        { lean: true }
-      );
+      dbBack = req.post;
       saveRedisPostProfile(postId, dbBack);
     }
-    let pinnedComment = await Comment.findById(dbBack.pinnedComment)
-      .lean()
-      .populate("author", { avatar: 1, username: 1 }, { lean: true });
-    [dbBack, pinnedComment] = await Promise.all([
+    [dbBack, postAuthor,pinnedComment] = await Promise.all([
       addPostStatistics(dbBack),
-      addCommentStatistics(pinnedComment),
+      User.findById(dbBack.author, { avatar: 1, username: 1 }).lean(),
+      getPinnedComment(dbBack),
       postTrendingInc(req.params.postId, 1),
       incPostStatistics(postId, "views", 1),
       userTrendingInc(req.post.author, 1),
     ]);
+    dbBack.author = postAuthor;
     dbBack.pinnedComment = pinnedComment;
     if (req.user) {
-      let commentLikedList;
-      [dbBack, commentLikedList] = await Promise.all([
-        beautyPostInfo(dbBack, req.user._id),
-        CommentLike.find({ user: req.user._id }, { comment: 1, like: 1, _id: 0 }).lean(),
-      ]);
-      dbBack.pinnedComment = addCommentUserInfo(pinnedComment, commentLikedList);
+      if (pinnedComment) {
+        let commentLikedList;
+        [dbBack, commentLikedList] = await Promise.all([
+          beautyPostInfo(dbBack, req.user._id),
+          CommentLike.find({ user: req.user._id }, { comment: 1, like: 1, _id: 0 }).lean(),
+        ]);
+        dbBack.pinnedComment = addCommentUserInfo(pinnedComment, commentLikedList);
+      } else dbBack = await beautyPostInfo(dbBack, req.user._id);
     }
     return res.status(200).json({ dbBack });
   } catch (error) {

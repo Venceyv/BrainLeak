@@ -1,6 +1,6 @@
 import schedule from "node-schedule";
 import { redisComments } from "../configs/redis.js";
-import { Post, Comment, CommentLike } from "../models/index.js";
+import { Post, Comment, CommentLike, User } from "../models/index.js";
 import { incUserStatistics, userTrendingInc } from "./userServices.js";
 function clearCommentByTime(time) {
   schedule.scheduleJob(
@@ -134,9 +134,57 @@ async function updateCommentStats(comment, likes = 0, trending = 0, upvotes = 0)
   const commentId = comment._id;
   await Promise.all([
     incCommentStatistics(commentId, "likes", likes),
-  userTrendingInc(comment.author, trending),
-  incUserStatistics(comment.author, "upvotes", upvotes),
-  ])
+    userTrendingInc(comment.author, trending),
+    incUserStatistics(comment.author, "upvotes", upvotes),
+  ]);
+}
+function saveRedisPinComment(postId, profile) {
+  try {
+    const key = JSON.stringify(postId) + " Pin";
+    profile = JSON.stringify(profile);
+    redisComments.setex(key, 86400, profile);
+  } catch (error) {
+    console.log("saveRedisPinComment Faild --Cservices 141");
+  }
+}
+async function getRedisPinComment(postId) {
+  try {
+    const key = JSON.stringify(postId) + " Pin";
+    let profile = await redisComments.get(key);
+    if (!profile) {
+      return null;
+    }
+    profile = JSON.parse(profile);
+    return profile;
+  } catch (error) {
+    console.log("getRedisPinComment Faild --Cservices 150");
+  }
+}
+async function delRedisPinComment(postId) {
+  try {
+    const key = JSON.stringify(postId) + " Pin";
+    await redisComments.del(key);
+
+  } catch (error) {
+    console.log("delRedisPinComment Faild --Cservices 163");
+  }
+}
+
+async function getPinnedComment(post) {
+  let pinnedComment = await getRedisPinComment(post._id);
+  if(!pinnedComment){
+    pinnedComment = await Comment.findById(post.pinnedComment, { content: 1, author: 1, pinned: 1 }).lean();
+  }
+  if (pinnedComment) {
+    let pinnedCommentAuthor;
+    [pinnedComment, pinnedCommentAuthor] = await Promise.all([
+      addCommentStatistics(pinnedComment),
+      User.findById(pinnedComment.author, { avatar: 1, username: 1 }).lean(),
+    ]);
+    pinnedComment.author = pinnedCommentAuthor;
+    saveRedisPinComment(post._id,pinnedComment);
+  }
+  return pinnedComment;
 }
 export {
   clearCommentByTime,
@@ -146,5 +194,8 @@ export {
   getCommentsUderPost,
   incCommentStatistics,
   beautyCommentsInfo,
-  updateCommentStats
+  updateCommentStats,
+  getPinnedComment,
+  saveRedisPinComment,
+  delRedisPinComment
 };
