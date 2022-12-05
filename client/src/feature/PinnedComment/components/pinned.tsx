@@ -10,6 +10,8 @@ import TimeAgo from 'react-timeago';
 import { LikeThumb } from '../../../components/LikeThumb';
 import ReactQuill from 'react-quill';
 import { useLikePinComment } from './pinned.hook';
+import './pinned.css';
+import { ellipsisText } from '../../../utils/clipText';
 
 export const Pinned: FC<{
   pinnedComment: PostComment | CommentReply | null;
@@ -19,9 +21,10 @@ export const Pinned: FC<{
     postId,
     pinnedComment?._id!
   );
+
   return (
     <div className="relative z-[3] grid grid-cols-3 grid-rows-7 gap-1 py-3 w-[220px] h-[330px] rounded-md p-3 pb-1 border-2 bg-secondary-black border-border-black">
-      <div className="absolute flex flex-col gap-2 z-[2] w-[220px] h-full rounded-md p-3 pt-6 pb-[0px] border-2 rotate-3 bg-secondary-black border-border-black">
+      <div className="absolute flex flex-col gap-2 z-[2] w-[220px] h-full rounded-md p-3 pb-2 pt-6 border-2 rotate-3 bg-secondary-black border-border-black">
         <div className="flex items-center justify-start gap-2 col-span-2">
           <img
             className="w-[32px] h-[32px] rounded-full border-2 cursor-pointer border-border-black text-zinc-50"
@@ -47,11 +50,12 @@ export const Pinned: FC<{
             </p>
           </div>
         </div>
-        <div className="overflow-hidden truncate">
+        <div className="overflow-hidden">
           <ReactQuill
             theme="bubble"
-            value={pinnedComment?.content}
+            value={ellipsisText(pinnedComment?.content!, 195)}
             readOnly
+            className="pinned"
           />
         </div>
       </div>
