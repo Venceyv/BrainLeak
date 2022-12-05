@@ -4,7 +4,13 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Josefin-sans', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        sans: [
+          'Josefin-sans',
+          'Roboto',
+          'Helvetica',
+          'Arial',
+          'sans-serif',
+        ],
         gemini: ['Gemini-moon2', 'Gemini-moon'],
         virgil: ['Virgil'],
         cascadia: ['Cascadia'],
@@ -12,6 +18,7 @@ module.exports = {
 
       colors: {
         'primary-black': '#181818',
+        '404-background': '#141414',
         'secondary-black': '#202020',
         'border-black': '#474748',
         'post-bg-black': '#161616',

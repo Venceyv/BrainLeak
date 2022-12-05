@@ -4,9 +4,13 @@ export const NotFound404: FC = (): JSX.Element => {
   return (
     <div
       id="scroll-target-node"
-      className="fixed inset-0 right-0 mt-[56px] flex items-center justify-center w-full z-10 h-[calc(100%-56px)] bg-primary-black overflow-auto"
+      className="fixed flex items-start inset-0 right-0 mt-[56px] justify-center w-full z-10 h-[calc(100%-56px)] bg-404-background"
     >
-      nothing hwere
+      <img
+        className="object-cover"
+        src="https://storage.googleapis.com/brainleak/404(cat).jpg"
+        alt="404 not found"
+      />
     </div>
   );
 };
