@@ -1,14 +1,13 @@
 import { FC, useState } from 'react';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { Post } from './ResultPost';
-import { getPosts } from '../../../api/postAPI';
 import { Loading } from '../../../components/Loading';
 import { IntervalItem, MenuItem } from '../../../interfaces/post';
-// import InfiniteScroll from 'react-infinite-scroll-component';
 import InfiniteScroll from 'react-infinite-scroller';
-import { NoMore } from '../../../components/NoMore';
 import { useLocation, useParams } from 'react-router-dom';
 import { getSearch } from '../../../api/searchAPI';
+import { NoResult } from './noResult';
+import { NoMore } from '../../../components/NoMore';
 
 interface PostsProp {
   selectedMenuItem: MenuItem;
@@ -93,7 +92,10 @@ export const Results: FC<PostsProp> = ({
             });
           })}
       </InfiniteScroll>
-      {!hasNextPage && <NoMore />}
+      {data && data?.pages[0].length === 0 && <NoResult />}
+      {data && data?.pages[0].length > 0 && !hasNextPage && (
+        <NoMore />
+      )}
     </div>
   );
 };
