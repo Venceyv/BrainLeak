@@ -45,7 +45,7 @@ export const IndividualReply: FC<IndividualReplyProp> = ({
   };
 
   return (
-    <div className="pl-4 w-full mb-2">
+    <div className=" pl-4 w-full mb-2">
       <div className="flex items-center justify-start gap-2 col-span-2">
         <img
           className="w-[32px] h-[32px] rounded-full border-2 cursor-pointer border-border-black text-zinc-50"

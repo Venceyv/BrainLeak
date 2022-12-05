@@ -14,6 +14,7 @@ module.exports = {
         gemini: ['Gemini-moon2', 'Gemini-moon'],
         virgil: ['Virgil'],
         cascadia: ['Cascadia'],
+        josefinsans: ['Josefin-sans'],
       },
 
       colors: {
