@@ -1,13 +1,33 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { FC } from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
-import { useParams } from 'react-router-dom';
-import { getSearch } from '../../../api/searchAPI';
+import { FC, useState } from 'react';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { Post } from './ResultPost';
+import { getPosts } from '../../../api/postAPI';
 import { Loading } from '../../../components/Loading';
+import { IntervalItem, MenuItem } from '../../../interfaces/post';
+// import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from 'react-infinite-scroller';
 import { NoMore } from '../../../components/NoMore';
+import { useLocation, useParams } from 'react-router-dom';
+import { getSearch } from '../../../api/searchAPI';
 
-export const Results: FC = (): JSX.Element => {
+interface PostsProp {
+  selectedMenuItem: MenuItem;
+}
+
+export const Results: FC<PostsProp> = ({
+  selectedMenuItem,
+}): JSX.Element => {
   const { searchParam } = useParams();
+  const location = useLocation();
+
+  const getSearchParam = (): string => {
+    if (location?.state?.query) {
+      return location.state.query;
+    } else {
+      return location.pathname.slice(8);
+    }
+  };
+
   const {
     data,
     isSuccess,
@@ -16,12 +36,16 @@ export const Results: FC = (): JSX.Element => {
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    ['postComment'],
-    ({ pageParam = 1 }) => getSearch(searchParam!, pageParam),
+    ['userSearch', selectedMenuItem],
+    ({ pageParam = 1 }) =>
+      getSearch(pageParam, selectedMenuItem, getSearchParam()),
     {
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage.length < 10 ? undefined : allPages.length + 1;
+        return lastPage.length >= 10
+          ? allPages.length + 1
+          : undefined;
       },
+      cacheTime: 0,
     }
   );
 
@@ -31,22 +55,44 @@ export const Results: FC = (): JSX.Element => {
 
   return (
     <div>
-      <div className="mt-3">
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={() => fetchNextPage()}
-          hasMore={hasNextPage ? true : false}
-          loader={<Loading key={0} width={'full'} height={'full'} />}
-          useWindow={false}
-        >
-          {/* {isSuccess && data.pages.map(page => {
-            return page.map(result => {
-              return <PostAbstract />
-            })
-          })} */}
-        </InfiniteScroll>
-      </div>
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={() => fetchNextPage()}
+        hasMore={hasNextPage ? true : false}
+        loader={<Loading key={0} width={'full'} height={'full'} />}
+        // endMessage={<NoMore />}
+      >
+        {isSuccess &&
+          data?.pages?.map((page) => {
+            return page.map((post, index) => {
+              const postProp = {
+                title: post?.title,
+                description: post?.description,
+                like: post?.statistics?.likes,
+                dislike: post?.statistics?.dislikes,
+                date: post?.publishDate,
+                _id: post?._id,
+                marks: post?.statistics?.marks,
+              };
 
+              const userStatProp = {
+                like: post?.like,
+                dislike: post?.dislike,
+                save: post?.save,
+              };
+              return (
+                <Post
+                  key={index}
+                  user={post.author}
+                  post={postProp}
+                  like={userStatProp.like}
+                  dislike={userStatProp.dislike}
+                  save={userStatProp.save}
+                />
+              );
+            });
+          })}
+      </InfiniteScroll>
       {!hasNextPage && <NoMore />}
     </div>
   );

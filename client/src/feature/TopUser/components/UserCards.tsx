@@ -5,7 +5,7 @@ import { Loading } from '../../../components/Loading';
 import { UserCard } from './UserCard';
 
 export const UserCards: FC = (): JSX.Element => {
-  const { data, isLoading } = useQuery(['userCards'], () =>
+  const { data = null, isLoading } = useQuery(['userCards'], () =>
     getUserTrending()
   );
 

@@ -20,3 +20,5 @@ export const Home: FC = (): JSX.Element => {
     </div>
   );
 };
+
+export default Home;

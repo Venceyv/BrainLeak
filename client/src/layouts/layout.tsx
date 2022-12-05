@@ -23,3 +23,5 @@ export const Layout: FC = (): JSX.Element => {
     </div>
   );
 };
+
+export default Layout;

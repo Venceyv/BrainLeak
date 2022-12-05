@@ -44,4 +44,6 @@ export const Post: FC = (): JSX.Element => {
   );
 };
 
-export default Post;
+// "https://storage.googleapis.com/brainleak/404(ghost).jpg"
+// "https://storage.googleapis.com/brainleak/404%EF%BC%88cat).jpg"
+// "https://storage.googleapis.com/brainleak/404(astronaut).jpg"

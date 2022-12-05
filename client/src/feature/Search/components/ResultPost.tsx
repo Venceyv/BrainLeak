@@ -8,7 +8,7 @@ import { Author } from '../../../interfaces/user';
 import { convertDate } from '../../../utils/convertDate';
 import { formatNumber } from '../../../utils/formatNumber';
 import { fallback } from '../../../utils/imgFallback';
-import { usePutUserStatusMutation } from './Post.hook';
+import { usePutUserStatusMutation } from './ResultPost.hook';
 
 interface PostProp {
   user: Author;
@@ -37,8 +37,8 @@ export const Post: FC<PostProp> = ({
   const { putDislikeMutation, putLikeMutation, putSaveMutation } =
     usePutUserStatusMutation(post._id);
   return (
-    <div className="flex grow shrink justify-start gap-3 py-4 max-w-[700px] text-white">
-      <div className="flex flex-col items-center justify-center gap-2">
+    <div className="flex grow shrink justify-start gap-3 py-4 max-w-[700px]">
+      <div className="flex flex-col items-center justify-center gap-2 text-white">
         <img
           className="h-[50px] w-[50px] rounded-full border-2 cursor-pointer border-border-black  text-zinc-50"
           src={user?.avatar}

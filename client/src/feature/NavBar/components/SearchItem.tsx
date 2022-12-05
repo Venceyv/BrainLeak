@@ -1,6 +1,26 @@
-import { FC } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { errorToast } from '../../../utils/errorToast';
 
 export const SearchItem: FC = (): JSX.Element => {
+  const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [inputValue, setInputValue] = useState<string>('');
+
+  const handleEnterKey = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === 'Enter') {
+      if (inputValue === '')
+        return errorToast('Input something 〆(´Д｀ )');
+      navigate(`search/${inputValue}`, {
+        state: { query: inputValue },
+      });
+      setInputValue('');
+      navigate(0);
+    }
+  };
+
   return (
     <div className="relative mx-auto">
       <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
@@ -21,9 +41,13 @@ export const SearchItem: FC = (): JSX.Element => {
       </div>
 
       <input
+        ref={inputRef}
         type="search"
-        className="block p-4 pl-10 w-[200px] h-5 text-sm leading-normal bg-primary-black rounded-lg placeholder-zinc-400 text-white"
+        className="block p-4 pl-10 w-[260px] h-5 text-sm leading-normal bg-primary-black rounded-lg placeholder-zinc-400 text-white"
         placeholder="Search a post..."
+        value={inputValue}
+        onChange={() => setInputValue(inputRef?.current?.value!)}
+        onKeyUp={(ev) => handleEnterKey(ev)}
       />
     </div>
   );

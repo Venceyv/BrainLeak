@@ -79,7 +79,6 @@ export const getPosts = async (
     const {
       data: { dbBack: posts },
     } = await axios.get(queryUrl);
-    console.log(posts);
     return posts as Post<StatisticWithMark>[];
   } catch (err) {
     throw err;
