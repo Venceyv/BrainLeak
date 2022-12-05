@@ -5,7 +5,7 @@ const postValidator = validate([
     .notEmpty()
     .withMessage("Title can not be empty.")
     .bail()
-    .isLength({ max: 50 })
+    .isLength({ max: 300 })
     .withMessage("Title length exceeded the maximum length."),
 ]);
 export { postValidator };

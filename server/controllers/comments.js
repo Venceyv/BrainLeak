@@ -8,8 +8,10 @@ import {
   addCommentStatistics,
   addCommentUserInfo,
   updateCommentStats,
+  delRedisPinComment,
+  saveRedisPinComment,
 } from "../services/commentServices.js";
-import { incUserNotification, incUserStatistics, userTrendingInc } from "../services/userServices.js";
+import { incUserNotification, incUserStatistics } from "../services/userServices.js";
 import { incPostStatistics, postTrendingInc } from "../services/postServices.js";
 import { sortWith } from "../services/arraySorter.js";
 async function addComment(req, res) {
@@ -59,6 +61,9 @@ async function updateComment(req, res) {
     req.body.edited = true;
     req.body.updateTime = Date.now();
     const dbBack = await Comment.findByIdAndUpdate(req.comment._id, req.body, { new: true });
+    if(dbBack.pinned){
+      saveRedisPinComment(dbBack.relatedPost,dbBack);
+    }
     return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error });
@@ -75,6 +80,7 @@ async function deleteComment(req, res) {
       postTrendingInc(req.params.postId, -3),
       incPostStatistics(comment.relatedPost, "comments", -1),
       incUserStatistics(comment.author, "comments", -1),
+      delRedisPinComment(req.comment.relatedPost),
     ]);
     const msg = "Delete successfully.";
     return res.status(200).json({ msg });
@@ -199,10 +205,11 @@ async function pinComment(req, res) {
     }
     const [dbBack, comment] = await Promise.all([
       Post.findById(req.params.postId, { pinnedComment: 1 }),
-      Comment.findById(req.params.commentId, { pinned: 1 }),
+      Comment.findById(req.params.commentId, { pinned: 1,author:1,content:1 }),
     ]);
     if (dbBack.pinnedComment && dbBack.pinnedComment.equals(comment._id)) {
       dbBack.pinnedComment = null;
+      await delRedisPinComment(req.params.postId);
       comment.pinned = false;
     } else {
       if (dbBack.pinnedComment) {
@@ -210,6 +217,7 @@ async function pinComment(req, res) {
       }
       dbBack.pinnedComment = comment._id;
       comment.pinned = true;
+      saveRedisPinComment(req.params.postId,comment);
     }
     comment.save();
     dbBack.save();

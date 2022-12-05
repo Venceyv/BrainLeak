@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import json from "body-parser";
 async function checkPostExist(req, res, next) {
   try {
-    const post = await Post.findById(req.params.postId, { publishDate: 0, updateDate: 0, tags: 0 }).lean();
+    const post = await Post.findById(req.params.postId).lean();
     if (!post) {
       res.status(404);
       throw "Post does not exist";
