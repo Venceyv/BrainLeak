@@ -1,4 +1,5 @@
 import { Comment } from "../models/index.js";
+import mongoose from 'mongoose';
 import jwt_decode from "jwt-decode";
 import json from "body-parser";
 async function checkCommentExist(req, res, next) {
