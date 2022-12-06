@@ -714,8 +714,8 @@ async function getActivities(req, res) {
     [posts, comments] = await Promise.all([addPostsStatistics(posts), addCommentsStatistics(comments)]);
     postLike = addCategories(postLike, "likedPost");
     commentLike = addCategories(commentLike, "likedComment");
-    comments = addCategories(comments, "newComments");
-    posts = addCategories(posts, "newPosts");
+    comments = addCategories(comments, "newComment");
+    posts = addCategories(posts, "newPost");
     let dbBack = postLike.concat(commentLike, comments, posts);
     dbBack = sortWith(dbBack, "new");
     return res.status(200).json({ dbBack });
