@@ -16,6 +16,7 @@ export const getCheckAuth = async (
       if (err?.response?.status === 401) {
         localStorage.removeItem('userId');
         localStorage.removeItem('jwt');
+        throw '401';
       }
     } else {
       console.log('unexpected error ' + err);

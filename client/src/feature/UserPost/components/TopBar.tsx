@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bookmarker } from '../../../components/Bookmarker';
+import { CloseHanger } from '../../../components/CloseHanger';
 import { DislikeThumb } from '../../../components/DislikeThumb';
 import { LikeThumb } from '../../../components/LikeThumb';
 import { formatNumber } from '../../../utils/formatNumber';
@@ -73,13 +74,13 @@ export const TopBar: FC<TopBarProp> = ({
         </div>
       </div>
 
-      <img
-        src="../../../assets/img/close-hanger.svg"
-        className="w-8 h-8 cursor-pointer ml-auto mr-5"
-        alt="close"
+      <div
+        className="cursor-pointer ml-auto mr-5 transition-all ease-in-out fill-white hover:fill-red-secondary "
         title="close"
         onClick={() => navigate(-1)}
-      />
+      >
+        <CloseHanger />
+      </div>
       {/* <img src="../../../assets/img/close.svg" className="w-6 h-6 cursor-pointer" alt="like" /> */}
     </div>
   );

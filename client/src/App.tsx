@@ -8,9 +8,12 @@ import './App.css';
 
 const Home = lazy(() => import('./pages/Home'));
 const Post = lazy(() => import('./pages/Post'));
-// const NewPost = lazy(() => import('./feature/NewPost'));
 const CreatePost = lazy(() => import('./pages/CreatePost'));
 const Search = lazy(() => import('./pages/Search'));
+const RouteNotFound = lazy(
+  () => import('./components/RouteNotFound')
+);
+const Unauthorized = lazy(() => import('./components/Unauthorized'));
 
 const App: FC = (): JSX.Element => {
   return (
@@ -32,6 +35,8 @@ const App: FC = (): JSX.Element => {
             <Route path="test" element={<Test />} />
             <Route path="new-post" element={<CreatePost />} />
             <Route path="search/*" element={<Search />} />
+            <Route path="unauthorized" element={<Unauthorized />} />
+            <Route path="*" element={<RouteNotFound />} />
           </Route>
 
           {/* <Route path="/1" element={<NavBar />} /> */}

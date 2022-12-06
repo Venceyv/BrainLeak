@@ -22,7 +22,7 @@ export const TrendingPost: FC<TrendingPostProp> = ({
 }): JSX.Element => {
   return (
     <Link to={`post/${post._id}`}>
-      <div className="grid grid-cols-3 grid-rows-3 gap-2 py-3 overflow-hidden w-[250px] h-[160px] rounded-2xl p-3 pb-1 border-2 bg-secondary-black border-border-black cursor-pointer">
+      <div className="grid grid-cols-3 grid-rows-3 gap-2 py-3 overflow-hidden w-[250px] h-[160px] rounded-2xl p-3 pb-1 border-2 text-white bg-secondary-black border-border-black cursor-pointer">
         <h1 className="col-span-3 text-[14px] w-full h-[40px] line-clamp-2 break-words whitespace-normal font-[800]">
           {post.title}
         </h1>
