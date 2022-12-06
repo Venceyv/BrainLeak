@@ -18,6 +18,10 @@ function checkUserAuth(req, res, next) {
   try {
     let token = req.headers.authorization;
     token = token ? token.replace("Bearer ", "") : null;
+    if(!token||!req.params.userId){
+      res.status(401);
+      throw "invalid token";
+    }
     const decodedToken = jwt_decode(token);
     if (!req.targetUser._id.equals(decodedToken.userInfo.userId)) {
       res.status(401);

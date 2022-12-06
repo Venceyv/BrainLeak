@@ -26,7 +26,7 @@ async function createPost(req, res) {
     const userId = req.user._id;
     await incUserStatistics(req.user._id, "posts", 1);
     dbBack.author = userId;
-    dbBack.put = req.query.put === "true" ? true : false;
+    dbBack.notify = req.query.notify === "true";
     dbBack.tags.map(async function (tag) {
       const record = await Tags.findOne({ tagName: tag });
       if (!record) {
