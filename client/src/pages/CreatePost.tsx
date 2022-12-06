@@ -5,6 +5,7 @@ import { NewPost } from '../feature/NewPost';
 import { getUserId } from '../utils/getLocalStorage';
 import { getCheckAuth } from '../api/userAPI';
 import { Trending } from '../feature/trending';
+import { AuthorCard } from '../feature/AuthorCard';
 
 export const CreatePost: FC = (): JSX.Element => {
   const { data, isSuccess, isError, error } = useQuery(
@@ -27,9 +28,9 @@ export const CreatePost: FC = (): JSX.Element => {
             <div className=" flex flex-row w-full max-w-[1024px]">
               <NewPost />
               {/* <Trending /> */}
-              <PostAuthor />
             </div>
           </div>
+          <AuthorCard authorId="635c799ff7a49ef626bb1bb7" />
         </div>
       </div>
     </div>

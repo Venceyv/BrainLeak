@@ -6,5 +6,5 @@ export const getJWT: Function = (): string | null => {
 
 export const getUserId = (): string | null => {
   const userId = localStorage.getItem('userId') as string;
-  return userId ? JSON.parse(userId) : null;
+  return userId ? JSON.parse(userId) : '';
 };
