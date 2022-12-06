@@ -23,14 +23,13 @@ export const CreatePost: FC = (): JSX.Element => {
       className="fixed inset-0 right-0 mt-[56px] flex items-center justify-center w-full z-10 h-[calc(100%-56px)] bg-primary-black overflow-auto"
     >
       <div className=" absolute top-0 w-full h-full max-w-[1024px] z-10 bg-post-bg-black">
-        <div className="flex flex-row">
-          <div className="flex flex-col justify-center max-w-[702] w-full bg-post-bg-black">
-            <div className=" flex flex-row w-full max-w-[1024px]">
-              <NewPost />
-              {/* <Trending /> */}
-            </div>
+        <div className="flex flex-row items-start">
+          <div className="flex flex-col justify-center p-4 max-w-[738px] w-full bg-post-bg-black">
+            <NewPost />
           </div>
-          <AuthorCard authorId="635c799ff7a49ef626bb1bb7" />
+          <div className="mt-8">
+            {data && <AuthorCard authorId={data?._id} />}
+          </div>
         </div>
       </div>
     </div>

@@ -29,7 +29,7 @@ export const AuthorCard: FC<{ authorId: string }> = ({
   };
 
   return (
-    <div className="relative grid grid-cols-3 grid-rows-7 gap-1 py-3 overflow-hidden w-[270px] h-[330px] rounded-md p-3 pb-[0px] border-2 bg-secondary-black border-border-black">
+    <div className="relative grid grid-cols-3 grid-rows-7 gap-1 py-3 overflow-hidden min-w-[270px] w-[270px] h-[330px] rounded-md p-3 pb-[0px] border-2 bg-secondary-black border-border-black">
       <img
         src={data?.backgroundCover}
         className="absolute w-full h-16 z-[1] object-cover"

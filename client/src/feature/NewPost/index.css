@@ -20,7 +20,7 @@
 .ql-container.ql-snow .ql-editor {
   border-top: 1px var(--border-black) solid;
   border-radius: 4px;
-  min-height: 138px;
+  min-height: 260px;
   font-family: 'Josefin-sans';
 }
 

@@ -83,9 +83,8 @@ export const NewPost: FC = () => {
     setNotify(false);
   };
 
-  //270   704
   return (
-    <form className="grow w-full min-w-[510px] max-w-[704px] p-2">
+    <form className="grow w-full min-w-[510px] max-w-[704px]">
       <div className="relative">
         <input
           className="h-[39px] mt-4 border-2 rounded-md p-2 pl-4 pr-16 w-full bg-secondary-black text-white  border-border-black"
