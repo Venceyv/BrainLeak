@@ -42,7 +42,7 @@ const postSchema = new Schema({
     ref:"comment",
     default: null,
   },
-  put: {
+  notify: {
     type: Boolean,
     default: false,
   },
