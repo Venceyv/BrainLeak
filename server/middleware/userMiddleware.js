@@ -17,8 +17,8 @@ async function checkUserExist(req, res, next) {
 function checkUserAuth(req, res, next) {
   try {
     let token = req.headers.authorization;
-    token = token ? token.replace("Bearer ", "") : null;
-    if(!token||!req.params.userId){
+    token = token ? token.replace("Bearer ", "") : null;  
+    if(!token||!req.params){
       res.status(401);
       throw "invalid token";
     }
