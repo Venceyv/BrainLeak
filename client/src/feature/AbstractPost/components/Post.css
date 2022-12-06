@@ -1,7 +1,11 @@
 .quill.abstract .ql-container.ql-bubble .ql-editor {
-  padding-top: 4px;
   height: 18px;
   cursor: pointer;
+  font-family: 'Josefin-sans';
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0px;
+  padding-top: 4px;
 }
 .quill.abstract .ql-container.ql-bubble .ql-tooltip {
   display: none !important;

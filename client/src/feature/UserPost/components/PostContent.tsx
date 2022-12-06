@@ -24,6 +24,7 @@ import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { PostMetaData } from './PostMetaData';
 import { getUserId } from '../../../utils/getLocalStorage';
+import ReactQuill from 'react-quill';
 
 export const PostContent: FC<{
   post: Post<StatisticWithMark>;
@@ -59,7 +60,7 @@ export const PostContent: FC<{
   );
 
   return (
-    <div className="flex gap-5 shrink grow flex-col w-[720px] h-full p-4 pr-0">
+    <div className="font-josefinsans flex gap-5 shrink grow flex-col w-[720px] h-full p-4 pr-0">
       <TopBar
         likes={post.statistics.likes}
         dislikes={post.statistics.dislikes}
@@ -84,7 +85,11 @@ export const PostContent: FC<{
           })}
         </div>
         <div className="text-sm mt-3 w-full text-white">
-          {post.description}
+          <ReactQuill
+            theme="bubble"
+            value={post?.description}
+            readOnly
+          />
         </div>
         <Statistics
           view={post?.statistics?.views}
