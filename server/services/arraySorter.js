@@ -22,8 +22,8 @@ function sortWith(array, condition) {
           const aCreateTime = (Date.now() - new Date(a.publishDate)) / 1000 / 60;
           //pubulished till now --mins
           const bCreateTime = (Date.now() - new Date(b.publishDate)) / 1000 / 60;
-          const aHot = Math.round(postPopularity(a) / aCreateTime);
-          const bHot = Math.round(postPopularity(b) / bCreateTime);
+          const aHot = parseFloat((postPopularity(a) / aCreateTime).toFixed(10));
+          const bHot = parseFloat((postPopularity(b) / bCreateTime).toFixed(10));
           return bHot - aHot;
         });
         break;

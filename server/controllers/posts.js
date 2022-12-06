@@ -25,6 +25,9 @@ async function createPost(req, res) {
     const dbBack = new Post(req.body);
     const userId = req.user._id;
     await incUserStatistics(req.user._id, "posts", 1);
+    dbBack.title = dbBack.title.replace(/<\/?.+?>/g, "");
+    dbBack.description  = dbBack.description.replace(/<\/?.+?>/g, "");
+    dbBack.tags = req.body.tag;
     dbBack.author = userId;
     dbBack.notify = req.query.notify === "true";
     dbBack.tags.map(async function (tag) {
