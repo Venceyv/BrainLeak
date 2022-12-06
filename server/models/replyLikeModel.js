@@ -13,11 +13,6 @@ const replyLikeSchema = new Schema({
     ref: "reply",
     required: true,
   },
-  replyAuthor:{
-    type: mongoose.ObjectId,
-    ref: "user",
-    required: true,
-  },
   like: {
     type: Boolean,
     default: true,

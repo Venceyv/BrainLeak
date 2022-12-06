@@ -1,4 +1,3 @@
-
 import { Router } from "express";
 import {
   findAll,
@@ -26,7 +25,8 @@ import {
   getMyComments,
   getMyReplies,
   getMylikes,
-  getMyMarks
+  getMyMarks,
+  getActivities
 } from "../controllers/users.js";
 import { verifyToken } from "../services/jwt.js";
 import { userValidator } from "../middleware/validator/userValidator.js";
@@ -55,6 +55,7 @@ userRouter.get("/myComments/:userId",checkUserExist,verifyToken(),checkUserAuth,
 userRouter.get("/myReplies/:userId",checkUserExist,verifyToken(),checkUserAuth,getMyReplies);
 userRouter.get("/mylikes/:userId",checkUserExist,verifyToken(),checkUserAuth,getMylikes);
 userRouter.get("/mymarks/:userId",checkUserExist,verifyToken(),checkUserAuth,getMyMarks);
+userRouter.get('/follow/:userId',checkUserExist,verifyToken(),checkUserAuth,getActivities);
 
 userRouter.put("/follow/:userId", checkUserExist, verifyToken(), followUser);
 userRouter.put("/avatar/:userId", checkUserExist, verifyToken(), checkUserAuth, upload.single("avatar"), updateAvatar);
