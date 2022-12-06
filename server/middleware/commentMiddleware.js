@@ -3,6 +3,10 @@ import jwt_decode from "jwt-decode";
 import json from "body-parser";
 async function checkCommentExist(req, res, next) {
   try {
+    if(!mongoose.isValidObjectId(req.params.commentId)){
+      res.status(401);
+      throw "invalid params";
+    }
     const comment = await Comment.findById(req.params.commentId).lean();
     if (!comment) {
       res.status(404);

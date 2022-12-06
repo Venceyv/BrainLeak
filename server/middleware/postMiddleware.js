@@ -3,6 +3,10 @@ import jwt_decode from "jwt-decode";
 import json from "body-parser";
 async function checkPostExist(req, res, next) {
   try {
+    if(!mongoose.isValidObjectId(req.params.postId)){
+      res.status(401);
+      throw "invalid params";
+    }
     const post = await Post.findById(req.params.postId).lean();
     if (!post) {
       res.status(404);
