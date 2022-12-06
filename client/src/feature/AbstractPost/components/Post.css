@@ -1,0 +1,21 @@
+.quill.abstract .ql-container.ql-bubble .ql-editor {
+  padding-top: 4px;
+  height: 18px;
+  cursor: pointer;
+}
+.quill.abstract .ql-container.ql-bubble .ql-tooltip {
+  display: none !important;
+}
+.quill.abstract .ql-container.ql-bubble .ql-clipboard {
+  display: none !important;
+}
+
+.quill.abstract .ql-container.ql-bubble .ql-editor * {
+  height: 18px;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  display: block;
+}

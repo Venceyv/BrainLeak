@@ -116,3 +116,20 @@ export const putSavePost = async (postId: string): Promise<void> => {
     throw err;
   }
 };
+
+export const postCreatePost = async (
+  title: string,
+  body: string,
+  tag: string[],
+  notify: boolean
+): Promise<void> => {
+  try {
+    await axios.post(`${URL}/posts?notify=${notify}`, {
+      title: title,
+      description: body,
+      tag: tag,
+    });
+  } catch (err) {
+    throw err;
+  }
+};

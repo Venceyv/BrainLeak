@@ -5,6 +5,7 @@ export const queryKeys = {
     'postCommentReply',
     'postComment',
     'checkAuthAuthor',
+    'checkUserAuth',
   ],
   mutation: [
     'putLikeCommentMutation',
@@ -22,5 +23,6 @@ export const queryKeys = {
     'putDeleteCommentMutation',
     'putDeleteReply',
     'putPinCommentMutation',
+    'postCreatePost',
   ],
 };

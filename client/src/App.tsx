@@ -8,7 +8,8 @@ import './App.css';
 
 const Home = lazy(() => import('./pages/Home'));
 const Post = lazy(() => import('./pages/Post'));
-const NewPost = lazy(() => import('./feature/NewPost'));
+// const NewPost = lazy(() => import('./feature/NewPost'));
+const CreatePost = lazy(() => import('./pages/CreatePost'));
 const Search = lazy(() => import('./pages/Search'));
 
 const App: FC = (): JSX.Element => {
@@ -29,7 +30,7 @@ const App: FC = (): JSX.Element => {
 
             {/* <Route path="profile" element={<div>IP</div>} /> */}
             <Route path="test" element={<Test />} />
-            <Route path="new-post" element={<NewPost />} />
+            <Route path="new-post" element={<CreatePost />} />
             <Route path="search/*" element={<Search />} />
           </Route>
 

@@ -1,24 +1,19 @@
 import { FC } from 'react';
 import { PostAuthor } from '../feature/PostAuthor';
-import { UserPost } from '../feature/UserPost';
-import { Comment } from '../feature/Comment';
-import { NewComment } from '../feature/UserPost/components/NewComment';
 import { useQuery } from '@tanstack/react-query';
-import { getPost } from '../api/postAPI';
-import { useParams } from 'react-router-dom';
-import { NotFound404 } from '../components/404';
-import { PinnedComment } from '../feature/PinnedComment';
+import { NewPost } from '../feature/NewPost';
+import { getUserId } from '../utils/getLocalStorage';
+import { getCheckAuth } from '../api/userAPI';
+import { Trending } from '../feature/trending';
 
-export const Post: FC = (): JSX.Element => {
-  const { postId } = useParams();
-  const { data, isLoading, isError } = useQuery(
-    ['postData'],
-    () => getPost(postId),
-    { refetchOnWindowFocus: false, cacheTime: 0 }
+export const CreatePost: FC = (): JSX.Element => {
+  const { data, isSuccess, isError, error } = useQuery(
+    ['checkUserAuth'],
+    () => getCheckAuth(getUserId())
   );
 
   if (isError) {
-    return <NotFound404 />;
+    console.log(error);
   }
 
   return (
@@ -30,19 +25,18 @@ export const Post: FC = (): JSX.Element => {
         <div className="flex flex-row">
           <div className="flex flex-col justify-center max-w-[702] w-full bg-post-bg-black">
             <div className=" flex flex-row w-full max-w-[1024px]">
-              <UserPost />
+              <NewPost />
+              {/* <Trending /> */}
+              <PostAuthor />
             </div>
-            <Comment />
-          </div>
-          <div className="bg-post-bg-black">
-            <PostAuthor />
-            <PinnedComment />
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+export default CreatePost;
 
 // "https://storage.googleapis.com/brainleak/404(ghost).jpg"
 // "https://storage.googleapis.com/brainleak/404%EF%BC%88cat).jpg"

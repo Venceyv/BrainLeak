@@ -26,7 +26,7 @@ export const TrendingPost: FC<TrendingPostProp> = ({
         <h1 className="col-span-3 text-[14px] w-full h-[40px] line-clamp-2 break-words whitespace-normal font-[800]">
           {post.title}
         </h1>
-        <p className="col-span-3 row-span-1 w-full h-9 text-[12px] line-clamp-2 break-words whitespace-normal">
+        <p className="col-span-3 row-span-1 w-full h-9 text-[12px] line-clamp-2 break-words whitespace-normal text-secondary-text-A1">
           {post.description}
         </p>
         <div className="flex items-center justify-start gap-2 col-span-2">
