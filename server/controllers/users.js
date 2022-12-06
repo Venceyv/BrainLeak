@@ -684,6 +684,8 @@ async function getMyMarks(req, res) {
 }
 async function getActivities(req, res) {
   try {
+    const pageNum = Number(req.query.pagenumber);
+    const pageSize = Number(req.query.pagesize);
     let [postLike, commentLike, comments, posts, followingList] = await Promise.all([
       PostLike.find({ like: true }, { like: 0, _id: 0 })
         .lean()
@@ -718,6 +720,7 @@ async function getActivities(req, res) {
     posts = addCategories(posts, "newPost");
     let dbBack = postLike.concat(commentLike, comments, posts);
     dbBack = sortWith(dbBack, "new");
+    dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error: error });
