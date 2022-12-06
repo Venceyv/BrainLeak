@@ -30,7 +30,7 @@ const App: FC = (): JSX.Element => {
             {/* <Route path="profile" element={<div>IP</div>} /> */}
             <Route path="test" element={<Test />} />
             <Route path="new-post" element={<NewPost />} />
-            <Route path="search/:searchParam" element={<Search />} />
+            <Route path="search/*" element={<Search />} />
           </Route>
 
           {/* <Route path="/1" element={<NavBar />} /> */}
