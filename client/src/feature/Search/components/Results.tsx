@@ -4,7 +4,11 @@ import { Post } from './ResultPost';
 import { Loading } from '../../../components/Loading';
 import { IntervalItem, MenuItem } from '../../../interfaces/post';
 import InfiniteScroll from 'react-infinite-scroller';
-import { useLocation, useParams } from 'react-router-dom';
+import {
+  useLocation,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { getSearch } from '../../../api/searchAPI';
 import { NoResult } from './noResult';
 import { NoMore } from '../../../components/NoMore';
@@ -16,14 +20,13 @@ interface PostsProp {
 export const Results: FC<PostsProp> = ({
   selectedMenuItem,
 }): JSX.Element => {
-  const { searchParam } = useParams();
   const location = useLocation();
 
   const getSearchParam = (): string => {
     if (location?.state?.query) {
       return location.state.query;
     } else {
-      return location.pathname.slice(8);
+      return decodeURIComponent(location.search.slice(3));
     }
   };
 

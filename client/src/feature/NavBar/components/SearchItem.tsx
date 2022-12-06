@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { errorToast } from '../../../utils/errorToast';
 
 export const SearchItem: FC = (): JSX.Element => {
@@ -13,7 +13,8 @@ export const SearchItem: FC = (): JSX.Element => {
     if (event.key === 'Enter') {
       if (inputValue === '')
         return errorToast('Input something 〆(´Д｀ )');
-      navigate(`search/${inputValue}`, {
+
+      navigate(`search/?q=${encodeURIComponent(inputValue)}`, {
         state: { query: inputValue },
       });
       setInputValue('');
