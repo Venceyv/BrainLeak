@@ -5,7 +5,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   padding: 0px;
-  padding-top: 4px;
+  padding-top: 2px;
 }
 .quill.abstract .ql-container.ql-bubble .ql-tooltip {
   display: none !important;
