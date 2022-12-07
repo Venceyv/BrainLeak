@@ -53,6 +53,11 @@ export const EditPost: FC<EditPostProp> = ({ post }) => {
     if (title.length >= 300) {
       return errorToast('Title cannot be more than 300 letter!');
     }
+
+    if (title.length <= 0) {
+      return errorToast('Title cannot be empty!');
+    }
+
     putEditPostMutation.mutate();
   };
 
