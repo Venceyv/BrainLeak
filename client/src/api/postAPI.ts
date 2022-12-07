@@ -127,7 +127,7 @@ export const postCreatePost = async (
     await axios.post(`${URL}/posts?notify=${notify}`, {
       title: title,
       description: body,
-      tag: tag,
+      tags: tag,
     });
   } catch (err) {
     throw err;
