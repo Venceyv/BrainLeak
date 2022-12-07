@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Layout } from './layouts/layout';
 import { Loading } from './components/Loading';
 import './App.css';
+import { MyPosts } from './feature/UserProfileCatalog/components/MyPosts';
 
 const Home = lazy(() => import('./pages/Home'));
 const Post = lazy(() => import('./pages/Post'));
@@ -34,7 +35,7 @@ const App: FC = (): JSX.Element => {
             <Route path="new-post" element={<CreatePost />} />
             <Route path="post/edit/:postId" element={<EditPost />} />
             <Route path="user/profile/:userId" element={<Profile />}>
-              <Route path="my-posts" />
+              <Route path="my-posts" element={<MyPosts />} />
               <Route path="liked-posts" />
               <Route path="bookmarked-posts" />
               <Route path="comment-history" />

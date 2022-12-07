@@ -153,3 +153,20 @@ export const putEditPost = async (
     throw err;
   }
 };
+
+export const getUserPosts = async (
+  userId: string,
+  pageNum: number,
+  sortType: MenuItem
+): Promise<Post<StatisticWithMark>[]> => {
+  const queryUrl = `${URL}/users/posts/${userId}?pagenumber=${pageNum}&pagesize=10&type=posts&sort=${sortType}`;
+  try {
+    const {
+      data: { dbBack: posts },
+    } = await axios.get(queryUrl);
+    console.log(posts);
+    return posts as Post<StatisticWithMark>[];
+  } catch (err) {
+    throw err;
+  }
+};

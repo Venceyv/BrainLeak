@@ -7,6 +7,7 @@ import { fallback } from '../../../utils/imgFallback';
 interface UserDropdownProp {
   userRef: React.MutableRefObject<HTMLDivElement>;
   toggleUserDropdown: React.MouseEventHandler<HTMLElement>;
+  setUserDropdown: (state: boolean) => void;
   setLogin: React.Dispatch<React.SetStateAction<boolean>>;
   userData: User | undefined;
 }
@@ -14,6 +15,7 @@ interface UserDropdownProp {
 export const UserDropdown: FC<UserDropdownProp> = ({
   userRef,
   toggleUserDropdown,
+  setUserDropdown,
   setLogin,
   userData,
 }): JSX.Element => {
@@ -29,6 +31,11 @@ export const UserDropdown: FC<UserDropdownProp> = ({
     } catch (error) {
       throw error;
     }
+  };
+
+  const onProfileNavigate = () => {
+    setUserDropdown(false);
+    navigate(`/user/profile/${userData?._id}`);
   };
 
   return (
@@ -50,7 +57,7 @@ export const UserDropdown: FC<UserDropdownProp> = ({
       </div>
       <ul className="mb-2 text-center w-full">
         <li
-          onClick={toggleUserDropdown}
+          onClick={onProfileNavigate}
           className="w-full text-opacity-[0.6] hover:marker hover:text-opacity-100 mt-2 cursor-pointer transition text-zinc-50 "
         >
           Profile

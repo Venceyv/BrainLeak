@@ -8,6 +8,7 @@ export const queryKeys = {
     'checkUserAuth',
     'trendingPosts',
     'userData',
+    'userPosts',
   ],
   mutation: [
     'putLikeCommentMutation',

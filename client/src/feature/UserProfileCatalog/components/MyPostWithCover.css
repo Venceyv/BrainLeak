@@ -1,0 +1,38 @@
+.quill.abstract .ql-container.ql-bubble .ql-editor {
+  height: 18px;
+  cursor: pointer;
+  font-family: 'Josefin-sans';
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0px;
+}
+
+.quill.post-picture .ql-container.ql-bubble .ql-tooltip {
+  display: none !important;
+}
+.quill.post-picture .ql-container.ql-bubble .ql-clipboard {
+  display: none !important;
+}
+
+.quill.abstract .ql-container.ql-bubble .ql-editor * {
+  height: 18px;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.quill.post-picture .ql-container.ql-bubble .ql-editor p img {
+  height: 76px;
+  width: 92px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid #474748;
+}
+
+.quill.post-picture .ql-container.ql-bubble .ql-editor p {
+  height: 76px;
+  width: 92px;
+}

@@ -45,11 +45,13 @@ export const UserItem: FC<UserItemProp> = ({
         position="bottom right"
         arrow={false}
         open={isDropdown}
-        onClose={() => toggleUserDropdown}
+        onClose={() => setUserDropdown(false)}
+        onOpen={() => setUserDropdown(true)}
       >
         <UserDropdown
           userRef={userRef}
           toggleUserDropdown={toggleUserDropdown}
+          setUserDropdown={setUserDropdown}
           setLogin={setLogin}
           userData={data}
         />
