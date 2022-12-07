@@ -28,6 +28,7 @@ export const getPost = async (
     const {
       data: { dbBack: postData },
     } = await axios.get(`${URL}/posts/${postId}`);
+    console.log(postData);
     return postData as Post<StatisticWithMark>;
   } catch (error) {
     throw error;
@@ -79,6 +80,7 @@ export const getPosts = async (
     const {
       data: { dbBack: posts },
     } = await axios.get(queryUrl);
+    console.log(posts);
     return posts as Post<StatisticWithMark>[];
   } catch (err) {
     throw err;

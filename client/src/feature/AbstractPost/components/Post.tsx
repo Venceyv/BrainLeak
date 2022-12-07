@@ -53,7 +53,7 @@ export const Post: FC<PostProp> = ({
         </p>
       </div>
 
-      <div className="flex flex-col gap-2 grow shrink w-[558px] text-white bg-secondary-black rounded-2xl p-3 pb-[1px] border-2 border-border-black cursor-pointer">
+      <div className="flex flex-col gap-2 grow shrink w-[558px] text-white bg-secondary-black rounded-lg p-2 pb-[1px] border-2 border-border-black cursor-pointer">
         <Link to={`/post/${post._id}`}>
           <h1 className="text-[14px] font-bold w-full truncate">
             {post?.title}

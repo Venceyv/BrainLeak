@@ -7,6 +7,7 @@ import { IntervalItem, MenuItem } from '../../../interfaces/post';
 // import InfiniteScroll from 'react-infinite-scroll-component';
 import InfiniteScroll from 'react-infinite-scroller';
 import { NoMore } from '../../../components/NoMore';
+import PostWithCover from './PostWithCover';
 
 interface PostsProp {
   selectedMenuItem: MenuItem;
@@ -58,7 +59,7 @@ export const Posts: FC<PostsProp> = ({
               data?.pages?.map((page) => {
                 return page.map((post, index) => {
                   const postProp = {
-                    title: post?.title,
+                    title: post?.title!,
                     description: post?.description,
                     like: post?.statistics?.likes,
                     dislike: post?.statistics?.dislikes,
@@ -72,7 +73,7 @@ export const Posts: FC<PostsProp> = ({
                     dislike: post?.dislike,
                     save: post?.save,
                   };
-                  return (
+                  return !post.cover ? (
                     <Post
                       key={index}
                       user={post.author}
@@ -80,6 +81,16 @@ export const Posts: FC<PostsProp> = ({
                       like={userStatProp.like}
                       dislike={userStatProp.dislike}
                       save={userStatProp.save}
+                    />
+                  ) : (
+                    <PostWithCover
+                      key={index}
+                      user={post.author}
+                      post={postProp}
+                      like={userStatProp.like}
+                      dislike={userStatProp.dislike}
+                      save={userStatProp.save}
+                      cover={post.cover}
                     />
                   );
                 });
