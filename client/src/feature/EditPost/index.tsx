@@ -145,7 +145,7 @@ export const NewPost: FC = () => {
             Add +
           </button>
 
-          <div className="flex items-center gap-2 ml-auto ">
+          <div className="relative flex items-center gap-2 ml-auto text-white">
             <input
               id="default-checkbox"
               type="checkbox"
@@ -155,10 +155,19 @@ export const NewPost: FC = () => {
             />
             <label
               htmlFor="default-checkbox"
-              className="pt-[2px] text-white"
+              className="peer pt-[2px] hover:cursor-pointer"
             >
               Notify me on post activities!!
             </label>
+            <div className="peer-hover:block hidden absolute top-[-94px] left-0 p-2 transition-all ease-in-out rounded-md bg-post-bg-black">
+              This will send you email notifications on other users'
+              activities on your post!!
+            </div>
+            <img
+              src="../../assets/img/triangle.svg"
+              className="peer-hover:block hidden absolute w-10 h-10 bottom-[10px] right-[40px] transition-all ease-in-out rotate-[180deg]"
+              alt="triangle"
+            />
           </div>
         </div>
 
