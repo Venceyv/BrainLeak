@@ -1,17 +1,82 @@
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { FC } from 'react';
+import { getCheckAuth, putFollowUser } from '../../../api/userAPI';
 import { User } from '../../../interfaces/user';
+import { queryClient } from '../../../main';
+import { errorToast, successToast } from '../../../utils/errorToast';
 import { formatNumber } from '../../../utils/formatNumber';
+import { getUserId } from '../../../utils/getLocalStorage';
 
 export const UserInfo: FC<User> = (user) => {
+  const { data } = useQuery(
+    ['checkUserAuth'],
+    () => getCheckAuth(getUserId()),
+    {
+      retry: 0,
+    }
+  );
+
+  const putFollowUserMutation = useMutation(
+    ['putFollowUser'],
+    () => putFollowUser(user._id),
+    {
+      onSuccess: () => {
+        successToast('Success!');
+        queryClient.invalidateQueries(['userData']);
+      },
+      onError: (err: AxiosError) => {
+        if (err?.response?.status === 401) {
+          errorToast('Please Login First');
+        } else {
+          errorToast('An error has occurred');
+        }
+      },
+    }
+  );
+
   return (
-    <div className="relative flex flex-col items-center h-full w-[1024px] bg-post-bg-black">
+    <div className="relative flex flex-col items-end h-full w-[1024px] bg-post-bg-black">
       <img
         src={user.backgroundCover}
         alt="background"
         className="object-cover h-[240px] w-full shadow-md shadow-border-black"
       />
 
-      <div className="absolute left-[50px] top-[120px] flex flex-col items-center pt-6 gap-2 w-[260px] h-[400px] rounded-md border-2 border-border-black shadow-md shadow-border-black text-white bg-gradient-to-b from-primary-black ">
+      <div className="relative w-full flex flex-start">
+        <>
+          <div
+            className="flex flex-row rounded-md border-2 px-1 ml-[400px] mt-3 shadow-md cursor-pointer shadow-border-black border-border-black text-white bg-secondary-black"
+            onClick={() => putFollowUserMutation.mutate()}
+          >
+            {data?._id !== user._id && user.following === false ? (
+              <p className="pt-[3px]">Follow</p>
+            ) : (
+              <p className="pt-[3px]">Unfollow</p>
+            )}
+          </div>
+          {data?._id !== user._id && user.following === false && (
+            <img
+              src="../../../assets/img/arrow-profile.svg"
+              alt="arrow"
+              className="absolute rotate-[200deg] animate-pulse h-7 w-7 left-[460px] top-[20px]"
+            />
+          )}
+        </>
+
+        {user._id === data?._id && (
+          <div className="flex flex-row rounded-md border-2 px-1 ml-auto mt-3 mr-3 shadow-md shadow-border-black border-border-black text-white bg-secondary-black">
+            <img
+              src="../../../assets/img/pencil.svg"
+              className="w-7 h-7"
+              alt="edit"
+            />
+            <p className="pt-1">Edit Profile</p>
+          </div>
+        )}
+      </div>
+
+      <div className="absolute left-[70px] top-[120px] flex flex-col items-center pt-6 gap-2 w-[260px] h-[400px] rounded-md border-2 border-border-black shadow-md shadow-border-black text-white bg-gradient-to-b from-secondary-black ">
         <img
           src={user.avatar}
           alt="user avatar"
@@ -78,8 +143,6 @@ export const UserInfo: FC<User> = (user) => {
           {/* </div> */}
         </div>
       </div>
-
-      <div></div>
     </div>
   );
 };

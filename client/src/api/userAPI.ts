@@ -71,3 +71,20 @@ export const getUserTrending = async (): Promise<TrendingUser[]> => {
     throw err;
   }
 };
+
+export const putFollowUser = async (
+  userId: string
+): Promise<void> => {
+  try {
+    const {
+      data: { dbBack: topUsers },
+    } = await axios.put(`${URL}/users/follow/${userId}`);
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      console.log(err?.response?.status);
+    } else {
+      console.log('unexpected error ' + err);
+    }
+    throw err;
+  }
+};

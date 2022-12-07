@@ -170,3 +170,54 @@ export const getUserPosts = async (
     throw err;
   }
 };
+
+export const getMyBookmarked = async (
+  userId: string,
+  pageNum: number,
+  sortBy: string
+): Promise<Post<StatisticWithMark>[]> => {
+  const queryUrl = `${URL}/users/savedPosts/${userId}?pagenumber=${pageNum}&pagesize=10&sort=${sortBy}`;
+  try {
+    const {
+      data: { dbBack: posts },
+    } = await axios.get(queryUrl);
+    console.log(posts);
+    return posts as Post<StatisticWithMark>[];
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getMyLikedPost = async (
+  userId: string,
+  pageNum: number,
+  sortBy: string
+): Promise<Post<StatisticWithMark>[]> => {
+  const queryUrl = `${URL}/users/likedPosts/${userId}?pagenumber=${pageNum}&pagesize=10&type=likedPosts&sort=${sortBy}`;
+  try {
+    const {
+      data: { dbBack: posts },
+    } = await axios.get(queryUrl);
+    console.log(posts);
+    return posts as Post<StatisticWithMark>[];
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getMyPosts = async (
+  userId: string,
+  pageNum: number,
+  sortBy: string
+): Promise<Post<StatisticWithMark>[]> => {
+  const queryUrl = `${URL}/users/posts/${userId}?pagenumber=${pageNum}&pagesize=10&sort=${sortBy}`;
+  try {
+    const {
+      data: { dbBack: posts },
+    } = await axios.get(queryUrl);
+    console.log(posts);
+    return posts as Post<StatisticWithMark>[];
+  } catch (err) {
+    throw err;
+  }
+};

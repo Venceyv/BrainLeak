@@ -4,7 +4,6 @@ import { Routes, Route } from 'react-router-dom';
 import { Layout } from './layouts/layout';
 import { Loading } from './components/Loading';
 import './App.css';
-import { MyPosts } from './feature/UserProfileCatalog/components/MyPosts';
 
 const Home = lazy(() => import('./pages/Home'));
 const Post = lazy(() => import('./pages/Post'));
@@ -16,6 +15,18 @@ const RouteNotFound = lazy(
 const Unauthorized = lazy(() => import('./components/Unauthorized'));
 const Profile = lazy(() => import('./pages/Profile'));
 const EditPost = lazy(() => import('./pages/EditPost'));
+const MyPosts = lazy(
+  () => import('./feature/UserProfileCatalog/MyPosts')
+);
+const MyBookmarked = lazy(
+  () => import('./feature/UserProfileCatalog/MyBookmarked')
+);
+const MyLiked = lazy(
+  () => import('./feature/UserProfileCatalog/MyLiked')
+);
+const MyComment = lazy(
+  () => import('./feature/UserProfileCatalog/MyComment')
+);
 
 const App: FC = (): JSX.Element => {
   return (
@@ -36,9 +47,12 @@ const App: FC = (): JSX.Element => {
             <Route path="post/edit/:postId" element={<EditPost />} />
             <Route path="user/profile/:userId" element={<Profile />}>
               <Route path="my-posts" element={<MyPosts />} />
-              <Route path="liked-posts" />
-              <Route path="bookmarked-posts" />
-              <Route path="comment-history" />
+              <Route path="liked-posts" element={<MyLiked />} />
+              <Route
+                path="bookmarked-posts"
+                element={<MyBookmarked />}
+              />
+              <Route path="comment-history" element={<MyComment />} />
             </Route>
             <Route
               path="user/:userId/notifications"

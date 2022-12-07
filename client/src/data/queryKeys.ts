@@ -9,6 +9,7 @@ export const queryKeys = {
     'trendingPosts',
     'userData',
     'userPosts',
+    'userBookmark',
   ],
   mutation: [
     'putLikeCommentMutation',
@@ -28,5 +29,6 @@ export const queryKeys = {
     'putPinCommentMutation',
     'postCreatePost',
     'putEditPost',
+    'putFollowUser',
   ],
 };

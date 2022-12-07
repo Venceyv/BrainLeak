@@ -201,3 +201,20 @@ export const deleteReply = async (
     throw err;
   }
 };
+
+export const getMyComments = async (
+  userId: string,
+  pageNum: number,
+  sortBy: string
+): Promise<PostComment[]> => {
+  try {
+    const {
+      data: { dbBack: comments },
+    } = await axios.get(
+      `${URL}/users/comments/${userId}?pagenumber=${pageNum}&pagesize=10&sort=${sortBy}`
+    );
+    return comments as PostComment[];
+  } catch (err) {
+    throw err;
+  }
+};

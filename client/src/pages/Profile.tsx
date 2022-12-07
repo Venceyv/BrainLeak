@@ -1,19 +1,42 @@
-import { FC, useEffect, useRef } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { FC, useEffect, useRef, useState } from 'react';
+import {
+  Navigate,
+  Outlet,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
+import { ProfileMenu } from '../components/ProfileMenu';
+import { useApplyFocus } from '../feature/AbstractPost/components/PostFilterBar.hook';
 import { UserSearch } from '../feature/Search';
 import { TopUser } from '../feature/TopUser';
 import { Trending } from '../feature/trending';
 import { UserProfile } from '../feature/UserProfile';
+import { SortByMenu } from '../feature/UserProfileCatalog/SortByMenu';
+
+type menuCategory =
+  | 'my-posts'
+  | 'bookmarked'
+  | 'liked-posts'
+  | 'comment-history';
 
 export const Profile: FC = (): JSX.Element => {
+  const navigate = useNavigate();
+  const [menuCategory, setMenuCategory] =
+    useState<menuCategory>('my-posts');
+
+  useEffect(() => {
+    navigate(menuCategory);
+  }, []);
+
   return (
     // <div className="fixed inset-0 right-0 mt-[56px] flex flex-col items-center justify-center w-full z-10 h-[calc(100%-56px)] bg-primary-black overflow-auto">
-    <div className="absolute flex flex-col justify-start items-center top-0 mt-[56px] h-full w-full">
-      <div className=" w-[1024px] bg-post-bg-black">
-        <div className=" bg-primary-black">
+    <div className="absolute flex flex-col justify-start items-center top-0 mt-[56px] w-full bg-primary-black min-h-screen overflow-auto">
+      <div className="grid grid-cols-3 w-[1024px] min-h-[100%-56px] bg-post-bg-black">
+        <div className="flex flex-col col-span-3 gap-28 items-end h-[522px] bg-post-bg-black">
           <UserProfile />
+          <ProfileMenu setMenuCategory={setMenuCategory} />
         </div>
-        <div className="w-[1024px] flex justify-end">
+        <div className="col-start-2 col-span-2 flex flex-col items-end pr-12 bg-post-bg-black">
           <Outlet />
         </div>
       </div>

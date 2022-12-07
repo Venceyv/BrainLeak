@@ -30,6 +30,7 @@ export interface User {
   introduction: string;
   username: string;
   statistics: Statistics;
+  following: boolean;
   _id: string;
   __v?: number;
 }

@@ -2,14 +2,14 @@ import { useMutation } from '@tanstack/react-query';
 import { FC, useState } from 'react';
 import ReactQuill from 'react-quill';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bookmark } from '../../../components/Bookmark';
-import { DislikeThumb } from '../../../components/DislikeThumb';
-import { LikeThumb } from '../../../components/LikeThumb';
-import { Author } from '../../../interfaces/user';
-import { convertDate } from '../../../utils/convertDate';
-import { formatNumber } from '../../../utils/formatNumber';
-import { fallback } from '../../../utils/imgFallback';
-import { ellipsisText } from '../../../utils/clipText';
+import { Bookmark } from '../../components/Bookmark';
+import { DislikeThumb } from '../../components/DislikeThumb';
+import { LikeThumb } from '../../components/LikeThumb';
+import { Author } from '../../interfaces/user';
+import { convertDate } from '../../utils/convertDate';
+import { formatNumber } from '../../utils/formatNumber';
+import { fallback } from '../../utils/imgFallback';
+import { ellipsisText } from '../../utils/clipText';
 import './MyPostWithCover.css';
 
 interface PostProp {
@@ -41,7 +41,7 @@ export const MyPostWithCover: FC<PostProp> = ({
   const navigate = useNavigate();
   return (
     <div className="flex grow shrink justify-start gap-3 py-4 max-w-[700px] text-white">
-      <div className="flex flex-col items-center justify-center gap-2">
+      {/* <div className="flex flex-col items-center justify-center gap-2">
         <img
           className="h-[50px] w-[50px] rounded-full border-2 cursor-pointer border-border-black  text-zinc-50"
           src={user?.avatar}
@@ -55,7 +55,7 @@ export const MyPostWithCover: FC<PostProp> = ({
         >
           {user?.username}
         </p>
-      </div>
+      </div> */}
 
       <div className="flex flex-row gap-2 grow shrink w-[558px] text-white bg-secondary-black rounded-lg p-1 px-2 border-2 border-border-black cursor-pointer">
         {cover && (
