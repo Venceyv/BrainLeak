@@ -1,16 +1,16 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { FC } from 'react';
-import { getCheckAuth, putFollowUser } from '../../../api/userAPI';
-import { User } from '../../../interfaces/user';
-import { queryClient } from '../../../main';
-import { errorToast, successToast } from '../../../utils/errorToast';
-import { formatNumber } from '../../../utils/formatNumber';
-import { getUserId } from '../../../utils/getLocalStorage';
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { FC } from "react";
+import { getCheckAuth, putFollowUser } from "../../../api/userAPI";
+import { User } from "../../../interfaces/user";
+import { queryClient } from "../../../main";
+import { errorToast, successToast } from "../../../utils/errorToast";
+import { formatNumber } from "../../../utils/formatNumber";
+import { getUserId } from "../../../utils/getLocalStorage";
 
 export const UserInfo: FC<User> = (user) => {
   const { data } = useQuery(
-    ['checkUserAuth'],
+    ["checkUserAuth"],
     () => getCheckAuth(getUserId()),
     {
       retry: 0,
@@ -18,18 +18,18 @@ export const UserInfo: FC<User> = (user) => {
   );
 
   const putFollowUserMutation = useMutation(
-    ['putFollowUser'],
+    ["putFollowUser"],
     () => putFollowUser(user._id),
     {
       onSuccess: () => {
-        successToast('Success!');
-        queryClient.invalidateQueries(['userData']);
+        successToast("Success!");
+        queryClient.invalidateQueries(["userData"]);
       },
       onError: (err: AxiosError) => {
         if (err?.response?.status === 401) {
-          errorToast('Please Login First');
+          errorToast("Please Login First");
         } else {
-          errorToast('An error has occurred');
+          errorToast("An error has occurred");
         }
       },
     }
@@ -80,7 +80,7 @@ export const UserInfo: FC<User> = (user) => {
         <img
           src={user.avatar}
           alt="user avatar"
-          className="w-30 h-30 rounded-full object-cover border-2 border-border-black"
+          className="w-24 h-24 rounded-full object-cover border-2 border-border-black"
         />
         <div className="text-2xl w-full truncate text-center ">
           {user.username}
