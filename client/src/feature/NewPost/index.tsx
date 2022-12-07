@@ -1,46 +1,53 @@
-import { FC, useRef, useState } from 'react';
-import ReactQuill from 'react-quill';
-import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { postCreatePost } from '../../api/postAPI';
-import { errorToast, successToast } from '../../utils/errorToast';
-import { TagItem } from './components/Tag';
-import './index.css';
-import 'react-quill/dist/quill.snow.css';
+import { FC, useRef, useState } from "react";
+import ReactQuill from "react-quill";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { postCreatePost } from "../../api/postAPI";
+import { errorToast, successToast } from "../../utils/errorToast";
+import { TagItem } from "./components/Tag";
+import "./index.css";
+import "react-quill/dist/quill.snow.css";
 
 export const NewPost: FC = () => {
-  const [title, setTitle] = useState<string>('');
-  const [body, setBody] = useState<string>('');
+  const [title, setTitle] = useState<string>("");
+  const [body, setBody] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
-  const [tag, setTag] = useState<string>('');
+  const [tag, setTag] = useState<string>("");
   const [notify, setNotify] = useState<boolean>(false);
 
   const createPostMutation = useMutation(
-    ['postCreatePost'],
+    ["postCreatePost"],
     () => postCreatePost(title, body, tags, notify),
     {
       onSuccess: () => {
-        successToast('Post created successfully!');
+        successToast("Post created successfully!");
         resetPost();
       },
       onError: (err: AxiosError) => {
         if (err?.response?.status === 401) {
-          errorToast('Please Login First');
+          errorToast("Please Login First");
         } else {
-          errorToast('An error has occurred');
+          errorToast("An error has occurred");
         }
       },
     }
   );
 
+  const onCreatePost = () => {
+    if (title.length > 300) {
+      return errorToast("Title cannot be more than 300 letter!");
+    }
+    createPostMutation.mutate();
+  };
+
   const handleEnterKey = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    if (event.key === 'Enter') {
-      if (tag === '') return errorToast('Input something 〆(´Д｀ )');
+    if (event.key === "Enter") {
+      if (tag === "") return errorToast("Input something 〆(´Д｀ )");
 
       setTags((prev) => [...prev, tag]);
-      setTag('');
+      setTag("");
     }
   };
 
@@ -51,6 +58,9 @@ export const NewPost: FC = () => {
       target: { value },
     } = event;
 
+    if (title.length > 300) {
+      return;
+    }
     setTitle(value);
   };
 
@@ -64,22 +74,22 @@ export const NewPost: FC = () => {
 
   const onSetTag = () => {
     if (!tag) {
-      return errorToast('Tags cannot be empty!');
+      return errorToast("Tags cannot be empty!");
     }
 
     if (tags.includes(tag)) {
-      return errorToast('No duplicate tags please!');
+      return errorToast("No duplicate tags please!");
     }
 
     setTags((prev) => [...prev, tag]);
-    setTag('');
+    setTag("");
   };
 
   const resetPost = () => {
-    setTitle('');
-    setTag('');
+    setTitle("");
+    setTag("");
     setTags([]);
-    setBody('');
+    setBody("");
     setNotify(false);
   };
 
