@@ -8,7 +8,7 @@ async function checkPostExist(req, res, next) {
       res.status(404);
       throw "invalid params";
     }
-    const post = await Post.findById(req.params.postId).lean();
+    const post = await Post.findById(req.params.postId,{cover:0}).lean();
     if (!post) {
       res.status(404);
       throw "Post does not exist";

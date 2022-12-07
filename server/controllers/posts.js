@@ -24,9 +24,14 @@ async function createPost(req, res) {
     res.setHeader("Content-Type", "application/json");
     const dbBack = new Post(req.body);
     const userId = req.user._id;
+    const imgReg = /<img.*?(?:>|\/>)/gi;
+    const images = req.body.description.match(imgReg);
     await incUserStatistics(req.user._id, "posts", 1);
     dbBack.author = userId;
     dbBack.notify = req.query.notify === "true";
+    if(images){
+      dbBack.cover = images[0];
+    }
     dbBack.tags.map(async function (tag) {
       const record = await Tags.findOne({ tagName: tag });
       if (!record) {
