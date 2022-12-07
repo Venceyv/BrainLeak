@@ -17,7 +17,6 @@ export const getSearch = async (
     } = await axios.get(
       `${URL}/posts/search?type=posts&sort=${sortType}&pagesize=10&pagenumber=${pageNum}&q=${queryParam}`
     );
-    console.log(searchResult);
     return searchResult as PostSearchResult[];
   } catch (error) {
     throw error;

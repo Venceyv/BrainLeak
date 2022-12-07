@@ -13,7 +13,6 @@ export const getComments = async (
     } = await axios.get(
       `${URL}/posts/comments/${postId}?pagesize=10&pagenumber=${pageNumber}&sort=${sortBy}`
     );
-    console.log(comments);
     return comments as PostComment[];
   } catch (err) {
     throw err;
@@ -60,7 +59,6 @@ export const postUserReply = async (
   commentContent: string
 ) => {
   try {
-    console.log(postId);
     const dbBack = await axios.post(
       `${URL}/posts/comment/reply/${postId}/${commentId}/${commentUserId}`,
       {

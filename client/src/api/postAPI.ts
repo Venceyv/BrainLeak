@@ -79,7 +79,6 @@ export const getPosts = async (
     const {
       data: { dbBack: posts },
     } = await axios.get(queryUrl);
-    console.log(posts);
     return posts as Post<StatisticWithMark>[];
   } catch (err) {
     throw err;
@@ -164,7 +163,6 @@ export const getUserPosts = async (
     const {
       data: { dbBack: posts },
     } = await axios.get(queryUrl);
-    console.log(posts);
     return posts as Post<StatisticWithMark>[];
   } catch (err) {
     throw err;
@@ -181,7 +179,6 @@ export const getMyBookmarked = async (
     const {
       data: { dbBack: posts },
     } = await axios.get(queryUrl);
-    console.log(posts);
     return posts as Post<StatisticWithMark>[];
   } catch (err) {
     throw err;
@@ -198,7 +195,6 @@ export const getMyLikedPost = async (
     const {
       data: { dbBack: posts },
     } = await axios.get(queryUrl);
-    console.log(posts);
     return posts as Post<StatisticWithMark>[];
   } catch (err) {
     throw err;
@@ -215,7 +211,6 @@ export const getMyPosts = async (
     const {
       data: { dbBack: posts },
     } = await axios.get(queryUrl);
-    console.log(posts);
     return posts as Post<StatisticWithMark>[];
   } catch (err) {
     throw err;
