@@ -1,31 +1,47 @@
 import { FC, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { postCreatePost } from '../../api/postAPI';
+import {
+  getPost,
+  postCreatePost,
+  putEditPost,
+} from '../../api/postAPI';
 import { errorToast, successToast } from '../../utils/errorToast';
 import { TagItem } from './components/Tag';
 import './index.css';
 import 'react-quill/dist/quill.snow.css';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Post, StatisticWithMark } from '../../interfaces/post';
 
-export const NewPost: FC = () => {
-  const [title, setTitle] = useState<string>('');
-  const [body, setBody] = useState<string>('');
-  const [tags, setTags] = useState<string[]>([]);
+interface EditPostProp {
+  post: Post<StatisticWithMark>;
+}
+
+export const EditPost: FC<EditPostProp> = ({ post }) => {
+  const navigate = useNavigate();
+  const [title, setTitle] = useState<string>(post.title);
+  const [body, setBody] = useState<string>(post.description);
+  const [tags, setTags] = useState<string[]>(post.tags);
   const [tag, setTag] = useState<string>('');
-  const [notify, setNotify] = useState<boolean>(false);
+  const [notify, setNotify] = useState<boolean>(
+    post.notify ? true : false
+  );
 
-  const createPostMutation = useMutation(
-    ['postCreatePost'],
-    () => postCreatePost(title, body, tags, notify),
+  const putEditPostMutation = useMutation(
+    ['putEditPost'],
+    () => putEditPost(post._id, title, body, tags, notify),
     {
       onSuccess: () => {
-        successToast('Post created successfully!');
-        resetPost();
+        successToast('Post edited successfully!');
+        setTimeout(
+          () => navigate(`/post/${post._id}`, { replace: true }),
+          1000
+        );
       },
       onError: (err: AxiosError) => {
         if (err?.response?.status === 401) {
-          errorToast('Please Login First');
+          errorToast('You are not allowed to edit this post');
         } else {
           errorToast('An error has occurred');
         }
@@ -33,11 +49,11 @@ export const NewPost: FC = () => {
     }
   );
 
-  const onCreatePost = () => {
-    if (title.length > 300) {
+  const onEditPost = () => {
+    if (title.length >= 300) {
       return errorToast('Title cannot be more than 300 letter!');
     }
-    createPostMutation.mutate();
+    putEditPostMutation.mutate();
   };
 
   const handleEnterKey = (
@@ -86,11 +102,11 @@ export const NewPost: FC = () => {
   };
 
   const resetPost = () => {
-    setTitle('');
+    setTitle(post.title);
     setTag('');
-    setTags([]);
-    setBody('');
-    setNotify(false);
+    setTags(post.tags);
+    setBody(post.description);
+    setNotify(post.notify ? true : false);
   };
 
   return (
@@ -188,9 +204,9 @@ export const NewPost: FC = () => {
           <button
             type="button"
             className="w-fit pt-[2px] px-3 border-2 border-border-black rounded-lg hover:bg-white hover:text-secondary-black hover:border-secondary-black"
-            onClick={() => createPostMutation.mutate()}
+            onClick={onEditPost}
           >
-            Post!!
+            Finish!!
           </button>
         </div>
       </div>

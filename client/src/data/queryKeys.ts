@@ -26,5 +26,6 @@ export const queryKeys = {
     'putDeleteReply',
     'putPinCommentMutation',
     'postCreatePost',
+    'putEditPost',
   ],
 };

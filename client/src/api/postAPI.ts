@@ -28,7 +28,6 @@ export const getPost = async (
     const {
       data: { dbBack: postData },
     } = await axios.get(`${URL}/posts/${postId}`);
-    console.log(postData);
     return postData as Post<StatisticWithMark>;
   } catch (error) {
     throw error;
@@ -130,6 +129,25 @@ export const postCreatePost = async (
       title: title,
       description: body,
       tags: tag,
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const putEditPost = async (
+  postId: string,
+  title: string,
+  body: string,
+  tag: string[],
+  notify: boolean
+): Promise<void> => {
+  try {
+    await axios.put(`${URL}/posts/${postId}`, {
+      title: title,
+      description: body,
+      tags: tag,
+      notify: notify,
     });
   } catch (err) {
     throw err;

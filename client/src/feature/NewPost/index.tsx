@@ -34,7 +34,7 @@ export const NewPost: FC = () => {
   );
 
   const onCreatePost = () => {
-    if (title.length > 300) {
+    if (title.length >= 300) {
       return errorToast('Title cannot be more than 300 letter!');
     }
     createPostMutation.mutate();
@@ -188,7 +188,7 @@ export const NewPost: FC = () => {
           <button
             type="button"
             className="w-fit pt-[2px] px-3 border-2 border-border-black rounded-lg hover:bg-white hover:text-secondary-black hover:border-secondary-black"
-            onClick={() => createPostMutation.mutate()}
+            onClick={onCreatePost}
           >
             Post!!
           </button>
