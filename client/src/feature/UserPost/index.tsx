@@ -8,7 +8,7 @@ import { PostContent } from './components/PostContent';
 
 export const UserPost: FC = (): JSX.Element => {
   const { postId } = useParams();
-  const { data, isLoading, isError } = useQuery(
+  const { data, isSuccess, isLoading, isError } = useQuery(
     ['postData'],
     () => getPost(postId),
     { refetchOnWindowFocus: false, cacheTime: 0 }
@@ -29,6 +29,9 @@ export const UserPost: FC = (): JSX.Element => {
   //     },
   //   ],
   // });
+  if (isSuccess) {
+    console.log(data);
+  }
 
   return (
     <div className="flex h-full w-full">

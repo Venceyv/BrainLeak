@@ -23,8 +23,6 @@ export const Search: FC = (): JSX.Element => {
           <TopUser />
         </div>
       </div>
-
-      <Outlet />
     </div>
   );
 };
