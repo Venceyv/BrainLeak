@@ -40,6 +40,7 @@ export interface Post<T> {
   author: Author;
   statistics: T;
   cover?: string;
+  notify?: boolean;
   tags: string[];
   edited: boolean;
   put: boolean;

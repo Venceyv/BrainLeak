@@ -14,6 +14,7 @@ const RouteNotFound = lazy(
 );
 const Unauthorized = lazy(() => import('./components/Unauthorized'));
 const Profile = lazy(() => import('./pages/Profile'));
+const EditPost = lazy(() => import('./pages/EditPost'));
 
 const App: FC = (): JSX.Element => {
   return (
@@ -31,10 +32,7 @@ const App: FC = (): JSX.Element => {
               <Route path="post/:postId" element={<Post />} />
             </Route>
             <Route path="new-post" element={<CreatePost />} />
-            <Route
-              path="edit-post/:postId"
-              element={<CreatePost />}
-            />
+            <Route path="post/edit/:postId" element={<EditPost />} />
             <Route path="user/profile/:userId" element={<Profile />}>
               <Route path="my-posts" />
               <Route path="liked-posts" />

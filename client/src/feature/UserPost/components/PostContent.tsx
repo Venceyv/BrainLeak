@@ -75,6 +75,7 @@ export const PostContent: FC<{
           publishDate={post.publishDate}
           isAuthor={author?._id === post.author._id ? true : false}
           deletePostMutation={deletePostMutation}
+          postId={postId}
         />
         <div className="w-full text-[20px] font-bold text-white">
           {post.title}
