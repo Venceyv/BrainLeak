@@ -5,7 +5,7 @@ import json from "body-parser";
 async function checkReplyExist(req, res, next) {
   try {
     if(!mongoose.isValidObjectId(req.params.replyId)){
-      res.status(401);
+      res.status(404);
       throw "invalid params";
     }
     const reply = await Reply.findById(req.params.replyId).lean();

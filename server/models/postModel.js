@@ -32,6 +32,7 @@ const postSchema = new Schema({
     ref: "user",
     index: true,
     required: true,
+    immutable: true,
   },
   edited: {
     type: Boolean,

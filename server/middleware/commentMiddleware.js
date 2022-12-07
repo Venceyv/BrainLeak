@@ -5,7 +5,7 @@ import json from "body-parser";
 async function checkCommentExist(req, res, next) {
   try {
     if(!mongoose.isValidObjectId(req.params.commentId)){
-      res.status(401);
+      res.status(404);
       throw "invalid params";
     }
     const comment = await Comment.findById(req.params.commentId).lean();

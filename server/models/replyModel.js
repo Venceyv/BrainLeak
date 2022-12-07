@@ -25,6 +25,7 @@ const replySchema = new Schema({
     type: mongoose.ObjectId,
     ref: "user",
     required: false,
+    immutable: true,
   },
   author: {
     type: mongoose.ObjectId,

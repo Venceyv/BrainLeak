@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const { Schema } = mongoose;
-const date = new Date();
 const commentSchema = new Schema({
   content: {
     type: String,
@@ -11,6 +10,7 @@ const commentSchema = new Schema({
     type: mongoose.ObjectId,
     ref: "user",
     require: true,
+    immutable: true,
   },
   publishDate: {
     type: Date,

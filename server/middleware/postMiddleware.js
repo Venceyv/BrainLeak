@@ -5,7 +5,7 @@ import json from "body-parser";
 async function checkPostExist(req, res, next) {
   try {
     if(!mongoose.isValidObjectId(req.params.postId)){
-      res.status(401);
+      res.status(404);
       throw "invalid params";
     }
     const post = await Post.findById(req.params.postId).lean();
