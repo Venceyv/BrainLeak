@@ -14,6 +14,7 @@ const RouteNotFound = lazy(
   () => import('./components/RouteNotFound')
 );
 const Unauthorized = lazy(() => import('./components/Unauthorized'));
+const Profile = lazy(() => import('./pages/Profile'));
 
 const App: FC = (): JSX.Element => {
   return (
@@ -34,6 +35,16 @@ const App: FC = (): JSX.Element => {
             {/* <Route path="profile" element={<div>IP</div>} /> */}
             <Route path="test" element={<Test />} />
             <Route path="new-post" element={<CreatePost />} />
+            <Route path="user/profile/:userId" element={<Profile />}>
+              <Route path="my-posts" />
+              <Route path="liked-posts" />
+              <Route path="bookmarked-posts" />
+              <Route path="comment-history" />
+            </Route>
+            <Route
+              path="user/notification/:userId"
+              element={<Profile />}
+            />
             <Route path="search/*" element={<Search />} />
             <Route path="unauthorized" element={<Unauthorized />} />
             <Route path="*" element={<RouteNotFound />} />
