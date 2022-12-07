@@ -15,12 +15,6 @@ const replySchema = new Schema({
     index: true,
     required: true,
   },
-  relatedPost: {
-    type: mongoose.ObjectId,
-    ref: "post",
-    index: true,
-    required: true,
-  },
   mentionedUser: {
     type: mongoose.ObjectId,
     ref: "user",
@@ -31,6 +25,7 @@ const replySchema = new Schema({
     type: mongoose.ObjectId,
     ref: "user",
     required: true,
+    immutable: true,
   },
 });
 export { replySchema };

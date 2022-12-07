@@ -20,7 +20,6 @@ async function replyToComment(req, res) {
       new Reply({
         content: req.body.content,
         relatedComment: comment._id,
-        relatedPost: req.params.postId,
         mentionedUser: comment.author,
         author: req.user._id,
       }).save(),
@@ -147,7 +146,6 @@ async function replyToUser(req, res) {
       new Reply({
         content: req.body.content,
         relatedComment: comment._id,
-        relatedPost: req.params.postId,
         mentionedUser: req.params.userId,
         author: req.user._id,
       }).save(),
