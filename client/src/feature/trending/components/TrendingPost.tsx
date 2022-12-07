@@ -1,6 +1,9 @@
 import { FC } from 'react';
+import ReactQuill from 'react-quill';
 import { Link, useNavigate } from 'react-router-dom';
+import { ellipsisText } from '../../../utils/clipText';
 import { fallback } from '../../../utils/imgFallback';
+import './TrendingPost.css';
 
 interface TrendingPostProp {
   popularity: number;
@@ -29,12 +32,23 @@ export const TrendingPost: FC<TrendingPostProp> = ({
       >
         {post.title}
       </h1>
-      <p
+      {/* <p
         className="col-span-3 row-span-1 w-full h-9 text-[12px] line-clamp-2 break-words whitespace-normal text-secondary-text-A1"
         onClick={() => navigate(`post/${post._id}`)}
       >
         {post.description}
-      </p>
+      </p> */}
+      <div
+        className="col-span-3 row-span-1 w-full h-9 text-[12px] line-clamp-2 break-words whitespace-normal text-secondary-text-A1"
+        onClick={() => navigate(`post/${post._id}`)}
+      >
+        <ReactQuill
+          theme="bubble"
+          value={ellipsisText(post?.description, 34)}
+          readOnly
+          className="trending"
+        />
+      </div>
       <div className="flex items-center justify-start gap-2 col-span-2">
         <img
           className="w-[37px] h-[37px] rounded-full border-2 cursor-pointer border-border-black text-zinc-50"
