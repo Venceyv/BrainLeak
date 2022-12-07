@@ -35,7 +35,7 @@ export const IndividualReply: FC<IndividualReplyProp> = ({
 
   const { putLikeMutation, putDislikeMutation, putDeleteMutation } =
     useMutateUserReply(
-      reply.relatedPost,
+      postId!,
       reply.relatedComment,
       reply._id,
       setCommentReply

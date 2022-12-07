@@ -45,6 +45,7 @@ export const UserItem: FC<UserItemProp> = ({
         position="bottom right"
         arrow={false}
         open={isDropdown}
+        onClose={() => toggleUserDropdown}
       >
         <UserDropdown
           userRef={userRef}
