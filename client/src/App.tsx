@@ -1,20 +1,19 @@
-import { FC, lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { FC, lazy, Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
 
-import { Layout } from './layouts/layout';
-import { Loading } from './components/Loading';
-import { Test } from './Test';
-import './App.css';
+import { Layout } from "./layouts/layout";
+import { Loading } from "./components/Loading";
+import "./App.css";
 
-const Home = lazy(() => import('./pages/Home'));
-const Post = lazy(() => import('./pages/Post'));
-const CreatePost = lazy(() => import('./pages/CreatePost'));
-const Search = lazy(() => import('./pages/Search'));
+const Home = lazy(() => import("./pages/Home"));
+const Post = lazy(() => import("./pages/Post"));
+const CreatePost = lazy(() => import("./pages/CreatePost"));
+const Search = lazy(() => import("./pages/Search"));
 const RouteNotFound = lazy(
-  () => import('./components/RouteNotFound')
+  () => import("./components/RouteNotFound")
 );
-const Unauthorized = lazy(() => import('./components/Unauthorized'));
-const Profile = lazy(() => import('./pages/Profile'));
+const Unauthorized = lazy(() => import("./components/Unauthorized"));
+const Profile = lazy(() => import("./pages/Profile"));
 
 const App: FC = (): JSX.Element => {
   return (
@@ -31,9 +30,6 @@ const App: FC = (): JSX.Element => {
             <Route path="" element={<Home />}>
               <Route path="post/:postId" element={<Post />} />
             </Route>
-
-            {/* <Route path="profile" element={<div>IP</div>} /> */}
-            <Route path="test" element={<Test />} />
             <Route path="new-post" element={<CreatePost />} />
             <Route path="user/profile/:userId" element={<Profile />}>
               <Route path="my-posts" />
@@ -49,8 +45,6 @@ const App: FC = (): JSX.Element => {
             <Route path="unauthorized" element={<Unauthorized />} />
             <Route path="*" element={<RouteNotFound />} />
           </Route>
-
-          {/* <Route path="/1" element={<NavBar />} /> */}
 
           {/* <Route path="*" element={<div>IP</div>} /> */}
         </Routes>
