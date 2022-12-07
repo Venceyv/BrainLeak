@@ -174,8 +174,13 @@ async function findBySearch(req, res) {
 async function updatePost(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
+    const imgReg = /<img.*?(?:>|\/>)/gi;
+    const images = req.body.description.match(imgReg);
     req.body.updateDate = Date.now();
     req.body.edited = true;
+    if(images){
+      req.body.cover = images[0];
+    }
     const dbBack = await Post.findByIdAndUpdate(req.params.postId, req.body, { new: true });
     if (req.body.tags) {
       const tags = req.body.tags;
