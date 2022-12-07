@@ -15,6 +15,7 @@ import { LikeThumb } from '../../../components/LikeThumb';
 import { DislikeThumb } from '../../../components/DislikeThumb';
 import { useMutateUserReply } from './individualReply.hook';
 import Popup from 'reactjs-popup';
+import { useParams } from 'react-router-dom';
 
 interface IndividualReplyProp {
   reply: CommentReply;
@@ -25,6 +26,7 @@ export const IndividualReply: FC<IndividualReplyProp> = ({
   reply,
   currentUserId,
 }): JSX.Element => {
+  const { postId } = useParams();
   const [showReply, setShowReply] = useState<boolean>(false);
   const [commentReply, setCommentReply] =
     useState<CommentReply>(reply);
@@ -165,7 +167,7 @@ export const IndividualReply: FC<IndividualReplyProp> = ({
         </div>
         {showReply && (
           <NewComment
-            postId={reply.relatedPost}
+            postId={postId!}
             commentId={reply.relatedComment}
             commentUserId={reply.author._id}
             isReply={true}

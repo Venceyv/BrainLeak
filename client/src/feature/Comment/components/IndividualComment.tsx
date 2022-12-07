@@ -27,6 +27,7 @@ export const IndividualComment: FC<{
   pinnedComment,
   isPostAuthor,
 }): JSX.Element => {
+  const { postId } = useParams();
   const [showReply, setShowReply] = useState<boolean>(false);
   const [showUserReply, setShowUserReply] = useState<boolean>(false);
   const [showEdit, setShowEdit] = useState<boolean>(false);
@@ -240,7 +241,7 @@ export const IndividualComment: FC<{
         </div>
         {showReply && (
           <NewComment
-            postId={comment.relatedPost}
+            postId={postId!}
             commentId={comment._id}
             commentUserId={comment.author._id}
             isReply={true}
@@ -250,7 +251,7 @@ export const IndividualComment: FC<{
         )}
         {showEdit && (
           <NewComment
-            postId={comment.relatedPost}
+            postId={postId!}
             commentId={comment._id}
             commentUserId={comment.author._id}
             isReply={false}

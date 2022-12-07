@@ -29,7 +29,7 @@ export const Comment: FC = (): JSX.Element => {
   );
 
   return (
-    <div className="w-[720px] h-full">
+    <div className="w-[720px] h-full bg-post-bg-black">
       <Comments
         postId={postId!}
         currentUserId={

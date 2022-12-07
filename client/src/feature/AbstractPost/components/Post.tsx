@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { FC, useState } from 'react';
 import ReactQuill from 'react-quill';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Bookmark } from '../../../components/Bookmark';
 import { DislikeThumb } from '../../../components/DislikeThumb';
 import { LikeThumb } from '../../../components/LikeThumb';
@@ -37,6 +37,7 @@ export const Post: FC<PostProp> = ({
   dislike,
   save,
 }): JSX.Element => {
+  const navigate = useNavigate();
   const { putDislikeMutation, putLikeMutation, putSaveMutation } =
     usePutUserStatusMutation(post._id);
   return (
@@ -47,8 +48,12 @@ export const Post: FC<PostProp> = ({
           src={user?.avatar}
           onError={fallback}
           alt="user"
+          onClick={() => navigate(`/user/profile/${user._id}`)}
         />
-        <p className="text-sm cursor-pointer w-[100px] text-center truncate">
+        <p
+          className="text-sm cursor-pointer w-[100px] text-center truncate"
+          onClick={() => navigate(`/user/profile/${user._id}`)}
+        >
           {user?.username}
         </p>
       </div>

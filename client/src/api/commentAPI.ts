@@ -60,6 +60,7 @@ export const postUserReply = async (
   commentContent: string
 ) => {
   try {
+    console.log(postId);
     const dbBack = await axios.post(
       `${URL}/posts/comment/reply/${postId}/${commentId}/${commentUserId}`,
       {
