@@ -11,6 +11,10 @@ const postSchema = new Schema({
     type: String,
     require: false,
   },
+  cover:{
+    type:String,
+    default:null,
+  },
   publishDate: {
     type: Date,
     default: Date.now,

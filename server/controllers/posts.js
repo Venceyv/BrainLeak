@@ -24,9 +24,14 @@ async function createPost(req, res) {
     res.setHeader("Content-Type", "application/json");
     const dbBack = new Post(req.body);
     const userId = req.user._id;
+    const imgReg = /<img.*?(?:>|\/>)/gi;
+    const images = req.body.description.match(imgReg);
     await incUserStatistics(req.user._id, "posts", 1);
     dbBack.author = userId;
     dbBack.notify = req.query.notify === "true";
+    if(images){
+      dbBack.cover = images[0];
+    }
     dbBack.tags.map(async function (tag) {
       const record = await Tags.findOne({ tagName: tag });
       if (!record) {
@@ -169,8 +174,13 @@ async function findBySearch(req, res) {
 async function updatePost(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
+    const imgReg = /<img.*?(?:>|\/>)/gi;
+    const images = req.body.description.match(imgReg);
     req.body.updateDate = Date.now();
     req.body.edited = true;
+    if(images){
+      req.body.cover = images[0];
+    }
     const dbBack = await Post.findByIdAndUpdate(req.params.postId, req.body, { new: true });
     if (req.body.tags) {
       const tags = req.body.tags;
