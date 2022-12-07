@@ -46,8 +46,6 @@ const App: FC = (): JSX.Element => {
             <Route path="*" element={<RouteNotFound />} />
           </Route>
 
-          <Route path="/1" element={<Test />} />
-
           {/* <Route path="*" element={<div>IP</div>} /> */}
         </Routes>
         {/* <Routes>

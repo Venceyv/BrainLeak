@@ -58,7 +58,7 @@ export const NewPost: FC = () => {
       target: { value },
     } = event;
 
-    if (title.length > 300) {
+    if (title.length >= 300) {
       return;
     }
     setTitle(value);
