@@ -5,7 +5,7 @@ import { Layout } from './layouts/layout';
 import { Loading } from './components/Loading';
 import './App.css';
 
-const Home = lazy(() => import('./pages/Home'));
+const Home = lazy(() => import('./pages/home'));
 const Post = lazy(() => import('./pages/Post'));
 const CreatePost = lazy(() => import('./pages/CreatePost'));
 const Search = lazy(() => import('./pages/Search'));
