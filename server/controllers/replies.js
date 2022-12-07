@@ -11,21 +11,25 @@ import {
   incReplyStatistics,
   saveRedisReplyProfile,
 } from "../services/replyServices.js";
+import { clearB64 } from "../services/upload64File.js";
 import { incUserNotification } from "../services/userServices.js";
 async function replyToComment(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     const comment = req.comment;
-    const [dbBack] = await Promise.all([
-      new Reply({
-        content: req.body.content,
-        relatedComment: comment._id,
-        mentionedUser: comment.author,
-        author: req.user._id,
-      }).save(),
+    await Promise.all([
       incCommentStatistics(req.params.commentId, "replies", 1),
       incUserNotification(comment.author, "replies", 1),
     ]);
+    let dbBack = new Reply({
+      content: req.body.content,
+      relatedComment: comment._id,
+      mentionedUser: comment.author,
+      author: req.user._id,
+    });
+    dbBack = clearB64(dbBack,'reply');
+    console.log(dbBack);
+    dbBack.save();
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });
@@ -142,17 +146,18 @@ async function replyToUser(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     const comment = req.comment;
-    const dbBack = await Promise.all([
-      new Reply({
-        content: req.body.content,
-        relatedComment: comment._id,
-        mentionedUser: req.params.userId,
-        author: req.user._id,
-      }).save(),
+    await Promise.all([
       incCommentStatistics(req.params.commentId, "replies", 1),
       incUserNotification(req.params.userId, "replies", 1),
     ]);
-
+    let dbBack = new Reply({
+      content: req.body.content,
+      relatedComment: comment._id,
+      mentionedUser: req.params.userId,
+      author: req.user._id,
+    });
+    dbBack = clearB64(dbBack);
+    dbBack.save();
     return res.status(200).json({ dbBack });
   } catch (error) {
     res.status(401).json({ error: error });

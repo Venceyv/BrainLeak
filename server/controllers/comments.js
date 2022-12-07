@@ -14,6 +14,7 @@ import {
 import { incUserNotification, incUserStatistics } from "../services/userServices.js";
 import { incPostStatistics, postTrendingInc } from "../services/postServices.js";
 import { sortWith } from "../services/arraySorter.js";
+import { clearB64 } from "../services/upload64File.js";
 async function addComment(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
@@ -28,12 +29,14 @@ async function addComment(req, res) {
       incUserNotification(post.author, "comments", 1),
     ]);
     const commentContent = req.body.content.replace(/<\/?.+?>/g, "");
-    const dbBack = await new Comment({
+    let dbBack = new Comment({
       content: req.body.content,
       author: userId,
       relatedPost: postId,
       postAuthor: post.author,
-    }).save();
+    });
+    dbBack = clearB64(dbBack,'comment');
+    dbBack.save();
     //if author account is still active
     if (req.post.notify && postAuthor && !req.user._id.equals(postAuthor._id)) {
       const mailOptions = notifyAuthor(

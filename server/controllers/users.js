@@ -305,7 +305,7 @@ async function getLikePosts(req, res) {
       .lean()
       .populate({
         path: "post",
-        select: "title description author publishDate",
+        select: "title description author publishDate cover",
         options: { lean: true },
         populate: {
           path: "author",
@@ -345,7 +345,7 @@ async function getDislikePosts(req, res) {
       .lean()
       .populate({
         path: "post",
-        select: "title description author publishDate",
+        select: "title description author publishDate cover",
         options: { lean: true },
         populate: {
           path: "author",
@@ -384,7 +384,7 @@ async function getSavedPosts(req, res) {
       .lean()
       .populate({
         path: "post",
-        select: "title description author publishDate",
+        select: "title description author publishDate cover",
         options: { lean: true },
         populate: {
           path: "author",
@@ -467,9 +467,9 @@ async function getUserPosts(req, res) {
     let dbBack = await getRedisUserPost(req.params.userId);
     const order = req.query.sort;
     if (!dbBack) {
-      dbBack = await Post.find({ author: req.params.userId }, { title: 1, description: 1, publishDate: 1 })
+      dbBack = await Post.find({ author: req.params.userId }, { title: 1, description: 1, publishDate: 1,cover:1})
         .lean()
-        .populate("author", { avatar: 1, username: 1, introduction: 1 }, { lean: true });
+        .populate("author", { avatar: 1, username: 1, introduction: 1}, { lean: true });
     }
     if (dbBack.length != 0) {
       saveRedisUserPost(req.params.userId, dbBack);
