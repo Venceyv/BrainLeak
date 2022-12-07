@@ -12,6 +12,8 @@ import {
 import { getSearch } from '../../../api/searchAPI';
 import { NoResult } from './noResult';
 import { NoMore } from '../../../components/NoMore';
+import { PostWithCover } from './ResultPostWithCover';
+import './ResultPost.css';
 
 interface PostsProp {
   selectedMenuItem: MenuItem;
@@ -82,7 +84,7 @@ export const Results: FC<PostsProp> = ({
                 dislike: post?.dislike,
                 save: post?.save,
               };
-              return (
+              return !post.cover ? (
                 <Post
                   key={index}
                   user={post.author}
@@ -90,6 +92,16 @@ export const Results: FC<PostsProp> = ({
                   like={userStatProp.like}
                   dislike={userStatProp.dislike}
                   save={userStatProp.save}
+                />
+              ) : (
+                <PostWithCover
+                  key={index}
+                  user={post.author}
+                  post={postProp}
+                  like={userStatProp.like}
+                  dislike={userStatProp.dislike}
+                  save={userStatProp.save}
+                  cover={post.cover}
                 />
               );
             });

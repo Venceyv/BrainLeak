@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { FC, useState } from 'react';
+import ReactQuill from 'react-quill';
 import { Link } from 'react-router-dom';
 import { Bookmark } from '../../../components/Bookmark';
 import { DislikeThumb } from '../../../components/DislikeThumb';
@@ -50,14 +51,19 @@ export const Post: FC<PostProp> = ({
         </p>
       </div>
 
-      <div className="flex flex-col gap-2 grow shrink w-[558px] text-white bg-secondary-black rounded-2xl p-3 pb-[1px] border-2 border-border-black cursor-pointer">
+      <div className="flex flex-col gap-2 grow shrink w-[558px] text-white bg-secondary-black rounded-lg p-2 pb-[1px] border-2 border-border-black cursor-pointer">
         <Link to={`/post/${post._id}`}>
           <h1 className="text-[14px] font-bold w-full truncate">
             {post?.title}
           </h1>
-          <p className="text-[12px] overflow-hidden truncate w-full text-zinc-400">
-            {post?.description}
-          </p>
+          <div className="text-[12px] truncate w-full cursor-pointer text-zinc-400">
+            <ReactQuill
+              theme="bubble"
+              value={post?.description}
+              readOnly
+              className="abstract"
+            />
+          </div>
         </Link>
         <span className="flex flex-row gap-3 text-xs pb-1 w-full">
           <div

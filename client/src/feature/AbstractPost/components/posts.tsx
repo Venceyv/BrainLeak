@@ -7,7 +7,7 @@ import { IntervalItem, MenuItem } from '../../../interfaces/post';
 // import InfiniteScroll from 'react-infinite-scroll-component';
 import InfiniteScroll from 'react-infinite-scroller';
 import { NoMore } from '../../../components/NoMore';
-import PostWithCover from './PostWithCover';
+import { PostWithCover } from './PostWithCover';
 
 interface PostsProp {
   selectedMenuItem: MenuItem;

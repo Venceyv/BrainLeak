@@ -9,8 +9,8 @@ import { Author } from '../../../interfaces/user';
 import { convertDate } from '../../../utils/convertDate';
 import { formatNumber } from '../../../utils/formatNumber';
 import { fallback } from '../../../utils/imgFallback';
-import { usePutUserStatusMutation } from './Post.hook';
-import './PostWithCover.css';
+import { usePutUserStatusMutation } from './ResultPost.hook';
+import './ResultPostWithCover.css';
 import { ellipsisText } from '../../../utils/clipText';
 
 interface PostProp {
