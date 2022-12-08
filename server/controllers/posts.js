@@ -214,7 +214,7 @@ async function likePost(req, res) {
         await incPostStatistics(postId, "dislikes", -1);
         postLike.save();
       } else {
-        PostLike({ user: req.user._id, post: postId, postAuthor: req.post.author }).save();
+        new PostLike({ user: req.user._id, post: postId, postAuthor: req.post.author }).save();
       }
     }
     post = await addPostStatistics(req.post);

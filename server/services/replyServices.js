@@ -9,12 +9,18 @@ function clearReplyByTime(time) {
     time,
     async function (Reply) {
       try {
-        const replyList = await Reply.find();
+        const replyList = await Reply.find().lean();
+        let relatedComment;
         await Promise.all(
           replyList.map(async function (reply) {
+            if(reply.relatedComment.equals(relatedComment))
+            {
+              return;
+            }
             const record = await Comment.findById(reply.relatedComment, { _id: 1 }).lean();
             if (!record) {
-              await Reply.findByIdAndDelete(reply._id);
+              await Reply.deleteMany({relatedComment:reply.relatedComment});
+              relatedComment = reply.relatedComment;
             }
           })
         );
