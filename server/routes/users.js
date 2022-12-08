@@ -43,7 +43,7 @@ userRouter.get("/comments/:userId", checkUserExist, verifyToken(false), getUserC
 userRouter.get("/posts/:userId", checkUserExist, verifyToken(false), getUserPosts);
 userRouter.get("/followerList/:userId", checkUserExist, verifyToken(false), getFollower);
 userRouter.get("/followingList/:userId", checkUserExist, verifyToken(false), getFollowing);
-userRouter.get("/likedPosts/:userId", checkUserExist, verifyToken(), checkUserAuth, getLikePosts);
+userRouter.get("/likedPosts/:userId", checkUserExist, verifyToken(), getLikePosts);
 userRouter.get("/dislikedPosts/:userId", checkUserExist, verifyToken(), checkUserAuth, getDislikePosts);
 userRouter.get("/savedPosts/:userId", checkUserExist, verifyToken(), checkUserAuth, getSavedPosts);
 userRouter.get("/refreshToken/:userId", checkUserExist, refreshToken);
