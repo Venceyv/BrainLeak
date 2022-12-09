@@ -7,12 +7,17 @@ function clearCommentByTime(time) {
     time,
     async function (Comment) {
       try {
-        const commentList = await Comment.find();
+        const commentList = await Comment.find().lean();
+        let relatedPost;
         await Promise.all(
           commentList.map(async function (comment) {
+            if(comment.relatedPost.equals(relatedPost)){
+              return;
+            }
             const record = await Post.findById(comment.relatedPost, { _id: 1 }).lean();
             if (!record) {
-              Comment.findByIdAndDelete(comment._id);
+              Comment.deleteMany({relatedPost:comment.relatedPost});
+              relatedPost = comment.relatedPost;
             }
           })
         );

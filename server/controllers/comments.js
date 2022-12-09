@@ -79,7 +79,7 @@ async function deleteComment(req, res) {
     const commentId = req.params.commentId;
     await Promise.all([
       Comment.findByIdAndDelete(commentId),
-      CommentLike.deleteMany({ commentId }),
+      CommentLike.deleteMany({ comment:commentId }),
       postTrendingInc(req.params.postId, -3),
       incPostStatistics(comment.relatedPost, "comments", -1),
       incUserStatistics(comment.author, "comments", -1),

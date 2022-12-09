@@ -1,7 +1,8 @@
-import { FC } from 'react';
-import { TrendingUser } from '../../../interfaces/user';
-import { formatNumber } from '../../../utils/formatNumber';
-import { fallback } from '../../../utils/imgFallback';
+import { FC } from "react";
+import { useNavigate } from "react-router-dom";
+import { TrendingUser } from "../../../interfaces/user";
+import { formatNumber } from "../../../utils/formatNumber";
+import { fallback } from "../../../utils/imgFallback";
 
 // interface UserCardProp {
 //   popularity: string;
@@ -11,8 +12,14 @@ import { fallback } from '../../../utils/imgFallback';
 export const UserCard: FC<TrendingUser> = (
   trendingUser
 ): JSX.Element => {
+  const navigate = useNavigate();
   return (
-    <div className="relative grid grid-cols-3 grid-rows-4 gap-1 py-3 overflow-hidden w-[270px] h-[160px] rounded-2xl p-3 pb-[0px] border-2 bg-secondary-black border-border-black cursor-pointer">
+    <div
+      className="relative grid grid-cols-3 grid-rows-4 gap-1 py-3 overflow-hidden w-[270px] h-[160px] rounded-2xl p-3 pb-[0px] border-2 bg-secondary-black border-border-black cursor-pointer"
+      onClick={() =>
+        navigate(`/user/profile/${trendingUser.user._id}`)
+      }
+    >
       <img
         src={trendingUser.user.backgroundCover}
         className="absolute w-full h-11 z-[1] object-cover"
