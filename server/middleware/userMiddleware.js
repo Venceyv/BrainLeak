@@ -9,7 +9,7 @@ async function checkUserExist(req, res, next) {
       throw "invalid params";
     }
     const user = await User.findById(req.params.userId, { isDelete: 1 }).lean();
-    if (!user || user.isDelete) {
+    if (!user) {
       res.status(404);
       throw "User does not exist";
     }

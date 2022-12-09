@@ -43,7 +43,11 @@ async function deleteUser(req, res) {
     accessToken = accessToken ? accessToken.replace("Bearer ", "") : null;
     const [refreshToken] = await Promise.all([
       getRefreshToken(req.user._id),
-      User.findByIdAndUpdate(req.params.userId, { isDelete: true }),
+      User.findByIdAndUpdate(req.params.userId, {
+        username: "Account Deactivated",
+        avatar: process.env.DEACTIVATED_ACCOUNT_AVATAR,
+        isDelete: true,
+      }),
     ]);
     blockToken(accessToken);
     blockToken(refreshToken);
@@ -466,8 +470,10 @@ async function getUserPosts(req, res) {
     let dbBack = await getRedisUserPost(req.params.userId);
     const order = req.query.sort;
     if (!dbBack) {
-      dbBack = await Post.find({ author: req.params.userId }, { title: 1, description: 1, publishDate: 1, cover: 1 })
-        .lean()
+      dbBack = await Post.find(
+        { author: req.params.userId },
+        { title: 1, description: 1, publishDate: 1, cover: 1 }
+      ).lean();
     }
     if (dbBack.length != 0) {
       saveRedisUserPost(req.params.userId, dbBack);
