@@ -70,7 +70,7 @@ export const Comments: FC<CommentsProp> = ({
               return comments.map((comment, index) => {
                 return (
                   <IndividualComment
-                    key={index}
+                    key={comment._id}
                     comment={comment}
                     currentUserId={currentUserId}
                     pinnedComment={pinnedComment}
