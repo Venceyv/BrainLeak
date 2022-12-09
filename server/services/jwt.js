@@ -56,7 +56,7 @@ function verifyToken(required = true) {
       if (!inBlockList) {
         try {
           const tokenInfo = await verify(token, process.env.SECRETORKEY);
-          req.user = await User.findById(tokenInfo.userInfo.userId, { username: 1 }).lean();
+          req.user = await User.findById(tokenInfo.userInfo.userId).lean();
           if (req.user) {
             return next();
           }

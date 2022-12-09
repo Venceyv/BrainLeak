@@ -1,7 +1,5 @@
 import { Post, Tags, PostLike, SavedPost, CommentLike, User } from "../models/index.js";
 import {
-  getRedisPostProfile,
-  saveRedisPostProfile,
   postTrendingInc,
   getPostTrending,
   addPostStatistics,
@@ -45,12 +43,8 @@ async function findOne(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     const postId = req.params.postId;
-    let dbBack = await getRedisPostProfile(postId);
+    let dbBack = req.post;
     let postAuthor, pinnedComment;
-    if (!dbBack) {
-      dbBack = req.post;
-      saveRedisPostProfile(postId, dbBack);
-    }
     [dbBack, postAuthor, pinnedComment] = await Promise.all([
       addPostStatistics(dbBack),
       User.findById(dbBack.author, { avatar: 1, username: 1 }).lean(),
@@ -122,11 +116,11 @@ async function findAll(req, res) {
     let dbBack;
     if (tags) {
       tags = tags.split("&");
-      dbBack = await Post.find({ tags: { $in: tags } })
+      dbBack = await Post.find({ tags: { $in: tags } },{notify:0})
         .lean()
         .populate("author", "avatar username", { lean: true });
     } else {
-      dbBack = await Post.find({}, { put: 0 }).lean().populate("author", "avatar username", { lean: true });
+      dbBack = await Post.find({}, { notify: 0 }).lean().populate("author", "avatar username", { lean: true });
     }
 
     if (dbBack.length != 0) {

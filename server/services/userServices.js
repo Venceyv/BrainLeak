@@ -281,10 +281,8 @@ function addCategories(lists, type) {
 export {
   updatePicture,
   stringifyUserInfo,
-  getRedisUserProfile,
   addFollowingInfo,
   addUserStatistics,
-  saveRedisUserProfile,
   incUserStatistics,
   userTrendingInc,
   getUserTrending,

@@ -38,28 +38,6 @@ async function incPostStatistics(postId, field, incNum) {
   }
 }
 
-async function getRedisPostProfile(postId) {
-  try {
-    const key = JSON.stringify(postId) + " Profile";
-    let postInfo = await redisPosts.get(key);
-    if (!postInfo) {
-      return null;
-    }
-    postInfo = JSON.parse(postInfo);
-    return postInfo;
-  } catch (error) {
-    console.log("getRedisPostProfile Failed -- Pservices 65");
-  }
-}
-function saveRedisPostProfile(postId, postInfo) {
-  try {
-    const key = JSON.stringify(postId) + " Profile";
-    postInfo = JSON.stringify(postInfo);
-    redisPosts.setex(key, 3, postInfo);
-  } catch (error) {
-    console.log("saveRedisPostProfile -- Pservices 78");
-  }
-}
 function addUserPostInfo(post, likeList, saveList) {
   try {
     const like = likeList.filter((e) => e.post.equals(post._id) && e.like).length > 0;
@@ -257,8 +235,6 @@ function postPopularity(post) {
 }
 export {
   getOnePostInfo,
-  getRedisPostProfile,
-  saveRedisPostProfile,
   addUserPostInfo,
   postTrendingInc,
   getPostTrending,

@@ -1,8 +1,6 @@
 import { Follow, User, Comment, PostLike, SavedPost, Post, CommentLike, Reply, ReplyLike } from "../models/index.js";
 import {
   updatePicture,
-  getRedisUserProfile,
-  saveRedisUserProfile,
   addFollowingInfo,
   addUserStatistics,
   incUserStatistics,
@@ -60,11 +58,7 @@ async function deleteUser(req, res) {
 async function findOne(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
-    let dbBack = await getRedisUserProfile(req.params.userId);
-    if (!dbBack) {
-      dbBack = await User.findById(req.params.userId, { email: 0, isDelete: 0 }).lean();
-      saveRedisUserProfile(req.params.userId, dbBack);
-    }
+    let dbBack = req.user;
     dbBack = await addUserStatistics(dbBack);
     if (req.user) {
       const self = req.user._id === req.params.userId;
