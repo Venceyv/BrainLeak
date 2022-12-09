@@ -58,7 +58,7 @@ async function deleteUser(req, res) {
 async function findOne(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
-    let dbBack = req.user;
+    let dbBack = req.targetUser;
     dbBack = await addUserStatistics(dbBack);
     if (req.user) {
       const self = req.user._id === req.params.userId;
