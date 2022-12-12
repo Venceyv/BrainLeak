@@ -16,7 +16,7 @@ const createToken = async (userInfo) => {
     },
     process.env.SECRETORKEY,
     {
-      expiresIn: 12 * 60 * 60,
+      expiresIn: "1h",
     }
   );
 };
