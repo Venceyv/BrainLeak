@@ -173,8 +173,12 @@ async function updateUser(req, res) {
   }
 }
 async function updateAvatar(req, res) {
-  res.setHeader("Content-Type", "application/json");
-  await updatePicture(req, res, "avatar");
+  try {
+    res.setHeader("Content-Type", "application/json");
+    await updatePicture(req, res, "avatar");
+  } catch (error) {
+    res.json({ error: error });
+  }
 }
 async function updateBackgroundCover(req, res) {
   res.setHeader("Content-Type", "application/json");
