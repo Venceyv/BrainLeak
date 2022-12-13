@@ -1,30 +1,8 @@
 import { PostLike, SavedPost, Post } from "../models/index.js";
 import { redisPosts, redisTrending } from "../configs/redis.js";
 import schedule from "node-schedule";
-import { addCommentsStatistics, getCommentsUderPost } from "./commentServices.js";
+import { addCommentsStatistics } from "./commentServices.js";
 import { incUserStatistics, userTrendingInc } from "./userServices.js";
-
-//get the post info related to the loggined user.
-async function getOnePostInfo(postId) {
-  try {
-    let [postInfo, commentUnderPost] = await Promise.all([
-      Post.findById(postId, { put: 0, edited: 0, likes: 0 }).lean().populate(
-        "author",
-        {
-          _id: 1,
-          avatar: 1,
-          username: 1,
-        },
-        { lean: true }
-      ),
-      getCommentsUderPost(postId),
-    ]);
-
-    return { postInfo, commentUnderPost };
-  } catch (error) {
-    console.log("getOnePostInfoFailed --Pservices 35");
-  }
-}
 
 async function incPostStatistics(postId, field, incNum) {
   try {
@@ -83,7 +61,7 @@ async function getPostTrending(num) {
     });
     leaderBoard = await Promise.all(
       leaderBoard.map(async (ranking) => {
-        const post = await Post.findById(ranking.postId, { title: 1, description: 1,cover:1 })
+        const post = await Post.findById(ranking.postId, { title: 1, description: 1, cover: 1 })
           .lean()
           .populate("author", { username: 1, avatar: 1 }, { lean: true });
         leaderBoard.pop(ranking);
@@ -222,7 +200,7 @@ async function updatePostStats(post, likes = 0, trending = 0, upvotes = 0, marks
     userTrendingInc(post.author, trending),
     incUserStatistics(post.author, "upvotes", upvotes),
     incPostStatistics(postId, "marks", marks),
-  ])
+  ]);
 }
 
 function postPopularity(post) {
@@ -234,7 +212,6 @@ function postPopularity(post) {
   return popularity;
 }
 export {
-  getOnePostInfo,
   addUserPostInfo,
   postTrendingInc,
   getPostTrending,

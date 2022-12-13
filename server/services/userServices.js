@@ -42,10 +42,10 @@ async function updatePicture(req, res, name) {
       }
       return res.status(200).json({ dbBack });
     }
-    res.status(401);
-    throw "unauthorized";
+    res.status(400);
+    throw 'error with img';
   } catch (error) {
-    res.json(error);
+    res.json({error:error});
   }
 }
 async function incUserStatistics(userId, field, incNum) {

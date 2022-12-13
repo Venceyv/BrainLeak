@@ -35,13 +35,12 @@ const createRefreshToken = async (userInfo) => {
 
 function tokenExpired(token) {
   try {
-    if(token)
-    {
+    if (token) {
       const currentDate = new Date();
       const decodedToken = jwt_decode(token);
       return decodedToken.exp * 1000 < currentDate.getTime();
     }
-   return true;
+    return true;
   } catch (error) {
     console.log("tokenExpired Failed -- Jservice 36");
   }
@@ -74,7 +73,10 @@ function verifyToken(required = true) {
 function blockToken(token) {
   try {
     const key = token + " BlockList";
-    redisToken.set(key, token);
+    const currentDate = new Date();
+    const decodedToken = jwt_decode(token);
+    const tokenExpiredTime = decodedToken.exp * 1000 - currentDate.getTime();
+    redisToken.setex(key, tokenExpiredTime,token);
   } catch (error) {
     console.log("blockToken Failed -- Jservice 91");
   }
@@ -92,7 +94,10 @@ async function getblockToken(key) {
 function saveRefreshToken(userId, token) {
   try {
     const key = userId + " Refresh";
-    redisToken.set(key, token);
+    const currentDate = new Date();
+    const decodedToken = jwt_decode(token);
+    const tokenExpiredTime = decodedToken.exp * 1000 - currentDate.getTime();
+    redisToken.setex(key, tokenExpiredTime,token);
   } catch (error) {
     console.log("saveRefreshToken Failed -- Jservice 109");
   }
