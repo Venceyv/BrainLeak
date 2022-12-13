@@ -4,12 +4,12 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { useParams } from 'react-router-dom';
 import { Post } from './Post';
 import { MyPostWithCover } from './MyPostWithCover';
-import { getMyPosts } from '../../api/postAPI';
-import { Loading } from '../../components/Loading';
-import { NoMore } from '../../components/NoMore';
+import { getMyPosts } from '../../../api/postAPI';
+import { Loading } from '../../../components/Loading';
+import { NoMore } from '../../../components/NoMore';
 import { SortByMenu } from './SortByMenu';
-import { getMyComments } from '../../api/commentAPI';
-import { IndividualComment } from '../Comment/components/IndividualComment';
+import { getMyComments } from '../../../api/commentAPI';
+import { IndividualComment } from '../../Comment/components/IndividualComment';
 import { Comment } from './Comment';
 
 type SortByType = 'hot' | 'new' | 'top';

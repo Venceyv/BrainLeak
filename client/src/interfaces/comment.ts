@@ -21,7 +21,10 @@ export interface PostComment extends userInteractionStats {
   edited: false;
   postAuthor: string;
   publishDate: string;
-  relatedPost: string;
+  relatedPost: {
+    title: string;
+    _id: string;
+  };
   pinned: boolean;
 
   statistics: PostStatistics;

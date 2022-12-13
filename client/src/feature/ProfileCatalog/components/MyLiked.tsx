@@ -4,14 +4,14 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { useParams } from 'react-router-dom';
 import { Post } from './Post';
 import { MyPostWithCover } from './MyPostWithCover';
-import { getMyPosts } from '../../api/postAPI';
-import { Loading } from '../../components/Loading';
-import { NoMore } from '../../components/NoMore';
+import { getMyLikedPost, getMyPosts } from '../../../api/postAPI';
+import { Loading } from '../../../components/Loading';
+import { NoMore } from '../../../components/NoMore';
 import { SortByMenu } from './SortByMenu';
 
 type SortByType = 'hot' | 'new' | 'top';
 
-export const MyPosts: FC = () => {
+export const MyLiked: FC = () => {
   const { userId } = useParams();
 
   const [sortBy, setSortBy] = useState<SortByType>('new');
@@ -25,7 +25,7 @@ export const MyPosts: FC = () => {
     isFetchingNextPage,
   } = useInfiniteQuery(
     ['userPosts', sortBy],
-    ({ pageParam = 1 }) => getMyPosts(userId!, pageParam, sortBy),
+    ({ pageParam = 1 }) => getMyLikedPost(userId!, pageParam, sortBy),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length >= 10
@@ -100,4 +100,4 @@ export const MyPosts: FC = () => {
   );
 };
 
-export default MyPosts;
+export default MyLiked;

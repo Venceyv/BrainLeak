@@ -2,16 +2,17 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { FC, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useParams } from 'react-router-dom';
+import { getMyBookmarked, getUserPosts } from '../../../api/postAPI';
+import { getUser } from '../../../api/userAPI';
+import { Loading } from '../../../components/Loading';
+import { NoMore } from '../../../components/NoMore';
 import { Post } from './Post';
 import { MyPostWithCover } from './MyPostWithCover';
-import { getMyLikedPost, getMyPosts } from '../../api/postAPI';
-import { Loading } from '../../components/Loading';
-import { NoMore } from '../../components/NoMore';
 import { SortByMenu } from './SortByMenu';
 
 type SortByType = 'hot' | 'new' | 'top';
 
-export const MyLiked: FC = () => {
+export const MyBookmarked: FC = () => {
   const { userId } = useParams();
 
   const [sortBy, setSortBy] = useState<SortByType>('new');
@@ -24,8 +25,9 @@ export const MyLiked: FC = () => {
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    ['userPosts', sortBy],
-    ({ pageParam = 1 }) => getMyLikedPost(userId!, pageParam, sortBy),
+    ['userBookmark'],
+    ({ pageParam = 1 }) =>
+      getMyBookmarked(userId!, pageParam, sortBy),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length >= 10
@@ -44,8 +46,9 @@ export const MyLiked: FC = () => {
     );
   }
 
+  // return <div>{data && <UserInfo {...data} />}</div>;
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full bg-post-bg-black">
       <SortByMenu sortBy={sortBy} setSortBy={setSortBy} />
       <InfiniteScroll
         pageStart={0}
@@ -100,4 +103,4 @@ export const MyLiked: FC = () => {
   );
 };
 
-export default MyLiked;
+export default MyBookmarked;

@@ -2,14 +2,14 @@ import { useMutation } from '@tanstack/react-query';
 import { FC, useState } from 'react';
 import ReactQuill from 'react-quill';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bookmark } from '../../components/Bookmark';
-import { DislikeThumb } from '../../components/DislikeThumb';
-import { LikeThumb } from '../../components/LikeThumb';
-import { Author } from '../../interfaces/user';
-import { convertDate } from '../../utils/convertDate';
-import { formatNumber } from '../../utils/formatNumber';
-import { fallback } from '../../utils/imgFallback';
-import { ellipsisText } from '../../utils/clipText';
+import { Bookmark } from '../../../components/Bookmark';
+import { DislikeThumb } from '../../../components/DislikeThumb';
+import { LikeThumb } from '../../../components/LikeThumb';
+import { Author } from '../../../interfaces/user';
+import { convertDate } from '../../../utils/convertDate';
+import { formatNumber } from '../../../utils/formatNumber';
+import { fallback } from '../../../utils/imgFallback';
+import { ellipsisText } from '../../../utils/clipText';
 import './MyPostWithCover.css';
 
 interface PostProp {

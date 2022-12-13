@@ -16,16 +16,16 @@ const Unauthorized = lazy(() => import('./components/Unauthorized'));
 const Profile = lazy(() => import('./pages/Profile'));
 const EditPost = lazy(() => import('./pages/EditPost'));
 const MyPosts = lazy(
-  () => import('./feature/UserProfileCatalog/MyPosts')
+  () => import('./feature/ProfileCatalog/components/MyPosts')
 );
 const MyBookmarked = lazy(
-  () => import('./feature/UserProfileCatalog/MyBookmarked')
+  () => import('./feature/ProfileCatalog/components/MyBookmarked')
 );
 const MyLiked = lazy(
-  () => import('./feature/UserProfileCatalog/MyLiked')
+  () => import('./feature/ProfileCatalog/components/MyLiked')
 );
 const MyComment = lazy(
-  () => import('./feature/UserProfileCatalog/MyComment')
+  () => import('./feature/ProfileCatalog/components/MyComment')
 );
 
 const App: FC = (): JSX.Element => {
@@ -45,15 +45,17 @@ const App: FC = (): JSX.Element => {
             </Route>
             <Route path="new-post" element={<CreatePost />} />
             <Route path="post/edit/:postId" element={<EditPost />} />
-            <Route path="user/profile/:userId" element={<Profile />}>
-              <Route path="my-posts" element={<MyPosts />} />
+            <Route
+              path="user/profile/:userId"
+              element={<Profile />}
+            />
+            {/* <Route path="my-posts" element={<MyPosts />} />
               <Route path="liked-posts" element={<MyLiked />} />
               <Route
                 path="bookmarked-posts"
                 element={<MyBookmarked />}
               />
-              <Route path="comment-history" element={<MyComment />} />
-            </Route>
+              <Route path="comment-history" element={<MyComment />} /> */}
             <Route
               path="user/:userId/notifications"
               element={<Profile />}

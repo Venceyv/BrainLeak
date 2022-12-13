@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useApplyFocus } from '../feature/AbstractPost/components/PostFilterBar.hook';
+import { useApplyFocus } from '../../AbstractPost/components/PostFilterBar.hook';
 
 type menuCategory =
   | 'my-posts'
@@ -26,14 +26,14 @@ export const ProfileMenu: FC<ProfileMenu> = ({
 
   return (
     <div
-      className="flex items-center gap-2 h-[61px] mr-9 w-fit max-w-[700px] my-4 p-3 border-2 rounded-md shadow-md bg-gradient-to-r from-secondary-black shadow-border-black bg-secondary-black border-border-black"
+      className="flex items-center gap-2 h-[61px] w-full max-w-[700px] my-4 p-3 rounded-md shadow bg-gradient-to-r from-post-bg-black to-secondary-black shadow-border-black bg-secondary-black"
       ref={buttonRef}
     >
       <button
         className="group flex items-center h-[36px] rounded-md p-[2px] hover:cursor-pointer border-2 border-secondary-black hover:border-border-black hover:bg-primary-black active:outline-none"
         onClick={() => {
           applyFocus(0);
-          navigate('my-posts');
+          setMenuCategory('my-posts');
         }}
       >
         <img
@@ -49,23 +49,7 @@ export const ProfileMenu: FC<ProfileMenu> = ({
         className="group flex items-center h-fit px-1 rounded-md p-[2px] hover:cursor-pointer border-2 border-secondary-black hover:border-border-black hover:bg-primary-black active:outline-none"
         onClick={() => {
           applyFocus(1);
-          navigate('bookmarked-posts');
-        }}
-      >
-        <img
-          src="../../assets/img/bookmark.svg"
-          className="w-7 h-7"
-          alt="new"
-        />
-        <p className="align-middle text-opacity-75 pl-[3px] group-hover:text-opacity-100 group-focus:text-opacity-100 text-white">
-          Bookmarked
-        </p>
-      </button>
-      <button
-        className="group flex items-center h-fit px-1 rounded-md p-[2px] hover:cursor-pointer border-2 border-secondary-black hover:border-border-black hover:bg-primary-black active:outline-none"
-        onClick={() => {
-          applyFocus(2);
-          navigate('liked-posts');
+          setMenuCategory('liked-posts');
         }}
       >
         <img
@@ -80,8 +64,24 @@ export const ProfileMenu: FC<ProfileMenu> = ({
       <button
         className="group flex items-center h-fit px-1 rounded-md p-[2px] hover:cursor-pointer border-2 border-secondary-black hover:border-border-black hover:bg-primary-black active:outline-none"
         onClick={() => {
+          applyFocus(2);
+          setMenuCategory('bookmarked');
+        }}
+      >
+        <img
+          src="../../assets/img/bookmark.svg"
+          className="w-7 h-7"
+          alt="new"
+        />
+        <p className="align-middle text-opacity-75 pl-[3px] group-hover:text-opacity-100 group-focus:text-opacity-100 text-white">
+          Bookmarked
+        </p>
+      </button>
+      <button
+        className="group flex items-center h-fit px-1 rounded-md p-[2px] hover:cursor-pointer border-2 border-secondary-black hover:border-border-black hover:bg-primary-black active:outline-none"
+        onClick={() => {
           applyFocus(3);
-          navigate('comment-history');
+          setMenuCategory('comment-history');
         }}
       >
         <img
