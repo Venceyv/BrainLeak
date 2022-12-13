@@ -1,7 +1,5 @@
 import { Post, Tags, PostLike, SavedPost, CommentLike, User } from "../models/index.js";
 import {
-  getRedisPostProfile,
-  saveRedisPostProfile,
   postTrendingInc,
   getPostTrending,
   addPostStatistics,
@@ -17,7 +15,7 @@ import json from "body-parser";
 import { redisTrending } from "../configs/redis.js";
 import { sortWith } from "../services/arraySorter.js";
 import { regexFilter } from "../services/regexFilter.js";
-import {  addCommentUserInfo, getPinnedComment } from "../services/commentServices.js";
+import { addCommentUserInfo, getPinnedComment } from "../services/commentServices.js";
 import { clearB64 } from "../services/upload64File.js";
 
 async function createPost(req, res) {
@@ -28,7 +26,7 @@ async function createPost(req, res) {
     await incUserStatistics(req.user._id, "posts", 1);
     dbBack.author = userId;
     dbBack.notify = req.query.notify === "true";
-    dbBack = clearB64(dbBack,'post');
+    dbBack = clearB64(dbBack, "post");
     dbBack.tags.map(async function (tag) {
       const record = await Tags.findOne({ tagName: tag });
       if (!record) {
@@ -45,13 +43,9 @@ async function findOne(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
     const postId = req.params.postId;
-    let dbBack = await getRedisPostProfile(postId);
-    let postAuthor,pinnedComment;
-    if (!dbBack) {
-      dbBack = req.post;
-      saveRedisPostProfile(postId, dbBack);
-    }
-    [dbBack, postAuthor,pinnedComment] = await Promise.all([
+    let dbBack = req.post;
+    let postAuthor, pinnedComment;
+    [dbBack, postAuthor, pinnedComment] = await Promise.all([
       addPostStatistics(dbBack),
       User.findById(dbBack.author, { avatar: 1, username: 1 }).lean(),
       getPinnedComment(dbBack),
@@ -87,7 +81,7 @@ async function findByTags(req, res) {
     const order = req.query.sort;
     let dbBack = await Post.find({ tags: { $in: tags } })
       .lean()
-      .populate("author", "avatar username follower upVoteGet");
+      .populate("author", "avatar username");
     if (dbBack.length === 0) {
       if (tags.length === 1) {
         await Tags.findOneAndDelete({ tagName: tags[0] });
@@ -118,9 +112,17 @@ async function findAll(req, res) {
     const pageSize = req.query.pagesize;
     const timeInterval = req.query.timeInterval;
     const order = req.query.sort;
-    let dbBack = await Post.find({}, { put: 0 })
-      .lean()
-      .populate("author", "avatar username introduction", { lean: true });
+    let tags = req.query.tags;
+    let dbBack;
+    if (tags) {
+      tags = tags.split("&");
+      dbBack = await Post.find({ tags: { $in: tags } },{notify:0})
+        .lean()
+        .populate("author", "avatar username", { lean: true });
+    } else {
+      dbBack = await Post.find({}, { notify: 0 }).lean().populate("author", "avatar username", { lean: true });
+    }
+
     if (dbBack.length != 0) {
       dbBack = postFilter(dbBack, timeInterval);
       dbBack = await addPostsStatistics(dbBack);
@@ -175,7 +177,7 @@ async function updatePost(req, res) {
     const images = req.body.description.match(imgReg);
     req.body.updateDate = Date.now();
     req.body.edited = true;
-    if(images){
+    if (images) {
       req.body.cover = images[0];
     }
     const dbBack = await Post.findByIdAndUpdate(req.params.postId, req.body, { new: true });

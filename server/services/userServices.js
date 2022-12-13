@@ -48,31 +48,6 @@ async function updatePicture(req, res, name) {
     res.json(error);
   }
 }
-async function getRedisUserProfile(userId) {
-  try {
-    userId = JSON.stringify(userId);
-    const key = userId + " Profile";
-    let userInfo = await redisUsers.get(key);
-    if (userInfo) {
-      userInfo = JSON.parse(userInfo);
-      return userInfo;
-    }
-    return null;
-  } catch (error) {
-    console.log("getRedisUserProfileFailed Uservice 58");
-  }
-}
-function saveRedisUserProfile(userId, userInfo) {
-  try {
-    userId = JSON.stringify(userId);
-    const key = userId + " Profile";
-    userInfo = stringifyUserProfile(userInfo);
-    redisUsers.setex(key, 40, userInfo);
-  } catch (error) {
-    console.log("saveRedisUserProfile Failed Uservice 72");
-  }
-}
-
 async function incUserStatistics(userId, field, incNum) {
   try {
     userId = JSON.stringify(userId);
@@ -281,10 +256,8 @@ function addCategories(lists, type) {
 export {
   updatePicture,
   stringifyUserInfo,
-  getRedisUserProfile,
   addFollowingInfo,
   addUserStatistics,
-  saveRedisUserProfile,
   incUserStatistics,
   userTrendingInc,
   getUserTrending,

@@ -1,8 +1,6 @@
 import { Follow, User, Comment, PostLike, SavedPost, Post, CommentLike, Reply, ReplyLike } from "../models/index.js";
 import {
   updatePicture,
-  getRedisUserProfile,
-  saveRedisUserProfile,
   addFollowingInfo,
   addUserStatistics,
   incUserStatistics,
@@ -43,7 +41,11 @@ async function deleteUser(req, res) {
     accessToken = accessToken ? accessToken.replace("Bearer ", "") : null;
     const [refreshToken] = await Promise.all([
       getRefreshToken(req.user._id),
-      User.findByIdAndUpdate(req.params.userId, { isDelete: true }),
+      User.findByIdAndUpdate(req.params.userId, {
+        username: "Account Deactivated",
+        avatar: process.env.DEACTIVATED_ACCOUNT_AVATAR,
+        isDelete: true,
+      }),
     ]);
     blockToken(accessToken);
     blockToken(refreshToken);
@@ -56,11 +58,7 @@ async function deleteUser(req, res) {
 async function findOne(req, res) {
   try {
     res.setHeader("Content-Type", "application/json");
-    let dbBack = await getRedisUserProfile(req.params.userId);
-    if (!dbBack) {
-      dbBack = await User.findById(req.params.userId, { email: 0, isDelete: 0 }).lean();
-      saveRedisUserProfile(req.params.userId, dbBack);
-    }
+    let dbBack = req.targetUser;
     dbBack = await addUserStatistics(dbBack);
     if (req.user) {
       const self = req.user._id === req.params.userId;
@@ -466,8 +464,10 @@ async function getUserPosts(req, res) {
     let dbBack = await getRedisUserPost(req.params.userId);
     const order = req.query.sort;
     if (!dbBack) {
-      dbBack = await Post.find({ author: req.params.userId }, { title: 1, description: 1, publishDate: 1, cover: 1 })
-        .lean()
+      dbBack = await Post.find(
+        { author: req.params.userId },
+        { title: 1, description: 1, publishDate: 1, cover: 1 }
+      ).lean();
     }
     if (dbBack.length != 0) {
       saveRedisUserPost(req.params.userId, dbBack);
