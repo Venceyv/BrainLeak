@@ -240,7 +240,8 @@ async function getUserNotification(userId) {
     const newReplies = results[1][1] === null ? 0 : Number(results[1][1]);
     const newLikes = results[2][1] === null ? 0 : Number(results[2][1]);
     const newMarks = results[3][1] === null ? 0 : Number(results[3][1]);
-    const notifications = newComments+newReplies+newLikes+newMarks;
+    const total = newComments+newReplies+newLikes+newMarks;
+    const notifications = {newComments,newReplies,newLikes,newMarks,total};
     return notifications;
   } catch (error) {
     console.log("getUserNewMessages Failed -- Uservices 232");
