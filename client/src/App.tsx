@@ -49,13 +49,6 @@ const App: FC = (): JSX.Element => {
               path="user/profile/:userId"
               element={<Profile />}
             />
-            {/* <Route path="my-posts" element={<MyPosts />} />
-              <Route path="liked-posts" element={<MyLiked />} />
-              <Route
-                path="bookmarked-posts"
-                element={<MyBookmarked />}
-              />
-              <Route path="comment-history" element={<MyComment />} /> */}
             <Route
               path="user/:userId/notifications"
               element={<Profile />}

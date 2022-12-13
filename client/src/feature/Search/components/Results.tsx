@@ -58,7 +58,7 @@ export const Results: FC<PostsProp> = ({
   }
 
   return (
-    <div>
+    <>
       <InfiniteScroll
         pageStart={0}
         loadMore={() => fetchNextPage()}
@@ -111,6 +111,6 @@ export const Results: FC<PostsProp> = ({
       {data && data?.pages[0].length > 0 && !hasNextPage && (
         <NoMore />
       )}
-    </div>
+    </>
   );
 };
