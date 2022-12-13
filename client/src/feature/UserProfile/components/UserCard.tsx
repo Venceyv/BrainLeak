@@ -41,8 +41,7 @@ export const UserCard: FC<User> = (user) => {
   return (
     <div className="absolute left-[70px] top-[110px] flex flex-col items-center gap-2 w-[280px] h-fit rounded-md shadow shadow-border-black text-white bg-gradient-to-b from-post-bg-black to-secondary-black">
       <img
-        // src={user.avatar}
-        src="https://blog.homesalive.ca/hubfs/Blog/2019/Christmas%20Gifts%20for%20Cats%20-%2010%20Fun%20Stocking%20Stuffer%20Ideas/christmas-gifts-for-cats-article-feature.jpg"
+        src={user.avatar}
         alt="user avatar"
         className="w-full h-[300px] object-cover rounded-tl-md rounded-tr-md"
       />

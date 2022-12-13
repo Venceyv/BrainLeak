@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { FC } from 'react';
+import Popup from 'reactjs-popup';
 import { getCheckAuth, putFollowUser } from '../../../api/userAPI';
 import { PencilSVG } from '../../../components/PencilSVG';
 import { User } from '../../../interfaces/user';
@@ -8,6 +9,7 @@ import { queryClient } from '../../../main';
 import { errorToast, successToast } from '../../../utils/errorToast';
 import { formatNumber } from '../../../utils/formatNumber';
 import { getUserId } from '../../../utils/getLocalStorage';
+import { EditProfile } from './EditProfile';
 
 export const BackgroundCard: FC<User> = (user) => {
   const { data } = useQuery(
@@ -28,11 +30,47 @@ export const BackgroundCard: FC<User> = (user) => {
           onClick={() => console.log('edit')}
         >
           <p className="pt-1 hidden group-hover:block">
-            Edit Profile
+            Edit Background
           </p>
-          <div className="transition-all ease-in-out duration-300 fill-white group-hover:fill-red-secondary ">
+          {/* <div className="transition-all ease-in-out duration-300 fill-white group-hover:fill-red-secondary ">
             <PencilSVG />
-          </div>
+          </div> */}
+          <Popup
+            // open={showConfirmDelete}
+            className="bg-opacity-90"
+            trigger={
+              // <img
+              //   src="../../../assets/img/delete.svg"
+              //   alt="delete"
+              //   className="w-6 h-6 ml-auto mr-2 cursor-pointer"
+              //   title="delete"
+              //   // onClick={() => setShowConfirmDelete(true)}
+              // />
+              <div className="transition-all ease-in-out duration-300 fill-white group-hover:fill-red-secondary ">
+                <PencilSVG />
+              </div>
+            }
+            // onClose={() => setShowConfirmDelete(false)}
+            // onOpen={() => setShowConfirmDelete(true)}
+            closeOnDocumentClick
+            modal
+          >
+            <div className="flex flex-col gap-4 w-[320px]">
+              <EditProfile userId={user._id} />
+              <button
+                className="border-2 rounded-md p-1 transition-all ease-in-out hover:border-red-secondary hover:text-red-secondary border-border-black"
+                // onClick={onDeleteComment}
+              >
+                For sure
+              </button>
+              <button
+                className="ml-auto border-2 rounded-md p-1 transition-all ease-in-out hover:border-red-secondary hover:text-red-secondary border-border-black"
+                // onClick={() => setShowConfirmDelete(false)}
+              >
+                Actually, no
+              </button>
+            </div>
+          </Popup>
         </div>
       )}
       <div className="absolute top-0 z-[1] h-[240px] w-full bg-gradient-to-b from-transparent to-post-bg-black"></div>

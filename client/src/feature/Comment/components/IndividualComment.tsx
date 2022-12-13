@@ -43,7 +43,7 @@ export const IndividualComment: FC<{
     putDeleteMutation,
     putPinMutation,
   } = useMutateUserComment(
-    comment.relatedPost,
+    comment.relatedPost._id,
     comment._id,
     setPostComment
   );
