@@ -645,11 +645,11 @@ async function getMylikes(req, res) {
         .populate("post", { title: 1 }, { lean: 1 }),
       CommentLike.find({ commentAuthor: userId, like: true }, { _id: 0, like: 0, commentAuthor: 0 })
         .lean()
-        .populate("user", { username: 1, avatar: 1, introduction: 1 }, { lean: true })
+        .populate("user", { username: 1, avatar: 1 }, { lean: true })
         .populate("comment", { content: 1 }, { lean: true }),
       ReplyLike.find({ replyAuthor: userId, like: true }, { _id: 0, replyAuthor: 0, like: 0 })
         .lean()
-        .populate("user", { username: 1, avatar: 1, introduction: 1 }, { lean: true })
+        .populate("user", { username: 1, avatar: 1 }, { lean: true })
         .populate("reply", { content: 1 }, { lean: true }),
       resetUserNotification(userId, "likes"),
     ]);
@@ -672,7 +672,7 @@ async function getMyMarks(req, res) {
     const userId = req.user._id;
     let dbBack = await SavedPost.find({ postAuthor: userId }, { postAuthor: 0 })
       .lean()
-      .populate("user", { username: 1, avatar: 1, introduction: 1 }, { lean: true })
+      .populate("user", { username: 1, avatar: 1 }, { lean: true })
       .populate("post", { title: 1 }, { lean: 1 });
     resetUserNotification(userId, "marks");
     dbBack = sortWith(dbBack, "new");
