@@ -84,7 +84,7 @@ export const Posts: FC<PostsProp> = ({
                     />
                   ) : (
                     <PostWithCover
-                      key={index}
+                      key={post._id}
                       user={post.author}
                       post={postProp}
                       like={userStatProp.like}

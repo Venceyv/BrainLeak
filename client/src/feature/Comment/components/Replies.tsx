@@ -50,7 +50,7 @@ export const Replies: FC<RepliesType> = ({
           return pages.map((reply, index) => {
             return commentId === reply.relatedComment ? (
               <IndividualReply
-                key={index}
+                key={reply._id}
                 reply={reply}
                 currentUserId={currentUserId}
               />
