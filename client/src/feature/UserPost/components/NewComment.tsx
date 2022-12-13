@@ -38,10 +38,6 @@ export const NewComment: FC<{
   const editCommentFn = () =>
     putEditComment(postId, commentId!, value);
 
-  useEffect(() => {
-    console.log(commentId);
-  });
-
   const postCommentMutation = useMutation(
     isReply ? commentReplyFn : postCommentFn,
     {
