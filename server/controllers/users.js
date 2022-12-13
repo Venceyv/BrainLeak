@@ -365,8 +365,8 @@ async function getDislikePosts(req, res) {
           return post;
         })
       );
-      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       dbBack = sortWith(dbBack, order);
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     }
     return res.status(200).json({ dbBack });
   } catch (error) {
@@ -444,12 +444,12 @@ async function getUserComments(req, res) {
     }
     if (dbBack.length != 0) {
       saveRedisUserComment(userId, dbBack);
-      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       if (req.user) {
         dbBack = await beautyCommentsInfo(dbBack, req.user._id);
       }
       dbBack = await addCommentsStatistics(dbBack);
       dbBack = sortWith(dbBack, order);
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     }
     return res.status(200).json({ dbBack });
   } catch (error) {
@@ -471,12 +471,12 @@ async function getUserPosts(req, res) {
     }
     if (dbBack.length != 0) {
       saveRedisUserPost(req.params.userId, dbBack);
-      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
       if (req.user) {
         dbBack = await beautyPostsInfo(dbBack, req.user._id);
       }
       dbBack = await addPostsStatistics(dbBack);
       dbBack = sortWith(dbBack, order);
+      dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     }
     return res.status(200).json({ dbBack });
   } catch (error) {
@@ -604,10 +604,11 @@ async function getMyComments(req, res) {
     const userId = req.params.userId;
     let dbBack = await Comment.find({ postAuthor: userId }, { content: 1, publishDate: 1, author: 1, relatedPost: 1 })
       .lean()
-      .populate("author", { username: 1, avatar: 1, introduction: 1 }, { lean: true });
+      .populate("author", { username: 1, avatar: 1 }, { lean: true })
+      .populate("relatedPost", { title: 1 }, { lean: true });
     resetUserNotification(userId, "comments");
-    dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     dbBack = sortWith(dbBack, "new");
+    dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error: error });
@@ -621,9 +622,8 @@ async function getMyReplies(req, res) {
     const userId = req.params.userId;
     let dbBack = await Reply.find({ mentionedUser: userId }, { mentionedUser: 0 })
       .lean()
-      .skip((pageNum - 1) * pageSize)
-      .limit(pageSize)
-      .populate("author", { username: 1, avatar: 1, introduction: 1 }, { lean: true });
+      .populate("author", { username: 1, avatar: 1 }, { lean: true })
+      .populate("relatedComment", { content: 1 }, { lean: true });
     resetUserNotification(userId, "replies");
     dbBack = sortWith(dbBack, "new");
     dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
@@ -641,21 +641,24 @@ async function getMylikes(req, res) {
     let [postLike, commentLike, replyLike] = await Promise.all([
       PostLike.find({ postAuthor: userId, like: true }, { _id: 0, like: 0, postAuthor: 0 })
         .lean()
-        .populate("user", { username: 1, avatar: 1, introduction: 1 }, { lean: true }),
+        .populate("user", { username: 1, avatar: 1 }, { lean: true })
+        .populate("post", { title: 1 }, { lean: 1 }),
       CommentLike.find({ commentAuthor: userId, like: true }, { _id: 0, like: 0, commentAuthor: 0 })
         .lean()
-        .populate("user", { username: 1, avatar: 1, introduction: 1 }, { lean: true }),
+        .populate("user", { username: 1, avatar: 1 }, { lean: true })
+        .populate("comment", { content: 1 }, { lean: true }),
       ReplyLike.find({ replyAuthor: userId, like: true }, { _id: 0, replyAuthor: 0, like: 0 })
         .lean()
-        .populate("user", { username: 1, avatar: 1, introduction: 1 }, { lean: true }),
+        .populate("user", { username: 1, avatar: 1 }, { lean: true })
+        .populate("reply", { content: 1 }, { lean: true }),
       resetUserNotification(userId, "likes"),
     ]);
     postLike = addCategories(postLike, "post likes");
     commentLike = addCategories(commentLike, "comment likes");
     replyLike = addCategories(replyLike, "reply likes");
     let dbBack = postLike.concat(commentLike, replyLike);
-    dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     dbBack = sortWith(dbBack, "new");
+    dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
     return res.status(200).json({ dbBack });
   } catch (error) {
     return res.status(401).json({ error: error });
@@ -669,9 +672,8 @@ async function getMyMarks(req, res) {
     const userId = req.user._id;
     let dbBack = await SavedPost.find({ postAuthor: userId }, { postAuthor: 0 })
       .lean()
-      .skip((pageNum - 1) * pageSize)
-      .limit(pageSize)
-      .populate("user", { username: 1, avatar: 1, introduction: 1 }, { lean: true });
+      .populate("user", { username: 1, avatar: 1 }, { lean: true })
+      .populate("post", { title: 1 }, { lean: 1 });
     resetUserNotification(userId, "marks");
     dbBack = sortWith(dbBack, "new");
     dbBack = dbBack.slice((pageNum - 1) * pageSize, pageNum * pageSize);
