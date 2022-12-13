@@ -29,10 +29,6 @@ export const UserPost: FC = (): JSX.Element => {
   //     },
   //   ],
   // });
-  if (isSuccess) {
-    console.log(data);
-  }
-
   return (
     <div className="flex h-full w-full">
       {!!data && (

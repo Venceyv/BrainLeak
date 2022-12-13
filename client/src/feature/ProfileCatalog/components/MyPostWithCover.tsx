@@ -28,6 +28,7 @@ interface PostProp {
   dislike: boolean | undefined;
   save: boolean | undefined;
   cover: string | undefined;
+  useAvatar: boolean;
 }
 
 export const MyPostWithCover: FC<PostProp> = ({
@@ -37,25 +38,28 @@ export const MyPostWithCover: FC<PostProp> = ({
   dislike,
   save,
   cover,
+  useAvatar,
 }): JSX.Element => {
   const navigate = useNavigate();
   return (
     <div className="flex grow shrink justify-start gap-3 py-4 max-w-[700px] text-white">
-      {/* <div className="flex flex-col items-center justify-center gap-2">
-        <img
-          className="h-[50px] w-[50px] rounded-full border-2 cursor-pointer border-border-black  text-zinc-50"
-          src={user?.avatar}
-          onError={fallback}
-          alt="user"
-          onClick={() => navigate(`/user/profile/${user._id}`)}
-        />
-        <p
-          className="text-sm cursor-pointer w-[100px] text-center truncate"
-          onClick={() => navigate(`/user/profile/${user._id}`)}
-        >
-          {user?.username}
-        </p>
-      </div> */}
+      {useAvatar && (
+        <div className="flex flex-col items-center justify-center gap-2">
+          <img
+            className="h-[50px] w-[50px] rounded-full border-2 cursor-pointer border-border-black  text-zinc-50"
+            src={user?.avatar}
+            onError={fallback}
+            alt="user"
+            onClick={() => navigate(`/user/profile/${user._id}`)}
+          />
+          <p
+            className="text-sm cursor-pointer w-[100px] text-center truncate"
+            onClick={() => navigate(`/user/profile/${user._id}`)}
+          >
+            {user?.username}
+          </p>
+        </div>
+      )}
 
       <div className="flex flex-row gap-2 grow shrink w-[558px] text-white bg-secondary-black rounded-lg p-1 px-2 border-2 border-border-black cursor-pointer">
         {cover && (

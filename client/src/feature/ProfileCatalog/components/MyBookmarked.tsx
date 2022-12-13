@@ -48,7 +48,7 @@ export const MyBookmarked: FC = () => {
 
   // return <div>{data && <UserInfo {...data} />}</div>;
   return (
-    <div className="flex flex-col h-full bg-post-bg-black">
+    <div className="flex flex-col h-full">
       <SortByMenu sortBy={sortBy} setSortBy={setSortBy} />
       <InfiniteScroll
         pageStart={0}
@@ -83,6 +83,7 @@ export const MyBookmarked: FC = () => {
                   like={userStatProp.like}
                   dislike={userStatProp.dislike}
                   save={userStatProp.save}
+                  useAvatar={true}
                 />
               ) : (
                 <MyPostWithCover
@@ -93,6 +94,7 @@ export const MyBookmarked: FC = () => {
                   dislike={userStatProp.dislike}
                   save={userStatProp.save}
                   cover={post.cover}
+                  useAvatar={true}
                 />
               );
             });

@@ -35,11 +35,6 @@ export const UserCard: FC<User> = (user) => {
     }
   );
 
-  if (isSuccess) {
-    console.log(data._id, user._id, data._id !== data._id);
-    console.log(user);
-  }
-
   const isAllowFollow =
     !data || (data._id !== user._id && user.following === false);
 

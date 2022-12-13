@@ -50,7 +50,9 @@ export const Comment: FC<{
             navigate(`/post/${comment?.relatedPost?._id}`)
           }
         >
-          {comment?.relatedPost?.title}
+          {comment?.relatedPost?.title
+            ? comment?.relatedPost?.title
+            : 'Deleted'}
         </div>
       </div>
 

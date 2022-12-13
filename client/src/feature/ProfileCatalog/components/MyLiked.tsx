@@ -80,6 +80,7 @@ export const MyLiked: FC = () => {
                   like={userStatProp.like}
                   dislike={userStatProp.dislike}
                   save={userStatProp.save}
+                  useAvatar={true}
                 />
               ) : (
                 <MyPostWithCover
@@ -90,6 +91,7 @@ export const MyLiked: FC = () => {
                   dislike={userStatProp.dislike}
                   save={userStatProp.save}
                   cover={post.cover}
+                  useAvatar={true}
                 />
               );
             });

@@ -8,6 +8,7 @@ import { LikeThumb } from '../../../components/LikeThumb';
 import { Author } from '../../../interfaces/user';
 import { convertDate } from '../../../utils/convertDate';
 import { formatNumber } from '../../../utils/formatNumber';
+import { fallback } from '../../../utils/imgFallback';
 import './Post.css';
 
 interface PostProp {
@@ -25,6 +26,7 @@ interface PostProp {
   like: boolean | undefined;
   dislike: boolean | undefined;
   save: boolean | undefined;
+  useAvatar: boolean;
 }
 
 export const Post: FC<PostProp> = ({
@@ -33,27 +35,30 @@ export const Post: FC<PostProp> = ({
   like,
   dislike,
   save,
+  useAvatar,
 }): JSX.Element => {
   const navigate = useNavigate();
   return (
     <div className="flex grow shrink justify-start gap-3 py-4 max-w-[700px] text-white">
-      {/* <div className="flex flex-col items-center justify-center gap-2">
-        <img
-          className="h-[50px] w-[50px] rounded-full border-2 cursor-pointer border-border-black  text-zinc-50"
-          src={user?.avatar}
-          onError={fallback}
-          alt="user"
-          onClick={() => navigate(`/user/profile/${user._id}`)}
-        />
-        <p
-          className="text-sm cursor-pointer w-[100px] text-center truncate"
-          onClick={() => navigate(`/user/profile/${user._id}`)}
-        >
-          {user?.username}
-        </p>
-      </div> */}
+      {useAvatar && (
+        <div className="flex flex-col items-center justify-center gap-2">
+          <img
+            className="h-[50px] w-[50px] rounded-full border-2 cursor-pointer border-border-black  text-zinc-50"
+            src={user?.avatar}
+            onError={fallback}
+            alt="user"
+            onClick={() => navigate(`/user/profile/${user._id}`)}
+          />
+          <p
+            className="text-sm cursor-pointer w-[100px] text-center truncate"
+            onClick={() => navigate(`/user/profile/${user._id}`)}
+          >
+            {user?.username}
+          </p>
+        </div>
+      )}
 
-      <div className="flex flex-col gap-2 grow shrink w-[558px] text-white bg-secondary-black rounded-lg p-2 pb-[1px] border-2 border-border-black cursor-pointer">
+      <div className="flex flex-col gap-2 grow shrink w-[500px] text-white bg-secondary-black rounded-lg p-2 pb-[1px] border-2 border-border-black cursor-pointer">
         <Link to={`/post/${post._id}`}>
           <h1 className="text-[14px] font-bold w-full truncate">
             {post?.title}
@@ -67,7 +72,7 @@ export const Post: FC<PostProp> = ({
             />
           </div>
         </Link>
-        <span className="flex flex-row gap-3 text-xs pb-1 w-full">
+        <span className="flex flex-row gap-3 text-xs pb-1">
           <div
             className="flex"
             // onClick={() => putLikeMutation.mutate()}

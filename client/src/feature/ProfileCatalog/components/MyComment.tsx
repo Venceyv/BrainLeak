@@ -39,6 +39,10 @@ export const MyPosts: FC = () => {
     }
   );
 
+  if (isSuccess) {
+    console.log(data);
+  }
+
   if (isInitialLoading) {
     return (
       <div className="flex flex-col">
