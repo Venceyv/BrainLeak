@@ -174,11 +174,11 @@ async function updateUser(req, res) {
 }
 async function updateAvatar(req, res) {
   res.setHeader("Content-Type", "application/json");
-  updatePicture(req, res, "avatar");
+  await updatePicture(req, res, "avatar");
 }
 async function updateBackgroundCover(req, res) {
   res.setHeader("Content-Type", "application/json");
-  updatePicture(req, res, "backgroundCover");
+  await updatePicture(req, res, "backgroundCover");
 }
 async function followUser(req, res) {
   try {
