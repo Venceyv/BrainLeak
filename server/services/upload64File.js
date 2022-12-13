@@ -54,14 +54,12 @@ function clearB64(body, type = "comment") {
   const images = type === "post" ? body.description.match(imgReg) : body.content.match(imgReg);
   if (replacement) {
     ConvertB64Files(replacement);
-    let index = 0;
-    images.forEach((image) => {
+    images.forEach((image,index) => {
       if (type === "post") {
         body.description = body.description.replace(image, replacement[index]);
       } else {
         body.content = body.content.replace(image, replacement[index]);
       }
-      index++;
     });
     if (type === "post") {
       body.cover = replacement[0];
