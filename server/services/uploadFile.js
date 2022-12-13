@@ -9,7 +9,7 @@ function uploadFile(req) {
         console.log("success");
       });
       blobStream.end(req.file.buffer);
-      const fileUrl = '"'+"https://storage.googleapis.com/brainleak/" + req.file.originalname + '"';
+      const fileUrl = "https://storage.googleapis.com/brainleak/" + req.file.originalname;
       return fileUrl;
     }
     return null;
