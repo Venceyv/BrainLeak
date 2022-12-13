@@ -16,7 +16,7 @@ function clearCommentByTime(time) {
             }
             const record = await Post.findById(comment.relatedPost, { _id: 1 }).lean();
             if (!record) {
-              Comment.deleteMany({relatedPost:comment.relatedPost});
+              await Comment.deleteMany({relatedPost:comment.relatedPost});
               relatedPost = comment.relatedPost;
             }
           })
