@@ -31,6 +31,7 @@ export interface User {
   username: string;
   statistics: Statistics;
   following: boolean;
+  isDelete: boolean;
   _id: string;
   __v?: number;
 }

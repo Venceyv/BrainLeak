@@ -36,6 +36,7 @@ export const UserDropdown: FC<UserDropdownProp> = ({
   const onProfileNavigate = () => {
     setUserDropdown(false);
     navigate(`/user/profile/${userData?._id}`);
+    navigate(0);
   };
 
   return (

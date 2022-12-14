@@ -47,11 +47,13 @@ export const Post: FC<PostProp> = ({
             src={user?.avatar}
             onError={fallback}
             alt="user"
-            onClick={() => navigate(`/user/profile/${user._id}`)}
           />
           <p
-            className="text-sm cursor-pointer w-[100px] text-center truncate"
-            onClick={() => navigate(`/user/profile/${user._id}`)}
+            className="text-sm cursor-pointer w-[100px] hover:underline text-center truncate"
+            onClick={() => {
+              navigate(`/user/profile/${user._id}`);
+              navigate(0);
+            }}
           >
             {user?.username}
           </p>

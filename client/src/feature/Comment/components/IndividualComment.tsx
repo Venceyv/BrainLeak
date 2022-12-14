@@ -9,7 +9,7 @@ import { Replies } from './Replies';
 import { NewComment } from '../../UserPost/components/NewComment';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { getReplies, putEditComment } from '../../../api/commentAPI';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { fallback } from '../../../utils/imgFallback';
 import { LikeThumb } from '../../../components/LikeThumb';
 import { DislikeThumb } from '../../../components/DislikeThumb';
@@ -27,6 +27,7 @@ export const IndividualComment: FC<{
   pinnedComment,
   isPostAuthor,
 }): JSX.Element => {
+  const navigate = useNavigate();
   const { postId } = useParams();
   const [showReply, setShowReply] = useState<boolean>(false);
   const [showUserReply, setShowUserReply] = useState<boolean>(false);
@@ -62,7 +63,12 @@ export const IndividualComment: FC<{
           onError={fallback}
           alt="profile picture"
         />
-        <p className="text-sm cursor-pointer truncate text-white">
+        <p
+          className="text-sm cursor-pointer truncate hover:underline text-white"
+          onClick={() =>
+            navigate(`/user/profile/${comment.author._id}`)
+          }
+        >
           {comment.author.username}
         </p>
         <div className="pt-[8px] h-[calc(100%-2px)] text-xs text-white">

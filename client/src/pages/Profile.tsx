@@ -13,8 +13,17 @@ import { Trending } from '../feature/trending';
 import { UserProfile } from '../feature/UserProfile';
 import { SortByMenu } from '../feature/ProfileCatalog/components/SortByMenu';
 import { ProfileCatalog } from '../feature/ProfileCatalog';
+import { getUser } from '../api/userAPI';
+import { useQuery } from '@tanstack/react-query';
 
 export const Profile: FC = (): JSX.Element => {
+  const { userId } = useParams();
+  const { data, isSuccess, isError } = useQuery(
+    ['userData'],
+    () => getUser(userId!),
+    { refetchOnWindowFocus: false, cacheTime: 0, retry: 1 }
+  );
+
   return (
     <div className="absolute flex flex-col justify-start items-center top-0 mt-[56px] w-full bg-primary-black min-h-[calc(100vh-56px)] overflow-auto">
       <UserProfile />

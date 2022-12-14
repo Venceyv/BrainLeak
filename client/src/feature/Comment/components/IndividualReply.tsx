@@ -15,7 +15,7 @@ import { LikeThumb } from '../../../components/LikeThumb';
 import { DislikeThumb } from '../../../components/DislikeThumb';
 import { useMutateUserReply } from './individualReply.hook';
 import Popup from 'reactjs-popup';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface IndividualReplyProp {
   reply: CommentReply;
@@ -26,6 +26,7 @@ export const IndividualReply: FC<IndividualReplyProp> = ({
   reply,
   currentUserId,
 }): JSX.Element => {
+  const navigate = useNavigate();
   const { postId } = useParams();
   const [showReply, setShowReply] = useState<boolean>(false);
   const [commentReply, setCommentReply] =
@@ -55,7 +56,12 @@ export const IndividualReply: FC<IndividualReplyProp> = ({
           onError={fallback}
           alt="profile picture"
         />
-        <p className="text-sm cursor-pointer truncate text-white">
+        <p
+          className="text-sm cursor-pointer truncate hover:underline text-white"
+          onClick={() =>
+            navigate(`/user/profile/${reply.author._id}`)
+          }
+        >
           {reply.author.username}
         </p>
         <div className="pt-[8px] h-[calc(100%-2px)] text-xs text-white">

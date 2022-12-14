@@ -63,7 +63,9 @@ export const UserCard: FC<User> = (user) => {
         {/* about */}
         <div className="flex flex-col justify-start w-full gap-1 text-white">
           <p className="text-sm font-bold">ABOUT</p>
-          <div className="mt-1 min-h-[48px]">{user.introduction}</div>
+          <div className="mt-1 text-sm min-h-[48px]">
+            {user.introduction}
+          </div>
         </div>
 
         {/* stats */}

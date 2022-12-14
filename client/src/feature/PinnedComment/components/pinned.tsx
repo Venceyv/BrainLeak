@@ -12,6 +12,7 @@ import ReactQuill from 'react-quill';
 import { useLikePinComment } from './pinned.hook';
 import './pinned.css';
 import { ellipsisText } from '../../../utils/clipText';
+import { useNavigate } from 'react-router-dom';
 
 export const Pinned: FC<{
   pinnedComment: PostComment | CommentReply | null;
@@ -21,6 +22,8 @@ export const Pinned: FC<{
     postId,
     pinnedComment?._id!
   );
+
+  const navigate = useNavigate();
 
   return (
     <div className="relative z-[3] grid grid-cols-3 grid-rows-7 gap-1 py-3 w-[220px] h-[330px] rounded-md p-3 pb-1 border-2 bg-secondary-black border-border-black">
@@ -32,7 +35,12 @@ export const Pinned: FC<{
             onError={fallback}
             alt="profile picture"
           />
-          <p className="text-sm cursor-pointer text-white">
+          <p
+            className="text-sm cursor-pointer hover:underline text-white"
+            onClick={() =>
+              navigate(`/user/profile/${pinnedComment?.author?._id}`)
+            }
+          >
             {pinnedComment?.author.username}
           </p>
           <div
