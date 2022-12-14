@@ -30,5 +30,7 @@ export const queryKeys = {
     'postCreatePost',
     'putEditPost',
     'putFollowUser',
+    'putUserAvatar',
+    'putUserBackground',
   ],
 };

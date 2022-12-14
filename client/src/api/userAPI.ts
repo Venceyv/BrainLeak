@@ -107,3 +107,43 @@ export const putUserAvatar = async (
     throw err;
   }
 };
+
+export const putUserBackground = async (
+  userId: string,
+  file: any
+): Promise<void> => {
+  console.log(file);
+  try {
+    const {
+      data: { dbBack: topUsers },
+    } = await axios.put(
+      `${URL}/users/backgroundCover/${userId}`,
+      file
+    );
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      console.log(err?.response?.status);
+    } else {
+      console.log('unexpected error ' + err);
+    }
+    throw err;
+  }
+};
+
+export const putUser = async (
+  userId: string,
+  userInfo: any
+): Promise<void> => {
+  try {
+    const {
+      data: { dbBack: topUsers },
+    } = await axios.put(`${URL}/users/${userId}`, userInfo);
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      console.log(err?.response?.status);
+    } else {
+      console.log('unexpected error ' + err);
+    }
+    throw err;
+  }
+};
