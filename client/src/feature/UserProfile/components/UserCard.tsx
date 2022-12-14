@@ -132,7 +132,7 @@ export const UserCard: FC<User> = (user) => {
               </Popup>
             )}
           </div>
-          <div className="mt-1 text-sm min-h-[48px]">
+          <div className="mt-1 text-sm min-h-[48px] break-words">
             {user.introduction}
           </div>
         </div>
