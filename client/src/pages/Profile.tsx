@@ -28,7 +28,7 @@ export const Profile: FC = (): JSX.Element => {
     <div className="absolute flex flex-col justify-start items-center top-0 mt-[56px] w-full bg-primary-black min-h-[calc(100vh-56px)] overflow-auto">
       <UserProfile />
       <div className="grid grid-cols-5 w-full max-w-[1024px]">
-        <ProfileCatalog />
+        <ProfileCatalog isDelete={data?.isDelete ? true : false} />
       </div>
     </div>
   );
