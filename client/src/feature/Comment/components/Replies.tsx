@@ -39,10 +39,6 @@ export const Replies: FC<RepliesType> = ({
     return <Loading width={'full'} height={'full'} />;
   }
 
-  if (isFetchingNextPage) {
-    console.log('fetching next');
-  }
-
   return (
     <div>
       {isSuccess &&

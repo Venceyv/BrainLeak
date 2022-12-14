@@ -20,7 +20,6 @@ export const EditProfileBackground: FC<{
     () => putUserBackground(userId, selectedImage),
     {
       onSuccess: () => {
-        console.log(selectedImage);
         successToast('Success!');
         queryClient.invalidateQueries(['userData']);
         setShowEdit(false);

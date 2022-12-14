@@ -49,7 +49,6 @@ export const useLogin = ({
     HTMLButtonElement
   > = (): void => {
     setPresentLogin(false);
-    console.log('closed');
   };
 
   return { googleLogin, closeLogin };

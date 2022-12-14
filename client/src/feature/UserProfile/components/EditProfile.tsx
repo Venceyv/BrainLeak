@@ -17,7 +17,6 @@ export const EditProfile: FC<{
     () => putUserAvatar(userId, selectedImage),
     {
       onSuccess: () => {
-        console.log(selectedImage);
         successToast('Success!');
         queryClient.invalidateQueries(['userData']);
         setShowEdit(false);

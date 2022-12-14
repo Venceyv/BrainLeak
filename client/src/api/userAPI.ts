@@ -116,10 +116,9 @@ export const putUserBackground = async (
   try {
     const {
       data: { dbBack: topUsers },
-    } = await axios.put(
-      `${URL}/users/backgroundCover/${userId}`,
-      file
-    );
+    } = await axios.put(`${URL}/users/backgroundCover/${userId}`, {
+      backgroundCover: file,
+    });
   } catch (err) {
     if (axios.isAxiosError(err)) {
       console.log(err?.response?.status);

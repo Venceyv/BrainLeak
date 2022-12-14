@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { FC, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getUser } from '../../../api/userAPI';
 import { fallback } from '../../../utils/imgFallback';
 import { AuthorStats } from './AuthorStats';
@@ -8,6 +9,7 @@ export const AuthorCard: FC<{ authorId: string }> = ({
   authorId,
 }): JSX.Element => {
   const statRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const { data, isLoading, isSuccess, isError } = useQuery(
     ['postData', authorId],
     () => getUser(authorId),
@@ -76,7 +78,7 @@ export const AuthorCard: FC<{ authorId: string }> = ({
         />
         <div
           className="absolute h-4 w-14 top-[22px] left-[7px] bg-secondary-black rotate-[13deg] rounded-tr-[30px] rounded-br-[30px] cursor-pointer"
-          onClick={() => console.log('profile')}
+          onClick={() => navigate(`/user/profile/${data?._id}`)}
         >
           <p className="absolute top-0 left-[7px] text-sm text-white">
             Profile

@@ -37,7 +37,6 @@ export const PostFilterBar: FC<PostFilterBarProp> = ({
   const setSelectedTime = (
     ev: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    console.log(ev.target.value as IntervalItem);
     setSelectedTimeInterval(ev.target.value as IntervalItem);
   };
 

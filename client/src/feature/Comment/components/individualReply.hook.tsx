@@ -68,7 +68,6 @@ export const useMutateUserReply = (
       },
       onError: (err: AxiosError) => {
         console.log(err);
-        console.log(postId);
         if (err?.response?.status === 401) {
           errorToast('Unauthorized');
         } else {

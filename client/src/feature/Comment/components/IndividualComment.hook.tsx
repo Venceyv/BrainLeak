@@ -62,7 +62,6 @@ export const useMutateUserComment = (
     () => putDislikeComment(postId, commentId),
     {
       onSuccess: (data) => {
-        console.log(data);
         successToast('Success');
         setPostComment({ ...data });
         queryClient.invalidateQueries(['postComment']);
