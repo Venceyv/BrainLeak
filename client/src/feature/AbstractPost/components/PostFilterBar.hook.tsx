@@ -6,11 +6,19 @@ const focusStyle = [
 const removeStyle = 'border-secondary-black';
 
 export const useApplyFocus = (
-  buttonRef: React.RefObject<HTMLDivElement>
+  buttonRef: React.RefObject<HTMLDivElement>,
+  isFollowingMenu: boolean = false
 ) => {
   const applyFocus = (index: number) => {
     const button = buttonRef?.current;
-    let location = Number(sessionStorage.getItem('currMenuItemLoc'));
+    let location: number;
+    if (isFollowingMenu === false) {
+      location = Number(sessionStorage.getItem('currMenuItemLoc'));
+    } else {
+      location = Number(
+        sessionStorage.getItem('currFollowingMenuItemLoc')
+      );
+    }
 
     if (location === 0 || location) {
       focusStyle.forEach((style) => {
@@ -19,7 +27,11 @@ export const useApplyFocus = (
       button?.children[location].classList.add(removeStyle);
     }
 
-    sessionStorage.setItem('currMenuItemLoc', `${index}`);
+    if (isFollowingMenu === false) {
+      sessionStorage.setItem('currMenuItemLoc', `${index}`);
+    } else {
+      sessionStorage.setItem('currFollowingMenuItemLoc', `${index}`);
+    }
 
     focusStyle.forEach((style) => {
       button?.children[index].classList.add(style);

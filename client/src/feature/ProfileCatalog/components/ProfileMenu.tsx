@@ -41,7 +41,7 @@ export const ProfileMenu: FC<ProfileMenu> = ({
           className="w-7 h-7"
           alt="pencil"
         />
-        <p className="align-middle pr-1 text-opacity-75 group-hover:text-opacity-100 group-focus:text-opacity-100 text-white">
+        <p className="align-middle pr-1 ml-1 text-opacity-75 group-hover:text-opacity-100 group-focus:text-opacity-100 text-white">
           My Posts
         </p>
       </button>

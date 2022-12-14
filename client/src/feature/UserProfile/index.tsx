@@ -4,6 +4,8 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getUser } from '../../api/userAPI';
 import { BackgroundCard } from './components/BackgroundCard';
 import { UserCard } from './components/UserCard';
+import { UserFollowingMenu } from './components/UserFollowingMenu';
+import { UserFollowList } from './components/UserFollowList';
 import { UserInfo } from './components/UserInfo';
 
 export const UserProfile: FC = () => {
@@ -21,10 +23,13 @@ export const UserProfile: FC = () => {
   }
 
   return (
-    <div className="relative h-fit max-w-[1024px] col-span-3 bg-post-bg-black">
+    <div className="relative h-fit max-w-[1024px] col-span-3 ">
       {data && <BackgroundCard {...data} />}
       {/* {data && <UserInfo {...data} />}  */}
-      {data && <UserCard {...data} />}
+      <div className="absolute left-[70px] top-[110px] flex flex-col items-center gap-2 w-[280px] h-fit rounded-md">
+        {data && <UserCard {...data} />}
+        {data && <UserFollowingMenu user={data} />}
+      </div>
     </div>
   );
 };

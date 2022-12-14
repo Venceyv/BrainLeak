@@ -49,7 +49,7 @@ export const UserCard: FC<User> = (user) => {
   const isAuthor = data && user._id === data._id;
 
   return (
-    <div className="absolute left-[70px] top-[110px] flex flex-col items-center gap-2 w-[280px] h-fit rounded-md shadow shadow-border-black text-white bg-gradient-to-b from-post-bg-black to-secondary-black">
+    <div className="flex flex-col items-center gap-2 w-[280px] h-fit rounded-md shadow shadow-border-black text-white bg-gradient-to-b from-post-bg-black to-secondary-black">
       <img
         src={
           !user.isDelete

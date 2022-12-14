@@ -10,6 +10,8 @@ export const queryKeys = {
     'userData',
     'userPosts',
     'userBookmark',
+    'getFollowers',
+    'getFollowings',
   ],
   mutation: [
     'putLikeCommentMutation',

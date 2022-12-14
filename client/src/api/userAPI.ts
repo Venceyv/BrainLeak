@@ -147,3 +147,35 @@ export const putUser = async (
     throw err;
   }
 };
+
+export const getUserFollowers = async (
+  userId: string,
+  pageNum: number
+): Promise<User[]> => {
+  try {
+    const {
+      data: { dbBack: followers },
+    } = await axios.get(
+      `${URL}/users/followerList/${userId}?pagenumber=${pageNum}&pagesize=10`
+    );
+    return followers as User[];
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getUserFollowing = async (
+  userId: string,
+  pageNum: number
+): Promise<User[]> => {
+  try {
+    const {
+      data: { dbBack: followings },
+    } = await axios.get(
+      `${URL}/users/followingList/${userId}?pagenumber=${pageNum}&pagesize=10`
+    );
+    return followings as User[];
+  } catch (err) {
+    throw err;
+  }
+};
