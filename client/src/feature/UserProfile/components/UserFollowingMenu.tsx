@@ -54,10 +54,10 @@ export const UserFollowingMenu: FC<ProfileFollowingMenuProp> = ({
           </p>
         </button>
       </div>
-      {followingCategory === 'followers' && (
+      {followingCategory === 'following' && (
         <UserFollowingList {...user} />
       )}
-      {followingCategory === 'following' && (
+      {followingCategory === 'followers' && (
         <UserFollowList {...user} />
       )}
     </div>
