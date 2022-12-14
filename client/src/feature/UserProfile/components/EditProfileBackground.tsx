@@ -1,20 +1,23 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { FC, useState } from 'react';
-import { putUserAvatar } from '../../../api/userAPI';
+import {
+  putUserAvatar,
+  putUserBackground,
+} from '../../../api/userAPI';
 import { queryClient } from '../../../main';
 import { errorToast, successToast } from '../../../utils/errorToast';
 
-export const EditProfile: FC<{
+export const EditProfileBackground: FC<{
   userId: string;
   setShowEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ userId, setShowEdit }) => {
   const [selectedImage, setSelectedImage] = useState<FormData>();
   const [displayImage, setDisplayImage] = useState<string>();
 
-  const putUserAvatarMutation = useMutation(
-    ['putUserAvatar'],
-    () => putUserAvatar(userId, selectedImage),
+  const putUserBackgroundMutation = useMutation(
+    ['putUserBackground'],
+    () => putUserBackground(userId, selectedImage),
     {
       onSuccess: () => {
         console.log(selectedImage);
@@ -61,7 +64,7 @@ export const EditProfile: FC<{
       <button
         type="button"
         className="w-fit px-3 py-1 rounded-full mt-auto font-semibold hover:bg-border-black hover:text-white text-post-bg-black bg-white"
-        onClick={() => putUserAvatarMutation.mutate()}
+        onClick={() => putUserBackgroundMutation.mutate()}
       >
         Change!!
       </button>

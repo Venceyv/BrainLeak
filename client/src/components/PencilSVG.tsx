@@ -1,14 +1,16 @@
 import { FC } from 'react';
 
-export const PencilSVG: FC = (): JSX.Element => {
+export const PencilSVG: FC<{ size?: string }> = ({
+  size = '28',
+}): JSX.Element => {
   return (
     <svg
       className="icon"
       viewBox="0 0 1024 1024"
       version="1.1"
       p-id="5518"
-      width="28"
-      height="28"
+      width={size}
+      height={size}
     >
       <path
         d="M918.23363 155.169035l-48.754401-48.754401c-53.432956-53.432956-138.160663-55.314817-189.262528-4.206812-2.307555 2.302439-3.970428 5.053086-6.065136 7.475252l240.812601 240.813624c2.423189-2.089591 5.173836-3.76372 7.476275-6.065136C973.54333 293.323559 971.666586 208.601992 918.23363 155.169035z"
