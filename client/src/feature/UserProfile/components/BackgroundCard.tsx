@@ -30,7 +30,7 @@ export const BackgroundCard: FC<User> = (user) => {
         alt="background"
         className="z-0 object-cover h-[240px] w-full peer"
       />
-      {isAuthor && (
+      {isAuthor && !user.isDelete && (
         <Popup
           // open={showConfirmDelete}
           className="bg-opacity-90"

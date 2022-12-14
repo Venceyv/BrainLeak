@@ -16,12 +16,8 @@ export const UserProfile: FC = () => {
     { refetchOnWindowFocus: false, cacheTime: 0, retry: 1 }
   );
 
-  if (isSuccess) {
-    console.log(data);
-  }
-
   if (isError) {
-    navigate(-1);
+    navigate('/');
   }
 
   return (

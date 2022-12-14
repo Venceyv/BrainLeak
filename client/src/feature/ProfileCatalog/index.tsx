@@ -18,7 +18,9 @@ type menuCategory =
   | 'liked-posts'
   | 'comment-history';
 
-export const ProfileCatalog: FC = () => {
+export const ProfileCatalog: FC<{ isDelete: boolean }> = ({
+  isDelete,
+}) => {
   const { userId } = useParams();
 
   const [menuCategory, setMenuCategory] =
@@ -47,11 +49,18 @@ export const ProfileCatalog: FC = () => {
   return (
     <div className="col-start-3 col-span-3">
       <ProfileMenu setMenuCategory={setMenuCategory} />
-      {showPosts && <MyPosts />}
-      {showBookmarked && <MyBookmarked />}
-      {showLiked && <MyLiked />}
-      {showComment && <MyComment />}
-      {!showPosts && !isAuthor && <NotAllow />}
+      {!isDelete && (
+        <div>
+          {showPosts && <MyPosts />}
+          {showBookmarked && <MyBookmarked />}
+          {showLiked && <MyLiked />}
+          {showComment && <MyComment />}
+          {!showPosts && !isAuthor && <NotAllow message={null} />}
+        </div>
+      )}
+      {isDelete && (
+        <NotAllow message={'This user deactivated the account.'} />
+      )}
     </div>
   );
 };

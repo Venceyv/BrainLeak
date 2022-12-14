@@ -33,6 +33,7 @@ export const MyLiked: FC = () => {
           : undefined;
       },
       cacheTime: 0,
+      staleTime: 0,
     }
   );
 

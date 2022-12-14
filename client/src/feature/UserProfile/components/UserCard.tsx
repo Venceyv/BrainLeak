@@ -41,12 +41,16 @@ export const UserCard: FC<User> = (user) => {
   return (
     <div className="absolute left-[70px] top-[110px] flex flex-col items-center gap-2 w-[280px] h-fit rounded-md shadow shadow-border-black text-white bg-gradient-to-b from-post-bg-black to-secondary-black">
       <img
-        src={user.avatar}
+        src={
+          !user.isDelete
+            ? user.avatar
+            : '../../assets/img/user-not-found.webp'
+        }
         alt="user avatar"
         className="w-full h-[300px] object-cover rounded-tl-md rounded-tr-md"
       />
 
-      {data?._id !== user._id && (
+      {data?._id !== user._id && !user.isDelete && (
         <div
           className="absolute top-[250px] right-[10px] flex flex-row rounded-3xl py-1 px-4 shadow cursor-pointer shadow-border-black text-white bg-secondary-black"
           onClick={() => putFollowUserMutation.mutate()}

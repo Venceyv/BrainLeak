@@ -35,6 +35,7 @@ export const MyBookmarked: FC = () => {
           : undefined;
       },
       cacheTime: 0,
+      staleTime: 0,
     }
   );
 
