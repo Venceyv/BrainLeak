@@ -1,24 +1,10 @@
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-} from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { FC } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useNavigate } from 'react-router-dom';
-import {
-  getCheckAuth,
-  getUserFollowers,
-  putFollowUser,
-} from '../../../api/userAPI';
+import { getUserFollowers } from '../../../api/userAPI';
 import { Loading } from '../../../components/Loading';
 import { User } from '../../../interfaces/user';
-import { queryClient } from '../../../main';
-import { errorToast, successToast } from '../../../utils/errorToast';
-import { formatNumber } from '../../../utils/formatNumber';
-import { getUserId } from '../../../utils/getLocalStorage';
-import { fallback } from '../../../utils/imgFallback';
 import { UserNavigatables } from './UserNavigatables';
 
 export const UserFollowList: FC<User> = (user) => {
