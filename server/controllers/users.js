@@ -46,6 +46,7 @@ async function deleteUser(req, res) {
         avatar: process.env.DEACTIVATED_ACCOUNT_AVATAR,
         isDelete: true,
       }),
+      Follow.deleteMany({followedUser:req.user._id}),
     ]);
     blockToken(accessToken);
     blockToken(refreshToken);
