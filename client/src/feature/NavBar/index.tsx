@@ -33,7 +33,7 @@ export const NavBar: FC = (): JSX.Element => {
           <NewPostItem />
         </div>
       )}
-      {isLoggedIn && <NotificationItem />}
+      {/* {isLoggedIn && <NotificationItem />} */}
       {isLoggedIn && <UserItem setLogin={setLogin} />}
       {!isLoggedIn && <LoginItem setLogin={setLogin} />}
     </div>
