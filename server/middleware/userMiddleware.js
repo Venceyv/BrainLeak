@@ -13,7 +13,7 @@ async function checkUserExist(req, res, next) {
       res.status(404);
       throw "User does not exist";
     }
-    req.targetUser = user;
+    req.targetUser = user[0];
     return next();
   } catch (error) {
     res.json({ error: error });
