@@ -37,7 +37,7 @@ export const EditProfileBackground: FC<{
   const onFileSelect = (ev: React.ChangeEvent<HTMLInputElement>) => {
     if (ev.target.files) {
       const formData = new FormData();
-      formData.append('avatar', ev?.target?.files[0]);
+      formData.append('backgroundCover', ev?.target?.files[0]);
 
       setSelectedImage(formData);
       setDisplayImage(URL.createObjectURL(ev?.target?.files[0]));
