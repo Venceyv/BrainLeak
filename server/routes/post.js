@@ -44,7 +44,7 @@ import { checkUserExist } from "../middleware/userMiddleware.js";
 const postRouter = Router();
 
 postRouter.get("/", verifyToken(false), findAll);
-postRouter.get("/trending", verifyToken(false), postTrending);
+postRouter.get("/trending", postTrending);
 postRouter.get("/search", verifyToken(false), findBySearch);
 postRouter.get("/tags", verifyToken(false), findByTags);
 postRouter.get("/allTags", getAllTags);
@@ -60,7 +60,6 @@ postRouter.get(
   verifyToken(false),
   getReply
 );
-
 postRouter.post("/", verifyToken(), postValidator, createPost);
 postRouter.post("/comment/:postId", checkPostExist, verifyToken(), commentValidator, addComment);
 postRouter.post(

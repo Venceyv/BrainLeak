@@ -35,7 +35,7 @@ import { upload } from "../configs/googleCloud.js";
 const userRouter = Router();
 
 userRouter.get("/", verifyToken(false), findAll);
-userRouter.get("/trending", verifyToken(false), userTrending);
+userRouter.get("/trending", userTrending);
 userRouter.get("/search", verifyToken(false), findBySearch);
 userRouter.get("/:userId", checkUserExist, verifyToken(false), findOne);
 userRouter.get("/auth-check/:userId", checkUserExist, verifyToken(), checkUserAuth,findOne);
