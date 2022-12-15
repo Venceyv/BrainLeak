@@ -144,7 +144,7 @@ export const deleteComment = async (
       data: { dbBack: comment },
     } = await axios.delete(
       `${URL}/posts/comment/${
-        postId._id ? postId._id : postId
+        postId?._id ? postId._id : postId
       }/${commentId}`
     );
   } catch (err) {
