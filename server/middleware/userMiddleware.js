@@ -8,12 +8,12 @@ async function checkUserExist(req, res, next) {
       res.status(401);
       throw "invalid params";
     }
-    const user = await User.find({_id:req.params.userId,isDelete:false}).lean();
-    if (user.length===0) {
+    const user = await User.findById(req.params.userId).lean();
+    if (!user) {
       res.status(404);
       throw "User does not exist";
     }
-    req.targetUser = user[0];
+    req.targetUser = user;
     return next();
   } catch (error) {
     res.json({ error: error });
