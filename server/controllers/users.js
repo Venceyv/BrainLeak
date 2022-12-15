@@ -13,6 +13,8 @@ import {
   getUserNotification,
   addCategories,
   resetUserNotification,
+  refreshFollowerList,
+  refreshFollowingList,
 } from "../services/userServices.js";
 import jwt from "jsonwebtoken";
 import {
@@ -39,17 +41,23 @@ async function deleteUser(req, res) {
     res.setHeader("Content-Type", "application/json");
     let accessToken = req.headers.authorization;
     accessToken = accessToken ? accessToken.replace("Bearer ", "") : null;
-    const [refreshToken] = await Promise.all([
+    const [refreshToken,followers,followingList] = await Promise.all([
       getRefreshToken(req.user._id),
+      Follow.find({followedUser:req.user._id},{_id:0,user:1}).lean(),
+      Follow.find({user:req.user._id},{followedUser:1,_id:0}).lean(),
       User.findByIdAndUpdate(req.params.userId, {
         username: "Account Deactivated",
         avatar: process.env.DEACTIVATED_ACCOUNT_AVATAR,
         isDelete: true,
       }),
-      Follow.deleteMany({followedUser:req.user._id}),
+      Follow.deleteMany({$or:[{user:req.user._id},{followedUser:req.user._id}]}),
     ]);
     blockToken(accessToken);
     blockToken(refreshToken);
+    await Promise.all([
+      refreshFollowerList(followers),
+      refreshFollowingList(followingList),
+    ])
     return res.status(200).json({ msg: "delete succesfully" });
   } catch (error) {
     res.json(error);
@@ -700,7 +708,7 @@ async function getActivities(req, res) {
         .populate("user", { avatar: 1, username: 1 }, { lean: true }),
       CommentLike.find({ like: true }, { like: 0, _id: 0 })
         .lean()
-        .populate("comment", { content: 1 }, { lean: true })
+        .populate("comment", { content: 1, relatedPost: 1 }, { lean: true })
         .populate("commentAuthor", { username: 1, avatar: 1 }, { lean: true })
         .populate("user", { avatar: 1, username: 1 }, { lean: true }),
       Comment.find({}, { content: 1, author: 1, publishDate: 1, relatedPost: 1 })

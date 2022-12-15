@@ -62,6 +62,7 @@ import { removeTokenByTime } from "./services/jwt.js";
 import { clearCommentByTime } from "./services/commentServices.js";
 import { clearReplyByTime } from "./services/replyServices.js";
 
+
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -83,7 +84,6 @@ clearTrendingByTime("0 0 2 * * 0");
 removeTokenByTime("0 5 2 * * 0");
 clearCommentByTime("0 10 2 * * 0");
 clearReplyByTime("0 15 2 * * 0");
-
 mongooseConfig(DATABASE_URL)
   .then(() => {
     app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

@@ -3,18 +3,6 @@ import { uploadFile } from "./uploadFile.js";
 import { redisUsers } from "../configs/redis.js";
 import { redisTrending } from "../configs/redis.js";
 import fastJson from "fast-json-stringify";
-//fast json for user profile
-const stringifyUserProfile = fastJson({
-  type: "object",
-  properties: {
-    _id: { type: "string" },
-    avatar: { type: "string" },
-    username: { type: "string" },
-    introduction: { type: "string" },
-    backgroundCover: { type: "string" },
-    __v: { type: "integer" },
-  },
-});
 
 const stringifyUserInfo = fastJson({
   type: "object",
@@ -254,6 +242,16 @@ function addCategories(lists, type) {
   });
   return lists;
 }
+async function refreshFollowingList(followingList){
+  await Promise.all(followingList.map(async(list)=>{
+    await incUserStatistics(list.followedUser, "follower", -1);
+  }))
+}
+async function refreshFollowerList(followerList){
+  await Promise.all(followerList.map(async(list)=>{
+    await incUserStatistics(list.user, "following", -1);
+  }))
+}
 export {
   updatePicture,
   stringifyUserInfo,
@@ -270,4 +268,6 @@ export {
   resetUserNotification,
   getUserNotification,
   addCategories,
+  refreshFollowerList,
+  refreshFollowingList,
 };
