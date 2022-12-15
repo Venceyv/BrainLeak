@@ -93,7 +93,6 @@ export const putUserAvatar = async (
   userId: string,
   file: any
 ): Promise<void> => {
-  console.log(file);
   try {
     const {
       data: { dbBack: topUsers },
@@ -112,7 +111,6 @@ export const putUserBackground = async (
   userId: string,
   file: any
 ): Promise<void> => {
-  console.log(file);
   try {
     const {
       data: { dbBack: topUsers },

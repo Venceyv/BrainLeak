@@ -41,8 +41,6 @@ export const UserFollowingList: FC<User> = (user) => {
     }
   );
 
-  if (isSuccess) console.log(data);
-
   if (isInitialLoading) {
     return <Loading width={'full'} height={'full'} />;
   }
