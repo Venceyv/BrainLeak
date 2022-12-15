@@ -71,13 +71,13 @@ export const postUserReply = async (
 };
 
 export const putLikeComment = async (
-  postId: string,
+  postId: string | { _id: string; author: string },
   commentId: string
 ): Promise<PostComment> => {
   try {
     const {
       data: { dbBack: comment },
-    } = await axios.put(`${URL}/posts/like/${postId}/${commentId}`);
+    } = await axios.put(`${URL}/posts/like/${postId}`);
     return comment as PostComment;
   } catch (err) {
     throw err;
@@ -136,7 +136,7 @@ export const putPinComment = async (
 };
 
 export const deleteComment = async (
-  postId: string,
+  postId: any,
   commentId: string
 ): Promise<void> => {
   try {
