@@ -5,9 +5,7 @@ import { getUser } from '../../../api/userAPI';
 import { fallback } from '../../../utils/imgFallback';
 import { AuthorStats } from './AuthorStats';
 
-export const AuthorCard: FC<{ authorId: string }> = ({
-  authorId,
-}): JSX.Element => {
+export const AuthorCard: FC<{ authorId: string }> = ({ authorId }): JSX.Element => {
   const statRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { data, isLoading, isSuccess, isError } = useQuery(
@@ -36,12 +34,11 @@ export const AuthorCard: FC<{ authorId: string }> = ({
         src={data?.backgroundCover}
         className="absolute w-full h-16 z-[1] object-cover"
         alt="background cover"
+        onError={fallback}
       />
 
       <div className="absolute flex text-sm w-[calc(100%-80px)] truncate top-[72px] left-[80px]">
-        <p className="w-[120px] truncate text-white">
-          {data?.username}
-        </p>
+        <p className="w-[120px] truncate text-white">{data?.username}</p>
       </div>
 
       <div className="flex items-center justify-start gap-2 mt-5 col-span-2 row-span-2">
@@ -80,17 +77,13 @@ export const AuthorCard: FC<{ authorId: string }> = ({
           className="absolute h-4 w-14 top-[22px] left-[7px] bg-secondary-black rotate-[13deg] rounded-tr-[30px] rounded-br-[30px] cursor-pointer"
           onClick={() => navigate(`/user/profile/${data?._id}`)}
         >
-          <p className="absolute top-0 left-[7px] text-sm text-white">
-            Profile
-          </p>
+          <p className="absolute top-0 left-[7px] text-sm text-white">Profile</p>
         </div>
         <div
           className="absolute h-4 w-14 top-[46px] left-[0px] bg-secondary-black rotate-[12deg] rounded-tl-[30px] rounded-bl-[30px] cursor-pointer"
           onClick={toggleStatText}
         >
-          <p className="absolute text-sm top-0 left-[10px] text-white">
-            Stats
-          </p>
+          <p className="absolute text-sm top-0 left-[10px] text-white">Stats</p>
         </div>
       </div>
     </div>

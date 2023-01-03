@@ -9,6 +9,7 @@ import { queryClient } from '../../../main';
 import { errorToast, successToast } from '../../../utils/errorToast';
 import { formatNumber } from '../../../utils/formatNumber';
 import { getUserId } from '../../../utils/getLocalStorage';
+import { fallback } from '../../../utils/imgFallback';
 import { EditProfile } from './EditProfile';
 import { EditProfileBackground } from './EditProfileBackground';
 import { EditProfileUser } from './EditProfileUser';
@@ -17,46 +18,34 @@ export const UserCard: FC<User> = (user) => {
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showUserEdit, setUserShowEdit] = useState<boolean>(false);
 
-  const { data, isSuccess } = useQuery(
-    ['checkUserAuth'],
-    () => getCheckAuth(getUserId()),
-    {
-      retry: 0,
-    }
-  );
+  const { data, isSuccess } = useQuery(['checkUserAuth'], () => getCheckAuth(getUserId()), {
+    retry: 0,
+  });
 
-  const putFollowUserMutation = useMutation(
-    ['putFollowUser'],
-    () => putFollowUser(user._id),
-    {
-      onSuccess: () => {
-        successToast('Success!');
-        queryClient.invalidateQueries(['userData']);
-      },
-      onError: (err: AxiosError) => {
-        if (err?.response?.status === 401) {
-          errorToast('Please Login First');
-        } else {
-          errorToast('An error has occurred');
-        }
-      },
-    }
-  );
+  const putFollowUserMutation = useMutation(['putFollowUser'], () => putFollowUser(user._id), {
+    onSuccess: () => {
+      successToast('Success!');
+      queryClient.invalidateQueries(['userData']);
+    },
+    onError: (err: AxiosError) => {
+      if (err?.response?.status === 401) {
+        errorToast('Please Login First');
+      } else {
+        errorToast('An error has occurred');
+      }
+    },
+  });
 
-  const isAllowFollow =
-    !data || (data._id !== user._id && user.following === false);
+  const isAllowFollow = !data || (data._id !== user._id && user.following === false);
 
   const isAuthor = data && user._id === data._id;
 
   return (
     <div className="flex flex-col items-center gap-2 w-[280px] h-fit rounded-md shadow shadow-border-black text-white bg-gradient-to-b from-post-bg-black to-secondary-black">
       <img
-        src={
-          !user.isDelete
-            ? user.avatar
-            : '../../assets/img/user-not-found.webp'
-        }
+        src={!user.isDelete ? user.avatar : '../../assets/img/user-not-found.webp'}
         alt="user avatar"
+        onError={fallback}
         className="w-full h-[300px] object-cover rounded-tl-md rounded-tr-md"
       />
       {isAuthor && !user.isDelete && (
@@ -65,9 +54,7 @@ export const UserCard: FC<User> = (user) => {
           className=""
           trigger={
             <div className="opacity-50 hover:opacity-100 absolute group z-[2] flex flex-row rounded-md p-1 gap-2 top-2 right-2 cursor-pointer transition-all ease-in-out duration-300 shadow shadow-border-black text-white bg-secondary-black hover:pl-2">
-              <p className="pt-1 hidden group-hover:block">
-                Edit Avatar
-              </p>
+              <p className="pt-1 hidden group-hover:block">Edit Avatar</p>
               <div className="transition-all ease-in-out duration-300 fill-white group-hover:fill-red-secondary ">
                 <PencilSVG />
               </div>
@@ -79,10 +66,7 @@ export const UserCard: FC<User> = (user) => {
           modal
         >
           <div className="flex flex-col gap-4 w-[320px]">
-            <EditProfile
-              userId={user._id}
-              setShowEdit={setShowEdit}
-            />
+            <EditProfile userId={user._id} setShowEdit={setShowEdit} />
           </div>
         </Popup>
       )}
@@ -110,9 +94,7 @@ export const UserCard: FC<User> = (user) => {
                 open={showUserEdit}
                 trigger={
                   <div className="opacity-50 hover:opacity-100 h-[14px] px-1 ml-auto group z-[2] flex flex-row rounded-md gap-2 cursor-pointer transition-all ease-in-out duration-300 shadow shadow-border-black text-white bg-secondary-black">
-                    <p className="text-[10px] hidden group-hover:block">
-                      Edit Information
-                    </p>
+                    <p className="text-[10px] hidden group-hover:block">Edit Information</p>
                     <div className="transition-all ease-in-out h-fit duration-300 fill-white group-hover:fill-red-secondary ">
                       <PencilSVG size={'12'} />
                     </div>
@@ -124,17 +106,12 @@ export const UserCard: FC<User> = (user) => {
                 modal
               >
                 <div className="flex flex-col gap-4 w-[320px]">
-                  <EditProfileUser
-                    user={user}
-                    setUserShowEdit={setUserShowEdit}
-                  />
+                  <EditProfileUser user={user} setUserShowEdit={setUserShowEdit} />
                 </div>
               </Popup>
             )}
           </div>
-          <div className="mt-1 text-sm min-h-[48px] break-words">
-            {user.introduction}
-          </div>
+          <div className="mt-1 text-sm min-h-[48px] break-words">{user.introduction}</div>
         </div>
 
         {/* stats */}

@@ -40,8 +40,9 @@ export const PostWithCover: FC<PostProp> = ({
   cover,
 }): JSX.Element => {
   const navigate = useNavigate();
-  const { putDislikeMutation, putLikeMutation, putSaveMutation } =
-    usePutUserStatusMutation(post._id);
+  const { putDislikeMutation, putLikeMutation, putSaveMutation } = usePutUserStatusMutation(
+    post._id
+  );
   return (
     <div className="flex grow shrink justify-start gap-3 py-4 max-w-[700px] text-white">
       <div className="flex flex-col items-center justify-center gap-2">
@@ -61,14 +62,7 @@ export const PostWithCover: FC<PostProp> = ({
       </div>
 
       <div className="flex flex-row gap-2 grow shrink w-[558px] text-white bg-secondary-black rounded-lg p-1 px-2 border-2 border-border-black cursor-pointer">
-        {cover && (
-          <ReactQuill
-            theme="bubble"
-            value={cover}
-            readOnly
-            className="post-picture"
-          />
-        )}
+        {cover && <ReactQuill theme="bubble" value={cover} readOnly className="post-picture" />}
 
         <div className="flex flex-col h-full w-full">
           <Link to={`/post/${post._id}`}>
@@ -86,46 +80,25 @@ export const PostWithCover: FC<PostProp> = ({
               </div>
             )}
           </Link>
-          <span
-            className={`flex flex-row gap-3 text-xs mt-auto ${
-              !cover ? 'pb-1' : ''
-            } w-full`}
-          >
-            <div
-              className="flex"
-              onClick={() => putLikeMutation.mutate()}
-            >
+          <span className={`flex flex-row gap-3 text-xs mt-auto ${!cover ? 'pb-1' : ''} w-full`}>
+            <div className="flex" onClick={() => putLikeMutation.mutate()}>
               {/* <img
                 src="../../../assets/img/like.svg"
                 className="w-5 h-5"
                 alt="like"
               /> */}
               <LikeThumb isTrue={like ? true : false} />
-              <p className="truncate pl-[2px] pt-[2px]">
-                Like: {formatNumber(post?.like)}
-              </p>
+              <p className="truncate pl-[2px] pt-[2px]">Like: {formatNumber(post?.like)}</p>
             </div>
-            <div
-              className="flex"
-              onClick={() => putDislikeMutation.mutate()}
-            >
+            <div className="flex" onClick={() => putDislikeMutation.mutate()}>
               <DislikeThumb isTrue={dislike ? true : false} />
-              <p className="truncate pl-[2px] pt-[2px]">
-                Dislike: {formatNumber(post?.dislike)}
-              </p>
+              <p className="truncate pl-[2px] pt-[2px]">Dislike: {formatNumber(post?.dislike)}</p>
             </div>
-            <div
-              className="flex"
-              onClick={() => putSaveMutation.mutate()}
-            >
+            <div className="flex" onClick={() => putSaveMutation.mutate()}>
               <Bookmark isTrue={save ? true : false} />
-              <p className="truncate pl-[2px] pt-[2px]">
-                Bookmark: {formatNumber(post?.marks)}
-              </p>
+              <p className="truncate pl-[2px] pt-[2px]">Bookmark: {formatNumber(post?.marks)}</p>
             </div>
-            <p className="ml-auto truncate">
-              {convertDate(post?.date)}
-            </p>
+            <p className="ml-auto truncate">{convertDate(post?.date)}</p>
           </span>
         </div>
       </div>

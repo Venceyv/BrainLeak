@@ -20,4 +20,5 @@
 .quill.post-picture .ql-container.ql-bubble .ql-editor p {
   height: 76px;
   width: 92px;
+  overflow: hidden !important;
 }

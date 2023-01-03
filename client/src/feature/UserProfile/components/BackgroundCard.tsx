@@ -9,19 +9,16 @@ import { queryClient } from '../../../main';
 import { errorToast, successToast } from '../../../utils/errorToast';
 import { formatNumber } from '../../../utils/formatNumber';
 import { getUserId } from '../../../utils/getLocalStorage';
+import { fallback } from '../../../utils/imgFallback';
 import { EditProfile } from './EditProfile';
 import { EditProfileBackground } from './EditProfileBackground';
 
 export const BackgroundCard: FC<User> = (user) => {
   const [showEdit, setShowEdit] = useState<boolean>(false);
 
-  const { data } = useQuery(
-    ['checkUserAuth'],
-    () => getCheckAuth(getUserId()),
-    {
-      retry: 0,
-    }
-  );
+  const { data } = useQuery(['checkUserAuth'], () => getCheckAuth(getUserId()), {
+    retry: 0,
+  });
 
   const isAuthor = data && user._id === data._id;
 
@@ -31,6 +28,7 @@ export const BackgroundCard: FC<User> = (user) => {
       <img
         src={user?.backgroundCover}
         alt="background"
+        onError={fallback}
         className="z-0 object-cover h-[240px] w-full peer"
       />
       {isAuthor && !user.isDelete && (
@@ -39,9 +37,7 @@ export const BackgroundCard: FC<User> = (user) => {
           className=""
           trigger={
             <div className="opacity-50 hover:opacity-100 absolute group z-[2] flex flex-row rounded-md p-1 gap-2 top-2 right-2 cursor-pointer transition-all ease-in-out duration-300 shadow shadow-border-black text-white bg-secondary-black hover:pl-2">
-              <p className="pt-1 hidden group-hover:block">
-                Edit Background
-              </p>
+              <p className="pt-1 hidden group-hover:block">Edit Background</p>
               <div className="transition-all ease-in-out duration-300 fill-white group-hover:fill-red-secondary ">
                 <PencilSVG />
               </div>
@@ -53,10 +49,7 @@ export const BackgroundCard: FC<User> = (user) => {
           modal
         >
           <div className="flex flex-col gap-4 w-[320px]">
-            <EditProfileBackground
-              userId={user._id}
-              setShowEdit={setShowEdit}
-            />
+            <EditProfileBackground userId={user._id} setShowEdit={setShowEdit} />
           </div>
         </Popup>
       )}
