@@ -7,7 +7,7 @@ export const TrendingBanner: FC = (): JSX.Element => {
       <img
         src="../../../assets/img/trending.svg"
         alt="trending"
-        className="w-9"
+        className="w-9 h-auto"
       />
     </div>
   );

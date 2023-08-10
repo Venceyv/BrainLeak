@@ -8,3 +8,7 @@ body,
   min-width: 530px;
   /* min-height: 725px; */
 }
+
+html {
+  background-color: #0f0f0f;
+}
