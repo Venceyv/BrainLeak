@@ -7,4 +7,7 @@ export default defineConfig({
   server: {
     port: 3001,
   },
+  define: {
+    'process.env': {},
+  },
 });
