@@ -1,4 +1,4 @@
-import { User } from "../models/index.js";
+import { Comment, Follow, Post, PostLike, User } from "../models/index.js";
 import { uploadFile } from "./uploadFile.js";
 import { redisTrending } from "../configs/redis.js";
 import fastJson from "fast-json-stringify";
@@ -18,21 +18,29 @@ async function updatePicture(req, res, name) {
       let dbBack;
       switch (name) {
         case "avatar": {
-          dbBack = await User.findByIdAndUpdate(req.user._id, { avatar: url }, { new: 1 });
+          dbBack = await User.findByIdAndUpdate(
+            req.user._id,
+            { avatar: url },
+            { new: 1 }
+          );
           break;
         }
 
         default: {
-          dbBack = await User.findByIdAndUpdate(req.user._id, { backgroundCover: url }, { new: 1 });
+          dbBack = await User.findByIdAndUpdate(
+            req.user._id,
+            { backgroundCover: url },
+            { new: 1 }
+          );
           break;
         }
       }
       return res.status(200).json({ dbBack });
     }
     res.status(400);
-    throw 'error with img';
+    throw "error with img";
   } catch (error) {
-    res.json({error:error});
+    res.json({ error: error });
   }
 }
 async function incUserStatistics(userId, field, incNum) {
@@ -50,7 +58,9 @@ async function incUserStatistics(userId, field, incNum) {
 //to determind if the current user is following the targetUser
 function addFollowingInfo(targetUser, followingList) {
   try {
-    const following = followingList.filter((e) => e.followedUser.equals(targetUser._id)).length > 0;
+    const following =
+      followingList.filter((e) => e.followedUser.equals(targetUser._id))
+        .length > 0;
     targetUser = { ...targetUser, following };
     return targetUser;
   } catch (error) {
@@ -62,6 +72,18 @@ async function addUserStatistics(user) {
   try {
     if (user) {
       const key = JSON.stringify(user._id) + " Statistics";
+      let [flw, flwer, pst, cmt, pl] = await Promise.all([
+        Follow.countDocuments({ user: user._id }),
+        Follow.countDocuments({ followedUser: user._id }),
+        Post.countDocuments({ author: user._id }),
+        Comment.countDocuments({ author: user._id }),
+        PostLike.countDocuments({ postAuthor: user._id }),
+      ]);
+      redisTrending.hset(key, "following", flw);
+      redisTrending.hset(key, "follower", flwer);
+      redisTrending.hset(key, "posts", pst);
+      redisTrending.hset(key, "comments", cmt);
+      redisTrending.hset(key, "upvotes", pl);
       const pipeline = redisTrending.pipeline();
       pipeline.hget(key, "following");
       pipeline.hget(key, "follower");
@@ -109,7 +131,12 @@ async function userTrendingInc(userId, incNum) {
 
 async function getUserTrending(num) {
   try {
-    const trending = await redisTrending.zrevrange(" UserTrending", 0, -1, "withscores");
+    const trending = await redisTrending.zrevrange(
+      " UserTrending",
+      0,
+      -1,
+      "withscores"
+    );
     const topUsers = trending.slice(0, num * 2);
     let leaderBoard = [];
     topUsers.forEach((userId, index) => {
@@ -227,8 +254,14 @@ async function getUserNotification(userId) {
     const newReplies = results[1][1] === null ? 0 : Number(results[1][1]);
     const newLikes = results[2][1] === null ? 0 : Number(results[2][1]);
     const newMarks = results[3][1] === null ? 0 : Number(results[3][1]);
-    const total = newComments+newReplies+newLikes+newMarks;
-    const notifications = {newComments,newReplies,newLikes,newMarks,total};
+    const total = newComments + newReplies + newLikes + newMarks;
+    const notifications = {
+      newComments,
+      newReplies,
+      newLikes,
+      newMarks,
+      total,
+    };
     return notifications;
   } catch (error) {
     console.log("getUserNewMessages Failed -- Uservices 232");
@@ -241,15 +274,19 @@ function addCategories(lists, type) {
   });
   return lists;
 }
-async function refreshFollowingList(followingList){
-  await Promise.all(followingList.map(async(list)=>{
-    await incUserStatistics(list.followedUser, "follower", -1);
-  }))
+async function refreshFollowingList(followingList) {
+  await Promise.all(
+    followingList.map(async (list) => {
+      await incUserStatistics(list.followedUser, "follower", -1);
+    })
+  );
 }
-async function refreshFollowerList(followerList){
-  await Promise.all(followerList.map(async(list)=>{
-    await incUserStatistics(list.user, "following", -1);
-  }))
+async function refreshFollowerList(followerList) {
+  await Promise.all(
+    followerList.map(async (list) => {
+      await incUserStatistics(list.user, "following", -1);
+    })
+  );
 }
 export {
   updatePicture,

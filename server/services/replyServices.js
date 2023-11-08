@@ -32,10 +32,16 @@ function clearReplyByTime(time) {
 async function addReplyStatistics(reply) {
   try {
     if (reply) {
-      const replyId = JSON.stringify(reply._id) + " Statistics";
+      const key = JSON.stringify(reply._id) + " Statistics";
+      let [flw, flwer] = await Promise.all([
+        ReplyLike.countDocuments({ reply: reply._id, like: true }),
+        ReplyLike.countDocuments({ reply: reply._id, like: false }),
+      ]);
+      redisTrending.hset(key, "likes", flw);
+      redisTrending.hset(key, "dislikes", flwer);
       const pipeline = redisTrending.pipeline();
-      pipeline.hget(replyId, "likes");
-      pipeline.hget(replyId, "dislikes");
+      pipeline.hget(key, "likes");
+      pipeline.hget(key, "dislikes");
       const results = await pipeline.exec();
       const likes = results[0][1] === null ? 0 : Number(results[0][1]);
       const dislikes = results[1][1] === null ? 0 : Number(results[1][1]);

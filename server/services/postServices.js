@@ -1,4 +1,4 @@
-import { PostLike, SavedPost, Post } from "../models/index.js";
+import { PostLike, SavedPost, Post, Comment } from "../models/index.js";
 import { redisTrending } from "../configs/redis.js";
 import schedule from "node-schedule";
 import { addCommentsStatistics } from "./commentServices.js";
@@ -92,6 +92,16 @@ async function addPostStatistics(post) {
   try {
     if (post) {
       const key = JSON.stringify(post._id) + " Statiscs";
+      let [flw, flwer, pst, cmt] = await Promise.all([
+        PostLike.countDocuments({ post: post._id, like: true }),
+        PostLike.countDocuments({ post: post._id, like: false }),
+        SavedPost.countDocuments({ post: post._id }),
+        Comment.countDocuments({ relatedPost: post._id }),
+      ]);
+      redisTrending.hset(key, "likes", flw);
+      redisTrending.hset(key, "dislikes", flwer);
+      redisTrending.hset(key, "marks", pst);
+      redisTrending.hset(key, "comments", cmt);
       const pipeline = redisTrending.pipeline();
       pipeline.hget(key, "likes");
       pipeline.hget(key, "dislikes");
