@@ -1,4 +1,4 @@
-import { Comment, Follow, Post, PostLike, User } from "../models/index.js";
+import { User } from "../models/index.js";
 import { uploadFile } from "./uploadFile.js";
 import { redisTrending } from "../configs/redis.js";
 import fastJson from "fast-json-stringify";
@@ -72,18 +72,6 @@ async function addUserStatistics(user) {
   try {
     if (user) {
       const key = JSON.stringify(user._id) + " Statistics";
-      let [flw, flwer, pst, cmt, pl] = await Promise.all([
-        Follow.countDocuments({ user: user._id }),
-        Follow.countDocuments({ followedUser: user._id }),
-        Post.countDocuments({ author: user._id }),
-        Comment.countDocuments({ author: user._id }),
-        PostLike.countDocuments({ postAuthor: user._id }),
-      ]);
-      redisTrending.hset(key, "following", flw);
-      redisTrending.hset(key, "follower", flwer);
-      redisTrending.hset(key, "posts", pst);
-      redisTrending.hset(key, "comments", cmt);
-      redisTrending.hset(key, "upvotes", pl);
       const pipeline = redisTrending.pipeline();
       pipeline.hget(key, "following");
       pipeline.hget(key, "follower");

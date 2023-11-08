@@ -1,6 +1,6 @@
 import schedule from "node-schedule";
 import { redisTrending } from "../configs/redis.js";
-import { Post, Comment, CommentLike, User, Reply } from "../models/index.js";
+import { Post, Comment, CommentLike, User } from "../models/index.js";
 import { incUserStatistics, userTrendingInc } from "./userServices.js";
 function clearCommentByTime(time) {
   schedule.scheduleJob(
@@ -42,14 +42,6 @@ async function addCommentStatistics(comment) {
   try {
     if (comment) {
       const key = JSON.stringify(comment._id) + " Statistics";
-      let [flw, flwer, pst] = await Promise.all([
-        CommentLike.countDocuments({ comment: comment._id, like: true }),
-        CommentLike.countDocuments({ comment: comment._id, like: false }),
-        Reply.countDocuments({ relatedComment: comment._id }),
-      ]);
-      redisTrending.hset(key, "likes", flw);
-      redisTrending.hset(key, "dislikes", flwer);
-      redisTrending.hset(key, "replies", pst);
       const pipeline = redisTrending.pipeline();
       pipeline.hget(key, "likes");
       pipeline.hget(key, "dislikes");

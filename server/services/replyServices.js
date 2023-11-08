@@ -33,12 +33,6 @@ async function addReplyStatistics(reply) {
   try {
     if (reply) {
       const key = JSON.stringify(reply._id) + " Statistics";
-      let [flw, flwer] = await Promise.all([
-        ReplyLike.countDocuments({ reply: reply._id, like: true }),
-        ReplyLike.countDocuments({ reply: reply._id, like: false }),
-      ]);
-      redisTrending.hset(key, "likes", flw);
-      redisTrending.hset(key, "dislikes", flwer);
       const pipeline = redisTrending.pipeline();
       pipeline.hget(key, "likes");
       pipeline.hget(key, "dislikes");
