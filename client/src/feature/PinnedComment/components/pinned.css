@@ -1,0 +1,5 @@
+.quill.pinned .ql-container.ql-bubble .ql-editor * {
+  height: 252px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

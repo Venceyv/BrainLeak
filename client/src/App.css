@@ -1,0 +1,14 @@
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+
+  /* 💀 change later */
+  min-width: 530px;
+  /* min-height: 725px; */
+}
+
+html {
+  background-color: #0f0f0f;
+}

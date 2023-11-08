@@ -1,0 +1,108 @@
+:root {
+  --red-color: #b1102b;
+  --border-black: #474748;
+}
+
+.quill > .ql-container > .ql-editor.ql-blank::before {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ql-toolbar.ql-snow {
+  border: none !important;
+}
+
+.ql-container.ql-snow {
+  margin-top: 8px;
+  border: 1px var(--border-black) solid !important;
+  border-radius: 4px;
+}
+
+.ql-container.ql-snow .ql-editor {
+  border-top: 1px var(--border-black) solid;
+  border-radius: 4px;
+  min-height: 138px;
+  font-family: 'Josefin-sans';
+}
+
+.ql-toolbar .ql-stroke {
+  fill: none;
+  stroke: #fff !important;
+  font-family: 'Josefin-sans';
+}
+
+.ql-toolbar .ql-fill {
+  fill: #fff !important;
+  stroke: none;
+  font-family: 'Josefin-sans';
+}
+
+.ql-toolbar .ql-picker {
+  color: #fff !important;
+  font-family: 'Josefin-sans';
+}
+
+.ql-toolbar .ql-picker .ql-picker-options {
+  color: #fff;
+  font-family: 'Josefin-sans';
+  border-radius: 4px;
+}
+
+.ql-toolbar .ql-picker .ql-picker-options span:hover {
+  color: #fff !important;
+  font-family: 'Josefin-sans';
+  border-radius: 4px;
+}
+
+.ql-toolbar .ql-picker .ql-picker-options span.ql-selected {
+  color: #fff;
+  font-family: 'Josefin-sans';
+  border-radius: 4px;
+}
+
+.ql-toolbar .ql-picker .ql-picker-item {
+  color: var(--border-black);
+  font-family: 'Josefin-sans';
+}
+
+.ql-toolbar-options .ql-toolbar .ql-active {
+  color: #fff;
+  font-family: 'Josefin-sans';
+}
+
+.ql-snow.ql-toolbar button:hover,
+.ql-snow.ql-toolbar button:focus,
+.ql-snow.ql-toolbar button.ql-active,
+.ql-snow.ql-toolbar .ql-picker-label:hover,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker-item:hover,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+.ql-snow .ql-toolbar .ql-picker-item.ql-picker-options {
+  color: #fff !important;
+  background: var(--border-black);
+  border: 2px var(--border-black) solid;
+  border-radius: 4px;
+  font-family: 'Josefin-sans';
+  stroke: var(--red-color) !important;
+}
+
+.ql-snow.ql-toolbar .ql-active .ql-stroke {
+  color: var(--red-color) !important;
+  stroke: var(--red-color) !important;
+}
+
+.ql-snow.ql-toolbar .ql-active .ql-stroke {
+  color: var(--red-color) !important;
+  stroke: var(--red-color) !important;
+}
+.ql-snow.ql-toolbar .ql-formats button:hover .ql-stroke,
+.ql-snow.ql-toolbar .ql-formats button:hover .ql-fill,
+.ql-snow.ql-toolbar .ql-formats .ql-picker:hover .ql-stroke {
+  color: var(--red-color) !important;
+  stroke: var(--red-color) !important;
+}
+
+.ql-snow.ql-toolbar .ql-formats button:hover .ql-fill,
+.ql-snow.ql-toolbar .ql-formats button.ql-active .ql-fill {
+  color: var(--red-color) !important;
+  stroke: var(--red-color) !important;
+}
