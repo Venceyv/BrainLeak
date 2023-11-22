@@ -1,5 +1,5 @@
 import schedule from "node-schedule";
-import { redisComments } from "../configs/redis.js";
+import { redisTrending } from "../configs/redis.js";
 import { Post, Comment, CommentLike, User } from "../models/index.js";
 import { incUserStatistics, userTrendingInc } from "./userServices.js";
 function clearCommentByTime(time) {
@@ -30,9 +30,9 @@ function clearCommentByTime(time) {
 async function incCommentStatistics(commentId, field, incNum) {
   try {
     const key = JSON.stringify(commentId) + " Statistics";
-    const result = await redisComments.hincrby(key, field, incNum);
+    const result = await redisTrending.hincrby(key, field, incNum);
     if (result < 0) {
-      redisComments.hset(key, field, 0);
+      redisTrending.hset(key, field, 0);
     }
   } catch (error) {
     console.log("incCommentStatistics Failed -- Cservices 20");
@@ -41,11 +41,11 @@ async function incCommentStatistics(commentId, field, incNum) {
 async function addCommentStatistics(comment) {
   try {
     if (comment) {
-      const commentId = JSON.stringify(comment._id) + " Statistics";
-      const pipeline = redisComments.pipeline();
-      pipeline.hget(commentId, "likes");
-      pipeline.hget(commentId, "dislikes");
-      pipeline.hget(commentId, "replies");
+      const key = JSON.stringify(comment._id) + " Statistics";
+      const pipeline = redisTrending.pipeline();
+      pipeline.hget(key, "likes");
+      pipeline.hget(key, "dislikes");
+      pipeline.hget(key, "replies");
       const results = await pipeline.exec();
       const likes = results[0][1] === null ? 0 : Number(results[0][1]);
       const dislikes = results[1][1] === null ? 0 : Number(results[1][1]);
@@ -105,7 +105,7 @@ function saveRedisCommentProfile(commentId, profile) {
   try {
     const key = JSON.stringify(commentId) + " Profile";
     profile = JSON.stringify(profile);
-    redisComments.setex(key, 3, profile);
+    redisTrending.setex(key, 3, profile);
   } catch (error) {
     console.log("saveRedisCommentProfile Faild --Cservices 104");
   }
@@ -113,7 +113,7 @@ function saveRedisCommentProfile(commentId, profile) {
 async function getRedisCommentProfile(commentId) {
   try {
     const key = JSON.stringify(commentId) + " Profile";
-    let profile = await redisComments.get(key);
+    let profile = await redisTrending.get(key);
     if (!profile) {
       return null;
     }
@@ -147,7 +147,7 @@ function saveRedisPinComment(postId, profile) {
   try {
     const key = JSON.stringify(postId) + " Pin";
     profile = JSON.stringify(profile);
-    redisComments.setex(key, 86400, profile);
+    redisTrending.setex(key, 86400, profile);
   } catch (error) {
     console.log("saveRedisPinComment Faild --Cservices 141");
   }
@@ -155,7 +155,7 @@ function saveRedisPinComment(postId, profile) {
 async function getRedisPinComment(postId) {
   try {
     const key = JSON.stringify(postId) + " Pin";
-    let profile = await redisComments.get(key);
+    let profile = await redisTrending.get(key);
     if (!profile) {
       return null;
     }
@@ -168,7 +168,7 @@ async function getRedisPinComment(postId) {
 async function delRedisPinComment(postId) {
   try {
     const key = JSON.stringify(postId) + " Pin";
-    await redisComments.del(key);
+    await redisTrending.del(key);
 
   } catch (error) {
     console.log("delRedisPinComment Faild --Cservices 163");
