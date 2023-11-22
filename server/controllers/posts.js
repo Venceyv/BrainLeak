@@ -11,7 +11,7 @@ import {
   updatePostStats,
 } from "../services/postServices.js";
 import { incUserNotification, incUserStatistics, userTrendingInc } from "../services/userServices.js";
-import json from "body-parser";
+
 import { redisTrending } from "../configs/redis.js";
 import { sortWith } from "../services/arraySorter.js";
 import { regexFilter } from "../services/regexFilter.js";

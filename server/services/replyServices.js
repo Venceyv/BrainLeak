@@ -1,5 +1,5 @@
 import schedule from "node-schedule";
-import { redisReplies } from "../configs/redis.js";
+import { redisTrending } from "../configs/redis.js";
 import { Reply, Comment, ReplyLike } from "../models/index.js";
 import { incUserStatistics, userTrendingInc } from "./userServices.js";
 //clear reply that related post does not exist
@@ -32,10 +32,10 @@ function clearReplyByTime(time) {
 async function addReplyStatistics(reply) {
   try {
     if (reply) {
-      const replyId = JSON.stringify(reply._id) + " Statistics";
-      const pipeline = redisReplies.pipeline();
-      pipeline.hget(replyId, "likes");
-      pipeline.hget(replyId, "dislikes");
+      const key = JSON.stringify(reply._id) + " Statistics";
+      const pipeline = redisTrending.pipeline();
+      pipeline.hget(key, "likes");
+      pipeline.hget(key, "dislikes");
       const results = await pipeline.exec();
       const likes = results[0][1] === null ? 0 : Number(results[0][1]);
       const dislikes = results[1][1] === null ? 0 : Number(results[1][1]);
@@ -50,9 +50,9 @@ async function addReplyStatistics(reply) {
 async function incReplyStatistics(replyId, field, incNum) {
   try {
     const key = JSON.stringify(replyId) + " Statistics";
-    const result = await redisReplies.hincrby(key, field, incNum);
+    const result = await redisTrending.hincrby(key, field, incNum);
     if (result < 0) {
-      redisReplies.hset(key, field, 0);
+      redisTrending.hset(key, field, 0);
     }
   } catch (error) {
     console.log("incReplyStatistics Failed -- Rservices 35");
@@ -75,7 +75,7 @@ function saveRedisReplyProfile(replyId, profile) {
   try {
     const key = JSON.stringify(replyId) + " Profile";
     profile = JSON.stringify(profile);
-    redisReplies.setex(key, 3, profile);
+    redisTrending.setex(key, 3, profile);
   } catch (error) {
     console.log("saveRedisReplyProfile Faild --Rservices 69");
   }
@@ -83,7 +83,7 @@ function saveRedisReplyProfile(replyId, profile) {
 async function getRedisReplyProfile(replyId) {
   try {
     const key = JSON.stringify(replyId) + " Profile";
-    let profile = await redisReplies.get(key);
+    let profile = await redisTrending.get(key);
     if (!profile) {
       return null;
     }

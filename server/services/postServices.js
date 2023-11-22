@@ -1,5 +1,5 @@
 import { PostLike, SavedPost, Post } from "../models/index.js";
-import { redisPosts, redisTrending } from "../configs/redis.js";
+import { redisTrending } from "../configs/redis.js";
 import schedule from "node-schedule";
 import { addCommentsStatistics } from "./commentServices.js";
 import { incUserStatistics, userTrendingInc } from "./userServices.js";
@@ -7,9 +7,9 @@ import { incUserStatistics, userTrendingInc } from "./userServices.js";
 async function incPostStatistics(postId, field, incNum) {
   try {
     const key = JSON.stringify(postId) + " Statiscs";
-    const result = await redisPosts.hincrby(key, field, incNum);
+    const result = await redisTrending.hincrby(key, field, incNum);
     if (result < 0) {
-      redisPosts.hset(key, field, 0);
+      redisTrending.hset(key, field, 0);
     }
   } catch (error) {
     console.log("incPostStatistics Failed --Pservices 52");
@@ -92,7 +92,7 @@ async function addPostStatistics(post) {
   try {
     if (post) {
       const key = JSON.stringify(post._id) + " Statiscs";
-      const pipeline = redisPosts.pipeline();
+      const pipeline = redisTrending.pipeline();
       pipeline.hget(key, "likes");
       pipeline.hget(key, "dislikes");
       pipeline.hget(key, "marks");
